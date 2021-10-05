@@ -1,0 +1,14 @@
+{
+  "version": 2,
+  "dgSpecHash": "0nHy2ri3M4FQsGSZR60drCSx392QxJNS6iNcrdSIHs6sWvDzYHWjd7dpZPLpWdYa7+/5pp/P5GRPBWWx0P+PYQ==",
+  "success": true,
+  "projectFilePath": "C:\\Users\\lukas\\source\\repos\\Asklepios\\Asklepios.Models\\Asklepios.Core.csproj",
+  "expectedPackageFiles": [
+    "C:\\Users\\lukas\\.nuget\\packages\\pdfsharpcore\\1.2.16\\pdfsharpcore.1.2.16.nupkg.sha512",
+    "C:\\Users\\lukas\\.nuget\\packages\\sixlabors.fonts\\1.0.0-beta0013\\sixlabors.fonts.1.0.0-beta0013.nupkg.sha512",
+    "C:\\Users\\lukas\\.nuget\\packages\\sixlabors.imagesharp\\1.0.0\\sixlabors.imagesharp.1.0.0.nupkg.sha512",
+    "C:\\Users\\lukas\\.nuget\\packages\\system.numerics.vectors\\4.5.0\\system.numerics.vectors.4.5.0.nupkg.sha512",
+    "C:\\Users\\lukas\\.nuget\\packages\\system.runtime.compilerservices.unsafe\\4.7.0\\system.runtime.compilerservices.unsafe.4.7.0.nupkg.sha512"
+  ],
+  "logs": []
+}
