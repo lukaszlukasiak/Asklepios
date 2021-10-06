@@ -12,8 +12,8 @@
                 </h2>
 
                 <form class="form" asp-action="LogInPatient" method="post">
-                    <input class="email" type="email" placeholder="Twój adres e-mail" asp-for="UserName">
-                    <input class="person-detail" type="password" placeholder="Hasło" asp-for="Password">
+                    <input class="email" type="email" required placeholder="Twój adres e-mail" asp-for="UserName">
+                    <input class="person-detail" required type="password" minlength="8" placeholder="Hasło" asp-for="Password">
                     <input class="submit-btn" type="submit" value="Wyślij">
                 </form>
 
@@ -32,7 +32,7 @@
 
                 <form class="form" asp-action="LogInEmployee" method="post">
                     <input class="email" type="email" placeholder="Twój adres e-mail" asp-for="UserName">
-                    <input class="person-detail" type="password" placeholder="Hasło" asp-for="Password">
+                    <input class="person-detail" type="password" minlength="8" placeholder="Hasło" asp-for="Password">
                     <p>
                         Wybierz moduł:
 

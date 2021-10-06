@@ -7,4 +7,4 @@ build_property.PublishSingleFile =
 build_property.IncludeAllContentForSelfExtract = 
 build_property._SupportedPlatformList = Android,iOS,Linux,macOS,Windows
 build_property.RootNamespace = Asklepios.Data
-build_property.ProjectDir = C:\Users\lukas\source\repos\Asklepios\Asklepios.Data\
+build_property.ProjectDir = C:\Users\lukas\Source\Repos\Asklepios8\Asklepios.Data\
