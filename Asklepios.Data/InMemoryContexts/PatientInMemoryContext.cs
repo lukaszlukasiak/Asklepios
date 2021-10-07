@@ -14,9 +14,15 @@ namespace Asklepios.Data.InMemoryContexts
         readonly IEnumerable<Location> locations;
         readonly Patient patient;
         private readonly IEnumerable<MedicalWorker> medicalWorkers;
+        private List<MedicalService> medicalServices { get; set; }
+        private List<MedicalService> primaryMedicalServices { get; set; }
+        private List<VisitCategory> visitCategories { get; set; }
 
         public PatientInMemoryContext()
         {
+            medicalServices = GetMedicalServices().ToList();
+            primaryMedicalServices = medicalServices.Where(c => c.IsPrimaryService == true).ToList();
+            visitCategories = GetVisitCategories().ToList();
             visits = GetAvailableVisits();
             locations = GetLocations();
             patient = GetPatientData();
@@ -169,45 +175,154 @@ namespace Asklepios.Data.InMemoryContexts
         {
             List<MedicalService> services = new List<MedicalService>()
             {
+                new MedicalService(){Id=0,Name="Konsultacja gastrologiczna	",Description="Konsultacja gastrologiczna", StandardPrice=250, IsPrimaryService=true},
 
-                new MedicalService(){Id=1,Name="Konsultacja proktologiczna",Description="Konsultacja proktologiczna", StandardPrice=200, IsPrimaryService=true},
-                new MedicalService(){Id=1,Name="Konsultacja internistyczna",Description="Konsultacja internistyczna", StandardPrice=200, IsPrimaryService=true},
-                new MedicalService(){Id=1,Name="Konsultacja internistyczna",Description="Konsultacja internistyczna", StandardPrice=200, IsPrimaryService=true},
-                new MedicalService(){Id=1,Name="Konsultacja internistyczna",Description="Konsultacja internistyczna", StandardPrice=200, IsPrimaryService=true},
-                new MedicalService(){Id=1,Name="Konsultacja internistyczna",Description="Konsultacja internistyczna", StandardPrice=200, IsPrimaryService=true},
-                new MedicalService(){Id=1,Name="Konsultacja internistyczna",Description="Konsultacja internistyczna", StandardPrice=200, IsPrimaryService=true},
-                new MedicalService(){Id=1,Name="Konsultacja internistyczna",Description="Konsultacja internistyczna", StandardPrice=200, IsPrimaryService=true},
-                new MedicalService(){Id=1,Name="Konsultacja internistyczna",Description="Konsultacja internistyczna", StandardPrice=200, IsPrimaryService=true},
+                new MedicalService(){Id=1,Name="USG",Description="USG", StandardPrice=200, IsPrimaryService=true},
+                new MedicalService(){Id=2,Name="RTG",Description="RTG", StandardPrice=200, IsPrimaryService=true},
+                new MedicalService(){Id=3,Name="Rezonans magnetyczny",Description="Rezonans magnetyczny", StandardPrice=200, IsPrimaryService=true},
+                new MedicalService(){Id=4,Name="EKG spoczynkowe",Description="EKG spoczynkowe", StandardPrice=200, IsPrimaryService=false},
+                new MedicalService(){Id=5,Name="Komputerowe pole widzenia",Description="Komputerowe pole widzenia", StandardPrice=200, IsPrimaryService=false},
+                new MedicalService(){Id=6,Name="Kolonoskopia",Description="Kolonoskopia", StandardPrice=200, IsPrimaryService=false},
+                new MedicalService(){Id=7,Name="Audiometria",Description="Audiometria", StandardPrice=200, IsPrimaryService=false},
+                new MedicalService(){Id=8,Name="Gastroskopia",Description="Gastroskopia", StandardPrice=200, IsPrimaryService=false},
+                new MedicalService(){Id=9,Name="Założenie gipsu",Description="Założenie gipsu", StandardPrice=200, IsPrimaryService=false},
+                new MedicalService(){Id=10,Name="Usunięcie paznokcia",Description="Usunięcie paznokcia", StandardPrice=100, IsPrimaryService=false},
+
+
+                new MedicalService(){Id=11,Name="Piaskowanie",Description="Piaskowanie", StandardPrice=100, IsPrimaryService=false},
+                new MedicalService(){Id=12,Name="Fluoryzacja",Description="Fluoryzacja", StandardPrice=100, IsPrimaryService=false},
+                new MedicalService(){Id=13,Name="Usunięcie ósemki",Description="Usunięcie ósemki", StandardPrice=100, IsPrimaryService=false},
+                new MedicalService(){Id=14,Name="Usunięcie zęba jednokorzeniowego",Description="Usunięcie zęba jednokorzeniowego", StandardPrice=100, IsPrimaryService=false},
+                new MedicalService(){Id=15,Name="Usunięcie zęba jednokorzeniowego wielokorzeniowego",Description="Usunięcie zęba jednokorzeniowego wielokorzeniowego", StandardPrice=100, IsPrimaryService=false},
+                new MedicalService(){Id=16,Name="Usunięcie zęba mlecznego",Description="Usunięcie zęba mlecznego", StandardPrice=100, IsPrimaryService=false},
+                new MedicalService(){Id=17,Name="Pantomogram zęba",Description="Pantomogram zęba", StandardPrice=100, IsPrimaryService=false},
+                new MedicalService(){Id=18,Name="Tomografia komputerowa CBCT",Description="Tomografia komputerowa CBCT", StandardPrice=100, IsPrimaryService=false},
+                new MedicalService(){Id=19,Name="Znieczulenie",Description="Znieczulenie", StandardPrice=50, IsPrimaryService=false},
+                new MedicalService(){Id=20,Name="Wypełnienie czasowe",Description="Wypełnienie czasowe", StandardPrice=50, IsPrimaryService=false},
+                new MedicalService(){Id=21,Name="Wypełnienie kompozytowe",Description="Wypełnienie kompozytowe", StandardPrice=200, IsPrimaryService=false},
+                new MedicalService(){Id=22,Name="Odbudowa zęba po leczeniu kanałowym",Description="Odbudowa zęba po leczeniu kanałowym", StandardPrice=400, IsPrimaryService=false},
+                new MedicalService(){Id=23,Name="Dewitalizacja",Description="Dewitalizacja", StandardPrice=100, IsPrimaryService=false},
+                new MedicalService(){Id=63,Name="Korona porcelanowa",Description="Korona porcelanowa", StandardPrice=800, IsPrimaryService=false},
+                new MedicalService(){Id=64,Name="Licówka porcelanowa",Description="Licówka porcelanowa", StandardPrice=1600, IsPrimaryService=false},
+                new MedicalService(){Id=65,Name="Korona pełnoceramiczna",Description="Korona pełnoceramiczna", StandardPrice=1600, IsPrimaryService=false},
+
+
+                new MedicalService(){Id=24,Name="Podstawowe badanie krwi",Description="Podstawowe badanie krwi", StandardPrice=400, IsPrimaryService=false},
+                new MedicalService(){Id=25,Name="Rozszerzone badanie krwi",Description="Rozszerzone zęba po leczeniu kanałowym", StandardPrice=400, IsPrimaryService=false},
+                new MedicalService(){Id=26,Name="Badanie moczu",Description="Badanie moczu", StandardPrice=400, IsPrimaryService=false},
+                new MedicalService(){Id=27,Name="Badanie kału",Description="Badanie kału", StandardPrice=400, IsPrimaryService=false},
+                new MedicalService(){Id=28,Name="Test genetyczny COVID-19",Description="Test genetyczny COVID-19", StandardPrice=400, IsPrimaryService=false},
+                new MedicalService(){Id=29,Name="Test antygenowy COVID-19",Description="Test antygenowy COVID-19", StandardPrice=400, IsPrimaryService=false},
+
+                new MedicalService(){Id=30,Name="Masaż leczniczy",Description="Masaż leczniczy", StandardPrice=300, IsPrimaryService=true},
+
+                new MedicalService(){Id=31,Name="Zajęcia rehablitacyjne",Description="Zajęcia rehablitacyjne", StandardPrice=300, IsPrimaryService=true},
+
+                new MedicalService(){Id=32,Name="Krioterapia",Description="Krioterapia", StandardPrice=100, IsPrimaryService=false},
+                new MedicalService(){Id=33,Name="Elektrostymulacja",Description="Elektrostymulacja", StandardPrice=100, IsPrimaryService=false},
+                new MedicalService(){Id=34,Name="Krioterapia",Description="Krioterapia", StandardPrice=200, IsPrimaryService=false},
+                new MedicalService(){Id=35,Name="Ultradźwięki",Description="Ultradźwięki", StandardPrice=100, IsPrimaryService=false},
+                new MedicalService(){Id=36,Name="Magnetoterapia",Description="Magnetoterapia", StandardPrice=100, IsPrimaryService=false},
+
+                new MedicalService(){Id=37,Name="Płukanie ucha",Description="Płukanie ucha", StandardPrice=50, IsPrimaryService=false},
+
+
+                new MedicalService(){Id=38,Name="Konsultacja proktologiczna",Description="Konsultacja proktologiczna", StandardPrice=200, IsPrimaryService=true},
+                new MedicalService(){Id=39,Name="Konsultacja internistyczna",Description="Konsultacja internistyczna", StandardPrice=200, IsPrimaryService=true},
+                new MedicalService(){Id=40,Name="Konsultacja pediatryczna",Description="Konsultacja pediatryczna", StandardPrice=200, IsPrimaryService=true},
+                new MedicalService(){Id=41,Name="Konsultacja geriatryczna",Description="Konsultacja geriatryczna", StandardPrice=200, IsPrimaryService=true},
+                new MedicalService(){Id=42,Name="Konsultacja ginekologiczna",Description="Konsultacja ginekologiczna", StandardPrice=200, IsPrimaryService=true},
+                new MedicalService(){Id=43,Name="Konsultacja ortopedyczna",Description="Konsultacja ortopedyczna", StandardPrice=200, IsPrimaryService=true},
+                new MedicalService(){Id=44,Name="Konsultacja kardiologiczna",Description="Konsultacja kardiologiczna", StandardPrice=200, IsPrimaryService=true},
+                new MedicalService(){Id=45,Name="Konsultacja okulistyczna",Description="Konsultacja okulistyczna", StandardPrice=200, IsPrimaryService=true},
+                new MedicalService(){Id=46,Name="Konsultacja dermatologiczna",Description="Konsultacja dermatologiczna", StandardPrice=200, IsPrimaryService=true},
+                new MedicalService(){Id=47,Name="Konsultacja endokrynologiczna",Description="Konsultacja endokrynologiczna", StandardPrice=200, IsPrimaryService=true},
+                new MedicalService(){Id=48,Name="Konsultacja chirurgii ogólnej",Description="Konsultacja chirurgii ogólnej", StandardPrice=200, IsPrimaryService=true},
+                new MedicalService(){Id=49,Name="Konsultacja neurochirurgiczna",Description="Konsultacja neurochirurgiczna", StandardPrice=250, IsPrimaryService=true},
+                new MedicalService(){Id=50,Name="Konsultacja chirurgii naczyniowej",Description="Konsultacja chirurgii naczyniowej", StandardPrice=250, IsPrimaryService=true},
+                new MedicalService(){Id=51,Name="Konsultacja chirurgii plastycznej",Description="Konsultacja chirurgii plastycznej", StandardPrice=300, IsPrimaryService=true},
+                new MedicalService(){Id=52,Name="Konsultacja chirurgii onkologicznej",Description="chirurgii onkologicznej", StandardPrice=300, IsPrimaryService=true},
+                new MedicalService(){Id=53,Name="Konsultacja laryngologiczna",Description="Konsultacja laryngologiczna", StandardPrice=200, IsPrimaryService=true},
+                new MedicalService(){Id=54,Name="Konsultacja neurologiczna",Description="Konsultacja neurologiczna", StandardPrice=200, IsPrimaryService=true},
+                new MedicalService(){Id=55,Name="Konsultacja urologiczna",Description="Konsultacja urologiczna", StandardPrice=200, IsPrimaryService=true},
+                new MedicalService(){Id=56,Name="Konsultacja psychologiczna",Description="Konsultacja psychologiczna", StandardPrice=200, IsPrimaryService=true},
+
+
+                new MedicalService(){Id=57,Name="Stomatologia zachowawcza",Description="Stomatologia zachowawcza", StandardPrice=200, IsPrimaryService=true},
+                new MedicalService(){Id=58,Name="Ortodoncja",Description="Ortodoncja", StandardPrice=200, IsPrimaryService=true},
+                new MedicalService(){Id=59,Name="Chirurgia stomatologiczna",Description="Chirurgia stomatologiczna", StandardPrice=200, IsPrimaryService=true},
+                new MedicalService(){Id=60,Name="Rentgen stomatologiczny",Description="Rentgen stomatologiczny", StandardPrice=200, IsPrimaryService=true},
+                new MedicalService(){Id=61,Name="Protetyka",Description="Protetyka", StandardPrice=200, IsPrimaryService=true},
+                new MedicalService(){Id=62,Name="Profilaktyka stomatologiczna",Description="Profilaktyka stomatologiczna", StandardPrice=200, IsPrimaryService=true,SubServices=new List<MedicalService>(medicalServices.GetRange(11, 2))},
 
 
 
-                new MedicalService(){Id=1,Name="Konsultacja internistyczna",Description="Konsultacja internistyczna", StandardPrice=200, IsPrimaryService=true},
-                new MedicalService(){Id=1,Name="Konsultacja pediatryczna",Description="Konsultacja pediatryczna", StandardPrice=200, IsPrimaryService=true},
-                new MedicalService(){Id=1,Name="Konsultacja geriatryczna",Description="Konsultacja geriatryczna", StandardPrice=200, IsPrimaryService=true},
-                new MedicalService(){Id=1,Name="Konsultacja ginekologiczna",Description="Konsultacja ginekologiczna", StandardPrice=200, IsPrimaryService=true},
-                new MedicalService(){Id=1,Name="Konsultacja ortopedyczna",Description="Konsultacja ortopedyczna", StandardPrice=200, IsPrimaryService=true},
-                new MedicalService(){Id=1,Name="Konsultacja kardiologiczna",Description="Konsultacja kardiologiczna", StandardPrice=200, IsPrimaryService=true},
-                new MedicalService(){Id=1,Name="Konsultacja okulistyczna",Description="Konsultacja okulistyczna", StandardPrice=200, IsPrimaryService=true},
-                new MedicalService(){Id=1,Name="Konsultacja dermatologiczna",Description="Konsultacja dermatologiczna", StandardPrice=200, IsPrimaryService=true},
-                new MedicalService(){Id=1,Name="Konsultacja endokrynologiczna",Description="Konsultacja endokrynologiczna", StandardPrice=200, IsPrimaryService=true},
-                new MedicalService(){Id=1,Name="Konsultacja chirurgii ogólnej",Description="Konsultacja chirurgii ogólnej", StandardPrice=200, IsPrimaryService=true},
-                new MedicalService(){Id=1,Name="Konsultacja neurochirurgiczna",Description="Konsultacja neurochirurgiczna", StandardPrice=250, IsPrimaryService=true},
-                new MedicalService(){Id=1,Name="Konsultacja chirurgii naczyniowej",Description="Konsultacja chirurgii naczyniowej", StandardPrice=250, IsPrimaryService=true},
-                new MedicalService(){Id=1,Name="Konsultacja chirurgii plastycznej",Description="Konsultacja chirurgii plastycznej", StandardPrice=300, IsPrimaryService=true},
-                new MedicalService(){Id=1,Name="Konsultacja chirurgii onkologicznej",Description="chirurgii onkologicznej", StandardPrice=300, IsPrimaryService=true},
-                new MedicalService(){Id=1,Name="Konsultacja laryngologiczna",Description="Konsultacja laryngologiczna", StandardPrice=200, IsPrimaryService=true},
-                new MedicalService(){Id=1,Name="Konsultacja neurologiczna",Description="Konsultacja neurologiczna", StandardPrice=200, IsPrimaryService=true},
-                new MedicalService(){Id=1,Name="Konsultacja urologiczna",Description="Konsultacja urologiczna", StandardPrice=200, IsPrimaryService=true},
-                new MedicalService(){Id=1,Name="Konsultacja psychologiczna",Description="Konsultacja psychologiczna", StandardPrice=200, IsPrimaryService=true},
-                new MedicalService(){Id=1,Name="Konsultacja stomatologiczna",Description="Konsultacja stomatologiczna", StandardPrice=200, IsPrimaryService=true},
-                new MedicalService(){Id=1,Name="Fizjoterapia",Description="Fizjoterapia", StandardPrice=200, IsPrimaryService=true},
-                new MedicalService(){Id=1,Name="Higiena stomatologiczna",Description="Higiena stomatologiczna", StandardPrice=200, IsPrimaryService=true},
-                new MedicalService(){Id=1,Name="Medycyna pracy",Description="Medycyna pracy", StandardPrice=200, IsPrimaryService=true},
-                new MedicalService(){Id=1,Name="Badanie laboratoryjne",Description="Badanie laboratoryjne", StandardPrice=100, IsPrimaryService=true},
-                new MedicalService(){Id=1,Name="Diagnostyka obrazowa",Description="Diagnostyka obrazowa", StandardPrice=150, IsPrimaryService=true},
+                new MedicalService(){Id=67,Name="Szczepienie na grypę",Description="Szczepienie na grypę", StandardPrice=100, IsPrimaryService=false},
+                new MedicalService(){Id=68,Name="Szczepienie na COVID-19",Description="Szczepienie na COVID-19", StandardPrice=200, IsPrimaryService=false},
+                new MedicalService(){Id=69,Name="Szczepienie przeciwko wściekliźnie",Description="Szczepienie przeciwko wściekliźnie", StandardPrice=200, IsPrimaryService=false},
+                new MedicalService(){Id=70,Name="Szczepienie przeciwko tężcowi",Description="Szczepienie przeciwko tężcowi", StandardPrice=100, IsPrimaryService=false},
+                new MedicalService(){Id=71,Name="Szczepienie przeciwko malarii",Description="Szczepienie przeciwko malarii", StandardPrice=500, IsPrimaryService=false},
+                new MedicalService(){Id=72,Name="Szczepienie przeciwko cholerze",Description="Szczepienie przeciwko cholerze", StandardPrice=100, IsPrimaryService=false},
+
+                new MedicalService(){Id=73,Name="Medycyna pracy",Description="Medycyna pracy", StandardPrice=200, IsPrimaryService=true},
+                new MedicalService(){Id=74,Name="Badanie laboratoryjne",Description="Badanie laboratoryjne", StandardPrice=100, IsPrimaryService=true},
+                new MedicalService(){Id=75,Name="Fizykoterapia",Description="Fizykoterapia", StandardPrice=400, IsPrimaryService=true} ,
+
+                new MedicalService(){Id=76,Name="Szczepienia",Description="Szczepienia", StandardPrice=100, IsPrimaryService=true},
+
+                new MedicalService(){Id=77,Name="Aparat stały kryształowy",Description="Aparat stały kryształowy", StandardPrice=2500, IsPrimaryService=false},
+                new MedicalService(){Id=78,Name="Aparat stały metalowy",Description="Aparat stały metalowy", StandardPrice=100, IsPrimaryService=false},
+                new MedicalService(){Id=79,Name="Aparat ruchomy - płytka Schwarza",Description="Aparat ruchomy - płytka Schwarza", StandardPrice=100, IsPrimaryService=false},
+
+                new MedicalService(){Id=80,Name="Topografia rogówki",Description="Topografia rogówki", StandardPrice=100, IsPrimaryService=false},
+                new MedicalService(){Id=81,Name="Dobór soczewek kontaktowych",Description="Dobór soczewek kontaktowych", StandardPrice=150, IsPrimaryService=false},
+                new MedicalService(){Id=82,Name="Zdjęcie dna oka",Description="Zdjęcie dna oka", StandardPrice=50, IsPrimaryService=false},
+                new MedicalService(){Id=83,Name="Pachymetria",Description="Pachymetria", StandardPrice=100, IsPrimaryService=false},
+                new MedicalService(){Id=84,Name="Pomiar ciśnienia wewnątrzgałkowego	",Description="Pomiar ciśnienia wewnątrzgałkowego", StandardPrice=50, IsPrimaryService=false},
+                new MedicalService() { Id = 85, Name = "Zdjęcie gipsu", Description = "Zdjęcie gipsu", StandardPrice = 100, IsPrimaryService = false },
 
 
             };
+
+                //chirurgia
+            medicalServices[48].SubServices = new List<MedicalService>();
+            medicalServices[48].SubServices.Append(medicalServices[85]);
+            medicalServices[48].SubServices.Append(medicalServices[9);
+
+            //ortopeda
+            medicalServices[43].SubServices = new List<MedicalService>();
+            medicalServices[43].SubServices.Append(medicalServices[85]);
+            medicalServices[43].SubServices.Append(medicalServices[9);
+
+            //gastrologia
+            medicalServices[0].SubServices = new List<MedicalService>() { medicalServices[6], medicalServices[8] };
+
+                //okulista
+            medicalServices[45].SubServices = new List<MedicalService>(medicalServices.GetRange(80, 5));
+            medicalServices[45].SubServices.Append(medicalServices[5]);
+
+
+            //laryngologia
+            medicalServices[53].SubServices = new List<MedicalService>();
+            medicalServices[53].SubServices.Append(medicalServices[37]);
+            medicalServices[53].SubServices.Append(medicalServices[7]);
+
+
+            //stomatologia
+            medicalServices[62].SubServices = new List<MedicalService>(medicalServices.GetRange(11, 2));
+            medicalServices[58].SubServices = new List<MedicalService>(medicalServices.GetRange(77, 3));
+            medicalServices[59].SubServices = new List<MedicalService>(medicalServices.GetRange(13, 4));
+            medicalServices[60].SubServices = new List<MedicalService>(medicalServices.GetRange(17, 2));
+            medicalServices[61].SubServices = new List<MedicalService>(medicalServices.GetRange(63, 3));
+            medicalServices[57].SubServices = new List<MedicalService>(medicalServices.GetRange(19, 5));
+
+            //badania laboratoryjne oraz szczepienia
+            medicalServices[74].SubServices = new List<MedicalService>(medicalServices.GetRange(24, 6));
+            medicalServices[76].SubServices = new List<MedicalService>(medicalServices.GetRange(67, 6));
+
+            //fizjoterapia
+            medicalServices[75].SubServices = new List<MedicalService>(medicalServices.GetRange(32, 5));
+
             return services;
         }
 
@@ -215,8 +330,14 @@ namespace Asklepios.Data.InMemoryContexts
         {
             List<VisitCategory> categories = new()
             {
-                new VisitCategory() { Id = 1, CategoryName = "Konsultacje" }
+                new VisitCategory() { Id = 1, CategoryName = "Konsultacje", PrimaryMedicalServices = new List<MedicalService>(medicalServices.GetRange(38, 23)) },
+                new VisitCategory() { Id = 2, CategoryName = "E-konsultacje" ,PrimaryMedicalServices = new List<MedicalService>(medicalServices.GetRange(38, 23)) { } },
+                new VisitCategory() { Id = 3, CategoryName = "Stomatologia", PrimaryMedicalServices = new List<MedicalService>(medicalServices.GetRange(57, 6)) { } },
+                new VisitCategory() { Id = 4, CategoryName = "Diagnostyka obrazowa ", PrimaryMedicalServices = new List<MedicalService>(medicalServices.GetRange(1, 3)) { } },
+                new VisitCategory() { Id = 5, CategoryName = "Fizjoterapia", PrimaryMedicalServices = new List<MedicalService>(medicalServices.GetRange(31, 6)) { } },
+                new VisitCategory() { Id = 6, CategoryName = "Badania laboratoryjne/szczepienia", PrimaryMedicalServices = new List<MedicalService>(medicalServices.GetRange(24, 6)) { } },
             };
+            categories[0].PrimaryMedicalServices.Add(medicalServices[0]);
             return categories;
         }
 
