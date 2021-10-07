@@ -33,7 +33,6 @@ C:\Users\lukas\Source\Repos\Asklepios8\Asklepios.Data\obj\Debug\net5.0\Asklepios
 C:\Users\lukas\Source\Repos\Asklepios8\Asklepios.Data\obj\Debug\net5.0\Asklepios.Data.AssemblyInfoInputs.cache
 C:\Users\lukas\Source\Repos\Asklepios8\Asklepios.Data\obj\Debug\net5.0\Asklepios.Data.AssemblyInfo.cs
 C:\Users\lukas\Source\Repos\Asklepios8\Asklepios.Data\obj\Debug\net5.0\Asklepios.Data.csproj.CoreCompileInputs.cache
-C:\Users\lukas\Source\Repos\Asklepios8\Asklepios.Data\obj\Debug\net5.0\Asklepios.Data.csproj.CopyComplete
 C:\Users\lukas\Source\Repos\Asklepios8\Asklepios.Data\obj\Debug\net5.0\Asklepios.Data.dll
 C:\Users\lukas\Source\Repos\Asklepios8\Asklepios.Data\obj\Debug\net5.0\ref\Asklepios.Data.dll
 C:\Users\lukas\Source\Repos\Asklepios8\Asklepios.Data\obj\Debug\net5.0\Asklepios.Data.pdb

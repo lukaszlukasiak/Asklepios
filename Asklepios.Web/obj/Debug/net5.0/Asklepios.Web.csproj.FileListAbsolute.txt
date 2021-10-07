@@ -927,7 +927,6 @@ C:\Users\lukas\Source\Repos\Asklepios8\Asklepios.Web\obj\Debug\net5.0\Razor\Area
 C:\Users\lukas\Source\Repos\Asklepios8\Asklepios.Web\obj\Debug\net5.0\Razor\Areas\MedicalWorkerArea\Views\Shared\_ValidationScriptsPartial.cshtml.g.cs
 C:\Users\lukas\Source\Repos\Asklepios8\Asklepios.Web\obj\Debug\net5.0\Razor\Areas\MedicalWorkerArea\Views\Shared\_ViewImports.cshtml.g.cs
 C:\Users\lukas\Source\Repos\Asklepios8\Asklepios.Web\obj\Debug\net5.0\Razor\Areas\MedicalWorkerArea\_ViewStart.cshtml.g.cs
-C:\Users\lukas\Source\Repos\Asklepios8\Asklepios.Web\obj\Debug\net5.0\Razor\Areas\PatientArea\Views\Patient\AboutUs.cshtml.g.cs
 C:\Users\lukas\Source\Repos\Asklepios8\Asklepios.Web\obj\Debug\net5.0\Razor\Areas\PatientArea\Views\Patient\Index.cshtml.g.cs
 C:\Users\lukas\Source\Repos\Asklepios8\Asklepios.Web\obj\Debug\net5.0\Razor\Areas\PatientArea\Views\Shared\Error.cshtml.g.cs
 C:\Users\lukas\Source\Repos\Asklepios8\Asklepios.Web\obj\Debug\net5.0\Razor\Areas\PatientArea\Views\Shared\_Layout1.cshtml.g.cs
@@ -942,3 +941,14 @@ C:\Users\lukas\Source\Repos\Asklepios8\Asklepios.Web\obj\Debug\net5.0\Asklepios.
 C:\Users\lukas\Source\Repos\Asklepios8\Asklepios.Web\obj\Debug\net5.0\ref\Asklepios.Web.dll
 C:\Users\lukas\Source\Repos\Asklepios8\Asklepios.Web\obj\Debug\net5.0\Asklepios.Web.pdb
 C:\Users\lukas\Source\Repos\Asklepios8\Asklepios.Web\obj\Debug\net5.0\Asklepios.Web.genruntimeconfig.cache
+C:\Users\lukas\Source\Repos\Asklepios8\Asklepios.Web\obj\Debug\net5.0\Razor\Areas\PatientArea\Views\Patient\BookVisit.cshtml.g.cs
+C:\Users\lukas\Source\Repos\Asklepios8\Asklepios.Web\obj\Debug\net5.0\Razor\Areas\PatientArea\Views\Patient\Contact.cshtml.g.cs
+C:\Users\lukas\Source\Repos\Asklepios8\Asklepios.Web\obj\Debug\net5.0\Razor\Areas\PatientArea\Views\Patient\Locations.cshtml.g.cs
+C:\Users\lukas\Source\Repos\Asklepios8\Asklepios.Web\obj\Debug\net5.0\Razor\Areas\PatientArea\Views\Patient\MedicalAdvice.cshtml.g.cs
+C:\Users\lukas\Source\Repos\Asklepios8\Asklepios.Web\obj\Debug\net5.0\Razor\Areas\PatientArea\Views\Patient\MedicalWorkersRanking.cshtml.g.cs
+C:\Users\lukas\Source\Repos\Asklepios8\Asklepios.Web\obj\Debug\net5.0\Razor\Areas\PatientArea\Views\Patient\PastVisits.cshtml.g.cs
+C:\Users\lukas\Source\Repos\Asklepios8\Asklepios.Web\obj\Debug\net5.0\Razor\Areas\PatientArea\Views\Patient\PlannedVisits.cshtml.g.cs
+C:\Users\lukas\Source\Repos\Asklepios8\Asklepios.Web\obj\Debug\net5.0\Razor\Areas\PatientArea\Views\Patient\Prescriptions.cshtml.g.cs
+C:\Users\lukas\Source\Repos\Asklepios8\Asklepios.Web\obj\Debug\net5.0\Razor\Areas\PatientArea\Views\Patient\Referrals.cshtml.g.cs
+C:\Users\lukas\Source\Repos\Asklepios8\Asklepios.Web\obj\Debug\net5.0\Razor\Areas\PatientArea\Views\Patient\TestResults.cshtml.g.cs
+C:\Users\lukas\Source\Repos\Asklepios8\Asklepios.Web\obj\Debug\net5.0\Razor\Areas\PatientArea\Views\Patient\_Location.cshtml.g.cs

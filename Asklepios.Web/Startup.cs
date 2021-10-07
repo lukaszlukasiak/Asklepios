@@ -23,6 +23,11 @@ namespace Asklepios.Web
             //services.
             services.AddControllersWithViews();
             services.AddScoped<IHomeModuleRepository, HomeInMemoryContext>();
+            services.AddScoped<IPatientModuleRepository, PatientInMemoryContext>();
+            services.AddScoped<IMedicalWorkerModuleRepository, MedicalWorkerInMemoryContext>();
+            services.AddScoped<ICustomerServiceModuleRepository, CustomerServiceInMemoryContext>();
+            services.AddScoped<IAdministrationModuleRepository, AdministrationInMemoryContext>();
+
 
         }
 

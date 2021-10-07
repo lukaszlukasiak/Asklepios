@@ -24,7 +24,7 @@ namespace Asklepios.Data.InMemoryContexts
             primaryMedicalServices = medicalServices.Where(c => c.IsPrimaryService == true).ToList();
             visitCategories = GetVisitCategories().ToList();
             visits = GetAvailableVisits();
-            locations = GetLocations();
+            locations = GetAllLocations();
             patient = GetPatientData();
             medicalWorkers = GetMedicalWorkers();
         }
@@ -32,17 +32,17 @@ namespace Asklepios.Data.InMemoryContexts
         public IEnumerable<Visit> GetAvailableVisits()
         {
             DateTime today = DateTime.Today;
-            return new List<Visit>()
-            { new Visit() {Id=1,DateTimeSince=today+new TimeSpan(9,0,0),DateTimeTill=today+new TimeSpan(9,15,0),Location=locations.ElementAt(0)}};
-
+            //return new List<Visit>()
+            //{ new Visit() {Id=1,DateTimeSince=today+new TimeSpan(9,0,0),DateTimeTill=today+new TimeSpan(9,15,0),Location=locations.ElementAt(0)}};
+            return new List<Visit>();
         }
 
         public IEnumerable<Visit> GetHistoricalVisits()
         {
-            throw new NotImplementedException();
+            return new List<Visit>();
         }
 
-        public IEnumerable<Location> GetLocations()
+        public IEnumerable<Location> GetAllLocations()
         {
             return new List<Location>()
             {
@@ -134,13 +134,13 @@ namespace Asklepios.Data.InMemoryContexts
 
         public IEnumerable<MedicalPackage> GetMedicalPackages()
         {
-            throw new NotImplementedException();
+            return new List<MedicalPackage>();
         }
 
 
         public IEnumerable<MedicalWorker> GetMedicalWorkers()
         {
-            throw new NotImplementedException();
+            return new List<MedicalWorker>();
         }
 
         public IEnumerable<NFZUnit> GetNFZUnits()
@@ -169,7 +169,7 @@ namespace Asklepios.Data.InMemoryContexts
 
         public Patient GetPatientData()
         {
-            throw new NotImplementedException();
+            return new Patient("Łukasz", "Łukasiak", 1, "8710101010", true, "484654asd4a5sd4", "PL");
         }
         public IEnumerable<MedicalService> GetMedicalServices()
         {
@@ -253,9 +253,10 @@ namespace Asklepios.Data.InMemoryContexts
                 new MedicalService(){Id=59,Name="Chirurgia stomatologiczna",Description="Chirurgia stomatologiczna", StandardPrice=200, IsPrimaryService=true},
                 new MedicalService(){Id=60,Name="Rentgen stomatologiczny",Description="Rentgen stomatologiczny", StandardPrice=200, IsPrimaryService=true},
                 new MedicalService(){Id=61,Name="Protetyka",Description="Protetyka", StandardPrice=200, IsPrimaryService=true},
-                new MedicalService(){Id=62,Name="Profilaktyka stomatologiczna",Description="Profilaktyka stomatologiczna", StandardPrice=200, IsPrimaryService=true,SubServices=new List<MedicalService>(medicalServices.GetRange(11, 2))},
+                new MedicalService(){Id=62,Name="Profilaktyka stomatologiczna",Description="Profilaktyka stomatologiczna", StandardPrice=200, IsPrimaryService=true},
 
 
+                new MedicalService(){Id=66,Name="Szczepienie na odrę",Description="Szczepienie na odrę", StandardPrice=100, IsPrimaryService=false},
 
                 new MedicalService(){Id=67,Name="Szczepienie na grypę",Description="Szczepienie na grypę", StandardPrice=100, IsPrimaryService=false},
                 new MedicalService(){Id=68,Name="Szczepienie na COVID-19",Description="Szczepienie na COVID-19", StandardPrice=200, IsPrimaryService=false},
@@ -282,50 +283,51 @@ namespace Asklepios.Data.InMemoryContexts
                 new MedicalService() { Id = 85, Name = "Zdjęcie gipsu", Description = "Zdjęcie gipsu", StandardPrice = 100, IsPrimaryService = false },
                 new MedicalService() { Id = 86, Name = "Szycie rany", Description = "Szycie rany", StandardPrice = 100, IsPrimaryService = false },
                 new MedicalService() { Id = 87, Name = "Założenie szwów", Description = "Założenie szwów", StandardPrice = 100, IsPrimaryService = false },
-                new MedicalService() { Id = 89, Name = "Zdjęcie szwów", Description = "Zdjęcie szwów", StandardPrice = 100, IsPrimaryService = false },
+                new MedicalService() { Id = 88, Name = "Zdjęcie szwów", Description = "Zdjęcie szwów", StandardPrice = 100, IsPrimaryService = false },
                 new MedicalService() { Id = 89, Name = "Zabieg usunięcia ciała obcego", Description = "Zabieg usunięcia ciała obcego", StandardPrice = 600, IsPrimaryService = false },
+                new MedicalService() { Id = 90, Name = "Biopsja otwarta", Description = "Biopsja otwarta", StandardPrice = 600, IsPrimaryService = false },
 
 
             };
 
-                //chirurgia
-            medicalServices[48].SubServices = new List<MedicalService>(medicalServices.GetRange(86, 5));
-            medicalServices[48].SubServices.Append(medicalServices[10]);
-            
+            //chirurgia
+            services[48].SubServices = new List<MedicalService>(services.GetRange(86, 5));
+            services[48].SubServices.Append(services[10]);
+
 
             //ortopeda
-            medicalServices[43].SubServices = new List<MedicalService>();
-            medicalServices[43].SubServices.Append(medicalServices[85]);
-            medicalServices[43].SubServices.Append(medicalServices[9]);
+            services[43].SubServices = new List<MedicalService>();
+            services[43].SubServices.Append(services[85]);
+            services[43].SubServices.Append(services[9]);
 
             //gastrologia
-            medicalServices[0].SubServices = new List<MedicalService>() { medicalServices[6], medicalServices[8] };
+            services[0].SubServices = new List<MedicalService>() { services[6], services[8] };
 
-                //okulista
-            medicalServices[45].SubServices = new List<MedicalService>(medicalServices.GetRange(80, 5));
-            medicalServices[45].SubServices.Append(medicalServices[5]);
+            //okulista
+            services[45].SubServices = new List<MedicalService>(services.GetRange(80, 5));
+            services[45].SubServices.Append(services[5]);
 
 
             //laryngologia
-            medicalServices[53].SubServices = new List<MedicalService>();
-            medicalServices[53].SubServices.Append(medicalServices[37]);
-            medicalServices[53].SubServices.Append(medicalServices[7]);
+            services[53].SubServices = new List<MedicalService>();
+            services[53].SubServices.Append(services[37]);
+            services[53].SubServices.Append(services[7]);
 
 
             //stomatologia
-            medicalServices[62].SubServices = new List<MedicalService>(medicalServices.GetRange(11, 2));
-            medicalServices[58].SubServices = new List<MedicalService>(medicalServices.GetRange(77, 3));
-            medicalServices[59].SubServices = new List<MedicalService>(medicalServices.GetRange(13, 4));
-            medicalServices[60].SubServices = new List<MedicalService>(medicalServices.GetRange(17, 2));
-            medicalServices[61].SubServices = new List<MedicalService>(medicalServices.GetRange(63, 3));
-            medicalServices[57].SubServices = new List<MedicalService>(medicalServices.GetRange(19, 5));
+            services[62].SubServices = new List<MedicalService>(services.GetRange(11, 2));
+            services[58].SubServices = new List<MedicalService>(services.GetRange(77, 3));
+            services[59].SubServices = new List<MedicalService>(services.GetRange(13, 4));
+            services[60].SubServices = new List<MedicalService>(services.GetRange(17, 2));
+            services[61].SubServices = new List<MedicalService>(services.GetRange(63, 3));
+            services[57].SubServices = new List<MedicalService>(services.GetRange(19, 5));
 
             //badania laboratoryjne oraz szczepienia
-            medicalServices[74].SubServices = new List<MedicalService>(medicalServices.GetRange(24, 6));
-            medicalServices[76].SubServices = new List<MedicalService>(medicalServices.GetRange(67, 6));
+            services[74].SubServices = new List<MedicalService>(services.GetRange(24, 6));
+            services[76].SubServices = new List<MedicalService>(services.GetRange(66, 7));
 
             //fizjoterapia
-            medicalServices[75].SubServices = new List<MedicalService>(medicalServices.GetRange(32, 5));
+            services[75].SubServices = new List<MedicalService>(services.GetRange(32, 5));
 
             return services;
         }
@@ -345,5 +347,10 @@ namespace Asklepios.Data.InMemoryContexts
             return categories;
         }
 
+
+        public Location GetLocationById(long locationId)
+        {
+            throw new NotImplementedException();
+        }
     }
 }

@@ -7,6 +7,7 @@
 
   <ItemGroup>
     <Content Remove="Areas\HomeArea\Views\Shared\_Layout.cshtml" />
+    <Content Remove="Areas\PatientArea\Views\Patient\AboutUs.cshtml" />
     <Content Remove="Areas\_ViewImports.cshtml" />
     <Content Remove="Areas\_ViewStart.cshtml" />
   </ItemGroup>

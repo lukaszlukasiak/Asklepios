@@ -11,12 +11,14 @@ namespace Asklepios.Data.Interfaces
     {
         Patient GetPatientData();
         IEnumerable<Visit> GetAvailableVisits();
-        IEnumerable<Location> GetLocations();
         IEnumerable<MedicalWorker> GetMedicalWorkers();
         IEnumerable<Visit> GetHistoricalVisits();
         IEnumerable<MedicalService> GetMedicalServices();
         IEnumerable<MedicalPackage> GetMedicalPackages();
         IEnumerable<NFZUnit> GetNFZUnits();
         IEnumerable<VisitCategory> GetVisitCategories();
+        IEnumerable<Location> GetAllLocations();
+        Location GetLocationById(long locationId);
+
     }
 }

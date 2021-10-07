@@ -46,7 +46,7 @@
 
             <!-- Nav Item - Dashboard -->
             <li class="nav-item active">
-                <a class="nav-link" href="index.html">
+                <a class="nav-link" asp-area="PatientArea" asp-controller="Patient" asp-action="Index">
                     <i class="fas fa-fw fa-tachometer-alt"></i>
                     <span>Pulpit</span>
                 </a>
@@ -62,8 +62,8 @@
 
             <!-- Nav Item - Pages Collapse Menu -->
             <li class="nav-item">
-                <a class="nav-link collapsed" href="#"
-                   aria-expanded="true" aria-controls="collapseTwo">
+                <a class="nav-link collapsed" 
+                   aria-expanded="true" aria-controls="collapseTwo" asp-area="PatientArea" asp-controller="Patient" asp-action="BookVisit">
                     <i class="fas fa-fw fa-cog"></i>
                     <span>Umów się na wizytę</span>
                 </a>
@@ -71,8 +71,8 @@
 
             <!-- Nav Item - Utilities Collapse Menu -->
             <li class="nav-item">
-                <a class="nav-link" href="#"
-                   aria-expanded="true" aria-controls="collapseUtilities">
+                <a class="nav-link" 
+                   aria-expanded="true" aria-controls="collapseUtilities" asp-area="PatientArea" asp-controller="Patient" asp-action="PlannedVisits">
                     <i class="fas fa-fw fa-wrench"></i>
                     <span>Zaplanowane wizyty</span>
                 </a>
@@ -88,7 +88,7 @@
             </div>
 
             <li class="nav-item">
-                <a class="nav-link" href="charts.html">
+                <a class="nav-link" asp-area="PatientArea" asp-controller="Patient" asp-action="PastVisits">
                     <i class="fas fa-fw fa-chart-area"></i>
                     <span>Wizyty</span>
                 </a>
@@ -101,7 +101,7 @@
             </div>
 
             <li class="nav-item">
-                <a class="nav-link" href="charts.html">
+                <a class="nav-link" asp-area="PatientArea" asp-controller="Patient" asp-action="Referrals">
                     <i class="fas fa-fw fa-chart-area"></i>
                     <span>Skierowania</span>
                 </a>
@@ -109,20 +109,20 @@
 
             <!-- Nav Item - Tables -->
             <li class="nav-item">
-                <a class="nav-link" href="tables.html">
+                <a class="nav-link" asp-area="PatientArea" asp-controller="Patient" asp-action="Prescriptions">
                     <i class="fas fa-fw fa-table"></i>
                     <span>Recepty</span>
                 </a>
             </li>
             <!-- Nav Item - Tables -->
             <li class="nav-item">
-                <a class="nav-link" href="tables.html">
+                <a class="nav-link" asp-area="PatientArea" asp-controller="Patient" asp-action="TestResults">
                     <i class="fas fa-fw fa-table"></i>
                     <span>Wyniki badań</span>
                 </a>
             </li>
             <li class="nav-item">
-                <a class="nav-link" href="tables.html">
+                <a class="nav-link" asp-area="PatientArea" asp-controller="Patient" asp-action="MedicalAdvice">
                     <i class="fas fa-fw fa-table"></i>
                     <span>Zalecenia</span>
                 </a>
@@ -133,20 +133,20 @@
                 Inne
             </div>
             <li class="nav-item">
-                <a class="nav-link" href="tables.html">
+                <a class="nav-link" asp-area="PatientArea" asp-controller="Patient" asp-action="MedicalWorkersRanking">
                     <i class="fas fa-fw fa-table"></i>
                     <span>Ranking lekarzy</span>
                 </a>
             </li>
             <li class="nav-item">
-                <a class="nav-link" href="tables.html">
+                <a class="nav-link" asp-area="PatientArea" asp-controller="Patient" asp-action="Locations">
                     <i class="fas fa-fw fa-table"></i>
                     <span>Lista oddziałów</span>
                 </a>
             </li>
 
             <li class="nav-item">
-                <a class="nav-link" href="tables.html">
+                <a class="nav-link" asp-area="PatientArea" asp-controller="Patient" asp-action="Contact">
                     <i class="fas fa-fw fa-table"></i>
                     <span>Kontakt</span>
                 </a>
