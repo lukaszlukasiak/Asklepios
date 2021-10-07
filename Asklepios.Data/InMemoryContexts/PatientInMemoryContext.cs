@@ -280,19 +280,23 @@ namespace Asklepios.Data.InMemoryContexts
                 new MedicalService(){Id=83,Name="Pachymetria",Description="Pachymetria", StandardPrice=100, IsPrimaryService=false},
                 new MedicalService(){Id=84,Name="Pomiar ciśnienia wewnątrzgałkowego	",Description="Pomiar ciśnienia wewnątrzgałkowego", StandardPrice=50, IsPrimaryService=false},
                 new MedicalService() { Id = 85, Name = "Zdjęcie gipsu", Description = "Zdjęcie gipsu", StandardPrice = 100, IsPrimaryService = false },
+                new MedicalService() { Id = 86, Name = "Szycie rany", Description = "Szycie rany", StandardPrice = 100, IsPrimaryService = false },
+                new MedicalService() { Id = 87, Name = "Założenie szwów", Description = "Założenie szwów", StandardPrice = 100, IsPrimaryService = false },
+                new MedicalService() { Id = 89, Name = "Zdjęcie szwów", Description = "Zdjęcie szwów", StandardPrice = 100, IsPrimaryService = false },
+                new MedicalService() { Id = 89, Name = "Zabieg usunięcia ciała obcego", Description = "Zabieg usunięcia ciała obcego", StandardPrice = 600, IsPrimaryService = false },
 
 
             };
 
                 //chirurgia
-            medicalServices[48].SubServices = new List<MedicalService>();
-            medicalServices[48].SubServices.Append(medicalServices[85]);
-            medicalServices[48].SubServices.Append(medicalServices[9);
+            medicalServices[48].SubServices = new List<MedicalService>(medicalServices.GetRange(86, 5));
+            medicalServices[48].SubServices.Append(medicalServices[10]);
+            
 
             //ortopeda
             medicalServices[43].SubServices = new List<MedicalService>();
             medicalServices[43].SubServices.Append(medicalServices[85]);
-            medicalServices[43].SubServices.Append(medicalServices[9);
+            medicalServices[43].SubServices.Append(medicalServices[9]);
 
             //gastrologia
             medicalServices[0].SubServices = new List<MedicalService>() { medicalServices[6], medicalServices[8] };
