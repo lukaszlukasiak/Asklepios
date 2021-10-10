@@ -6,52 +6,50 @@
 
     </div>
     <div class="row">
-        <div class="col-xs-6">
+        <div class="col-xs-1">
 
             @*<div class="col justify-content-center">*@
-            <img alt="@Model.Name" src="@Model.ImagePath" class="img-responsive rounded" style="        display: block;
-        border-radius: 6px; width:500px; height:auto
-">
+            <img alt="@Model.Name" src="@Model.ImagePath" class="img-responsive rounded" style="display: block; border-radius: 6px; height: 100%; width: fit-content; ">
         </div>
         @*</div>*@
-        <div class="col">
-            <h3 style="padding: 0px">
+        <div class="class="col-xs-1" style="margin:0px"">
+            <h6 style="padding: 0px; overflow-wrap: break-word;max-width:500px">
                 @Model.Description
-            </h3>
+            </h6>
             @*<div class="row" style="margin:0px;padding:0px">
 
                 </div>*@
             <div class="row" style="margin:0px; padding:0px">
-                <div class="col-xs-2" style="padding: 0px">
-                    <h3>Adres</h3>
+                <div class="col-xs-4" style="padding: 0px">
+                    <h5>Adres</h5>
                     @Model.City, @Model.PostalCode
                     <br />
                     @Model.StreetAndNumber
                     <br />
                     @Model.VoivodeshipType
                     <br />
-                    <h3>Telefon</h3>
+                    <h5>Telefon</h5>
                     @Model.PhoneNumber
 
                 </div>
-                <div class="col-xs-4" style="margin:0px;padding:0px;">
-                    <h3>Usługi</h3>
+                <div class="col-xs-8" style="margin:0px;padding:0px;">
+                    <h5 style="margin-left:10px">Usługi</h5>
                     @{
                         int count = Model.Services.Count();
 
                         for (int i = 0; i < count; i += 2)
                         {
-                            <div class="row" style="margin:0px;padding:0px">
+                            <div class="row" style="margin-left:10px;padding:0px">
                                 @{
                                     if (i + 1 < count)
                                     {
-                                        <div class="col-xs-4" style="margin:0px;padding:0px">@Model.Services.ElementAt(i)</div>
-                                        <div class="col-xs-4" style="margin:0px;padding:0px">@Model.Services.ElementAt(i + 1)</div>
+                                        <div class="col-xs-2" style="margin:0px;padding:0px">@Model.Services.ElementAt(i)</div>
+                                        <div class="col-xs-2" style=" padding: 0px">@Model.Services.ElementAt(i + 1)</div>
 
                                     }
                                     else
                                     {
-                                        <div class="col-xs-4" style="margin:0px;padding:0px">@Model.Services.ElementAt(i)</div>
+                                        <div class="col-xs-2" style="margin:0px;padding:0px">@Model.Services.ElementAt(i)</div>
                                     }
                                 }
 
