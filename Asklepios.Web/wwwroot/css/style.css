@@ -563,7 +563,10 @@ li a.active {
 .contact-form {
     padding-right: 40px;
 }
-
+.row-item {
+    height: 100%;
+    width: 100%;
+}
 /*gmap*/
 
 #map {

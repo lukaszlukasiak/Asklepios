@@ -1,66 +1,77 @@
 ﻿@model Asklepios.Core.Models.Location
 <div class="jumbotron" style="padding:20px">
     @*<div class="container">*@
-    <div class="row">
-        <h2 style="text-align:center">@Model.Name</h2>
+    <div class="row " >
+        <h2 style="text-align:center;vertical-align:top;margin-top:0px">@Model.Name</h2>
 
     </div>
-    <div class="row">
-        <div class="col-xs-6">
-
-            @*<div class="col justify-content-center">*@
-            <img alt="@Model.Name" src="@Model.ImagePath" class="img-responsive rounded" style="        display: block;
-        border-radius: 6px; width:500px; height:auto
-">
+    <div class="row equal">
+        <div class="col-lg-6" >
+            <div class="row-item" style="margin-top:10px">
+                @*<div class="col justify-content-center">*@
+                <img alt="@Model.Name" src="@Model.ImagePath" class="center-block rounded" style="display: block;
+        border-radius: 6px; width:100%; height:auto">
+            </div>
         </div>
         @*</div>*@
-        <div class="col">
+        <div class="col-lg-6" >
             <h3 style="padding: 0px">
                 @Model.Description
             </h3>
             @*<div class="row" style="margin:0px;padding:0px">
 
                 </div>*@
-            <div class="row" style="margin:0px; padding:0px">
-                <div class="col-xs-2" style="padding: 0px">
+            <div class="row" style="margin:0px;">
+                <div class="col-sm-4" style="padding: 0px;margin-top:10px;">
                     <h3>Adres</h3>
-                    @Model.City, @Model.PostalCode
-                    <br />
+                    <p style="margin:0px; padding:0px">
+                        @Model.City, @Model.PostalCode </p>
+
+                <p style="margin:0px; padding:0px">
                     @Model.StreetAndNumber
-                    <br />
+                </p>                        
+                <p style="margin:0px; padding:0px">
                     @Model.VoivodeshipType
-                    <br />
+                    </p>
                     <h3>Telefon</h3>
-                    @Model.PhoneNumber
+                    <p style="margin:0px; padding:0px">
+@Model.PhoneNumber</p>
 
-                </div>
-                <div class="col-xs-4" style="margin:0px;padding:0px;">
-                    <h3>Usługi</h3>
-                    @{
-                        int count = Model.Services.Count();
 
-                        for (int i = 0; i < count; i += 2)
-                        {
-                            <div class="row" style="margin:0px;padding:0px">
-                                @{
+                    </p>
+                    </div>
+                    <div class="col-sm-8" style="margin:0px;padding:0px;">
+                        <h3>Usługi</h3>
+                        <p>
+                            @{
+
+
+                                int count = Model.Services.Count();
+                                string val = "";
+
+                                for (int i = 0; i < count; i++)
+                                {
+
                                     if (i + 1 < count)
                                     {
-                                        <div class="col-xs-4" style="margin:0px;padding:0px">@Model.Services.ElementAt(i)</div>
-                                        <div class="col-xs-4" style="margin:0px;padding:0px">@Model.Services.ElementAt(i + 1)</div>
 
+                                        val = Model.Services.ElementAt(i) + ", ";
                                     }
                                     else
                                     {
-                                        <div class="col-xs-4" style="margin:0px;padding:0px">@Model.Services.ElementAt(i)</div>
+                                        val = @Model.Services.ElementAt(i);
                                     }
+
+                                    @val
                                 }
 
-                            </div>
-                        }
-                    }
+                            }
+                        </p>
+                    </div>
+
                 </div>
+
+
             </div>
         </div>
     </div>
-</div>
-@*</div>*@
