@@ -32,9 +32,34 @@ namespace Asklepios.Web.Areas.PatientArea.Controllers
         {
             return View();
         }
+        [HttpGet]
         public IActionResult Contact()
         {
-            return View();
+            ContactMessageViewModel model = new ContactMessageViewModel(_context.GetPatientData());
+            return View(model);
+        }
+        [HttpPost]
+        public IActionResult Contact(ContactMessageViewModel model)
+        {
+
+            //ContactMessageViewModel model = new ContactMessageViewModel();
+            bool isSent = ServiceClasses.MailServices.CreateAndSendMail(model);
+            if (isSent)
+            {
+                model.AlertMessage = "Wiadomość została wysłana!";
+                ViewBag.Message = "Wiadomość została wysłana!";
+                //return RedirectToAction("Index");
+                model = new ContactMessageViewModel();
+                //ScriptManager.RegisterStartupScript(this, GetType(), "showalert", "alert('Only alert Message');", true);
+
+            }
+            else
+            {
+                model.AlertMessage = "Wystąpił błąd podczas próby wysłania wiadomości! Spróbuj jeszcze raz!";
+                ViewBag.Message = "Wystąpił błąd podczas próby wysłania wiadomości! Spróbuj jeszcze raz!";
+
+            }
+            return View(model);
         }
         public IActionResult MedicalAdvice()
         {

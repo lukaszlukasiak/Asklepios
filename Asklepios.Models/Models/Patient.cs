@@ -11,7 +11,7 @@ namespace Asklepios.Core.Models
         public string EmployerNIP { get; set; }
         public NFZUnit NFZUnit { get; set; }
         public List<NotificationFilter> Notifications {get;set;}
-        public Patient(string name, string surName, long id, string pesel, bool hasPolishCitizenship, string passportNumber, string passportCode) : base(name, surName, id, pesel, hasPolishCitizenship, passportNumber, passportCode)
+        public Patient(string name, string surName, long id, string pesel, bool hasPolishCitizenship, string passportNumber, string passportCode, string email) : base(name, surName, id, pesel, hasPolishCitizenship, passportNumber, passportCode, email)
         {
         }
     }

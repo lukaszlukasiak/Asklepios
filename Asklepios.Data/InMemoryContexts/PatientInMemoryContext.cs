@@ -169,7 +169,7 @@ namespace Asklepios.Data.InMemoryContexts
 
         public Patient GetPatientData()
         {
-            return new Patient("Łukasz", "Łukasiak", 1, "8710101010", true, "484654asd4a5sd4", "PL");
+            return new Patient("Łukasz", "Łukasiak", 1, "8710101010", true, "484654asd4a5sd4", "PL", "terfere@wp.pl");
         }
         public IEnumerable<MedicalService> GetMedicalServices()
         {
