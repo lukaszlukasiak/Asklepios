@@ -6,7 +6,7 @@ namespace Asklepios.Core.Models
 {
     public class Nurse : MedicalWorker
     {
-        public Nurse(string name, string surName, long id, string pesel, bool hasPolishCitizenship, string passportNumber, string passportCode, string pwzNumber) : base(name, surName, id, pesel, hasPolishCitizenship, passportNumber, passportCode)
+        public Nurse(string name, string surName, long id, string pesel, bool hasPolishCitizenship, string passportNumber, string passportCode, string pwzNumber, string email) : base(name, surName, id, pesel, hasPolishCitizenship, passportNumber, passportCode, email)
         {
             PWZNumber = pwzNumber;
         }

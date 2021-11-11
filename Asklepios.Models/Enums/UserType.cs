@@ -6,6 +6,7 @@ namespace Asklepios.Core.Enums
 {
     public enum UserType
     {
+        Guest,
         Patient,
         Employee,
     }
