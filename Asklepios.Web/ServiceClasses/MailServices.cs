@@ -12,6 +12,10 @@ namespace Asklepios.Web.ServiceClasses
 {
     public static class MailServices
     {
+        const string MAIL_ADDRESS = "grupa.asklepios@wp.pl";
+        const string MAIL_PASS = "147852qW";
+        const string MAIL_SMTP = "smtp.wp.pl";
+        const int MAIL_PORT = 465;
         public static bool CreateAndSendMail(ContactMessageViewModel model)
         {
             try
@@ -29,8 +33,8 @@ namespace Asklepios.Web.ServiceClasses
         public static MimeMessage CreateMail(ContactMessageViewModel model)
         {
             var email = new MimeMessage();
-            email.From.Add(MailboxAddress.Parse(model.ContactEMailAddress));
-            email.To.Add(MailboxAddress.Parse("grupa.asklepios@gmail.com"));
+            email.From.Add(MailboxAddress.Parse(MAIL_ADDRESS));
+            email.To.Add(MailboxAddress.Parse(MAIL_ADDRESS));
             email.Subject = model.Subject;
             string from = "<h2>Sender name: " + model.ContactName + "</h2>";
             string eAddress= "<h2> Sender e-address: " + model.ContactEMailAddress;
@@ -52,8 +56,8 @@ namespace Asklepios.Web.ServiceClasses
            // smtp.Authenticate("dell.price11@ethereal.email", "YsuyBaAUduRuxr9YVh");
 
 
-            smtp.Connect("smtp.gmail.com", 587, SecureSocketOptions.StartTls);
-            smtp.Authenticate("grupa.asklepios@gmail.com", "147852qW");
+            smtp.Connect(MAIL_SMTP,MAIL_PORT , SecureSocketOptions.SslOnConnect);
+            smtp.Authenticate(MAIL_ADDRESS, MAIL_PASS);
 
             smtp.Send(message);
             smtp.Disconnect(true);

@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Asklepios.Core.Enums;
+using System;
 
 namespace Asklepios.Core.Models
 {
@@ -19,8 +20,8 @@ namespace Asklepios.Core.Models
         public string PassportCode { get; set; }
         public bool HasPolishCitizenship{ get;set; }
         public string EmailAddress { get; set; }
-
-        public Person (string name, string surName, long id, string pesel, bool hasPolishCitizenship, string passportNumber,string  passportCode, string email)
+        public Aglomeration DefaultAglomeration { get; set; }
+        public Person (string name, string surName, long id, string pesel, bool hasPolishCitizenship, string passportNumber,string  passportCode, string email, Aglomeration aglomeration)
         {
             Name = name;
             Surname = surName;
@@ -44,6 +45,7 @@ namespace Asklepios.Core.Models
             PassportNumber = passportNumber;
             PassportCode = passportCode;
             EmailAddress = email;
+            DefaultAglomeration = aglomeration;
         }
     }
 }

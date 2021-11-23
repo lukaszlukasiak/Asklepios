@@ -1,4 +1,5 @@
-﻿using Asklepios.Data.Interfaces;
+﻿using Asklepios.Core.Models;
+using Asklepios.Data.Interfaces;
 using Asklepios.Web.Areas.HomeArea.Models;
 using Microsoft.AspNetCore.Mvc;
 using System;
@@ -41,21 +42,25 @@ namespace Asklepios.Web.Areas.PatientArea.Controllers
         [HttpPost]
         public IActionResult Contact(ContactMessageViewModel model)
         {
-
+            ContactMessageViewModel modelP = new ContactMessageViewModel(_context.GetPatientData());
+            modelP.Message = model.Message;
+            modelP.Subject = model.Subject;
             //ContactMessageViewModel model = new ContactMessageViewModel();
-            bool isSent = ServiceClasses.MailServices.CreateAndSendMail(model);
+            bool isSent = ServiceClasses.MailServices.CreateAndSendMail(modelP);
             if (isSent)
             {
                 model.AlertMessage = "Wiadomość została wysłana!";
-                ViewBag.Message = "Wiadomość została wysłana!";
-                //return RedirectToAction("Index");
-                model = new ContactMessageViewModel();
+                model.AlertMessageType = Enums.AlertMessageType.Info;
+                //ViewBag.Message = "Wiadomość została wysłana!";
+                ////return RedirectToAction("Index");
+                //model = new ContactMessageViewModel();
                 //ScriptManager.RegisterStartupScript(this, GetType(), "showalert", "alert('Only alert Message');", true);
 
             }
             else
             {
                 model.AlertMessage = "Wystąpił błąd podczas próby wysłania wiadomości! Spróbuj jeszcze raz!";
+                model.AlertMessageType = Enums.AlertMessageType.Error;
                 ViewBag.Message = "Wystąpił błąd podczas próby wysłania wiadomości! Spróbuj jeszcze raz!";
 
             }
@@ -67,7 +72,11 @@ namespace Asklepios.Web.Areas.PatientArea.Controllers
         }
         public IActionResult MedicalWorkersRanking()
         {
-            return View();
+            
+            List<MedicalWorker> medicalWorkers = _context.GetMedicalWorkers().ToList();
+
+
+            return View(medicalWorkers);
         }
         public IActionResult PastVisits()
         {

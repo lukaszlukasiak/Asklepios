@@ -1,4 +1,5 @@
 ﻿using Asklepios.Core.Models;
+using Asklepios.Web.Enums;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -16,7 +17,14 @@ namespace Asklepios.Web.Areas.HomeArea.Models
         public string AlertMessage { get; set; }
         public Core.Enums.UserType UserType { get; set; }
         public long UserId { get; set; }
-
+        public bool HasInfoMessage 
+        { 
+            get
+            {
+                return !(string.IsNullOrWhiteSpace(AlertMessage));
+            }
+        }
+        public AlertMessageType AlertMessageType { get; set; }
         public ContactMessageViewModel()
         {
             UserType = Core.Enums.UserType.Guest;

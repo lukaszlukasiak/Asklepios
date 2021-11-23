@@ -952,3 +952,5 @@ C:\Users\lukas\source\repos\Asklepios8\Asklepios.Web\obj\Debug\net5.0\Asklepios.
 C:\Users\lukas\source\repos\Asklepios8\Asklepios.Web\obj\Debug\net5.0\Asklepios.Web.Views.pdb
 C:\Users\lukas\source\repos\Asklepios8\Asklepios.Web\obj\Debug\net5.0\Asklepios.Web.csproj.CopyComplete
 C:\Users\lukas\source\repos\Asklepios8\Asklepios.Web\obj\Debug\net5.0\Asklepios.Web.genruntimeconfig.cache
+C:\Users\lukas\source\repos\Asklepios8\Asklepios.Web\obj\Debug\net5.0\Razor\Areas\PatientArea\Views\Patient\MedicalWorkerDetailed.cshtml.g.cs
+C:\Users\lukas\source\repos\Asklepios8\Asklepios.Web\obj\Debug\net5.0\Razor\Areas\PatientArea\Views\Patient\_MedicalWorker.cshtml.g.cs
