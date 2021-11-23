@@ -94,15 +94,18 @@ namespace Asklepios.Web.Areas.HomeArea.Controllers
             bool isSent = ServiceClasses.MailServices.CreateAndSendMail(model);
             if (isSent)
             {
-                model.AlertMessage = "Wiadomość została wysłana!";
-                ViewBag.Message = "Wiadomość została wysłana!";
+                //ViewBag.Message = "Wiadomość została wysłana!";
                 //return RedirectToAction("Index");
                 model = new ContactMessageViewModel();
+                model.AlertMessage = "Wiadomość została wysłana!";
+                model.AlertMessageType = Enums.AlertMessageType.Info;
+
                 //ScriptManager.RegisterStartupScript(this, GetType(), "showalert", "alert('Only alert Message');", true);
 
             }
             else
             {
+                model.AlertMessageType = Enums.AlertMessageType.Error;
                 model.AlertMessage = "Wystąpił błąd podczas próby wysłania wiadomości! Spróbuj jeszcze raz!";
                 ViewBag.Message = "Wystąpił błąd podczas próby wysłania wiadomości! Spróbuj jeszcze raz!";
 

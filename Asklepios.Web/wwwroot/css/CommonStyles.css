@@ -1,0 +1,5 @@
+﻿.Star {
+    filter: invert(88%) sepia(70%) saturate(3525%) hue-rotate(360deg) brightness(107%) contrast(100%);   
+    width: 30px;
+    height: 30px;
+}
