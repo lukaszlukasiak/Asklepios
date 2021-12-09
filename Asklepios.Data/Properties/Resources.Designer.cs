@@ -59,5 +59,45 @@ namespace Asklepios.Data.Properties {
                 resourceCulture = value;
             }
         }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Byte[].
+        /// </summary>
+        internal static byte[] badania_krwi {
+            get {
+                object obj = ResourceManager.GetObject("badania_krwi", resourceCulture);
+                return ((byte[])(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Byte[].
+        /// </summary>
+        internal static byte[] Badania_krwi_i_moczu {
+            get {
+                object obj = ResourceManager.GetObject("Badania_krwi_i_moczu", resourceCulture);
+                return ((byte[])(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Byte[].
+        /// </summary>
+        internal static byte[] cholesterol {
+            get {
+                object obj = ResourceManager.GetObject("cholesterol", resourceCulture);
+                return ((byte[])(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Byte[].
+        /// </summary>
+        internal static byte[] ekg {
+            get {
+                object obj = ResourceManager.GetObject("ekg", resourceCulture);
+                return ((byte[])(obj));
+            }
+        }
     }
 }

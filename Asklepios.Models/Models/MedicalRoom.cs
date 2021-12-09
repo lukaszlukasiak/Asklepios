@@ -10,6 +10,6 @@ namespace Asklepios.Core.Models
         public string Name { get; set; }
         public short FloorNumber { get; set; }
         public MedicalRoomType MedicalRoomType {get;set;}
-
+        public long Id { get; set; }
     }
 }

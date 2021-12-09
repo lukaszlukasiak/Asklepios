@@ -16,16 +16,16 @@ namespace Asklepios.Core.Enums
         Gynecological,
         [Description("Laryngologiczny")]
         Laryngological,
-        [Description("Urologiczny")]
-        Urological,
+        //[Description("Urologiczny")]
+        //Urological,
         [Description("Chirurgiczny")]
         Surgical,
-        [Description("Ortopedyczny")]
-        Orthopedic,
+        //[Description("Ortopedyczny")]
+        //Orthopedic,
         [Description("Gabinet zabiegowy")]
         Treatment,
-        [Description("Gastrologiczny")]
-        Gastrological,
+        //[Description("Gastrologiczny")]
+        //Gastrological,
         [Description("Okulistyczny")]
         Ophthalmology,
         [Description("Neurologiczny")]

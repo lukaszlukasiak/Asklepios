@@ -7,6 +7,7 @@
   <ItemGroup>
     <Compile Remove="Enums\VisitCategory.cs" />
     <Compile Remove="Enums\VisitType.cs" />
+    <Compile Remove="Models\NotificationFilter.cs" />
   </ItemGroup>
 
   <ItemGroup>
