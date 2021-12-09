@@ -51,11 +51,6 @@ namespace Asklepios.Web.Areas.PatientArea.Controllers
             {
                 model.AlertMessage = "Wiadomość została wysłana!";
                 model.AlertMessageType = Enums.AlertMessageType.Info;
-                //ViewBag.Message = "Wiadomość została wysłana!";
-                ////return RedirectToAction("Index");
-                //model = new ContactMessageViewModel();
-                //ScriptManager.RegisterStartupScript(this, GetType(), "showalert", "alert('Only alert Message');", true);
-
             }
             else
             {
@@ -70,7 +65,7 @@ namespace Asklepios.Web.Areas.PatientArea.Controllers
         {
             return View();
         }
-        public IActionResult MedicalWorkersRanking()
+        public IActionResult MedicalWorkersList()
         {
             
             List<MedicalWorker> medicalWorkers = _context.GetMedicalWorkers().ToList();
@@ -78,6 +73,14 @@ namespace Asklepios.Web.Areas.PatientArea.Controllers
 
             return View(medicalWorkers);
         }
+        public IActionResult MedicalWorkerDetails(string id)
+        {
+            MedicalWorker worker= _context.GetMedicalWorkers().Where(c => c.Id.ToString() == id).FirstOrDefault();
+
+            return View(worker);
+        }
+
+
         public IActionResult PastVisits()
         {
             return View();

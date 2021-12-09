@@ -18,7 +18,18 @@ namespace Asklepios.Data.Interfaces
         IEnumerable<NFZUnit> GetNFZUnits();
         IEnumerable<VisitCategory> GetVisitCategories();
         IEnumerable<Location> GetAllLocations();
+        IEnumerable<Patient> GetAllPatients();
+        Patient GetPatientById(long id);
         Location GetLocationById(long locationId);
+        Visit GetAvailableVisitById();
+        MedicalWorker GetMedicalWorkerById();
+        Visit GetHistoricalVisitById();
+        MedicalService GetMedicalServiceById();
+        MedicalPackage GetMedicalPackageById();
+        NFZUnit GetNFZUnitById();
+        VisitCategory GetVisitCategoryById();
+        //IEnumerable<MedicalRoom> GetMedicalRooms();
+        //MedicalRoom GetMedicalRoomById();
 
     }
 }

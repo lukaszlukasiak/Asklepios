@@ -3,8 +3,7 @@ using Asklepios.Core.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using System.IO;
 
 namespace Asklepios.Data.InMemoryContexts
 {
@@ -28,16 +27,27 @@ namespace Asklepios.Data.InMemoryContexts
         private List<MedicalService> medicalServices { get; set; }
         private List<MedicalService> primaryMedicalServices { get; set; }
         private List<VisitCategory> visitCategories { get; set; }
+        private List<MedicalPackage> medicalPackages { get; set; }
+        private List<NFZUnit> nfzUnits { get; set; }
+        private List<Patient> allPatients { get; set; }
+        private List<List<MedicalRoom>> medicalRooms { get; set; }
 
         public PatientInMemoryContext()
         {
+            nfzUnits = GetNFZUnits().ToList();
+            medicalPackages = GetMedicalPackages().ToList();
             medicalServices = GetMedicalServices().ToList();
+            allPatients = GetAllPatients().ToList();
             primaryMedicalServices = medicalServices.Where(c => c.IsPrimaryService == true).ToList();
             visitCategories = GetVisitCategories().ToList();
-            visits = GetAvailableVisits();
+            //medicalRooms = GetMedicalRooms().ToList();
             locations = GetAllLocations();
-            patient = GetPatientData();
+
+
+            visits = GetAvailableVisits();
             medicalWorkers = GetMedicalWorkers();
+            patient = GetPatientData();
+
         }
 
         public IEnumerable<Visit> GetAvailableVisits()
@@ -50,11 +60,24 @@ namespace Asklepios.Data.InMemoryContexts
 
         public IEnumerable<Visit> GetHistoricalVisits()
         {
+            IEnumerable<Visit> historicalVisits=new List<Visit>     ()
+            {
+                new Visit()
+                {
+                    Id=1,
+                    BookedMedicalServices=new List<MedicalService>(){ primaryMedicalServices[0], medicalServices[1] },
+                    MedicalRoom
+                }
+
+            }
+
             return new List<Visit>();
         }
 
         public IEnumerable<Location> GetAllLocations()
         {
+            IEnumerable<IEnumerable<MedicalRoom>> roomsCollections = GetMedicalRooms();
+
             return new List<Location>()
             {
                 new Location()
@@ -69,9 +92,11 @@ namespace Asklepios.Data.InMemoryContexts
                         ImagePath="/img/locations/loc1.jpeg",
                         PhoneNumber="22 780 421 433",
                         PostalCode="01-111",
+                       MedicalRooms=roomsCollections.ElementAt(0)
                         },
-                                new Location()
-                    {   City="Warszawa",
+                new Location()
+                    {   
+                    City="Warszawa",
                         StreetAndNumber="Grójecka 100",
                         Description="Ośrodek w Warszawie w dzielnicy Ochota, z bardzo dobrym dojazdem z zachodniej części Warszawy.",
                         Facilities=new List<string>(){"12 gabinetów ogólno-konsultacyjnych", "Gabinez zabiegowy", "Gabinet diagnostyki obrazowej", "Gabinek okulistyczny"},
@@ -82,7 +107,7 @@ namespace Asklepios.Data.InMemoryContexts
                         ImagePath="/img/locations/loc2.jpg",
                         PhoneNumber="22 787 477 323",
                         PostalCode="01-211",
-
+                        MedicalRooms=roomsCollections.ElementAt(1)
                         },
                 new Location()
                     {   City="Warszawa",
@@ -96,6 +121,7 @@ namespace Asklepios.Data.InMemoryContexts
                         ImagePath="/img/locations/loc3.jpg",
                         PhoneNumber="22 777 600 313",
                         PostalCode="03-055",
+                        MedicalRooms=roomsCollections.ElementAt(2)
 
                         },
                 new Location()
@@ -110,6 +136,7 @@ namespace Asklepios.Data.InMemoryContexts
                         ImagePath="/img/locations/loc4.jpg",
                         PhoneNumber="22 777 444 333",
                         PostalCode="02-222",
+                        MedicalRooms=roomsCollections.ElementAt(3)
 
                         },
                 new Location()
@@ -118,12 +145,13 @@ namespace Asklepios.Data.InMemoryContexts
                         Description="Ośrodek w Krakowie, w świetnie skomunikowanym Kazimierzu",
                         Facilities=new List<string>(){"15 gabinetów ogólno-konsultacyjnych", "Gabinez zabiegowy", "2 gabinety stomatologiczne", "Gabinet higieny jamy ustnej", "Gabinet diagnostyki obrazowej"},
                         Id=5,
-                        Name="Ośrodek Warszawa Jerozolimskie",
+                        Name="Ośrodek Kraków Pogórze",
                         Services=new List<string>(){"Interna", "Ginekologia", "Pediatria", "Diagnostyka obrazowa", "Stomatologia", "Higiena jamy ustnej", "Dermatologia", "Ortopedia", "Neurochirurgia"},
                         VoivodeshipType=Core.Enums.VoivodeshipType.malopolskie,
                         ImagePath="/img/locations/loc5.jpg",
                         PhoneNumber="20 300 400 111",
                         PostalCode="80-078",
+                        MedicalRooms=roomsCollections.ElementAt(4)
 
                         },
                 new Location()
@@ -138,6 +166,8 @@ namespace Asklepios.Data.InMemoryContexts
                         ImagePath="/img/locations/loc6.jpg",
                         PhoneNumber="30 500 500 241",
                         PostalCode="45-100",
+                        MedicalRooms=roomsCollections.ElementAt(5)
+
                         },
             };
 
@@ -145,7 +175,36 @@ namespace Asklepios.Data.InMemoryContexts
 
         public IEnumerable<MedicalPackage> GetMedicalPackages()
         {
-            return new List<MedicalPackage>();
+
+            List<MedicalPackage> medicalPackages = new List<MedicalPackage>()
+            {
+                new MedicalPackage()
+                {
+                    Name="Podstawowy",
+                    Description="Podstawowy pakiet dla osób szukajacych podstawowej opieki zdrowotnej. W cenie pakietu są zawarte bezpłatne konsultacje z 7 specjalizacji oraz podstawowe badania",
+                    ServicesDiscounts=new Dictionary<MedicalService, float>(),
+                },
+                new MedicalPackage()
+                {
+                    Name="Srebrny",
+                    Description="Srebrny pakiet jest pakietem dla osób szukajacych rozszerzonej opieki zdrowotnej. W ramach abonamentu medycznego są darmowe konsultacje u większości specjalistów, rozszerzony pakiet badań medycznych oraz 3 wizyty rehabilitacyjnE rocznie.",
+                    ServicesDiscounts=new Dictionary<MedicalService, float>(),
+                },
+                                new MedicalPackage()
+                {
+                    Name="Złoty",
+                    Description="Srebrny pakiet dla osób szukajacych specjalistycznej opieki, w tym opieki dentystycznej oraz rehabilitacji.",
+                    ServicesDiscounts=new Dictionary<MedicalService, float>(),
+                },
+                new MedicalPackage()
+                {
+                    Name="Platynowy",
+                    Description="Platynowy pakiet jest pakietem dla osób szukajacych pełnej ochrony zdrowia. Wszystkie oferowane przez nas usługi są oferowane nieodpłatnie. Priorytetowa obsługa w przypadku badań/operacji niecierpiących zwłoki. ",
+                    ServicesDiscounts=new Dictionary<MedicalService, float>(),
+                },
+            };
+
+            return medicalPackages;
         }
 
 
@@ -164,62 +223,76 @@ namespace Asklepios.Data.InMemoryContexts
             //    };
             //}
             //
+            DateTime now = DateTime.Now;
 
-            List<VisitRating> visitRatings1 = new List<VisitRating>()
+            List<VisitReview> visitRatings1 = new List<VisitReview>()
             {
-                new VisitRating()
+                new VisitReview()
                 {
                     AtmosphereRate=1,
                     CompetenceRate=4,
                     GeneralRate=3,
                     Id=1,
-                    ShortDescription="Lekarz w miarę kompetentny, ale chamski gbur"
+                    ShortDescription="Lekarz w miarę kompetentny, ale chamski gbur",
+                    ReviewDate= now.AddDays(-10),
+                    Reviewer=allPatients[0],
+
                 },
-                new VisitRating()
+                new VisitReview()
                 {
                     AtmosphereRate=5,
                     CompetenceRate=2,
                     GeneralRate=3,
                     Id=2,
-                    ShortDescription="Miły lekarz, niestety jego zalecenia nic nie pomogły"
+                    ShortDescription="Miły lekarz, niestety jego zalecenia nic nie pomogły",
+                    ReviewDate= now.AddDays(-20),
+                    Reviewer=allPatients[1]
                 }
             };
-            List<VisitRating> visitRatings2 = new List<VisitRating>()
+            List<VisitReview> visitRatings2 = new List<VisitReview>()
             {
-                new VisitRating()
+                new VisitReview()
                 {
                     AtmosphereRate=4,
                     CompetenceRate=4,
                     GeneralRate=4,
                     Id=4,
-                    ShortDescription="Przepisane przez niego medykamenty poprawiły mój stan, ale część objawów się utrzymała."
+                    ShortDescription="Przepisane przez niego medykamenty poprawiły mój stan, ale część objawów się utrzymała.",
+                    ReviewDate= now.AddDays(-120),
+                    Reviewer=allPatients[2]
                 },
-                new VisitRating()
+                new VisitReview()
                 {
                     AtmosphereRate=5,
                     CompetenceRate=5,
                     GeneralRate=5,
                     Id=3,
-                    ShortDescription="Super lekarz, pomógł mi, dodatkowo jest bardzo sympatyczny i wszystko mi po kolei wyjaśnił. Lekarz-ideał."
+                    ShortDescription="Super lekarz, pomógł mi, dodatkowo jest bardzo sympatyczny i wszystko mi po kolei wyjaśnił. Lekarz-ideał.",
+                    ReviewDate= now.AddDays(-100),
+                    Reviewer=allPatients[3]
                 }
             };
-            List<VisitRating> visitRatings3 = new List<VisitRating>()
+            List<VisitReview> visitRatings3 = new List<VisitReview>()
             {
-                new VisitRating()
+                new VisitReview()
                 {
                     AtmosphereRate=2,
                     CompetenceRate=1,
                     GeneralRate=1,
                     Id=3,
-                    ShortDescription="Lekarza nie interesowały wyniki badań, nie interesowało co mówię, jedyne co mi zalecił, to leki przeciwbólowe!."
+                    ShortDescription="Lekarza nie interesowały wyniki badań, nie interesowało co mówię, jedyne co mi zalecił, to leki przeciwbólowe!.",
+                    ReviewDate= now.AddDays(-50),
+                    Reviewer=allPatients[4]
                 },
-                new VisitRating()
+                new VisitReview()
                 {
                     AtmosphereRate=1,
                     CompetenceRate=2,
                     GeneralRate=2,
                     Id=6,
-                    ShortDescription="Bardzo nieprzyjemny, jego leczenie nie przyniosło większej poprawy"
+                    ShortDescription="Bardzo nieprzyjemny, jego leczenie nie przyniosło większej poprawy",
+                    ReviewDate= now.AddDays(-55),
+                    Reviewer=allPatients[5]
                 }
             };
 
@@ -232,7 +305,7 @@ namespace Asklepios.Data.InMemoryContexts
                     Experience="W latach 2005-2020 praca w szpitalu Bródnowskim",
                     ImagePath="/img/MW/m/1.jpg",
                     HiredSince=new DateTime(2015,1,1),
-                    IsCurrentlyHired=true,VisitRatings=visitRatings1,
+                    IsCurrentlyHired=true,VisitReviews=visitRatings1,
                     MedicalServices=new List<MedicalService>()
                     {
                         primaryMedicalServices[0],primaryMedicalServices[1]
@@ -245,7 +318,7 @@ namespace Asklepios.Data.InMemoryContexts
                     Experience="W latach 2005-2020 praca w szpitalu praskim",
                     ImagePath="/img/MW/m/2.jpg",
                     HiredSince=new DateTime(2017,1,1),
-                    IsCurrentlyHired=true,VisitRatings=visitRatings2,
+                    IsCurrentlyHired=true,VisitReviews=visitRatings2,
                     MedicalServices=new List<MedicalService>()
                     {
                         primaryMedicalServices[2],primaryMedicalServices[1]
@@ -258,7 +331,7 @@ namespace Asklepios.Data.InMemoryContexts
                     Experience="W latach 2005-2020 praca w szpitalu MSWiA",
                     ImagePath="/img/MW/m/3.jpg",
                     HiredSince=new DateTime(2015,1,1),
-                    IsCurrentlyHired=true,VisitRatings=visitRatings3,
+                    IsCurrentlyHired=true,VisitReviews=visitRatings3,
                     MedicalServices=new List<MedicalService>()
                     {
                         primaryMedicalServices[2],primaryMedicalServices[1]
@@ -271,7 +344,7 @@ namespace Asklepios.Data.InMemoryContexts
                     Experience="W latach 2005-2020 praca w szpitalu UMK",
                     ImagePath="/img/MW/m/4.jpg",
                     HiredSince=new DateTime(2020,4,1),
-                    IsCurrentlyHired=true,VisitRatings=visitRatings1,
+                    IsCurrentlyHired=true,VisitReviews=visitRatings1,
                     MedicalServices=new List<MedicalService>()
                     {
                         primaryMedicalServices[2],primaryMedicalServices[1]
@@ -284,7 +357,7 @@ namespace Asklepios.Data.InMemoryContexts
                     Experience="W latach 2005-2020 praca w szpitalu Bródnowskim",
                     ImagePath="/img/MW/m/5.jpg",
                     HiredSince=new DateTime(2015,1,1),
-                    IsCurrentlyHired=true,VisitRatings=visitRatings1,
+                    IsCurrentlyHired=true,VisitReviews=visitRatings1,
                     MedicalServices=new List<MedicalService>()
                     {
                         primaryMedicalServices[2],primaryMedicalServices[1]
@@ -297,7 +370,7 @@ namespace Asklepios.Data.InMemoryContexts
                     Experience="W latach 2005-2020 praca w szpitalu Bródnowskim",
                     ImagePath="/img/MW/m/6.jpg",
                     HiredSince=new DateTime(2015,1,1),
-                    IsCurrentlyHired=true,VisitRatings=visitRatings2,
+                    IsCurrentlyHired=true,VisitReviews=visitRatings2,
                     MedicalServices=new List<MedicalService>()
                     {
                         primaryMedicalServices[2],primaryMedicalServices[1]
@@ -310,7 +383,7 @@ namespace Asklepios.Data.InMemoryContexts
                     Experience="W latach 2005-2020 praca w szpitalu wrocławskim",
                     ImagePath="/img/MW/m/7.jpg",
                     HiredSince=new DateTime(2015,1,1),
-                    IsCurrentlyHired=true,VisitRatings=visitRatings3,
+                    IsCurrentlyHired=true,VisitReviews=visitRatings3,
                     MedicalServices=new List<MedicalService>()
                     {
                         primaryMedicalServices[2],primaryMedicalServices[1]
@@ -323,7 +396,7 @@ namespace Asklepios.Data.InMemoryContexts
                     Experience="W latach 2005-2020 praca w szpitalu podlaskim",
                     ImagePath="/img/MW/m/8.jpg",
                     HiredSince=new DateTime(2015,1,1),
-                    IsCurrentlyHired=true,VisitRatings=visitRatings2,
+                    IsCurrentlyHired=true,VisitReviews=visitRatings2,
                     MedicalServices=new List<MedicalService>()
                     {
                         primaryMedicalServices[2],primaryMedicalServices[1]
@@ -336,7 +409,7 @@ namespace Asklepios.Data.InMemoryContexts
                     Experience="W latach 2005-2020 praca w szpitalu Bródnowskim",
                     ImagePath="/img/MW/m/9.jpg",
                     HiredSince=new DateTime(2012,1,1),
-                    IsCurrentlyHired=true,VisitRatings=visitRatings1,
+                    IsCurrentlyHired=true,VisitReviews=visitRatings1,
                     MedicalServices=new List<MedicalService>()
                     {
                         primaryMedicalServices[2],primaryMedicalServices[1]
@@ -349,7 +422,7 @@ namespace Asklepios.Data.InMemoryContexts
                     Experience="W latach 2005-2020 praca w szpitalu suwalskim",
                     ImagePath="/img/MW/m/10.jpg",
                     HiredSince=new DateTime(2018,1,1),
-                    IsCurrentlyHired=true,VisitRatings=visitRatings1,
+                    IsCurrentlyHired=true,VisitReviews=visitRatings1,
                     MedicalServices=new List<MedicalService>()
                     {
                         primaryMedicalServices[2],primaryMedicalServices[1]
@@ -362,7 +435,7 @@ namespace Asklepios.Data.InMemoryContexts
                     Experience="W latach 2008-2019 praca w szpitalu podkarpackim",
                     ImagePath="/img/MW/m/11.jpg",
                     HiredSince=new DateTime(2017,5,5),
-                    IsCurrentlyHired=true,VisitRatings=visitRatings1,
+                    IsCurrentlyHired=true,VisitReviews=visitRatings1,
                     MedicalServices=new List<MedicalService>()
                     {
                         primaryMedicalServices[2],primaryMedicalServices[1]
@@ -375,7 +448,7 @@ namespace Asklepios.Data.InMemoryContexts
                     Experience="W latach 2005-2020 praca w szpitalu Bródnowskim",
                     ImagePath="/img/MW/m/12.jpg",
                     HiredSince=new DateTime(2017,1,1),
-                    IsCurrentlyHired=true,VisitRatings=visitRatings1,
+                    IsCurrentlyHired=true,VisitReviews=visitRatings1,
                     MedicalServices=new List<MedicalService>()
                     {
                         primaryMedicalServices[2],primaryMedicalServices[1]
@@ -388,7 +461,7 @@ namespace Asklepios.Data.InMemoryContexts
                     Experience="W latach 2005-2020 praca w szpitalu wojskowym",
                     ImagePath="/img/MW/m/13.jpg",
                     HiredSince=new DateTime(2012,12,12),
-                    IsCurrentlyHired=true,VisitRatings=visitRatings1,
+                    IsCurrentlyHired=true,VisitReviews=visitRatings1,
                     MedicalServices=new List<MedicalService>()
                     {
                         primaryMedicalServices[2],primaryMedicalServices[1]
@@ -401,7 +474,7 @@ namespace Asklepios.Data.InMemoryContexts
                     Experience="W latach 2010-2019 praca w szpitalu matki i dziecka",
                     ImagePath="/img/MW/m/14.jpg",
                     HiredSince=new DateTime(2019,4,4),
-                    IsCurrentlyHired=true,VisitRatings=visitRatings1,
+                    IsCurrentlyHired=true,VisitReviews=visitRatings1,
                     MedicalServices=new List<MedicalService>()
                     {
                         primaryMedicalServices[2],primaryMedicalServices[1]
@@ -414,7 +487,7 @@ namespace Asklepios.Data.InMemoryContexts
                     Experience="W latach 2011-2021 praca w szpitalu zakaźnym",
                     ImagePath="/img/MW/m/15.jpg",
                     HiredSince=new DateTime(2015,1,1),
-                    IsCurrentlyHired=true,VisitRatings=visitRatings1,
+                    IsCurrentlyHired=true,VisitReviews=visitRatings1,
                     MedicalServices=new List<MedicalService>()
                     {
                         primaryMedicalServices[2],primaryMedicalServices[1]
@@ -427,7 +500,7 @@ namespace Asklepios.Data.InMemoryContexts
                     Experience="W latach 2007-2021 praca w szpitalu kujawskim",
                     ImagePath="/img/MW/m/16.jpg",
                     HiredSince=new DateTime(2015,1,1),
-                    IsCurrentlyHired=true,VisitRatings=visitRatings1,
+                    IsCurrentlyHired=true,VisitReviews=visitRatings1,
                     MedicalServices=new List<MedicalService>()
                     {
                         primaryMedicalServices[2],primaryMedicalServices[1]
@@ -440,7 +513,7 @@ namespace Asklepios.Data.InMemoryContexts
                     Experience="W latach 2005-2020 praca w szpitalu łódzkim",
                     ImagePath="/img/MW/m/17.jpg",
                     HiredSince=new DateTime(2013,3,3),
-                    IsCurrentlyHired=true,VisitRatings=visitRatings3,
+                    IsCurrentlyHired=true,VisitReviews=visitRatings3,
                     MedicalServices=new List<MedicalService>()
                     {
                         primaryMedicalServices[2],primaryMedicalServices[1]
@@ -453,7 +526,7 @@ namespace Asklepios.Data.InMemoryContexts
                     Experience="W latach 2005-2020 praca w szpitalu Bródnowskim",
                     ImagePath="/img/MW/m/2.jpg",
                     HiredSince=new DateTime(2015,1,1),
-                    IsCurrentlyHired=true,VisitRatings=visitRatings2,
+                    IsCurrentlyHired=true,VisitReviews=visitRatings2,
                     MedicalServices=new List<MedicalService>()
                     {
                         primaryMedicalServices[2],primaryMedicalServices[1]
@@ -466,7 +539,7 @@ namespace Asklepios.Data.InMemoryContexts
                     Experience="W latach 2009-2020 praca w POZ Węgrów.",
                     ImagePath="/img/MW/m/19.jpg",
                     HiredSince=new DateTime(2018,7,6),
-                    IsCurrentlyHired=true,VisitRatings=visitRatings1,
+                    IsCurrentlyHired=true,VisitReviews=visitRatings1,
                     MedicalServices=new List<MedicalService>()
                     {
                         primaryMedicalServices[2],primaryMedicalServices[1]
@@ -479,7 +552,7 @@ namespace Asklepios.Data.InMemoryContexts
                     Experience="W latach 2005-2020 praca w szpitalu miejskim w Krośnie",
                     ImagePath="/img/MW/m/20.jpg",
                     HiredSince=new DateTime(2020,2,1),
-                    IsCurrentlyHired=true,VisitRatings=visitRatings1,
+                    IsCurrentlyHired=true,VisitReviews=visitRatings1,
                     MedicalServices=new List<MedicalService>()
                     {
                         primaryMedicalServices[2],primaryMedicalServices[1]
@@ -492,7 +565,7 @@ namespace Asklepios.Data.InMemoryContexts
                     Experience="W latach 2005-2020 praca w szpitalu tarnowskim",
                     ImagePath="/img/MW/m/21.jpg",
                     HiredSince=new DateTime(2017,1,1),
-                    IsCurrentlyHired=true,VisitRatings=visitRatings1,
+                    IsCurrentlyHired=true,VisitReviews=visitRatings1,
                     MedicalServices=new List<MedicalService>()
                     {
                         primaryMedicalServices[2],primaryMedicalServices[1]
@@ -505,7 +578,7 @@ namespace Asklepios.Data.InMemoryContexts
                     Experience="W latach 2005-2020 praca w szpitalu miejskim w Zakopanem",
                     ImagePath="/img/MW/m/22.jpg",
                     HiredSince=new DateTime(2015,1,1),
-                    IsCurrentlyHired=true,VisitRatings=visitRatings2,
+                    IsCurrentlyHired=true,VisitReviews=visitRatings2,
                     MedicalServices=new List<MedicalService>()
                     {
                         primaryMedicalServices[2],primaryMedicalServices[1]
@@ -518,7 +591,7 @@ namespace Asklepios.Data.InMemoryContexts
                     Experience="W latach 2005-2020 praca w szpitalu Bródnowskim",
                     ImagePath="/img/MW/m/23.jpg",
                     HiredSince=new DateTime(2015,1,1),
-                    IsCurrentlyHired=true,VisitRatings=visitRatings1,
+                    IsCurrentlyHired=true,VisitReviews=visitRatings1,
                     MedicalServices=new List<MedicalService>()
                     {
                         primaryMedicalServices[2],primaryMedicalServices[1]
@@ -531,7 +604,7 @@ namespace Asklepios.Data.InMemoryContexts
                     Experience="W latach 2008-2014 praca w szpitalu kardiologicznym",
                     ImagePath="/img/MW/m/2.jpg",
                     HiredSince=new DateTime(2015,1,1),
-                    IsCurrentlyHired=true,VisitRatings=visitRatings1,
+                    IsCurrentlyHired=true,VisitReviews=visitRatings1,
                     MedicalServices=new List<MedicalService>()
                     {
                         primaryMedicalServices[2],primaryMedicalServices[1]
@@ -544,7 +617,7 @@ namespace Asklepios.Data.InMemoryContexts
                     Experience="W latach 2005-2020 praca w szpitalu w Dębicy",
                     ImagePath="/img/MW/m/25.jpg",
                     HiredSince=new DateTime(2015,1,1),
-                    IsCurrentlyHired=true,VisitRatings=visitRatings1,
+                    IsCurrentlyHired=true,VisitReviews=visitRatings1,
                     MedicalServices=new List<MedicalService>()
                     {
                         primaryMedicalServices[2],primaryMedicalServices[1]
@@ -557,7 +630,7 @@ namespace Asklepios.Data.InMemoryContexts
                     Experience="W latach 2005-2020 praca w szpitalu powiatowym w Zamościu",
                     ImagePath="/img/MW/m/26.jpg",
                     HiredSince=new DateTime(2019,1,1),
-                    IsCurrentlyHired=true,VisitRatings=visitRatings1,
+                    IsCurrentlyHired=true,VisitReviews=visitRatings1,
                     MedicalServices=new List<MedicalService>()
                     {
                         primaryMedicalServices[2],primaryMedicalServices[1]
@@ -570,7 +643,7 @@ namespace Asklepios.Data.InMemoryContexts
                     Experience="W latach 2005-2020 praca w szpitalu zakaźnym na Woli",
                     ImagePath="/img/MW/m/27.jpg",
                     HiredSince=new DateTime(2011,10,11),
-                    IsCurrentlyHired=true,VisitRatings=visitRatings1,
+                    IsCurrentlyHired=true,VisitReviews=visitRatings1,
                     MedicalServices=new List<MedicalService>()
                     {
                         primaryMedicalServices[2],primaryMedicalServices[1]
@@ -583,7 +656,7 @@ namespace Asklepios.Data.InMemoryContexts
                     Experience="W latach 2006-2019 praca w szpitalu świętokrzyskim",
                     ImagePath="/img/MW/m/28.jpg",
                     HiredSince=new DateTime(2020,8,8),
-                    IsCurrentlyHired=true,VisitRatings=visitRatings1,
+                    IsCurrentlyHired=true,VisitReviews=visitRatings1,
                     MedicalServices=new List<MedicalService>()
                     {
                         primaryMedicalServices[2],primaryMedicalServices[1]
@@ -596,7 +669,7 @@ namespace Asklepios.Data.InMemoryContexts
                     Experience="W latach 2005-2020 praca w szpitalu akademickim w Białymstoku",
                     ImagePath="/img/MW/m/29.jpg",
                     HiredSince=new DateTime(2018,1,1),
-                    IsCurrentlyHired=true,VisitRatings=visitRatings1,
+                    IsCurrentlyHired=true,VisitReviews=visitRatings1,
                     MedicalServices=new List<MedicalService>()
                     {
                         primaryMedicalServices[2],primaryMedicalServices[1]
@@ -609,7 +682,7 @@ namespace Asklepios.Data.InMemoryContexts
                     Experience="W latach 2005-2020 praca w szpitalu miejskim w Słupsku",
                     ImagePath="/img/MW/m/30.jpg",
                     HiredSince=new DateTime(2016,4,4),
-                    IsCurrentlyHired=true,VisitRatings=visitRatings1,
+                    IsCurrentlyHired=true,VisitReviews=visitRatings1,
                     MedicalServices=new List<MedicalService>()
                     {
                         primaryMedicalServices[2],primaryMedicalServices[1]
@@ -622,7 +695,7 @@ namespace Asklepios.Data.InMemoryContexts
                     Experience="W latach 2005-2012 praca w szpitalu klinicznym w Gnieźnie. Wcześniej pracował w Zielonej górze.",
                     ImagePath="/img/MW/m/31.jpg",
                     HiredSince=new DateTime(2011,1,1),
-                    IsCurrentlyHired=true,VisitRatings=visitRatings1,
+                    IsCurrentlyHired=true,VisitReviews=visitRatings1,
                     MedicalServices=new List<MedicalService>()
                     {
                         primaryMedicalServices[2],primaryMedicalServices[1]
@@ -635,7 +708,7 @@ namespace Asklepios.Data.InMemoryContexts
                     Experience="W latach 2005-2020 praca w szpitalu akademickim w Krakowie",
                     ImagePath="/img/MW/m/32.jpg",
                     HiredSince=new DateTime(2019,8,1),
-                    IsCurrentlyHired=true,VisitRatings=visitRatings1,
+                    IsCurrentlyHired=true,VisitReviews=visitRatings1,
                     MedicalServices=new List<MedicalService>()
                     {
                         primaryMedicalServices[2],primaryMedicalServices[1]
@@ -648,7 +721,7 @@ namespace Asklepios.Data.InMemoryContexts
                     Experience="W latach 2009-2019 praca w szpitalu w Węgrowie",
                     ImagePath="/img/MW/k/1.jpg",
                     HiredSince=new DateTime(2015,5,5),
-                    IsCurrentlyHired=true,VisitRatings=visitRatings1,
+                    IsCurrentlyHired=true,VisitReviews=visitRatings1,
                     MedicalServices=new List<MedicalService>()
                     {
                         primaryMedicalServices[2],primaryMedicalServices[1]
@@ -661,7 +734,7 @@ namespace Asklepios.Data.InMemoryContexts
                     Experience="W latach 2015-2021 praca w szpitalu uniwersyteckim w Poznaniu",
                     ImagePath="/img/MW/k/2.jpg",
                     HiredSince=new DateTime(2015,10,1),
-                    IsCurrentlyHired=true,VisitRatings=visitRatings1,
+                    IsCurrentlyHired=true,VisitReviews=visitRatings1,
                     MedicalServices=new List<MedicalService>()
                     {
                         primaryMedicalServices[2],primaryMedicalServices[1]
@@ -674,7 +747,7 @@ namespace Asklepios.Data.InMemoryContexts
                     Experience="W latach 2011-2021 praca w szpitalu miejskim w Łowiczu",
                     ImagePath="/img/MW/k/3.jpg",
                     HiredSince=new DateTime(2015,1,1),
-                    IsCurrentlyHired=true,VisitRatings=visitRatings1,
+                    IsCurrentlyHired=true,VisitReviews=visitRatings1,
                     MedicalServices=new List<MedicalService>()
                     {
                         primaryMedicalServices[2],primaryMedicalServices[1]
@@ -687,7 +760,7 @@ namespace Asklepios.Data.InMemoryContexts
                     Experience="W latach 2008-2020 praca w szpitalu zakaźnym w Krakowie",
                     ImagePath="/img/mw/k/4.jpg",
                     HiredSince=new DateTime(2018,8,11),
-                    IsCurrentlyHired=true,VisitRatings=visitRatings1,
+                    IsCurrentlyHired=true,VisitReviews=visitRatings1,
                     MedicalServices=new List<MedicalService>()
                     {
                         primaryMedicalServices[2],primaryMedicalServices[1]
@@ -700,7 +773,7 @@ namespace Asklepios.Data.InMemoryContexts
                     Experience="W latach 2007-2020 praca w szpitalu Bródnowskim",
                     ImagePath="/img/mw/k/5.jpg",
                     HiredSince=new DateTime(2017,7,7),
-                    IsCurrentlyHired=true,VisitRatings=visitRatings1,
+                    IsCurrentlyHired=true,VisitReviews=visitRatings1,
                     MedicalServices=new List<MedicalService>()
                     {
                         primaryMedicalServices[2],primaryMedicalServices[1]
@@ -713,7 +786,7 @@ namespace Asklepios.Data.InMemoryContexts
                     Experience="W latach 2005-2020 praca w szpitalu Bródnowskim",
                     ImagePath="/img/mw/k/6.jpg",
                     HiredSince=new DateTime(2017,4,4),
-                    IsCurrentlyHired=true,VisitRatings=visitRatings1,
+                    IsCurrentlyHired=true,VisitReviews=visitRatings1,
                     MedicalServices=new List<MedicalService>()
                     {
                         primaryMedicalServices[2],primaryMedicalServices[1]
@@ -726,7 +799,7 @@ namespace Asklepios.Data.InMemoryContexts
                     Experience="W latach 2012-2020 praca w szpitalu południowym w Warszawie",
                     ImagePath="/img/mw/k/7.jpg",
                     HiredSince=new DateTime(2015,1,11),
-                    IsCurrentlyHired=true,VisitRatings=visitRatings1,
+                    IsCurrentlyHired=true,VisitReviews=visitRatings1,
                     MedicalServices=new List<MedicalService>()
                     {
                         primaryMedicalServices[2],primaryMedicalServices[1]
@@ -739,7 +812,7 @@ namespace Asklepios.Data.InMemoryContexts
                     Experience="W latach 2005-2020 praca w szpitalu chorób serca w Gdańsku",
                     ImagePath="/img/mw/k/8.jpg",
                     HiredSince=new DateTime(2018,8,8),
-                    IsCurrentlyHired=true,VisitRatings=visitRatings1,
+                    IsCurrentlyHired=true,VisitReviews=visitRatings1,
                     MedicalServices=new List<MedicalService>()
                     {
                         primaryMedicalServices[2],primaryMedicalServices[1]
@@ -752,7 +825,7 @@ namespace Asklepios.Data.InMemoryContexts
                     Experience="W latach 2007-2018 praca w szpitalu praskim w Warszawie",
                     ImagePath="/img/mw/k/9.jpg",
                     HiredSince=new DateTime(2021,11,1),
-                    IsCurrentlyHired=true,VisitRatings=visitRatings1,
+                    IsCurrentlyHired=true,VisitReviews=visitRatings1,
                     MedicalServices=new List<MedicalService>()
                     {
                         primaryMedicalServices[2],primaryMedicalServices[1]
@@ -765,7 +838,7 @@ namespace Asklepios.Data.InMemoryContexts
                     Experience="W latach 2009-2019 praca w szpitalu praskim w Warszawie",
                     ImagePath="/img/mw/k/10.jpg",
                     HiredSince=new DateTime(2012,11,11),
-                    IsCurrentlyHired=true,VisitRatings=visitRatings1,
+                    IsCurrentlyHired=true,VisitReviews=visitRatings1,
                     MedicalServices=new List<MedicalService>()
                     {
                         primaryMedicalServices[2],primaryMedicalServices[1]
@@ -778,7 +851,7 @@ namespace Asklepios.Data.InMemoryContexts
                     Experience="W latach 2005-2020 praca w szpitalu Bródnowskim",
                     ImagePath="/img/mw/k/11.jpg",
                     HiredSince=new DateTime(2017,7,9),
-                    IsCurrentlyHired=true,VisitRatings=visitRatings1,
+                    IsCurrentlyHired=true,VisitReviews=visitRatings1,
                     MedicalServices=new List<MedicalService>()
                     {
                         primaryMedicalServices[2],primaryMedicalServices[1]
@@ -791,7 +864,7 @@ namespace Asklepios.Data.InMemoryContexts
                     Experience="W latach 2012-2019 praca w szpitalu MSWIA w Warszawie",
                     ImagePath="/img/mw/k/12.jpg",
                     HiredSince=new DateTime(2019,4,8),
-                    IsCurrentlyHired=true,VisitRatings=visitRatings1,
+                    IsCurrentlyHired=true,VisitReviews=visitRatings1,
                     MedicalServices=new List<MedicalService>()
                     {
                         primaryMedicalServices[2],primaryMedicalServices[1]
@@ -804,7 +877,7 @@ namespace Asklepios.Data.InMemoryContexts
                     Experience="W latach 2005-2020 praca w szpitalu centralnym w Krakowie",
                     ImagePath="/img/mw/k/13.jpg",
                     HiredSince=new DateTime(2016,6,6),
-                    IsCurrentlyHired=true,VisitRatings=visitRatings1,
+                    IsCurrentlyHired=true,VisitReviews=visitRatings1,
                     MedicalServices=new List<MedicalService>()
                     {
                         primaryMedicalServices[2],primaryMedicalServices[1]
@@ -817,7 +890,7 @@ namespace Asklepios.Data.InMemoryContexts
                     Experience="W latach 2019-2021 praca w szpitalu u Koziołka Matołka w Poznaniu",
                     ImagePath="/img/mw/k/14.jpg",
                     HiredSince=new DateTime(2015,7,1),
-                    IsCurrentlyHired=true,VisitRatings=visitRatings1,
+                    IsCurrentlyHired=true,VisitReviews=visitRatings1,
                     MedicalServices=new List<MedicalService>()
                     {
                         primaryMedicalServices[2],primaryMedicalServices[1]
@@ -830,7 +903,7 @@ namespace Asklepios.Data.InMemoryContexts
                     Experience="W latach 2005-2020 praca w szpitalu klinicznym we Wrocławiu",
                     ImagePath="/img/mw/k/15.jpg",
                     HiredSince=new DateTime(2017,2,11),
-                    IsCurrentlyHired=true,VisitRatings=visitRatings1,
+                    IsCurrentlyHired=true,VisitReviews=visitRatings1,
                     MedicalServices=new List<MedicalService>()
                     {
                         primaryMedicalServices[2],primaryMedicalServices[1]
@@ -843,7 +916,7 @@ namespace Asklepios.Data.InMemoryContexts
                     Experience="W latach 2018-2021 praca w szpitalu klinicznym we Wrocławiu",
                     ImagePath="/img/mw/k/16.jpg",
                     HiredSince=new DateTime(2021,2,1),
-                    IsCurrentlyHired=true,VisitRatings=visitRatings1,
+                    IsCurrentlyHired=true,VisitReviews=visitRatings1,
                     MedicalServices=new List<MedicalService>()
                     {
                         primaryMedicalServices[2],primaryMedicalServices[1]
@@ -856,7 +929,7 @@ namespace Asklepios.Data.InMemoryContexts
                     Experience="W latach 2019-2020 praca w szpitalu Bródnowskim",
                     ImagePath="/img/mw/k/17.jpg",
                     HiredSince=new DateTime(2021,1,9),
-                    IsCurrentlyHired=true,VisitRatings=visitRatings1,
+                    IsCurrentlyHired=true,VisitReviews=visitRatings1,
                     MedicalServices=new List<MedicalService>()
                     {
                         primaryMedicalServices[2],primaryMedicalServices[1]
@@ -869,7 +942,7 @@ namespace Asklepios.Data.InMemoryContexts
                     Experience="W latach 2005-2020 praca w szpitalu Bródnowskim",
                     ImagePath="/img/mw/k/18.jpg",
                     HiredSince=new DateTime(2015,1,1),
-                    IsCurrentlyHired=true,VisitRatings=visitRatings1,
+                    IsCurrentlyHired=true,VisitReviews=visitRatings1,
                     MedicalServices=new List<MedicalService>()
                     {
                         primaryMedicalServices[2],primaryMedicalServices[1]
@@ -882,7 +955,7 @@ namespace Asklepios.Data.InMemoryContexts
                     Experience="W latach 2005-2020 praca w szpitalu Bródnowskim",
                     ImagePath="/img/mw/k/19.jpg",
                     HiredSince=new DateTime(2019,4,4),
-                    IsCurrentlyHired=true,VisitRatings=visitRatings1,
+                    IsCurrentlyHired=true,VisitReviews=visitRatings1,
                     MedicalServices=new List<MedicalService>()
                     {
                         primaryMedicalServices[2],primaryMedicalServices[1]
@@ -895,7 +968,7 @@ namespace Asklepios.Data.InMemoryContexts
                     Experience="Staż odbyła w szpitalu Bródnowskim w Warszawie. Od 2016 roku pracuje w szpitalu Praskim w Warszawie.",
                     ImagePath="/img/mw/k/20.jpg",
                     HiredSince=new DateTime(2018,9,11),
-                    IsCurrentlyHired=true,VisitRatings=visitRatings1,
+                    IsCurrentlyHired=true,VisitReviews=visitRatings1,
                     MedicalServices=new List<MedicalService>()
                     {
                         primaryMedicalServices[2],primaryMedicalServices[1]
@@ -908,7 +981,7 @@ namespace Asklepios.Data.InMemoryContexts
                     Experience="Staż odbyty w szpitalu akademickim w Białymstoku. Od 2018 roku praca w szpitalu powiatowym w Węgrowie",
                     ImagePath="/img/mw/k/21.jpg",
                     HiredSince=new DateTime(2018,8,8),
-                    IsCurrentlyHired=true,VisitRatings=visitRatings1,
+                    IsCurrentlyHired=true,VisitReviews=visitRatings1,
                     MedicalServices=new List<MedicalService>()
                     {
                         primaryMedicalServices[2],primaryMedicalServices[1]
@@ -921,7 +994,7 @@ namespace Asklepios.Data.InMemoryContexts
                     Experience="W latach 2005-2020 praca w szpitalu Bródnowskim",
                     ImagePath="/img/mw/k/22.jpg",
                     HiredSince=new DateTime(2018,4,6),
-                    IsCurrentlyHired=true,VisitRatings=visitRatings1,
+                    IsCurrentlyHired=true,VisitReviews=visitRatings1,
                     MedicalServices=new List<MedicalService>()
                     {
                         primaryMedicalServices[2],primaryMedicalServices[1]
@@ -934,7 +1007,7 @@ namespace Asklepios.Data.InMemoryContexts
                     Experience="W latach 2005-2020 praca w szpitalu Bródnowskim",
                     ImagePath="/img/mw/k/23.jpg",
                     HiredSince=new DateTime(2015,1,1),
-                    IsCurrentlyHired=true,VisitRatings=visitRatings1,
+                    IsCurrentlyHired=true,VisitReviews=visitRatings1,
                     MedicalServices=new List<MedicalService>()
                     {
                         primaryMedicalServices[2],primaryMedicalServices[1]
@@ -947,7 +1020,7 @@ namespace Asklepios.Data.InMemoryContexts
                     Experience="W latach 2005-2020 praca w szpitalu Bródnowskim",
                     ImagePath="/img/mw/k/24.jpg",
                     HiredSince=new DateTime(2019,1,1),
-                    IsCurrentlyHired=true,VisitRatings=visitRatings1,
+                    IsCurrentlyHired=true,VisitReviews=visitRatings1,
                     MedicalServices=new List<MedicalService>()
                     {
                         primaryMedicalServices[2],primaryMedicalServices[1]
@@ -960,7 +1033,7 @@ namespace Asklepios.Data.InMemoryContexts
                     Experience="W latach 2014-2021 praca w szpitalu zielonogórskim",
                     ImagePath="/img/mw/k/25.jpg",
                     HiredSince=new DateTime(2013,3,3),
-                    IsCurrentlyHired=true,VisitRatings=visitRatings1,
+                    IsCurrentlyHired=true,VisitReviews=visitRatings1,
                     MedicalServices=new List<MedicalService>()
                     {
                         primaryMedicalServices[2],primaryMedicalServices[1]
@@ -973,7 +1046,7 @@ namespace Asklepios.Data.InMemoryContexts
                     Experience="W latach 2005-2020 praca w szpitalu wojewódzkim w Olsztynie",
                     ImagePath="/img/mw/k/26.jpg",
                     HiredSince=new DateTime(2018,4,3),
-                    IsCurrentlyHired=true,VisitRatings=visitRatings1,
+                    IsCurrentlyHired=true,VisitReviews=visitRatings1,
                     MedicalServices=new List<MedicalService>()
                     {
                         primaryMedicalServices[2],primaryMedicalServices[1]
@@ -986,7 +1059,7 @@ namespace Asklepios.Data.InMemoryContexts
                     Experience="Od 2010 roku pracuje jako ordynator w szpitalu Matki i Dziecka w Warszawie",
                     ImagePath="/img/mw/k/27.jpg",
                     HiredSince=new DateTime(2018,6,7),
-                    IsCurrentlyHired=true,VisitRatings=visitRatings1,
+                    IsCurrentlyHired=true,VisitReviews=visitRatings1,
                         MedicalServices=new List<MedicalService>()
                     {
                         primaryMedicalServices[2],primaryMedicalServices[1]
@@ -999,7 +1072,7 @@ namespace Asklepios.Data.InMemoryContexts
                     Experience="W latach 2016-2020 praca w szpitalu miejskim w Grudziądzu",
                     ImagePath="/img/mw/k/28.jpg",
                     HiredSince=new DateTime(2019,8,11),
-                    IsCurrentlyHired=true,VisitRatings=visitRatings1,
+                    IsCurrentlyHired=true,VisitReviews=visitRatings1,
                         MedicalServices=new List<MedicalService>()
                     {
                         primaryMedicalServices[2],primaryMedicalServices[1]
@@ -1012,7 +1085,7 @@ namespace Asklepios.Data.InMemoryContexts
                     Experience="W latach 2009-2020 praca w szpitalu miejskim w Suwałkach",
                     ImagePath="/img/mw/k/29.jpg",
                     HiredSince=new DateTime(2015,1,1),
-                    IsCurrentlyHired=true,VisitRatings=visitRatings1,
+                    IsCurrentlyHired=true,VisitReviews=visitRatings1,
                     MedicalServices=new List<MedicalService>()
                     {
                         primaryMedicalServices[2],primaryMedicalServices[1]
@@ -1025,7 +1098,7 @@ namespace Asklepios.Data.InMemoryContexts
                     Experience="W latach 2009-2020 praca w szpitalu wojewódzkim w Toruniu",
                     ImagePath="/img/mw/k/30.jpg",
                     HiredSince=new DateTime(2019,5,4),
-                    IsCurrentlyHired=true,VisitRatings=visitRatings1,
+                    IsCurrentlyHired=true,VisitReviews=visitRatings1,
                     MedicalServices=new List<MedicalService>()
                     {
                         primaryMedicalServices[2],primaryMedicalServices[1]
@@ -1038,7 +1111,7 @@ namespace Asklepios.Data.InMemoryContexts
                     Experience="Od 2016 pracuje w szpitalu Bródnowskim",
                     ImagePath="/img/mw/k/31.jpg",
                     HiredSince=new DateTime(2015,5,1),
-                    IsCurrentlyHired=true,VisitRatings=visitRatings1,
+                    IsCurrentlyHired=true,VisitReviews=visitRatings1,
                     MedicalServices=new List<MedicalService>()
                     {
                         primaryMedicalServices[2],primaryMedicalServices[1]
@@ -1052,7 +1125,7 @@ namespace Asklepios.Data.InMemoryContexts
                     Experience="W latach 2009-2021 praca w szpitalu w Przemyślu",
                     ImagePath="/img/mw/k/32.jpg",
                     HiredSince=new DateTime(2019,9,8),
-                    IsCurrentlyHired=true,VisitRatings=visitRatings1,
+                    IsCurrentlyHired=true,VisitReviews=visitRatings1,
                     MedicalServices=new List<MedicalService>()
                     {
                         primaryMedicalServices[2],primaryMedicalServices[1]
@@ -1065,7 +1138,7 @@ namespace Asklepios.Data.InMemoryContexts
                     Experience="W latach 2008-2020 praca w szpitalu w Lublinie",
                     ImagePath="/img/mw/k/33.jpg",
                     HiredSince=new DateTime(2019,4,7),
-                    IsCurrentlyHired=true,VisitRatings=visitRatings1,
+                    IsCurrentlyHired=true,VisitReviews=visitRatings1,
                     MedicalServices=new List<MedicalService>()
                     {
                         primaryMedicalServices[2],primaryMedicalServices[1]
@@ -1078,7 +1151,7 @@ namespace Asklepios.Data.InMemoryContexts
                     Experience="W latach 2005-2020 praca w szpitalu Bródnowskim",
                     ImagePath="/img/mw/k/34.jpg",
                     HiredSince=new DateTime(2015,9,1),
-                    IsCurrentlyHired=true,VisitRatings=visitRatings1,
+                    IsCurrentlyHired=true,VisitReviews=visitRatings1,
                     MedicalServices=new List<MedicalService>()
                     {
                         primaryMedicalServices[2],primaryMedicalServices[1]
@@ -1091,7 +1164,7 @@ namespace Asklepios.Data.InMemoryContexts
                     Experience="W latach 2005-2020 praca w szpitalu Bródnowskim",
                     ImagePath="/img/mw/k/35.jpg",
                     HiredSince=new DateTime(2019,4,3),
-                    IsCurrentlyHired=true,VisitRatings=visitRatings1,
+                    IsCurrentlyHired=true,VisitReviews=visitRatings1,
                     MedicalServices=new List<MedicalService>()
                     {
                         primaryMedicalServices[2],primaryMedicalServices[1]
@@ -1104,7 +1177,7 @@ namespace Asklepios.Data.InMemoryContexts
                     Experience="W latach 2005-2020 praca w szpitalu Bródnowskim",
                     ImagePath="/img/mw/k/36.jpg",
                     HiredSince=new DateTime(2018,8,1),
-                    IsCurrentlyHired=true,VisitRatings=visitRatings1,                    MedicalServices=new List<MedicalService>()
+                    IsCurrentlyHired=true,VisitReviews=visitRatings1,                    MedicalServices=new List<MedicalService>()
                     {
                         primaryMedicalServices[2],primaryMedicalServices[1]
                     }
@@ -1116,7 +1189,7 @@ namespace Asklepios.Data.InMemoryContexts
                     Experience="W latach 2016-2020 praca w szpitalu lwowskim na Ukrainie",
                     ImagePath="/img/mw/k/37.jpg",
                     HiredSince=new DateTime(2020,8,1),
-                    IsCurrentlyHired=true,VisitRatings=visitRatings1,
+                    IsCurrentlyHired=true,VisitReviews=visitRatings1,
                     MedicalServices=new List<MedicalService>()
                     {
                         primaryMedicalServices[2],primaryMedicalServices[1]
@@ -1129,7 +1202,7 @@ namespace Asklepios.Data.InMemoryContexts
                     Experience="W latach 2005-2020 praca w szpitalu Bródnowskim",
                     ImagePath="/img/MW/k/38.jpg",
                     HiredSince=new DateTime(2015,1,1),
-                    IsCurrentlyHired=true,VisitRatings=visitRatings1,
+                    IsCurrentlyHired=true,VisitReviews=visitRatings1,
                     MedicalServices=new List<MedicalService>()
                     {
                         primaryMedicalServices[2],primaryMedicalServices[1]
@@ -1168,44 +1241,232 @@ namespace Asklepios.Data.InMemoryContexts
 
         public Patient GetPatientData()
         {
-            return new Patient("Łukasz", "Łukasiak", 1, "8710101010", true, "484654asd4a5sd4", "PL", "terfere@wp.pl", aglomeration: Core.Enums.Aglomeration.Warsaw);
+            Patient patient = new Patient("Łukasz", "Łukasiak", 1, "8710101010", true, "484654asd4a5sd4", "PL", "s11437@pjwstk.edu.pl", aglomeration: Core.Enums.Aglomeration.Warsaw);
+            DateTimeOffset dateTimeOffset = new DateTimeOffset(DateTime.Now);
+
+            List<Prescription> prescriptions = new List<Prescription>()
+            {
+
+                new Prescription()
+                {
+                    AccessCode="156134",
+                    Id=1,
+                    Issuer=(medicalWorkers.ElementAt(0) as Doctor),
+                    IssueDate= dateTimeOffset,
+                    ExpirationDate=dateTimeOffset.AddMonths(1),
+
+                    IssuedMedicines=new List<IssuedMedicine>()
+                    {
+                        new IssuedMedicine(){
+                            //Dosage="Dwa razy dziennie po 1 tabletce",
+                            PackageSize="60 tabletek",
+                            MedicineName="Metformax",
+                            PaymentDiscount=30
+                        },
+                        new IssuedMedicine() {
+                            //Dosage="Raz dziennie 2 tabletki",
+                            PackageSize="50 tabletek",
+                            MedicineName="Metformina",
+                            PaymentDiscount=40
+                        },
+                        new IssuedMedicine() {
+                            //Dosage="Trzy raz dziennie na zmianę skórną",
+                            PackageSize="Buteleczka 100 ml",
+                            MedicineName="Belosalic",
+                            PaymentDiscount=40
+                        }
+                    }
+                },
+                new Prescription()
+                {
+                    AccessCode = "749643216",
+                    Id = 2,
+                    Issuer = (medicalWorkers.ElementAt(1) as Doctor),
+                    IssueDate = dateTimeOffset.AddDays(-10),
+                    ExpirationDate = dateTimeOffset.AddDays(70),
+                    IssuedMedicines = new List<IssuedMedicine>()
+                    {
+                        new IssuedMedicine(){
+                            //Dosage="Dwa razy dziennie po 1 tabletce",
+                            PackageSize="60 tabletek",MedicineName="Lakcid",PaymentDiscount=30},
+                        new IssuedMedicine() {
+                            //Dosage="Dwa razy dziennie po 1 tabletce",
+                            PackageSize="30 tabletek",MedicineName="Trilac Plus",PaymentDiscount=0},
+                        new IssuedMedicine() {
+                            //Dosage="Raz dziennie po 1 tabletce",
+                            PackageSize="30 tabletek",MedicineName="Enterol",PaymentDiscount=40},
+
+                    }
+                },
+                                new Prescription()
+                {
+                    AccessCode = "55554654646",
+                    Id = 3,
+                    Issuer = (medicalWorkers.ElementAt(2) as Doctor),
+                    IssueDate = dateTimeOffset.AddDays(-20),
+                    ExpirationDate = dateTimeOffset.AddDays(40),
+                    IssuedMedicines = new List<IssuedMedicine>()
+                    {
+                        new IssuedMedicine(){
+                            //Dosage="Dwa razy dziennie po 1 tabletce",
+                            PackageSize="60 tabletek",MedicineName="Eltroxin",PaymentDiscount=30},
+                        new IssuedMedicine() {
+                            //Dosage="Dwa razy dziennie po 1 tabletce",
+                            PackageSize="40 tabletek",MedicineName="Thyrozol",PaymentDiscount=10},
+                        new IssuedMedicine() {
+                            //Dosage="Trzy razy dziennie po 2 tabletki",
+                            PackageSize="100 tabletek",MedicineName="Metoprolol",PaymentDiscount=40},
+
+                    }
+                }
+
+            };
+
+            List<MedicalTestResult> medicalTestResults = new List<MedicalTestResult>()
+            {
+                new MedicalTestResult()
+                {
+                    Descritpion="Wyniki badań krwi i moczu",
+                    MedicalService=medicalServices[50],
+                    PdfDocument=  new PdfSharpCore.Pdf.PdfDocument( new MemoryStream( Properties.Resources.Badania_krwi_i_moczu                ))
+                },
+                new MedicalTestResult()
+                {
+                    Descritpion="Wyniki badań krwi",
+                    MedicalService=medicalServices[50],
+                    PdfDocument=  new PdfSharpCore.Pdf.PdfDocument( new MemoryStream( Properties.Resources.badania_krwi                ))
+                },
+                new MedicalTestResult()
+                {
+                    Descritpion="Wyniki badań cholesterolu",
+                    MedicalService=medicalServices[50],
+                    PdfDocument=  new PdfSharpCore.Pdf.PdfDocument( new MemoryStream( Properties.Resources.cholesterol ))
+                },
+                new MedicalTestResult()
+                {
+                    Descritpion="Wyniki ekg serca",
+                    MedicalService=medicalServices[50],
+                    PdfDocument=  new PdfSharpCore.Pdf.PdfDocument( new MemoryStream( Properties.Resources.ekg))
+                },
+            };
+
+            List<Core.Models.Recommendation> recommendations = new List<Recommendation>()
+            {
+                new Recommendation()
+                {
+                    Id=2,
+                    Title="Chroniczne zmęczenie, tycie, badania kontrolne",
+                    Description="Proszę wdrożyć dietę nisko-tłuszczową o nisko-cukrową oraz wykonać zlecone badania krwii i moczu"
+                },
+
+                new Recommendation()
+                {
+                    Id=1,
+                    Title="Cukrzyca - podejrzenie",
+                    Description="Proszę ograniczyć spożywanie słodkich napojów, słodyczy. Proszę zrobić badanie krwi.",
+                },
+                new Recommendation()
+                {
+                    Id=3,
+                    Title="Podejrzenie miażdzycy i wysokiego cholesterolu",
+                    Description="Proszę wdrożyć niskotłuszczową dietę. Wysokie ciśnienie 160/100, podejrzenie miażdzycy oraz podwyższonego cholesterolu."
+                },
+                new Recommendation()
+                {
+                    Id=4,
+                    Title="Szybkie męczenie u wysportowanej osoby",
+                    Description="Proszę unikać w najblizszym czasie dużego wysiłku oraz wykonać badanie ekg"
+                },
+                new Recommendation()
+                {
+                    Id=5,
+                    Title="Zmiany skórne typowe dla łuszczycy",
+                    Description="Proszę stosować belosalic na zmiany skórne."
+                }
+
+            };
+
+            List<VisitSummary> visitSummaries = new List<VisitSummary>()
+            {
+                new VisitSummary()
+                {
+                    Id=1,
+                    MedicalHistory="Pacjent skarży się na chroniczne zmęczenie. Wspomina też o tym, że mimo że je tyle samo co wcześniej, to ostatnio sporo przytył. Ma nadwagę, 170 cm wzrostu, 90 kg.",
+                    Prescription=prescriptions[0],
+                    Recommendations= new List<Recommendation>   (){ recommendations[0] , recommendations[4]}
+                },
+                new VisitSummary()
+                {
+                    Id=2,
+                    MedicalHistory="Pacjent skarży się na chroniczne zmęczenie. Wspomina też o tym, że mimo że je tyle samo co wcześniej, to ostatnio sporo przytył. Ma nadwagę, 170 cm wzrostu, 90 kg.",
+                    Prescription=prescriptions[1],
+                    Recommendations=new List<Recommendation>(){ recommendations[1] }
+                },
+                                new VisitSummary()
+                {
+                    Id=3,
+                    MedicalHistory="Pacjent skarży się na chroniczne zmęczenie. Wspomina też o tym, że mimo że je tyle samo co wcześniej, to ostatnio sporo przytył. Ma nadwagę, 170 cm wzrostu, 90 kg.",
+                    Prescription=prescriptions[2],
+                    Recommendations=new List<Recommendation>(){ recommendations[2] }
+                }
+,
+                                                new VisitSummary()
+                {
+                    Id=4,
+                    MedicalHistory="Pacjent skarży się na chroniczne zmęczenie. Wspomina też o tym, że mimo że je tyle samo co wcześniej, to ostatnio sporo przytył. Ma nadwagę, 170 cm wzrostu, 90 kg.",
+                    Prescription=prescriptions[3],
+                    Recommendations=new List<Recommendation>(){ recommendations[3] }
+                }
+,
+                                                                new VisitSummary()
+                {
+                    Id=5,
+                    MedicalHistory="Pacjent skarży się na chroniczne zmęczenie. Wspomina też o tym, że mimo że je tyle samo co wcześniej, to ostatnio sporo przytył. Ma nadwagę, 170 cm wzrostu, 90 kg.",
+                    Prescription=prescriptions[4],
+                    Recommendations=new List<Recommendation>(){ recommendations[4] },
+
+
+                }
+            };
+
+            DateTimeOffset now = DateTime.Now;
+            List<Visit> patientHistoricalVisits = new List<Visit>()
+            {
+
+                new Visit()
+                {
+                    Id=1,
+                    BookedMedicalServices=new       List<MedicalService>(){ medicalServices[0],medicalServices[1] },
+                    DateTimeSince=now.AddDays(-20).AddHours(5).AddMinutes(0),
+                    DateTimeTill=now.AddDays(-20).AddHours(5).AddMinutes(15),
+                    Location=locations.ElementAt(0),
+                    //MedicalRoom=medicalr//
+                }
+            };
+            return patient;
         }
+        //        VisitSummary="Pacjent skarży się na swędzenie skóry, mam lekką nadwagę, bywa śpiący po większym posiłku. W rodzinie są cukrzycy. Podejrzenie cykrzycy, zlecone badania"
+
         public IEnumerable<MedicalService> GetMedicalServices()
         {
             List<MedicalService> services = new List<MedicalService>()
             {
-                new MedicalService(){Id=0,Name="Konsultacja gastrologiczna	",Description="Konsultacja gastrologiczna", StandardPrice=250, IsPrimaryService=true},
 
-                new MedicalService(){Id=1,Name="USG",Description="USG", StandardPrice=200, IsPrimaryService=true},
-                new MedicalService(){Id=2,Name="RTG",Description="RTG", StandardPrice=200, IsPrimaryService=true},
-                new MedicalService(){Id=3,Name="Rezonans magnetyczny",Description="Rezonans magnetyczny", StandardPrice=200, IsPrimaryService=true},
+                //kardiolog
                 new MedicalService(){Id=4,Name="EKG spoczynkowe",Description="EKG spoczynkowe", StandardPrice=200, IsPrimaryService=false},
-                new MedicalService(){Id=5,Name="Komputerowe pole widzenia",Description="Komputerowe pole widzenia", StandardPrice=200, IsPrimaryService=false},
+                new MedicalService(){Id=4,Name="EKG wysiłkowe",Description="EKG wysiłkowe", StandardPrice=200, IsPrimaryService=false},
+                new MedicalService(){Id=4,Name="Echo serca",Description="Echo serca", StandardPrice=200, IsPrimaryService=false},
+
+                //gastrolog
                 new MedicalService(){Id=6,Name="Kolonoskopia",Description="Kolonoskopia", StandardPrice=200, IsPrimaryService=false},
-                new MedicalService(){Id=7,Name="Audiometria",Description="Audiometria", StandardPrice=200, IsPrimaryService=false},
                 new MedicalService(){Id=8,Name="Gastroskopia",Description="Gastroskopia", StandardPrice=200, IsPrimaryService=false},
-                new MedicalService(){Id=9,Name="Założenie gipsu",Description="Założenie gipsu", StandardPrice=200, IsPrimaryService=false},
-                new MedicalService(){Id=10,Name="Usunięcie paznokcia",Description="Usunięcie paznokcia", StandardPrice=100, IsPrimaryService=false},
 
-
+                //zęby higiena
                 new MedicalService(){Id=11,Name="Piaskowanie",Description="Piaskowanie", StandardPrice=100, IsPrimaryService=false},
                 new MedicalService(){Id=12,Name="Fluoryzacja",Description="Fluoryzacja", StandardPrice=100, IsPrimaryService=false},
-                new MedicalService(){Id=13,Name="Usunięcie ósemki",Description="Usunięcie ósemki", StandardPrice=100, IsPrimaryService=false},
-                new MedicalService(){Id=14,Name="Usunięcie zęba jednokorzeniowego",Description="Usunięcie zęba jednokorzeniowego", StandardPrice=100, IsPrimaryService=false},
-                new MedicalService(){Id=15,Name="Usunięcie zęba jednokorzeniowego wielokorzeniowego",Description="Usunięcie zęba jednokorzeniowego wielokorzeniowego", StandardPrice=100, IsPrimaryService=false},
-                new MedicalService(){Id=16,Name="Usunięcie zęba mlecznego",Description="Usunięcie zęba mlecznego", StandardPrice=100, IsPrimaryService=false},
-                new MedicalService(){Id=17,Name="Pantomogram zęba",Description="Pantomogram zęba", StandardPrice=100, IsPrimaryService=false},
-                new MedicalService(){Id=18,Name="Tomografia komputerowa CBCT",Description="Tomografia komputerowa CBCT", StandardPrice=100, IsPrimaryService=false},
-                new MedicalService(){Id=19,Name="Znieczulenie",Description="Znieczulenie", StandardPrice=50, IsPrimaryService=false},
-                new MedicalService(){Id=20,Name="Wypełnienie czasowe",Description="Wypełnienie czasowe", StandardPrice=50, IsPrimaryService=false},
-                new MedicalService(){Id=21,Name="Wypełnienie kompozytowe",Description="Wypełnienie kompozytowe", StandardPrice=200, IsPrimaryService=false},
-                new MedicalService(){Id=22,Name="Odbudowa zęba po leczeniu kanałowym",Description="Odbudowa zęba po leczeniu kanałowym", StandardPrice=400, IsPrimaryService=false},
-                new MedicalService(){Id=23,Name="Dewitalizacja",Description="Dewitalizacja", StandardPrice=100, IsPrimaryService=false},
-                new MedicalService(){Id=63,Name="Korona porcelanowa",Description="Korona porcelanowa", StandardPrice=800, IsPrimaryService=false},
-                new MedicalService(){Id=64,Name="Licówka porcelanowa",Description="Licówka porcelanowa", StandardPrice=1600, IsPrimaryService=false},
-                new MedicalService(){Id=65,Name="Korona pełnoceramiczna",Description="Korona pełnoceramiczna", StandardPrice=1600, IsPrimaryService=false},
 
 
+                //gabinet zabiegowy
                 new MedicalService(){Id=24,Name="Podstawowe badanie krwi",Description="Podstawowe badanie krwi", StandardPrice=400, IsPrimaryService=false},
                 new MedicalService(){Id=25,Name="Rozszerzone badanie krwi",Description="Rozszerzone zęba po leczeniu kanałowym", StandardPrice=400, IsPrimaryService=false},
                 new MedicalService(){Id=26,Name="Badanie moczu",Description="Badanie moczu", StandardPrice=400, IsPrimaryService=false},
@@ -1214,19 +1475,75 @@ namespace Asklepios.Data.InMemoryContexts
                 new MedicalService(){Id=29,Name="Test antygenowy COVID-19",Description="Test antygenowy COVID-19", StandardPrice=400, IsPrimaryService=false},
 
 
-                new MedicalService(){Id=30,Name="Masaż leczniczy",Description="Masaż leczniczy", StandardPrice=300, IsPrimaryService=true},
-
-                new MedicalService(){Id=31,Name="Zajęcia rehablitacyjne",Description="Zajęcia rehablitacyjne", StandardPrice=300, IsPrimaryService=true},
-
+                //fizykoterapia
                 new MedicalService(){Id=32,Name="Krioterapia",Description="Krioterapia", StandardPrice=100, IsPrimaryService=false},
                 new MedicalService(){Id=33,Name="Elektrostymulacja",Description="Elektrostymulacja", StandardPrice=100, IsPrimaryService=false},
                 new MedicalService(){Id=34,Name="Krioterapia",Description="Krioterapia", StandardPrice=200, IsPrimaryService=false},
                 new MedicalService(){Id=35,Name="Ultradźwięki",Description="Ultradźwięki", StandardPrice=100, IsPrimaryService=false},
                 new MedicalService(){Id=36,Name="Magnetoterapia",Description="Magnetoterapia", StandardPrice=100, IsPrimaryService=false},
 
+                //laryngolog
                 new MedicalService(){Id=37,Name="Płukanie ucha",Description="Płukanie ucha", StandardPrice=50, IsPrimaryService=false},
+                new MedicalService(){Id=7,Name="Audiometria",Description="Audiometria", StandardPrice=200, IsPrimaryService=false},
 
 
+                //szczepienia
+                new MedicalService(){Id=66,Name="Szczepienie na odrę",Description="Szczepienie na odrę", StandardPrice=100, IsPrimaryService=false},
+                new MedicalService(){Id=67,Name="Szczepienie na grypę",Description="Szczepienie na grypę", StandardPrice=100, IsPrimaryService=false},
+                new MedicalService(){Id=68,Name="Szczepienie na COVID-19",Description="Szczepienie na COVID-19", StandardPrice=200, IsPrimaryService=false},
+                new MedicalService(){Id=69,Name="Szczepienie przeciwko wściekliźnie",Description="Szczepienie przeciwko wściekliźnie", StandardPrice=200, IsPrimaryService=false},
+                new MedicalService(){Id=70,Name="Szczepienie przeciwko tężcowi",Description="Szczepienie przeciwko tężcowi", StandardPrice=100, IsPrimaryService=false},
+                new MedicalService(){Id=71,Name="Szczepienie przeciwko malarii",Description="Szczepienie przeciwko malarii", StandardPrice=500, IsPrimaryService=false},
+                new MedicalService(){Id=72,Name="Szczepienie przeciwko cholerze",Description="Szczepienie przeciwko cholerze", StandardPrice=100, IsPrimaryService=false},
+
+
+                //okulistyka
+                new MedicalService(){Id=80,Name="Topografia rogówki",Description="Topografia rogówki", StandardPrice=100, IsPrimaryService=false},
+                new MedicalService(){Id=81,Name="Dobór soczewek kontaktowych",Description="Dobór soczewek kontaktowych", StandardPrice=150, IsPrimaryService=false},
+                new MedicalService(){Id=82,Name="Zdjęcie dna oka",Description="Zdjęcie dna oka", StandardPrice=50, IsPrimaryService=false},
+                new MedicalService(){Id=83,Name="Pachymetria",Description="Pachymetria", StandardPrice=100, IsPrimaryService=false},
+                new MedicalService(){Id=84,Name="Pomiar ciśnienia wewnątrzgałkowego	",Description="Pomiar ciśnienia wewnątrzgałkowego", StandardPrice=50, IsPrimaryService=false},
+                new MedicalService(){Id=5,Name="Komputerowe pole widzenia",Description="Komputerowe pole widzenia", StandardPrice=200, IsPrimaryService=false},
+
+
+                //chirurg
+                new MedicalService() { Id = 86, Name = "Szycie rany", Description = "Szycie rany", StandardPrice = 100, IsPrimaryService = false },
+                new MedicalService() { Id = 87, Name = "Założenie szwów", Description = "Założenie szwów", StandardPrice = 100, IsPrimaryService = false },
+                new MedicalService() { Id = 88, Name = "Zdjęcie szwów", Description = "Zdjęcie szwów", StandardPrice = 100, IsPrimaryService = false },
+                new MedicalService() { Id = 89, Name = "Zabieg usunięcia ciała obcego", Description = "Zabieg usunięcia ciała obcego", StandardPrice = 600, IsPrimaryService = false },
+                new MedicalService() { Id = 90, Name = "Biopsja otwarta", Description = "Biopsja otwarta", StandardPrice = 600, IsPrimaryService = false },
+                new MedicalService(){Id=10,Name="Usunięcie paznokcia",Description="Usunięcie paznokcia", StandardPrice=100, IsPrimaryService=false},
+
+                                //kategoria stomatologia
+                //ortodoncja
+                new MedicalService(){Id=77,Name="Aparat stały kryształowy",Description="Aparat stały kryształowy", StandardPrice=2500, IsPrimaryService=false},
+                new MedicalService(){Id=78,Name="Aparat stały metalowy",Description="Aparat stały metalowy", StandardPrice=100, IsPrimaryService=false},
+                new MedicalService(){Id=79,Name="Aparat ruchomy - płytka Schwarza",Description="Aparat ruchomy - płytka Schwarza", StandardPrice=100, IsPrimaryService=false},
+
+                //chirurgia stomatologiczna
+                new MedicalService(){Id=13,Name="Usunięcie ósemki",Description="Usunięcie ósemki", StandardPrice=100, IsPrimaryService=false},
+                new MedicalService(){Id=14,Name="Usunięcie zęba jednokorzeniowego",Description="Usunięcie zęba jednokorzeniowego", StandardPrice=100, IsPrimaryService=false},
+                new MedicalService(){Id=15,Name="Usunięcie zęba jednokorzeniowego wielokorzeniowego",Description="Usunięcie zęba jednokorzeniowego wielokorzeniowego", StandardPrice=100, IsPrimaryService=false},
+                new MedicalService(){Id=16,Name="Usunięcie zęba mlecznego",Description="Usunięcie zęba mlecznego", StandardPrice=100, IsPrimaryService=false},
+                //Stomatologiczna diagnostyka obrazowa
+                new MedicalService(){Id=17,Name="Pantomogram zęba",Description="Pantomogram zęba", StandardPrice=100, IsPrimaryService=false},
+                new MedicalService(){Id=18,Name="Tomografia komputerowa CBCT",Description="Tomografia komputerowa CBCT", StandardPrice=100, IsPrimaryService=false},
+                //stomatologia zachowawcza
+                new MedicalService(){Id=19,Name="Znieczulenie",Description="Znieczulenie", StandardPrice=50, IsPrimaryService=false},
+                new MedicalService(){Id=20,Name="Wypełnienie czasowe",Description="Wypełnienie czasowe", StandardPrice=50, IsPrimaryService=false},
+                new MedicalService(){Id=21,Name="Wypełnienie kompozytowe",Description="Wypełnienie kompozytowe", StandardPrice=200, IsPrimaryService=false},
+                new MedicalService(){Id=22,Name="Odbudowa zęba po leczeniu kanałowym",Description="Odbudowa zęba po leczeniu kanałowym", StandardPrice=400, IsPrimaryService=false},
+                new MedicalService(){Id=23,Name="Dewitalizacja",Description="Dewitalizacja", StandardPrice=100, IsPrimaryService=false},
+                //protetyka
+                new MedicalService(){Id=63,Name="Korona porcelanowa",Description="Korona porcelanowa", StandardPrice=800, IsPrimaryService=false},
+                new MedicalService(){Id=64,Name="Licówka porcelanowa",Description="Licówka porcelanowa", StandardPrice=1600, IsPrimaryService=false},
+                new MedicalService(){Id=65,Name="Korona pełnoceramiczna",Description="Korona pełnoceramiczna", StandardPrice=1600, IsPrimaryService=false},
+                                //ortopeda
+                new MedicalService() { Id = 85, Name = "Zdjęcie gipsu", Description = "Zdjęcie gipsu", StandardPrice = 100, IsPrimaryService = false },
+                new MedicalService(){Id=9,Name="Założenie gipsu",Description="Założenie gipsu", StandardPrice=200, IsPrimaryService=false},
+
+
+                new MedicalService(){Id=0,Name="Konsultacja gastrologiczna",Description="Konsultacja gastrologiczna", StandardPrice=250, IsPrimaryService=true},
                 new MedicalService(){Id=38,Name="Konsultacja proktologiczna",Description="Konsultacja proktologiczna", StandardPrice=200, IsPrimaryService=true},
                 new MedicalService(){Id=39,Name="Konsultacja internistyczna",Description="Konsultacja internistyczna", StandardPrice=200, IsPrimaryService=true},
                 new MedicalService(){Id=40,Name="Konsultacja pediatryczna",Description="Konsultacja pediatryczna", StandardPrice=200, IsPrimaryService=true},
@@ -1247,45 +1564,28 @@ namespace Asklepios.Data.InMemoryContexts
                 new MedicalService(){Id=55,Name="Konsultacja urologiczna",Description="Konsultacja urologiczna", StandardPrice=200, IsPrimaryService=true},
                 new MedicalService(){Id=56,Name="Konsultacja psychologiczna",Description="Konsultacja psychologiczna", StandardPrice=200, IsPrimaryService=true},
 
-
                 new MedicalService(){Id=57,Name="Stomatologia zachowawcza",Description="Stomatologia zachowawcza", StandardPrice=200, IsPrimaryService=true},
-                new MedicalService(){Id=58,Name="Ortodoncja",Description="Ortodoncja", StandardPrice=200, IsPrimaryService=true},
+                new MedicalService(){Id=58,Name="Ortodoncja",Description="Ortodoncja", StandardPrice=200, IsPrimaryService=true, SubServices=new List<MedicalService>(){ } },
                 new MedicalService(){Id=59,Name="Chirurgia stomatologiczna",Description="Chirurgia stomatologiczna", StandardPrice=200, IsPrimaryService=true},
-                new MedicalService(){Id=60,Name="Rentgen stomatologiczny",Description="Rentgen stomatologiczny", StandardPrice=200, IsPrimaryService=true},
+                new MedicalService(){Id=60,Name="Stomatologiczna diagnostyka obrazowa",Description="Rentgen stomatologiczny", StandardPrice=200, IsPrimaryService=true},
                 new MedicalService(){Id=61,Name="Protetyka",Description="Protetyka", StandardPrice=200, IsPrimaryService=true},
                 new MedicalService(){Id=62,Name="Profilaktyka stomatologiczna",Description="Profilaktyka stomatologiczna", StandardPrice=200, IsPrimaryService=true},
 
+                new MedicalService(){Id=76,Name="Szczepienia",Description="Szczepienia", StandardPrice=100, IsPrimaryService=true, SubServices=new List<MedicalService>() { } },
 
-                new MedicalService(){Id=66,Name="Szczepienie na odrę",Description="Szczepienie na odrę", StandardPrice=100, IsPrimaryService=false},
-
-                new MedicalService(){Id=67,Name="Szczepienie na grypę",Description="Szczepienie na grypę", StandardPrice=100, IsPrimaryService=false},
-                new MedicalService(){Id=68,Name="Szczepienie na COVID-19",Description="Szczepienie na COVID-19", StandardPrice=200, IsPrimaryService=false},
-                new MedicalService(){Id=69,Name="Szczepienie przeciwko wściekliźnie",Description="Szczepienie przeciwko wściekliźnie", StandardPrice=200, IsPrimaryService=false},
-                new MedicalService(){Id=70,Name="Szczepienie przeciwko tężcowi",Description="Szczepienie przeciwko tężcowi", StandardPrice=100, IsPrimaryService=false},
-                new MedicalService(){Id=71,Name="Szczepienie przeciwko malarii",Description="Szczepienie przeciwko malarii", StandardPrice=500, IsPrimaryService=false},
-                new MedicalService(){Id=72,Name="Szczepienie przeciwko cholerze",Description="Szczepienie przeciwko cholerze", StandardPrice=100, IsPrimaryService=false},
-
+                new MedicalService(){Id=1,Name="USG",Description="USG", StandardPrice=200, IsPrimaryService=true},
+                new MedicalService(){Id=2,Name="RTG",Description="RTG", StandardPrice=200, IsPrimaryService=true},
+                new MedicalService(){Id=3,Name="Rezonans magnetyczny",Description="Rezonans magnetyczny", StandardPrice=200, IsPrimaryService=true},
                 new MedicalService(){Id=73,Name="Medycyna pracy",Description="Medycyna pracy", StandardPrice=200, IsPrimaryService=true},
-                new MedicalService(){Id=74,Name="Badanie laboratoryjne",Description="Badanie laboratoryjne", StandardPrice=100, IsPrimaryService=true},
+
+                new MedicalService(){Id=30,Name="Masaż leczniczy",Description="Masaż leczniczy", StandardPrice=300, IsPrimaryService=true},
+                new MedicalService(){Id=31,Name="Zajęcia rehablitacyjne",Description="Zajęcia rehablitacyjne", StandardPrice=300, IsPrimaryService=true},
                 new MedicalService(){Id=75,Name="Fizykoterapia",Description="Fizykoterapia", StandardPrice=400, IsPrimaryService=true} ,
 
-                new MedicalService(){Id=76,Name="Szczepienia",Description="Szczepienia", StandardPrice=100, IsPrimaryService=true},
 
-                new MedicalService(){Id=77,Name="Aparat stały kryształowy",Description="Aparat stały kryształowy", StandardPrice=2500, IsPrimaryService=false},
-                new MedicalService(){Id=78,Name="Aparat stały metalowy",Description="Aparat stały metalowy", StandardPrice=100, IsPrimaryService=false},
-                new MedicalService(){Id=79,Name="Aparat ruchomy - płytka Schwarza",Description="Aparat ruchomy - płytka Schwarza", StandardPrice=100, IsPrimaryService=false},
+                new MedicalService(){Id=74,Name="Badanie laboratoryjne",Description="Badanie laboratoryjne", StandardPrice=100, IsPrimaryService=true},
 
-                new MedicalService(){Id=80,Name="Topografia rogówki",Description="Topografia rogówki", StandardPrice=100, IsPrimaryService=false},
-                new MedicalService(){Id=81,Name="Dobór soczewek kontaktowych",Description="Dobór soczewek kontaktowych", StandardPrice=150, IsPrimaryService=false},
-                new MedicalService(){Id=82,Name="Zdjęcie dna oka",Description="Zdjęcie dna oka", StandardPrice=50, IsPrimaryService=false},
-                new MedicalService(){Id=83,Name="Pachymetria",Description="Pachymetria", StandardPrice=100, IsPrimaryService=false},
-                new MedicalService(){Id=84,Name="Pomiar ciśnienia wewnątrzgałkowego	",Description="Pomiar ciśnienia wewnątrzgałkowego", StandardPrice=50, IsPrimaryService=false},
-                new MedicalService() { Id = 85, Name = "Zdjęcie gipsu", Description = "Zdjęcie gipsu", StandardPrice = 100, IsPrimaryService = false },
-                new MedicalService() { Id = 86, Name = "Szycie rany", Description = "Szycie rany", StandardPrice = 100, IsPrimaryService = false },
-                new MedicalService() { Id = 87, Name = "Założenie szwów", Description = "Założenie szwów", StandardPrice = 100, IsPrimaryService = false },
-                new MedicalService() { Id = 88, Name = "Zdjęcie szwów", Description = "Zdjęcie szwów", StandardPrice = 100, IsPrimaryService = false },
-                new MedicalService() { Id = 89, Name = "Zabieg usunięcia ciała obcego", Description = "Zabieg usunięcia ciała obcego", StandardPrice = 600, IsPrimaryService = false },
-                new MedicalService() { Id = 90, Name = "Biopsja otwarta", Description = "Biopsja otwarta", StandardPrice = 600, IsPrimaryService = false },
+
 
 
             };
@@ -1349,6 +1649,880 @@ namespace Asklepios.Data.InMemoryContexts
 
 
         public Location GetLocationById(long locationId)
+        {
+            throw new NotImplementedException();
+        }
+
+        public IEnumerable<Patient> GetAllPatients()
+        {
+            List<Patient> patients = new List<Patient>()
+            {
+                new Patient (
+                    name: "Daria",
+                    surName: "Raszpan",
+                    id:1,
+                    pesel:"849846321316342",
+                    hasPolishCitizenship:true,
+                    passportCode:null,
+                    passportNumber:null,
+                    email:"patient1@live.com",
+                    aglomeration:Core.Enums.Aglomeration.Bialystok
+                    )
+                {
+                    EmployerNIP="549642132152",
+                    MedicalPackage=medicalPackages[0],
+                    NFZUnit=nfzUnits[0]
+                },
+                new Patient (
+                    name: "Magdalena",
+                    surName: "Bomba",
+                    id:2,
+                    pesel:"7487945612164",
+                    hasPolishCitizenship:true,
+                    passportCode:null,
+                    passportNumber:null,
+                    email:"patient2@live.com",
+                    aglomeration:Core.Enums.Aglomeration.Cracow
+                    )
+                {
+                    EmployerNIP="549642132152",
+                    MedicalPackage=medicalPackages[1],
+                    NFZUnit=nfzUnits[1]
+                },
+                                new Patient (
+                    name: "Katarzyna",
+                    surName: "Jelitko",
+                    id:3,
+                    pesel:"6649816545649",
+                    hasPolishCitizenship:true,
+                    passportCode:null,
+                    passportNumber:null,
+                    email:"patient3@live.com",
+                    aglomeration:Core.Enums.Aglomeration.Kielce
+                    )
+                {
+                    EmployerNIP="7777742132152",
+                    MedicalPackage=medicalPackages[2],
+                    NFZUnit=nfzUnits[2]
+                },
+                new Patient (
+                    name: "Krzysztof",
+                    surName: "Kitka",
+                    id:4,
+                    pesel:"798456462134",
+                    hasPolishCitizenship:true,
+                    passportCode:null,
+                    passportNumber:null,
+                    email:"patient4@live.com",
+                    aglomeration:Core.Enums.Aglomeration.Kuyavia
+                    )
+                {
+                    EmployerNIP="7777742132152",
+                    MedicalPackage=medicalPackages[3],
+                    NFZUnit=nfzUnits[3]
+                },
+                new Patient (
+                    name: "Dariusz",
+                    surName: "Czapa",
+                    id:5,
+                    pesel:"821524646951234",
+                    hasPolishCitizenship:true,
+                    passportCode:null,
+                    passportNumber:null,
+                    email:"patient6@live.com",
+                    aglomeration:Core.Enums.Aglomeration.Poznan
+                    )
+                {
+                    EmployerNIP="7777742132152",
+                    MedicalPackage=medicalPackages[1],
+                    NFZUnit=nfzUnits[4]
+                },
+                new Patient (
+                    name: "Tomasz",
+                    surName: "Komar",
+                    id:6,
+                    pesel:"8126165461233",
+                    hasPolishCitizenship:true,
+                    passportCode:null,
+                    passportNumber:null,
+                    email:"patient5@live.com",
+                    aglomeration:Core.Enums.Aglomeration.Rzeszów
+                    )
+                {
+                    EmployerNIP="7777742132152",
+                    MedicalPackage=medicalPackages[0],
+                    NFZUnit=nfzUnits[5]
+                },
+                new Patient (
+                    name: "Arkadiusz",
+                    surName: "Patka",
+                    id:7,
+                    pesel:"795123134654",
+                    hasPolishCitizenship:true,
+                    passportCode:null,
+                    passportNumber:null,
+                    email:"patient6@live.com",
+                    aglomeration:Core.Enums.Aglomeration.Silesia
+                    )
+                {
+                    EmployerNIP="7777742132152",
+                    MedicalPackage=medicalPackages[2],
+                    NFZUnit=nfzUnits[2]
+                },
+                new Patient (
+                    name: "Marta",
+                    surName: "Rakieta",
+                    id:8,
+                    pesel:"910213456461",
+                    hasPolishCitizenship:true,
+                    passportCode:null,
+                    passportNumber:null,
+                    email:"patient7@live.com",
+                    aglomeration:Core.Enums.Aglomeration.Tricity
+                    )
+                {
+                    EmployerNIP="7777742132152",
+                    MedicalPackage=medicalPackages[3],
+                    NFZUnit=nfzUnits[7]
+                },
+                new Patient (
+                    name: "Ada",
+                    surName: "Ruda",
+                    id:8,
+                    pesel:"941213216541",
+                    hasPolishCitizenship:true,
+                    passportCode:null,
+                    passportNumber:null,
+                    email:"patient8@live.com",
+                    aglomeration:Core.Enums.Aglomeration.Warsaw
+                    )
+                {
+                    EmployerNIP="984891621654",
+                    MedicalPackage=medicalPackages[2],
+                    NFZUnit=nfzUnits[8]
+                },
+                new Patient (
+                    name: "Genowefa",
+                    surName: "Pigwa",
+                    id:9,
+                    pesel:"54651324651322",
+                    hasPolishCitizenship:true,
+                    passportCode:null,
+                    passportNumber:null,
+                    email:"patient9@live.com",
+                    aglomeration:Core.Enums.Aglomeration.Wroclaw
+                    )
+                {
+                    EmployerNIP="54646516465",
+                    MedicalPackage=medicalPackages[2],
+                    NFZUnit=nfzUnits[8]
+                },
+                new Patient (
+                    name: "Wacław",
+                    surName: "Kopytko",
+                    id:10,
+                    pesel:"552336549494",
+                    hasPolishCitizenship:true,
+                    passportCode:null,
+                    passportNumber:null,
+                    email:"patient11@live.com",
+                    aglomeration:Core.Enums.Aglomeration.Warsaw
+                    )
+                {
+                    EmployerNIP="7777742132152",
+                    MedicalPackage=medicalPackages[1],
+                    NFZUnit=nfzUnits[7]
+                },
+                new Patient (
+                    name: "Bożena",
+                    surName: "Raj",
+                    id:11,
+                    pesel:"49212316546513",
+                    hasPolishCitizenship:true,
+                    passportCode:null,
+                    passportNumber:null,
+                    email:"patient12@live.com",
+                    aglomeration:Core.Enums.Aglomeration.Cracow
+                    )
+                {
+                    EmployerNIP="54646516465",
+                    MedicalPackage=medicalPackages[1],
+                    NFZUnit=nfzUnits[2]
+                },
+                new Patient (
+                    name: "Fryderek",
+                    surName: "Czyż",
+                    id:12,
+                    pesel:"5613264984561",
+                    hasPolishCitizenship:true,
+                    passportCode:null,
+                    passportNumber:null,
+                    email:"patient13@live.com",
+                    aglomeration:Core.Enums.Aglomeration.Warsaw
+                    )
+                {
+                    EmployerNIP="7777742132152",
+                    MedicalPackage=medicalPackages[0],
+                    NFZUnit=nfzUnits[10]
+                },
+                new Patient (
+                    name: "Monika",
+                    surName: "Zalewska",
+                    id:13,
+                    pesel:"823456132156462",
+                    hasPolishCitizenship:true,
+                    passportCode:null,
+                    passportNumber:null,
+                    email:"patient14@live.com",
+                    aglomeration:Core.Enums.Aglomeration.Warsaw
+                    )
+                {
+                    EmployerNIP="7777742132152",
+                    MedicalPackage=medicalPackages[3],
+                    NFZUnit=nfzUnits[15]
+                },
+
+            };
+
+            return patients;
+
+
+        }
+
+        public Patient GetPatientById(long id)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Visit GetAvailableVisitById()
+        {
+            throw new NotImplementedException();
+        }
+
+        public MedicalWorker GetMedicalWorkerById()
+        {
+            throw new NotImplementedException();
+        }
+
+        public Visit GetHistoricalVisitById()
+        {
+            throw new NotImplementedException();
+        }
+
+        public MedicalService GetMedicalServiceById()
+        {
+            throw new NotImplementedException();
+        }
+
+        public MedicalPackage GetMedicalPackageById()
+        {
+            throw new NotImplementedException();
+        }
+
+        public NFZUnit GetNFZUnitById()
+        {
+            throw new NotImplementedException();
+        }
+
+        public VisitCategory GetVisitCategoryById()
+        {
+            throw new NotImplementedException();
+        }
+
+        public IEnumerable<IEnumerable<MedicalRoom>> GetMedicalRooms()
+        {
+            List<List<MedicalRoom>> roomsCollections = new List<List<MedicalRoom>>()
+            {
+                new List<MedicalRoom>()
+            {
+                new MedicalRoom()
+                {
+                    Id = 1,
+                    FloorNumber = 0,
+                    MedicalRoomType = Core.Enums.MedicalRoomType.Cardiological,
+                    Name = "1"
+                },
+                new MedicalRoom()
+                {
+                    Id = 2,
+                    FloorNumber = 0,
+                    MedicalRoomType = Core.Enums.MedicalRoomType.Dental,
+                    Name = "2"
+                },
+                new MedicalRoom()
+                {
+                    Id = 3,
+                    FloorNumber = 0,
+                    MedicalRoomType = Core.Enums.MedicalRoomType.General,
+                    Name = "3"
+                },
+                new MedicalRoom()
+                {
+                    Id = 4,
+                    FloorNumber = 0,
+                    MedicalRoomType = Core.Enums.MedicalRoomType.General,
+                    Name = "4"
+                },
+                new MedicalRoom()
+                {
+                    Id = 5,
+                    FloorNumber = 0,
+                    MedicalRoomType = Core.Enums.MedicalRoomType.Gynecological,
+                    Name = "5"
+                },
+                new MedicalRoom()
+                {
+                    Id = 6,
+                    FloorNumber = 0,
+                    MedicalRoomType = Core.Enums.MedicalRoomType.Laryngological,
+                    Name = "6"
+                },
+                new MedicalRoom()
+                {
+                    Id = 7,
+                    FloorNumber = 0,
+                    MedicalRoomType = Core.Enums.MedicalRoomType.MedicalImaging,
+                    Name = "7"
+                },
+                new MedicalRoom()
+                {
+                    Id = 8,
+                    FloorNumber = 0,
+                    MedicalRoomType = Core.Enums.MedicalRoomType.Neurological,
+                    Name = "8"
+                },
+                new MedicalRoom()
+                {
+                    Id = 9,
+                    FloorNumber = 0,
+                    MedicalRoomType = Core.Enums.MedicalRoomType.Ophthalmology,
+                    Name = "9"
+                },
+                new MedicalRoom()
+                {
+                    Id = 10,
+                    FloorNumber = 0,
+                    MedicalRoomType = Core.Enums.MedicalRoomType.OralHygiene,
+                    Name = "10"
+                },
+                new MedicalRoom()
+                {
+                    Id = 11,
+                    FloorNumber = 0,
+                    MedicalRoomType = Core.Enums.MedicalRoomType.OralHygiene,
+                    Name = "11"
+                },
+                new MedicalRoom()
+                {
+                    Id = 12,
+                    FloorNumber = 0,
+                    MedicalRoomType = Core.Enums.MedicalRoomType.Rehabilitation,
+                    Name = "12"
+                },
+
+            },
+                new List<MedicalRoom>()
+            {
+                new MedicalRoom()
+                {
+                    Id=13,
+                    FloorNumber=1,
+                    MedicalRoomType=Core.Enums.MedicalRoomType.Surgical,
+                    Name="1A"
+                },
+                new MedicalRoom()
+                {
+                    Id=14,
+                    FloorNumber=1,
+                    MedicalRoomType=Core.Enums.MedicalRoomType.Treatment,
+                    Name="1B"
+                },
+                new MedicalRoom()
+                {
+                    Id=15,
+                    FloorNumber=1,
+                    MedicalRoomType=Core.Enums.MedicalRoomType.General,
+                    Name="1C"
+                },
+                new MedicalRoom()
+                {
+                    Id=16,
+                    FloorNumber=1,
+                    MedicalRoomType=Core.Enums.MedicalRoomType.General,
+                    Name="1D"
+                },
+                new MedicalRoom()
+                {
+                    Id=17,
+                    FloorNumber=1,
+                    MedicalRoomType=Core.Enums.MedicalRoomType.Laryngological,
+                    Name="1E"
+                },
+                new MedicalRoom()
+                {
+                    Id=18,
+                    FloorNumber=2,
+                    MedicalRoomType=Core.Enums.MedicalRoomType.Cardiological,
+                    Name="2A"
+                },
+                new MedicalRoom()
+                {
+                    Id=19,
+                    FloorNumber=2,
+                    MedicalRoomType=Core.Enums.MedicalRoomType.MedicalImaging,
+                    Name="2B"
+                },
+                new MedicalRoom()
+                {
+                    Id=20,
+                    FloorNumber=2,
+                    MedicalRoomType=Core.Enums.MedicalRoomType.Ophthalmology,
+                    Name="2C"
+                },
+                new MedicalRoom()
+                {
+                    Id=21,
+                    FloorNumber=2,
+                    MedicalRoomType=Core.Enums.MedicalRoomType.General,
+                    Name="2D"
+                },
+                new MedicalRoom()
+                {
+                    Id=22,
+                    FloorNumber=3,
+                    MedicalRoomType=Core.Enums.MedicalRoomType.General,
+                    Name="3A"
+                },
+                new MedicalRoom()
+                {
+                    Id=23,
+                    FloorNumber=3,
+                    MedicalRoomType=Core.Enums.MedicalRoomType.Treatment,
+                    Name="3B"
+                },
+                new MedicalRoom()
+                {
+                    Id=24,
+                    FloorNumber=3,
+                    MedicalRoomType=Core.Enums.MedicalRoomType.Cardiological,
+                    Name="3C"
+                },
+                new MedicalRoom()
+                {
+                    Id=64,
+                    FloorNumber=3,
+                    MedicalRoomType=Core.Enums.MedicalRoomType.General,
+                    Name="3C"
+                },
+
+
+            },
+                new List<MedicalRoom>()
+            {
+                new MedicalRoom()
+                {
+                    Id=25,
+                    FloorNumber=4,
+                    MedicalRoomType=Core.Enums.MedicalRoomType.Treatment,
+                    Name="41"
+                },
+                new MedicalRoom()
+                {
+                    Id=26,
+                    FloorNumber=1,
+                    MedicalRoomType=Core.Enums.MedicalRoomType.Treatment,
+                    Name="42"
+                },
+                                new MedicalRoom()
+                {
+                Id=27,
+                    FloorNumber=1,
+                    MedicalRoomType=Core.Enums.MedicalRoomType.General,
+                    Name="43"
+                },
+                new MedicalRoom()
+                {
+                    Id=28,
+                    FloorNumber=1,
+                    MedicalRoomType=Core.Enums.MedicalRoomType.MedicalImaging,
+                    Name="44"
+                },
+                new MedicalRoom()
+                {
+                    Id=29,
+                    FloorNumber=1,
+                    MedicalRoomType=Core.Enums.MedicalRoomType.General,
+                    Name="45"
+                },
+                new MedicalRoom()
+                {
+                    Id=30,
+                    FloorNumber=1,
+                    MedicalRoomType=Core.Enums.MedicalRoomType.Cardiological,
+                    Name="46"
+                },
+                new MedicalRoom()
+                {
+                    Id=31,
+                    FloorNumber=1,
+                    MedicalRoomType=Core.Enums.MedicalRoomType.Gynecological ,
+                    Name="47"
+                },
+                new MedicalRoom()
+                {
+                    Id=32,
+                    FloorNumber=1,
+                    MedicalRoomType=Core.Enums.MedicalRoomType.Laryngological,
+                    Name="51"
+                },
+                new MedicalRoom()
+                {
+                    Id=33,
+                    FloorNumber=1,
+                    MedicalRoomType=Core.Enums.MedicalRoomType.Neurological,
+                    Name="52"
+                },
+                new MedicalRoom()
+                {
+                    Id=34,
+                    FloorNumber=1,
+                    MedicalRoomType=Core.Enums.MedicalRoomType.Ophthalmology,
+                    Name="53"
+                },
+                new MedicalRoom()
+                {
+                    Id=35,
+                    FloorNumber=1,
+                    MedicalRoomType=Core.Enums.MedicalRoomType.Rehabilitation,
+                    Name="54"
+                },
+                new MedicalRoom()
+                {
+                    Id=36,
+                    FloorNumber=1,
+                    MedicalRoomType=Core.Enums.MedicalRoomType.Surgical,
+                    Name="55"
+                },
+                                new MedicalRoom()
+                {
+                    Id=61,
+                    FloorNumber=1,
+                    MedicalRoomType=Core.Enums.MedicalRoomType.Surgical,
+                    Name="56"
+                },
+                new MedicalRoom()
+                {
+                    Id=62,
+                    FloorNumber=1,
+                    MedicalRoomType=Core.Enums.MedicalRoomType.Surgical,
+                    Name="57"
+                },
+                new MedicalRoom()
+                {
+                    Id=63,
+                    FloorNumber=1,
+                    MedicalRoomType=Core.Enums.MedicalRoomType.Surgical,
+                    Name="58"
+                },
+
+            },
+                new List<MedicalRoom>()
+            {
+                new MedicalRoom()
+                {
+                    Id=37,
+                    FloorNumber=7,
+                    MedicalRoomType=Core.Enums.MedicalRoomType.Surgical,
+                    Name="2"
+                },
+                new MedicalRoom()
+                {
+                    Id=38,
+                    FloorNumber=7,
+                    MedicalRoomType=Core.Enums.MedicalRoomType.Dental,
+                    Name="3"
+                },
+                                new MedicalRoom()
+                {
+                    Id=39,
+                    FloorNumber=7,
+                    MedicalRoomType=Core.Enums.MedicalRoomType.OralHygiene,
+                    Name="4"
+                },
+                new MedicalRoom()
+                {
+                    Id=40,
+                    FloorNumber=7,
+                    MedicalRoomType=Core.Enums.MedicalRoomType.Cardiological,
+                    Name="5"
+                },
+                new MedicalRoom()
+                {
+                    Id=41,
+                    FloorNumber=7,
+                    MedicalRoomType=Core.Enums.MedicalRoomType.General,
+                    Name="6"
+                },
+                new MedicalRoom()
+                {
+                    Id=42,
+                    FloorNumber=7,
+                    MedicalRoomType=Core.Enums.MedicalRoomType.General,
+                    Name="7"
+                },
+                new MedicalRoom()
+                {
+                    Id=43,
+                    FloorNumber=7,
+                    MedicalRoomType=Core.Enums.MedicalRoomType.Rehabilitation,
+                    Name="8"
+                },
+                new MedicalRoom()
+                {
+                    Id=44,
+                    FloorNumber=7,
+                    MedicalRoomType=Core.Enums.MedicalRoomType.Treatment,
+                    Name="9"
+                },
+                new MedicalRoom()
+                {
+                    Id=45,
+                    FloorNumber=7,
+                    MedicalRoomType=Core.Enums.MedicalRoomType.Cardiological,
+                    Name="10"
+                },
+                new MedicalRoom()
+                {
+                    Id=46,
+                    FloorNumber=7,
+                    MedicalRoomType=Core.Enums.MedicalRoomType.Neurological,
+                    Name="11"
+                },
+                new MedicalRoom()
+                {
+                    Id=47,
+                    FloorNumber=7,
+                    MedicalRoomType=Core.Enums.MedicalRoomType.MedicalImaging,
+                    Name="12"
+                },
+                new MedicalRoom()
+                {
+                    Id=48,
+                    FloorNumber=7,
+                    MedicalRoomType=Core.Enums.MedicalRoomType.General,
+                    Name="13"
+                },
+
+            },
+                new List<MedicalRoom>()
+            {
+                new MedicalRoom()
+                {
+                    Id=49,
+                    FloorNumber=2,
+                    MedicalRoomType=Core.Enums.MedicalRoomType.Cardiological,
+                    Name="A"
+                },
+                new MedicalRoom()
+                {
+                    Id=50,
+                    FloorNumber=2,
+                    MedicalRoomType=Core.Enums.MedicalRoomType.Cardiological,
+                    Name="B"
+                },
+                                new MedicalRoom()
+                {
+                    Id=51,
+                    FloorNumber=2,
+                    MedicalRoomType=Core.Enums.MedicalRoomType.General,
+                    Name="C"
+                },
+                new MedicalRoom()
+                {
+                    Id=52,
+                    FloorNumber=2,
+                    MedicalRoomType=Core.Enums.MedicalRoomType.General,
+                    Name="D"
+                },
+                new MedicalRoom()
+                {
+                    Id=53,
+                    FloorNumber=2,
+                    MedicalRoomType=Core.Enums.MedicalRoomType.Gynecological,
+                    Name="E"
+                },
+                new MedicalRoom()
+                {
+                    Id=54,
+                    FloorNumber=2,
+                    MedicalRoomType=Core.Enums.MedicalRoomType.MedicalImaging,
+                    Name="F"
+                },
+                new MedicalRoom()
+                {
+                    Id=55,
+                    FloorNumber=3,
+                    MedicalRoomType=Core.Enums.MedicalRoomType.Surgical,
+                    Name="G"
+                },
+                new MedicalRoom()
+                {
+                    Id=56,
+                    FloorNumber=3,
+                    MedicalRoomType=Core.Enums.MedicalRoomType.Treatment,
+                    Name="H"
+                },
+                new MedicalRoom()
+                {
+                    Id=57,
+                    FloorNumber=3,
+                    MedicalRoomType=Core.Enums.MedicalRoomType.Treatment,
+                    Name="I"
+                },
+                new MedicalRoom()
+                {
+                    Id=58,
+                    FloorNumber=3,
+                    MedicalRoomType=Core.Enums.MedicalRoomType.General,
+                    Name="J"
+                },
+                new MedicalRoom()
+                {
+                    Id=59,
+                    FloorNumber=3,
+                    MedicalRoomType=Core.Enums.MedicalRoomType.Cardiological,
+                    Name="K"
+                },
+                new MedicalRoom()
+                {
+                    Id=60,
+                    FloorNumber=3,
+                    MedicalRoomType=Core.Enums.MedicalRoomType.General,
+                    Name="L"
+                },
+            },
+                new List<MedicalRoom>()
+            {
+                new MedicalRoom()
+                {
+                    Id = 65,
+                    FloorNumber = 0,
+                    MedicalRoomType = Core.Enums.MedicalRoomType.Cardiological,
+                    Name = "1"
+                },
+                new MedicalRoom()
+                {
+                    Id = 66,
+                    FloorNumber = 0,
+                    MedicalRoomType = Core.Enums.MedicalRoomType.Dental,
+                    Name = "2"
+                },
+                new MedicalRoom()
+                {
+                    Id = 67,
+                    FloorNumber = 0,
+                    MedicalRoomType = Core.Enums.MedicalRoomType.General,
+                    Name = "3"
+                },
+                new MedicalRoom()
+                {
+                    Id = 68,
+                    FloorNumber = 0,
+                    MedicalRoomType = Core.Enums.MedicalRoomType.General,
+                    Name = "4"
+                },
+                new MedicalRoom()
+                {
+                    Id = 69,
+                    FloorNumber = 0,
+                    MedicalRoomType = Core.Enums.MedicalRoomType.Gynecological,
+                    Name = "5"
+                },
+                new MedicalRoom()
+                {
+                    Id = 70,
+                    FloorNumber = 0,
+                    MedicalRoomType = Core.Enums.MedicalRoomType.Laryngological,
+                    Name = "6"
+                },
+                new MedicalRoom()
+                {
+                    Id = 71,
+                    FloorNumber = 0,
+                    MedicalRoomType = Core.Enums.MedicalRoomType.MedicalImaging,
+                    Name = "7"
+                },
+                new MedicalRoom()
+                {
+                    Id = 72,
+                    FloorNumber = 0,
+                    MedicalRoomType = Core.Enums.MedicalRoomType.Neurological,
+                    Name = "8"
+                },
+                new MedicalRoom()
+                {
+                    Id = 73,
+                    FloorNumber = 0,
+                    MedicalRoomType = Core.Enums.MedicalRoomType.Ophthalmology,
+                    Name = "9"
+                },
+                new MedicalRoom()
+                {
+                    Id = 74,
+                    FloorNumber = 0,
+                    MedicalRoomType = Core.Enums.MedicalRoomType.OralHygiene,
+                    Name = "10"
+                },
+                new MedicalRoom()
+                {
+                    Id = 75,
+                    FloorNumber = 0,
+                    MedicalRoomType = Core.Enums.MedicalRoomType.OralHygiene,
+                    Name = "11"
+                },
+                new MedicalRoom()
+                {
+                    Id = 76,
+                    FloorNumber = 0,
+                    MedicalRoomType = Core.Enums.MedicalRoomType.Rehabilitation,
+                    Name = "12"
+                },
+                new MedicalRoom()
+                {
+                    Id = 77,
+                    FloorNumber = 0,
+                    MedicalRoomType = Core.Enums.MedicalRoomType.General,
+                    Name = "13"
+                },
+                new MedicalRoom()
+                {
+                    Id = 78,
+                    FloorNumber = 0,
+                    MedicalRoomType = Core.Enums.MedicalRoomType.General,
+                    Name = "14"
+                },
+                new MedicalRoom()
+                {
+                    Id = 79,
+                    FloorNumber = 0,
+                    MedicalRoomType = Core.Enums.MedicalRoomType.General,
+                    Name = "15"
+                },
+                new MedicalRoom()
+                {
+                    Id = 80,
+                    FloorNumber = 0,
+                    MedicalRoomType = Core.Enums.MedicalRoomType.General,
+                    Name = "16"
+                },
+
+            },
+            };
+
+            return roomsCollections;
+        }
+
+        public MedicalRoom GetMedicalRoomById()
         {
             throw new NotImplementedException();
         }

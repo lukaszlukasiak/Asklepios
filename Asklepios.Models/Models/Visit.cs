@@ -11,12 +11,12 @@ namespace Asklepios.Core.Models
         public VisitCategory VisitCategory { get; set; }
         public Patient Patient { get; set; }
         public MedicalWorker MedicalWorker { get; set; }
-        public DateTime DateTimeSince { get; set; }
-        public DateTime DateTimeTill { get; set; }
+        public DateTimeOffset DateTimeSince { get; set; }
+        public DateTimeOffset DateTimeTill { get; set; }
         public List<MedicalService> BookedMedicalServices { get; set; }
         public Location Location { get; set; }
         public MedicalRoom MedicalRoom { get; set; }
-        public VisitRating VisitRate { get; set; }
+        public VisitReview VisitRate { get; set; }
         public VisitSummary VisitSummary { get;set;}
     }
 }

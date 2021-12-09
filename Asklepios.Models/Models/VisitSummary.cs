@@ -5,9 +5,9 @@ namespace Asklepios.Core.Models
     public class VisitSummary
     {
         public long Id { get; set; }
-        public string Summary { get; set; }
-        public List<KeyValuePair< MedicalService, MedicalServiceOutcome>> MedicalResults { get; set; }
-        public string Recommendations { get; set; }
+        public string MedicalHistory { get; set; }
+        public List< MedicalTestResult> MedicalResults { get; set; }
+        public List<Recommendation> Recommendations { get; set; }
         public Prescription Prescription { get; set; }
     }
 }

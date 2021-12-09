@@ -24,16 +24,16 @@ namespace Asklepios.Core.Models
         public string FullProffesionalName => ProfessionalTitle + " " + Name + " " + Surname;
         public List<Visit> FutureVisits { get; set; }
         public List<Visit> PastVisits { get; set; }
-        public List<VisitRating> VisitRatings { get; set; }
-        public double AverageRating
+        public List<VisitReview> VisitReviews { get; set; }
+        public float AverageRating
         {
             get
             {
-                if (VisitRatings != null)
+                if (VisitReviews != null)
                 {
-                    if (VisitRatings.Count > 0)
+                    if (VisitReviews.Count > 0)
                     {
-                        return VisitRatings.Average(c => c.GeneralRate);
+                        return VisitReviews.Average(c => c.GeneralRate);
                     }
                 }
                 return -1;
@@ -46,17 +46,16 @@ namespace Asklepios.Core.Models
         public List<MedicalService> MedicalServices { get; set; }
         public string RatingDescription
         {
-
             get
             {
-                if (VisitRatings.Count > 0)
+                if (VisitReviews.Count > 0)
                 {
                     string ratingV = null;
-                    if (VisitRatings.Count==1)
+                    if (VisitReviews.Count==1)
                     {
                         ratingV = "ocena";
                     }
-                    else if (VisitRatings.Count==2)
+                    else if (VisitReviews.Count==2)
                     {
                         ratingV = "oceny";
                     }
@@ -64,7 +63,7 @@ namespace Asklepios.Core.Models
                     {
                         ratingV = "ocen";
                     }
-                    return AverageRating.ToString() + " (" + VisitRatings.Count + " " + ratingV +")";
+                    return AverageRating.ToString() + " (" + VisitReviews.Count + " " + ratingV +")";
                 }
                 else
                 {

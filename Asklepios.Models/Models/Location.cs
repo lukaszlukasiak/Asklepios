@@ -18,5 +18,6 @@ namespace Asklepios.Core.Models
         public string StreetAndNumber { get; set; }
         public IEnumerable<string> Facilities { get; set; }
         public IEnumerable<string> Services { get; set; }
+        public IEnumerable<MedicalRoom> MedicalRooms { get; set; }
     }
 }
