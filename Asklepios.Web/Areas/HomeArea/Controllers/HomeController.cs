@@ -56,8 +56,9 @@ namespace Asklepios.Web.Areas.HomeArea.Controllers
         public IActionResult LogInPatient(LogInViewModel model)
         {
             //RedirectToRoute()
+            string userId = "1";
             //return RedirectToAction("Index", "~/PatientArea/PatientController");
-            return RedirectToAction("Index", "Patient", new { area = "PatientArea" });
+            return RedirectToAction("Index", "Patient", new { area = "PatientArea", id= userId });
             //return  Redirect("/PatientArea/PatientController/Index");
 
 

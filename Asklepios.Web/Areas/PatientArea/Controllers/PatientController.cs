@@ -17,11 +17,30 @@ namespace Asklepios.Web.Areas.PatientArea.Controllers
         public PatientController(IPatientModuleRepository context)
         {
             _context = context;
+            
         }
+        //public IActionResult Index()
+        //{
+        //    string id= _context.GetPatientData().Id.ToString();
+        //    return View(id);
+        //}
 
-        public IActionResult Index()
+        public IActionResult Index(string id)
         {
-            return View();
+            if (id==null)
+            {
+                id= _context.GetPatientData().Id.ToString();
+            }
+            if (int.TryParse(id,out int parsedId) )
+            {
+                Patient patient = _context.GetPatientById(parsedId);
+                PatientArea.Models.PatientViewModel viewModel = new Models.PatientViewModel(patient);
+                return View(viewModel);
+            }
+            else
+            {
+                return null;
+            }
         }
         public IActionResult Locations()
         {
@@ -36,13 +55,13 @@ namespace Asklepios.Web.Areas.PatientArea.Controllers
         [HttpGet]
         public IActionResult Contact()
         {
-            ContactMessageViewModel model = new ContactMessageViewModel(_context.GetPatientData());
+            ContactMessageViewModel model = new ContactMessageViewModel(_context.CurrentPatient);
             return View(model);
         }
         [HttpPost]
         public IActionResult Contact(ContactMessageViewModel model)
         {
-            ContactMessageViewModel modelP = new ContactMessageViewModel(_context.GetPatientData());
+            ContactMessageViewModel modelP = new ContactMessageViewModel(_context.CurrentPatient);
             modelP.Message = model.Message;
             modelP.Subject = model.Subject;
             //ContactMessageViewModel model = new ContactMessageViewModel();
@@ -80,6 +99,18 @@ namespace Asklepios.Web.Areas.PatientArea.Controllers
             return View(worker);
         }
 
+        public IActionResult VisitDetails(string id)
+        {
+            if (long.TryParse(id, out long lid))
+            {
+                Visit visit = _context.GetHistoricalVisitById(lid);
+                return View(visit);
+            }
+            else
+            {
+                return RedirectToAction("Index", "Patient", new { area = "PatientArea", id =  _context.CurrentPatient.Id});
+            }           
+        }
 
         public IActionResult PastVisits()
         {

@@ -8,6 +8,6 @@ namespace Asklepios.Core.Models
     {
         public String Name { get; set; }
         public string Description { get; set; }
-        public Dictionary<MedicalService, float> ServicesDiscounts { get; set; }
+        public Dictionary<MedicalService, decimal> ServicesDiscounts { get; set; }
     }
 }

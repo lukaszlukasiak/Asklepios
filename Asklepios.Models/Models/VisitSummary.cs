@@ -9,5 +9,8 @@ namespace Asklepios.Core.Models
         public List< MedicalTestResult> MedicalResults { get; set; }
         public List<Recommendation> Recommendations { get; set; }
         public Prescription Prescription { get; set; }
+        public VisitReview VisitReview { get; set; }
+        public Visit Visit { get; set; }
+
     }
 }
