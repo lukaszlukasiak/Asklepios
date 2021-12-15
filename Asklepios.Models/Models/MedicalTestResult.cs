@@ -11,6 +11,9 @@ namespace Asklepios.Core.Models
         public MedicalService MedicalService { get; set; }
         public PdfDocument PdfDocument { get; set; }
         public VisitSummary VisitSummary { get; set; }
+        public MedicalTestResult()
+        {
 
+        }
     }
 }

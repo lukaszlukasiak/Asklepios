@@ -1,9 +1,19 @@
-﻿@*
-    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
-*@
+﻿@model Asklepios.Web.Areas.PatientArea.Models.PatientViewModel
 @{
+    ViewData["Title"] = "View";
 }
 
-<h1 style="margin-top:200px;">
-    pacjent area pulpit
+<h1 >
+    Pulpit pacjenta
 </h1>
+
+@{
+    List<Visit> dashboardObjects = Model.DashboardItems;
+
+    for (int i = 0; i < dashboardObjects.Count; i++)
+    {
+        Visit visit = dashboardObjects[i];
+        <partial name="_DashboardItem" model="visit" />
+
+    }
+}

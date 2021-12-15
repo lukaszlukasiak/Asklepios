@@ -20,9 +20,11 @@ namespace Asklepios.Data.InMemoryContexts
         const string UM_8 = "Warszawski Uniwersytet Medyczny";
         const string UM_9 = "Uniwersytet Medyczny im.Piastów Śląskich we Wrocławiu";
 
-        readonly IEnumerable<Visit> visits;
+        readonly IEnumerable<Visit> availableVisits;
+        readonly IEnumerable<Visit> historicalVisits;
+
         readonly IEnumerable<Location> locations;
-        readonly Patient patient;
+        //public  Patient Patient { get; set; }
         private readonly IEnumerable<MedicalWorker> medicalWorkers;
         private List<MedicalService> medicalServices { get; set; }
         private List<MedicalService> primaryMedicalServices { get; set; }
@@ -31,6 +33,7 @@ namespace Asklepios.Data.InMemoryContexts
         private List<NFZUnit> nfzUnits { get; set; }
         private List<Patient> allPatients { get; set; }
         private List<List<MedicalRoom>> medicalRooms { get; set; }
+        public Patient CurrentPatient { get ; set ; }
 
         public PatientInMemoryContext()
         {
@@ -43,33 +46,95 @@ namespace Asklepios.Data.InMemoryContexts
             //medicalRooms = GetMedicalRooms().ToList();
             locations = GetAllLocations();
 
-
-            visits = GetAvailableVisits();
             medicalWorkers = GetMedicalWorkers();
-            patient = GetPatientData();
+
+            availableVisits = GetAvailableVisits();
+            CurrentPatient = GetPatientData();
 
         }
 
         public IEnumerable<Visit> GetAvailableVisits()
         {
-            DateTime today = DateTime.Today;
-            //return new List<Visit>()
-            //{ new Visit() {Id=1,DateTimeSince=today+new TimeSpan(9,0,0),DateTimeTill=today+new TimeSpan(9,15,0),Location=locations.ElementAt(0)}};
-            return new List<Visit>();
+            DateTimeOffset dateTimeOffset = DateTime.Now;
+
+            List<Visit> availableVisits = new List<Visit>()
+            {
+                new Visit()
+                {
+                    Id=6,
+                    BookedMedicalServices=new List<MedicalService>(){ primaryMedicalServices[0], primaryMedicalServices[5] },
+                    DateTimeSince=dateTimeOffset.AddDays(10),
+                    DateTimeTill=dateTimeOffset.AddDays(10).AddMinutes(15),
+                    Location=locations.ElementAt(3),
+                    MedicalRoom=locations.ElementAt(3).MedicalRooms.ElementAt(6),
+                    MedicalWorker=medicalWorkers.ElementAt(36),
+                    VisitCategory=visitCategories.ElementAt(3),
+                },
+                new Visit()
+                {
+                    Id=7,
+                    BookedMedicalServices=new List<MedicalService>(){ primaryMedicalServices[0], primaryMedicalServices[5] },
+                    DateTimeSince=dateTimeOffset.AddDays(14),
+                    DateTimeTill=dateTimeOffset.AddDays(14).AddMinutes(15),
+                    Location=locations.ElementAt(2),
+                    MedicalRoom=locations.ElementAt(2).MedicalRooms.ElementAt(6),
+                    MedicalWorker=medicalWorkers.ElementAt(40),
+                    VisitCategory=visitCategories.ElementAt(4),
+                },
+                new Visit()
+                {
+                    Id=8,
+                    BookedMedicalServices=new List<MedicalService>(){ primaryMedicalServices[0], primaryMedicalServices[5] },
+                    DateTimeSince=dateTimeOffset.AddDays(20),
+                    DateTimeTill=dateTimeOffset.AddDays(20).AddMinutes(15),
+                    Location=locations.ElementAt(4),
+                    MedicalRoom=locations.ElementAt(4).MedicalRooms.ElementAt(6),
+                    MedicalWorker=medicalWorkers.ElementAt(30),
+                    VisitCategory=visitCategories.ElementAt(3),
+                },
+                new Visit()
+                {
+                    Id=9,
+                    BookedMedicalServices=new List<MedicalService>(){ primaryMedicalServices[0], primaryMedicalServices[5] },
+                    DateTimeSince=dateTimeOffset.AddDays(15),
+                    DateTimeTill=dateTimeOffset.AddDays(15).AddMinutes(30),
+                    Location=locations.ElementAt(4),
+                    MedicalRoom=locations.ElementAt(4).MedicalRooms.ElementAt(6),
+                    MedicalWorker=medicalWorkers.ElementAt(30),
+                    VisitCategory=visitCategories.ElementAt(2),
+                },
+            };
+
+            return this.availableVisits;
         }
 
         public IEnumerable<Visit> GetHistoricalVisits()
         {
-            IEnumerable<Visit> historicalVisits=new List<Visit>     ()
-            {
-                new Visit()
-                {
-                    Id=1,
-                    BookedMedicalServices=new List<MedicalService>(){ primaryMedicalServices[0], medicalServices[1] },
-                    MedicalRoom
-                }
+            DateTimeOffset dateTimeOffset = DateTime.Now;
 
-            }
+            //IEnumerable<Visit> historicalVisits=new List<Visit>     ()
+            //{
+            //    new Visit()
+            //    {
+            //        Id=1,
+            //        BookedMedicalServices=new List<MedicalService>(){ primaryMedicalServices[0], medicalServices[1] },
+            //        MedicalRoom=locations.ElementAt(0).MedicalRooms.ElementAt(0),
+            //        DateTimeSince=dateTimeOffset.AddDays(-20),
+            //        DateTimeTill=dateTimeOffset.AddDays(-20).AddMinutes(15),
+            //        Location=locations.ElementAt(0),
+            //        MedicalWorker=medicalWorkers.ElementAt(0),
+            //        Patient=patient,
+            //        VisitCategory=visitCategories.ElementAt(0),
+            //        VisitSummary=new VisitSummary()
+            //        {
+            //            Id=1,
+            //            MedicalHistory="Pacjent skarżył się na senność i chroniczne zmęczenie. Zostały zlecone badania moczu i krwi, by sprawdzić czy nie ma cukrzycy albo problemów z trzustką/wątrobą/nerkami",
+            //            Recommendations=recommendations
+            //        }
+
+            //    }
+
+            //}
 
             return new List<Visit>();
         }
@@ -95,7 +160,7 @@ namespace Asklepios.Data.InMemoryContexts
                        MedicalRooms=roomsCollections.ElementAt(0)
                         },
                 new Location()
-                    {   
+                    {
                     City="Warszawa",
                         StreetAndNumber="Grójecka 100",
                         Description="Ośrodek w Warszawie w dzielnicy Ochota, z bardzo dobrym dojazdem z zachodniej części Warszawy.",
@@ -182,25 +247,25 @@ namespace Asklepios.Data.InMemoryContexts
                 {
                     Name="Podstawowy",
                     Description="Podstawowy pakiet dla osób szukajacych podstawowej opieki zdrowotnej. W cenie pakietu są zawarte bezpłatne konsultacje z 7 specjalizacji oraz podstawowe badania",
-                    ServicesDiscounts=new Dictionary<MedicalService, float>(),
+                    ServicesDiscounts=new Dictionary<MedicalService, decimal>(),
                 },
                 new MedicalPackage()
                 {
                     Name="Srebrny",
                     Description="Srebrny pakiet jest pakietem dla osób szukajacych rozszerzonej opieki zdrowotnej. W ramach abonamentu medycznego są darmowe konsultacje u większości specjalistów, rozszerzony pakiet badań medycznych oraz 3 wizyty rehabilitacyjnE rocznie.",
-                    ServicesDiscounts=new Dictionary<MedicalService, float>(),
+                    ServicesDiscounts=new Dictionary<MedicalService, decimal>(),
                 },
                                 new MedicalPackage()
                 {
                     Name="Złoty",
                     Description="Srebrny pakiet dla osób szukajacych specjalistycznej opieki, w tym opieki dentystycznej oraz rehabilitacji.",
-                    ServicesDiscounts=new Dictionary<MedicalService, float>(),
+                    ServicesDiscounts=new Dictionary<MedicalService, decimal>(),
                 },
                 new MedicalPackage()
                 {
                     Name="Platynowy",
                     Description="Platynowy pakiet jest pakietem dla osób szukajacych pełnej ochrony zdrowia. Wszystkie oferowane przez nas usługi są oferowane nieodpłatnie. Priorytetowa obsługa w przypadku badań/operacji niecierpiących zwłoki. ",
-                    ServicesDiscounts=new Dictionary<MedicalService, float>(),
+                    ServicesDiscounts=new Dictionary<MedicalService, decimal>(),
                 },
             };
 
@@ -1348,6 +1413,14 @@ namespace Asklepios.Data.InMemoryContexts
                     MedicalService=medicalServices[50],
                     PdfDocument=  new PdfSharpCore.Pdf.PdfDocument( new MemoryStream( Properties.Resources.ekg))
                 },
+                new MedicalTestResult()
+                {
+                    Id=1,
+                    Descritpion="RTG nadgarstka z trzech stron",
+                    MedicalService=medicalServices[50],//wybrać ekg serca
+                    PdfDocument=new PdfSharpCore.Pdf.PdfDocument(new MemoryStream(Properties.Resources.ekg)),
+                }
+
             };
 
             List<Core.Models.Recommendation> recommendations = new List<Recommendation>()
@@ -1382,7 +1455,7 @@ namespace Asklepios.Data.InMemoryContexts
                     Id=5,
                     Title="Zmiany skórne typowe dla łuszczycy",
                     Description="Proszę stosować belosalic na zmiany skórne."
-                }
+                },
 
             };
 
@@ -1402,31 +1475,59 @@ namespace Asklepios.Data.InMemoryContexts
                     Prescription=prescriptions[1],
                     Recommendations=new List<Recommendation>(){ recommendations[1] }
                 },
-                                new VisitSummary()
+                new VisitSummary()
                 {
                     Id=3,
-                    MedicalHistory="Pacjent skarży się na chroniczne zmęczenie. Wspomina też o tym, że mimo że je tyle samo co wcześniej, to ostatnio sporo przytył. Ma nadwagę, 170 cm wzrostu, 90 kg.",
-                    Prescription=prescriptions[2],
-                    Recommendations=new List<Recommendation>(){ recommendations[2] }
+                    MedicalHistory="RTG nadgarstka",
+                    MedicalResults= new List<MedicalTestResult>(){ medicalTestResults[3] },
                 }
 ,
-                                                new VisitSummary()
+                new VisitSummary()
                 {
                     Id=4,
-                    MedicalHistory="Pacjent skarży się na chroniczne zmęczenie. Wspomina też o tym, że mimo że je tyle samo co wcześniej, to ostatnio sporo przytył. Ma nadwagę, 170 cm wzrostu, 90 kg.",
-                    Prescription=prescriptions[3],
-                    Recommendations=new List<Recommendation>(){ recommendations[3] }
-                }
-,
-                                                                new VisitSummary()
+                    MedicalHistory="Badania laboratoryjne",
+                    MedicalResults=new List<MedicalTestResult>(){medicalTestResults[4] },
+                },
+                new VisitSummary()
+                {
+                    Id=4,
+                    MedicalHistory="Badania laboratoryjne",
+                    MedicalResults=new List<MedicalTestResult>(){medicalTestResults[4] },
+                },
+                new VisitSummary()
+                {
+                    Id=4,
+                    MedicalHistory="Badania laboratoryjne",
+                    MedicalResults=new List<MedicalTestResult>(){medicalTestResults[4] },
+                },
+                                new VisitSummary()
+                {
+                    Id=4,
+                    MedicalHistory="EKG serca",
+                    MedicalResults=new List<MedicalTestResult>(){medicalTestResults[4] },
+                },
+
+                new VisitSummary()
                 {
                     Id=5,
-                    MedicalHistory="Pacjent skarży się na chroniczne zmęczenie. Wspomina też o tym, że mimo że je tyle samo co wcześniej, to ostatnio sporo przytył. Ma nadwagę, 170 cm wzrostu, 90 kg.",
-                    Prescription=prescriptions[4],
+                    MedicalHistory="Pacjent posiada typowe dla łuszczycy zmiany skórne: na skórze głowy oraz pod pachami. Twierdzi, że ma je ok. 3 miesięcy.",
+                    Prescription=prescriptions[2],
                     Recommendations=new List<Recommendation>(){ recommendations[4] },
-
-
+                },
+                new VisitSummary()
+                {
+                    Id=4,
+                    MedicalHistory="Podejrzenie złamania nadgarstka. Pacjent przewrócił się wczoraj na rowerze, od tego czasu odczuwa ból w okolicach nadgarstka, mocno ograniczone ruchy nadgarstka, duża opuchlizna. Skierowanie na rtg oraz zalecenie zakupu ortezy na nadgarstek.",
+                    Prescription=null,
+                    Recommendations=new List<Recommendation>(){ recommendations[3] } //wybrać stomatologię zachowawczą
+                },
+                new VisitSummary()
+                {
+                    Id=5,
+                    MedicalHistory="Rehabilitacja nadgarstka złamanego 3 miesiące temu. Orteza noszona przez miesiąc, pacjent uskarża się na sztywność nadgarstka i lekkie bóle podczas wyginania nadgarstka.",
+                    Recommendations=new List<Recommendation>(){ recommendations[4] }, //wybrać coś z rehabilitacji
                 }
+
             };
 
             DateTimeOffset now = DateTime.Now;
@@ -1440,9 +1541,121 @@ namespace Asklepios.Data.InMemoryContexts
                     DateTimeSince=now.AddDays(-20).AddHours(5).AddMinutes(0),
                     DateTimeTill=now.AddDays(-20).AddHours(5).AddMinutes(15),
                     Location=locations.ElementAt(0),
+                    MedicalRoom=locations.ElementAt(0).MedicalRooms.ElementAt(1),
+                    MedicalWorker=medicalWorkers.ElementAt(1),
+                    Patient=patient,
+                    VisitCategory=visitCategories.ElementAt(0),
+                    VisitSummary=visitSummaries.ElementAt(0)
                     //MedicalRoom=medicalr//
-                }
+                },
+                new Visit()
+                {
+                    Id=2,
+                    BookedMedicalServices=new List<MedicalService>(){ primaryMedicalServices[0], medicalServices[1] },
+                    MedicalRoom=locations.ElementAt(0).MedicalRooms.ElementAt(0),
+                    DateTimeSince=dateTimeOffset.AddDays(-20),
+                    DateTimeTill=dateTimeOffset.AddDays(-20).AddMinutes(15),
+                    Location=locations.ElementAt(0),
+                    MedicalWorker=medicalWorkers.ElementAt(0),
+                    Patient=patient,
+                    VisitCategory=visitCategories.ElementAt(0),
+                    VisitSummary=visitSummaries.ElementAt(1)
+                },
+                new Visit()
+                {
+                    Id=3,
+                    BookedMedicalServices=new List<MedicalService>(){ primaryMedicalServices[0], medicalServices[1] },
+                    MedicalRoom=locations.ElementAt(0).MedicalRooms.ElementAt(0),
+                    DateTimeSince=dateTimeOffset.AddDays(-20),
+                    DateTimeTill=dateTimeOffset.AddDays(-20).AddMinutes(15),
+                    Location=locations.ElementAt(0),
+                    MedicalWorker=medicalWorkers.ElementAt(0),
+                    Patient=patient,
+                    VisitCategory=visitCategories.ElementAt(0),
+                    VisitSummary=visitSummaries.ElementAt(2)
+                },
+                new Visit()
+                {
+                    Id=4,
+                    BookedMedicalServices=new List<MedicalService>(){ primaryMedicalServices[0], medicalServices[1] },
+                    MedicalRoom=locations.ElementAt(0).MedicalRooms.ElementAt(0),
+                    DateTimeSince=dateTimeOffset.AddDays(-20),
+                    DateTimeTill=dateTimeOffset.AddDays(-20).AddMinutes(15),
+                    Location=locations.ElementAt(0),
+                    MedicalWorker=medicalWorkers.ElementAt(0),
+                    Patient=patient,
+                    VisitCategory=visitCategories.ElementAt(0),
+                    VisitSummary=visitSummaries.ElementAt(3)
+                },
+                new Visit()
+                {
+                    Id=5,
+                    BookedMedicalServices=new List<MedicalService>(){ primaryMedicalServices[0], medicalServices[1] },
+                    MedicalRoom=locations.ElementAt(0).MedicalRooms.ElementAt(0),
+                    DateTimeSince=dateTimeOffset.AddDays(-20),
+                    DateTimeTill=dateTimeOffset.AddDays(-20).AddMinutes(15),
+                    Location=locations.ElementAt(0),
+                    MedicalWorker=medicalWorkers.ElementAt(0),
+                    Patient=patient,
+                    VisitCategory=visitCategories.ElementAt(1),
+                    VisitSummary=visitSummaries.ElementAt(4)
+                },
+
             };
+            List<Visit> plannedVisits = new List<Visit>()
+            {
+                new Visit()
+                {
+                    Id=6,
+                    BookedMedicalServices=new List<MedicalService>(){ primaryMedicalServices[0], primaryMedicalServices[5] },
+                    DateTimeSince=dateTimeOffset.AddDays(10),
+                    DateTimeTill=dateTimeOffset.AddDays(10).AddMinutes(15),
+                    Location=locations.ElementAt(3),
+                    MedicalRoom=locations.ElementAt(3).MedicalRooms.ElementAt(6),
+                    MedicalWorker=medicalWorkers.ElementAt(36),
+                    Patient=CurrentPatient,
+                    VisitCategory=visitCategories.ElementAt(3),
+                },
+                new Visit()
+                {
+                    Id=7,
+                    BookedMedicalServices=new List<MedicalService>(){ primaryMedicalServices[0], primaryMedicalServices[5] },
+                    DateTimeSince=dateTimeOffset.AddDays(14),
+                    DateTimeTill=dateTimeOffset.AddDays(14).AddMinutes(15),
+                    Location=locations.ElementAt(2),
+                    MedicalRoom=locations.ElementAt(2).MedicalRooms.ElementAt(6),
+                    MedicalWorker=medicalWorkers.ElementAt(40),
+                    Patient=CurrentPatient,
+                    VisitCategory=visitCategories.ElementAt(4),
+                },
+                new Visit()
+                {
+                    Id=8,
+                    BookedMedicalServices=new List<MedicalService>(){ primaryMedicalServices[0], primaryMedicalServices[5] },
+                    DateTimeSince=dateTimeOffset.AddDays(20),
+                    DateTimeTill=dateTimeOffset.AddDays(20).AddMinutes(15),
+                    Location=locations.ElementAt(4),
+                    MedicalRoom=locations.ElementAt(4).MedicalRooms.ElementAt(6),
+                    MedicalWorker=medicalWorkers.ElementAt(30),
+                    Patient=CurrentPatient,
+                    VisitCategory=visitCategories.ElementAt(3),
+                },
+                new Visit()
+                {
+                    Id=9,
+                    BookedMedicalServices=new List<MedicalService>(){ primaryMedicalServices[0], primaryMedicalServices[5] },
+                    DateTimeSince=dateTimeOffset.AddDays(15),
+                    DateTimeTill=dateTimeOffset.AddDays(15).AddMinutes(30),
+                    Location=locations.ElementAt(4),
+                    MedicalRoom=locations.ElementAt(4).MedicalRooms.ElementAt(6),
+                    MedicalWorker=medicalWorkers.ElementAt(30),
+                    Patient=CurrentPatient,
+                    VisitCategory=visitCategories.ElementAt(2),
+                },
+            };
+
+            patient.BookedVisits = plannedVisits;
+            patient.HistoricalVisits = patientHistoricalVisits;
             return patient;
         }
         //        VisitSummary="Pacjent skarży się na swędzenie skóry, mam lekką nadwagę, bywa śpiący po większym posiłku. W rodzinie są cukrzycy. Podejrzenie cykrzycy, zlecone badania"
@@ -1641,7 +1854,7 @@ namespace Asklepios.Data.InMemoryContexts
                 new VisitCategory() { Id = 3, CategoryName = "Stomatologia", PrimaryMedicalServices = new List<MedicalService>(medicalServices.GetRange(57, 6)) { } },
                 new VisitCategory() { Id = 4, CategoryName = "Diagnostyka obrazowa ", PrimaryMedicalServices = new List<MedicalService>(medicalServices.GetRange(1, 3)) { } },
                 new VisitCategory() { Id = 5, CategoryName = "Fizjoterapia", PrimaryMedicalServices = new List<MedicalService>(medicalServices.GetRange(31, 6)) { } },
-                new VisitCategory() { Id = 6, CategoryName = "Badania laboratoryjne/szczepienia", PrimaryMedicalServices = new List<MedicalService>(medicalServices.GetRange(24, 6)) { } },
+                new VisitCategory() { Id = 6, CategoryName = "Gabinet zabiegowy", PrimaryMedicalServices = new List<MedicalService>(medicalServices.GetRange(24, 6)) { } },
             };
             categories[0].PrimaryMedicalServices.Add(medicalServices[0]);
             return categories;
@@ -1891,7 +2104,7 @@ namespace Asklepios.Data.InMemoryContexts
 
         public Patient GetPatientById(long id)
         {
-            throw new NotImplementedException();
+            return GetPatientData();
         }
 
         public Visit GetAvailableVisitById()
@@ -2525,6 +2738,12 @@ namespace Asklepios.Data.InMemoryContexts
         public MedicalRoom GetMedicalRoomById()
         {
             throw new NotImplementedException();
+        }
+
+        public Visit GetHistoricalVisitById(long id)
+        {
+            Visit visit=CurrentPatient.HistoricalVisits.Where(c => c.Id == id).FirstOrDefault();
+            return visit;
         }
     }
 }

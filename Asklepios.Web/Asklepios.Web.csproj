@@ -34,7 +34,6 @@
     <Folder Include="Areas\MedicalWorkerArea\Data\" />
     <Folder Include="Areas\MedicalWorkerArea\Models\" />
     <Folder Include="Areas\PatientArea\Data\" />
-    <Folder Include="Areas\PatientArea\Models\" />
     <Folder Include="Models\" />
     <Folder Include="wwwroot\img\MW\" />
     <Folder Include="wwwroot\vendor\" />

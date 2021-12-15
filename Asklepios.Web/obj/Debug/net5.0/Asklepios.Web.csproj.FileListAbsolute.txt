@@ -956,3 +956,5 @@ C:\Users\lukas\source\repos\Asklepios8\Asklepios.Web\obj\Debug\net5.0\Razor\Area
 C:\Users\lukas\source\repos\Asklepios8\Asklepios.Web\obj\Debug\net5.0\Razor\Areas\PatientArea\Views\Patient\MedicalWorkerDetails.cshtml.g.cs
 C:\Users\lukas\source\repos\Asklepios8\Asklepios.Web\obj\Debug\net5.0\Razor\Areas\PatientArea\Views\Patient\_Stars.cshtml.g.cs
 C:\Users\lukas\source\repos\Asklepios8\Asklepios.Web\obj\Debug\net5.0\Razor\Areas\PatientArea\Views\Patient\_MedicalReview.cshtml.g.cs
+C:\Users\lukas\source\repos\Asklepios8\Asklepios.Web\obj\Debug\net5.0\Razor\Areas\PatientArea\Views\Patient\_DashboardItem.cshtml.g.cs
+C:\Users\lukas\source\repos\Asklepios8\Asklepios.Web\obj\Debug\net5.0\Razor\Areas\PatientArea\Views\Patient\VisitDetails.cshtml.g.cs
