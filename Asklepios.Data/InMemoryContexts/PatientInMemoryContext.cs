@@ -38,8 +38,9 @@ namespace Asklepios.Data.InMemoryContexts
         public PatientInMemoryContext()
         {
             nfzUnits = GetNFZUnits().ToList();
-            medicalPackages = GetMedicalPackages().ToList();
             medicalServices = GetMedicalServices().ToList();
+
+            medicalPackages = GetMedicalPackages().ToList();
             allPatients = GetAllPatients().ToList();
             primaryMedicalServices = medicalServices.Where(c => c.IsPrimaryService == true).ToList();
             visitCategories = GetVisitCategories().ToList();
@@ -240,34 +241,62 @@ namespace Asklepios.Data.InMemoryContexts
 
         public IEnumerable<MedicalPackage> GetMedicalPackages()
         {
-
             List<MedicalPackage> medicalPackages = new List<MedicalPackage>()
             {
                 new MedicalPackage()
                 {
                     Name="Podstawowy",
                     Description="Podstawowy pakiet dla osób szukajacych podstawowej opieki zdrowotnej. W cenie pakietu są zawarte bezpłatne konsultacje z 7 specjalizacji oraz podstawowe badania",
-                    ServicesDiscounts=new Dictionary<MedicalService, decimal>(),
+                    //ServicesDiscounts=new Dictionary<MedicalService, decimal>(),
                 },
                 new MedicalPackage()
                 {
                     Name="Srebrny",
                     Description="Srebrny pakiet jest pakietem dla osób szukajacych rozszerzonej opieki zdrowotnej. W ramach abonamentu medycznego są darmowe konsultacje u większości specjalistów, rozszerzony pakiet badań medycznych oraz 3 wizyty rehabilitacyjnE rocznie.",
-                    ServicesDiscounts=new Dictionary<MedicalService, decimal>(),
+                    //ServicesDiscounts=new Dictionary<MedicalService, decimal>(),
                 },
                                 new MedicalPackage()
                 {
                     Name="Złoty",
                     Description="Srebrny pakiet dla osób szukajacych specjalistycznej opieki, w tym opieki dentystycznej oraz rehabilitacji.",
-                    ServicesDiscounts=new Dictionary<MedicalService, decimal>(),
+                    //ServicesDiscounts=new Dictionary<MedicalService, decimal>(),
                 },
                 new MedicalPackage()
                 {
                     Name="Platynowy",
                     Description="Platynowy pakiet jest pakietem dla osób szukajacych pełnej ochrony zdrowia. Wszystkie oferowane przez nas usługi są oferowane nieodpłatnie. Priorytetowa obsługa w przypadku badań/operacji niecierpiących zwłoki. ",
-                    ServicesDiscounts=new Dictionary<MedicalService, decimal>(),
+                    //ServicesDiscounts=new Dictionary<MedicalService, decimal>(),
                 },
             };
+
+            Dictionary<MedicalService, decimal> discounts = new Dictionary<MedicalService, decimal>(); 
+            for (int i = 0; i < medicalServices.Count; i++)
+            {
+                MedicalService service = medicalServices[i];
+                discounts.Add(service, (decimal)0.2);
+            }
+            Dictionary<MedicalService, decimal> discounts2 = new Dictionary<MedicalService, decimal>();
+            for (int i = 0; i < medicalServices.Count; i++)
+            {
+                MedicalService service = medicalServices[i];
+                discounts2.Add(service, (decimal)0.5);
+            }
+            Dictionary<MedicalService, decimal> discounts3 = new Dictionary<MedicalService, decimal>();
+            for (int i = 0; i < medicalServices.Count; i++)
+            {
+                MedicalService service = medicalServices[i];
+                discounts3.Add(service, (decimal)0.75);
+            }
+            Dictionary<MedicalService, decimal> discounts4 = new Dictionary<MedicalService, decimal>();
+            for (int i = 0; i < medicalServices.Count; i++)
+            {
+                MedicalService service = medicalServices[i];
+                discounts4.Add(service, (decimal)1);
+            }
+            medicalPackages[0].ServicesDiscounts = discounts;
+            medicalPackages[1].ServicesDiscounts = discounts2;
+            medicalPackages[2].ServicesDiscounts = discounts3;
+            medicalPackages[3].ServicesDiscounts = discounts4;
 
             return medicalPackages;
         }
@@ -1656,6 +1685,7 @@ namespace Asklepios.Data.InMemoryContexts
 
             patient.BookedVisits = plannedVisits;
             patient.HistoricalVisits = patientHistoricalVisits;
+            patient.MedicalPackage = medicalPackages[0];
             return patient;
         }
         //        VisitSummary="Pacjent skarży się na swędzenie skóry, mam lekką nadwagę, bywa śpiący po większym posiłku. W rodzinie są cukrzycy. Podejrzenie cykrzycy, zlecone badania"
@@ -1849,7 +1879,7 @@ namespace Asklepios.Data.InMemoryContexts
         {
             List<VisitCategory> categories = new()
             {
-                new VisitCategory() { Id = 1, CategoryName = "Konsultacje", PrimaryMedicalServices = new List<MedicalService>(medicalServices.GetRange(38, 23)) },
+                new VisitCategory() { Id = 1, CategoryName = "Konsultacje stacjonrne", PrimaryMedicalServices = new List<MedicalService>(medicalServices.GetRange(38, 23)) },
                 new VisitCategory() { Id = 2, CategoryName = "E-konsultacje", PrimaryMedicalServices = new List<MedicalService>(medicalServices.GetRange(38, 23)) { } },
                 new VisitCategory() { Id = 3, CategoryName = "Stomatologia", PrimaryMedicalServices = new List<MedicalService>(medicalServices.GetRange(57, 6)) { } },
                 new VisitCategory() { Id = 4, CategoryName = "Diagnostyka obrazowa ", PrimaryMedicalServices = new List<MedicalService>(medicalServices.GetRange(1, 3)) { } },

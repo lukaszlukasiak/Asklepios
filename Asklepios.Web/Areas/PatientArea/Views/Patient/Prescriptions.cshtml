@@ -1,6 +1,21 @@
-﻿@*
-    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
-*@
+﻿@model Asklepios.Web.Areas.PatientArea.Models.PatientViewModel
 @{
+    ViewData["Title"] = "View";
 }
-<h1>Recepty</h1>
+
+
+@if (Model.Patient.MedicalReferrals != null)
+{
+    <h1>Recepty</h1>
+
+    @foreach (var prescription in Model.Patient.Prescriptions)
+    {
+
+        <partial name="_Prescription" model="prescription" />
+    }
+}
+else
+{
+    <h1>Brak wystawionych recept</h1>
+
+}

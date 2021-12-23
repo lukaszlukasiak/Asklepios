@@ -80,22 +80,18 @@ namespace Asklepios.Web.Areas.PatientArea.Controllers
             }
             return View(model);
         }
-        public IActionResult MedicalAdvice()
-        {
-            return View();
-        }
+        //public IActionResult MedicalAdvice()
+        //{
+        //    return View();
+        //}
         public IActionResult MedicalWorkersList()
-        {
-            
+        {           
             List<MedicalWorker> medicalWorkers = _context.GetMedicalWorkers().ToList();
-
-
             return View(medicalWorkers);
         }
         public IActionResult MedicalWorkerDetails(string id)
         {
             MedicalWorker worker= _context.GetMedicalWorkers().Where(c => c.Id.ToString() == id).FirstOrDefault();
-
             return View(worker);
         }
 
@@ -112,25 +108,35 @@ namespace Asklepios.Web.Areas.PatientArea.Controllers
             }           
         }
 
-        public IActionResult PastVisits()
-        {
-            return View();
+        public IActionResult HistoricalVisits()
+        {          
+            Patient patient = _context.CurrentPatient;
+            PatientArea.Models.PatientViewModel viewModel = new Models.PatientViewModel(patient);
+            return View(viewModel);           
         }
         public IActionResult PlannedVisits()
         {
-            return View();
+            Patient patient = _context.CurrentPatient;
+            PatientArea.Models.PatientViewModel viewModel = new Models.PatientViewModel(patient);
+            return View(viewModel);
         }
         public IActionResult Prescriptions()
         {
-            return View();
+            Patient patient = _context.CurrentPatient;
+            PatientArea.Models.PatientViewModel viewModel = new Models.PatientViewModel(patient);
+            return View(viewModel);
         }
         public IActionResult Referrals()
         {
-            return View();
+            Patient patient = _context.CurrentPatient;
+            PatientArea.Models.PatientViewModel viewModel = new Models.PatientViewModel(patient);
+            return View(viewModel);
         }
         public IActionResult TestResults()
         {
-            return View();
+            Patient patient = _context.CurrentPatient;
+            PatientArea.Models.PatientViewModel viewModel = new Models.PatientViewModel(patient);
+            return View(viewModel);
         }
 
 

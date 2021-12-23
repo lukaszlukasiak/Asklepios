@@ -12,6 +12,7 @@ namespace Asklepios.Core.Models
         public string EmployerNIP { get; set; }
         public NFZUnit NFZUnit { get; set; }
         public List<MedicalTestResult> TestsResults { get; set; }
+        public List<ExaminationReferral> MedicalReferrals { get; set; }
         public List<Prescription> Prescriptions { get; set; }
         public List<IssuedMedicine> IssuedMedicines { get; set; }
         public List<Visit> HistoricalVisits { get; set; }

@@ -14,18 +14,18 @@ namespace Asklepios.Web.Areas.PatientArea.Models
         }
 
         public Patient Patient { get; set; }
-        public List<Visit> DashboardItems 
-        { 
-            get
-            {
-                List<Visit> items = new List<Visit>();
-                items.AddRange(GetCommingVisits(10));
-                items.AddRange(GetHistoricalVisits());
+        //public List<Visit> DashboardItems 
+        //{ 
+        //    get
+        //    {
+        //        List<Visit> items = new List<Visit>();
+        //        items.AddRange(GetCommingVisits(10));
+        //        items.AddRange(GetHistoricalVisits());
 
-                return items;
-            }
+        //        return items;
+        //    }
             
-        }
+        //}
         //private IEnumerable<object> GetMedicalResults(int numberOfResults = 3)
         //{
         //    List<Visit> commingVisits = new List<Visit>();
@@ -88,7 +88,7 @@ namespace Asklepios.Web.Areas.PatientArea.Models
 
                 for (int i = 0; i < numberOfVisits; i++)
                 {
-                    pastVisits.Add(Patient.BookedVisits.ElementAt(i));
+                    pastVisits.Add(Patient.HistoricalVisits.ElementAt(i));
                 }
                 return pastVisits;
             }

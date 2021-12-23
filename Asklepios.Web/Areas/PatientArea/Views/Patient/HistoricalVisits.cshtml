@@ -4,29 +4,32 @@
 }
 
 <h1 style="text-align:center">
-    Nadchodzące wizyty
+    Poprzednie konsultacje/badania
 </h1>
 
 @{
-    List<Visit> plannedVisits = Model.Patient.BookedVisits;
-    if (plannedVisits.Count > 0)
-    {
-        @for (int i = 0; i < plannedVisits.Count; i++)
+    List<Visit>        historicalVisits = Model.GetHistoricalVisits(10);
+
+        if (historicalVisits.Count > 0)
         {
-            Visit visit = plannedVisits[i];
-            <partial name="_PlannedVisit" model="visit" />
+
+        for (int i = 0; i < historicalVisits.Count; i++)
+        {
+        Visit visit = historicalVisits[i];
+        <partial name="_HistoricalVisit" model="visit" />
 
         }
-    }
-    else
-    {
-        <h3>Brak zaplanowanych wizyt...</h3>
+        }
+        else
+        {
+        <h3>Nie byłeś jeszcze na żadnej wizycie u nas...</h3>
         <a asp-area="PatientArea" asp-controller="Patient" asp-action="BookVisit" class="btn btn-primary btn-icon-split mt-3">
             <span class="icon text-white-50">
                 <i class="fas fa-book"></i>
             </span>
             <span class="text">Zarezerwuj wizytę</span>
         </a>
+        }
 
-    }
-}
+
+        }
