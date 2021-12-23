@@ -113,6 +113,23 @@ namespace Asklepios.Core.Models
                 return price;
             }
         }
+        public decimal GetTotalPrice()
+        {
+            MedicalPackage package = Patient.MedicalPackage;
+            decimal totalPrice = decimal.MinusOne;
+
+            for (int i = 0; i < BookedMedicalServices.Count; i++)
+            {
+                MedicalService service = BookedMedicalServices[i];
+                if (package.ServicesDiscounts.ContainsKey(service))
+                {
+                    decimal price = service.StandardPrice * package.ServicesDiscounts[service];
+                    totalPrice+= price;
+                }
+            }
+            return totalPrice;
+        }
+
     }
 
 }

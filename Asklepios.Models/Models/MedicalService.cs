@@ -11,6 +11,7 @@ namespace Asklepios.Core.Models
         public decimal StandardPrice { get; set; }
         public string Description { get; set; }
         public bool IsPrimaryService { get; set; }
+        public bool RequireRefferal { get; set; }
         public IEnumerable< MedicalService> SubServices { get; set; }
 
     }

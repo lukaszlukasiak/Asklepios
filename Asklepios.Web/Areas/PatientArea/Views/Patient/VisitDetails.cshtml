@@ -1,6 +1,6 @@
 ﻿@model Asklepios.Core.Models.Visit
 
-<div class="d-flex jumbotron w-80" style=" padding:20px;display:flex;align-content:center;position:relative">
+<div class="d-flex jumbotron flex-column" style=" padding:20px;display:flex;align-content:center;position:relative">
     <div class="d-flex mb-3 flex-wrap align-self-center align-items-center">
         <div class="p-2   align-content-center align-items-center align-self-center mx-auto" style="width:400px; text-align:center">
             <div class="d-flex flex-fill flex-column justify-content-center" style="text-align:center">
@@ -14,63 +14,117 @@
 
             </div>
         </div>
-        <div class="p-2 flex-grow-1 pt-3 m-auto flex-grow-1" style="width:400px;text-align:center">
-            <h5 style="font-weight:900;">
-                Data: @Model.GetVisitDateFullDescription()
-            </h5>
-            <br>
-            <p>
-                Ośrodek: @Model.Location.Name  
-            </p>
-            <p>
-                Piętro: @Model.MedicalRoom.FloorNumber 
-            </p>
-
+        <div class="p-2 flex-grow-1 pt-3 mx-auto flex-grow-1" style="width:400px;text-align:center">
             <h5>
-                @Model.VisitCategory.CategoryName - @Model.BookedMedicalServices[0].Name
+                <p>
+                    Data: @Model.GetVisitDateFullDescription()
+                </p>
+                <br>
+                <p>
+                    @Model.Location.Name
+                </p>
+                <p>
+                    Piętro: @Model.MedicalRoom.FloorNumber, pokój: @Model.MedicalRoom.Name
+                </p>
 
-            </h5>
-            @if (Model.IsNotCompletedMedicalTest)
-            {
-                <h5>
-                    "W realizacji..."
-                </h5>
-
-            }
-
-            @*<h4>Zakres specjalizacji:</h4>
-                <h5>
-                    @for (int i = 0; i < Model.MedicalServices.Count; i++)
-                    {
-                        MedicalService service = Model.MedicalServices[i];
-                        if (i % 2 == 1)
-                        {
-                            <br>
-                        }
-                        @service.Name
-                    }
+                @*<h5>
+                    @Model.VisitCategory.CategoryName - @Model.BookedMedicalServices[0].Name
 
                 </h5>*@
+                @if (Model.IsNotCompletedMedicalTest)
+                {
+                    <h5>
+                        "Badanie  realizacji..."
+                    </h5>
+
+                }
+            </h5>
+
+            @*<h4>Zakres specjalizacji:</h4>
+            <h5>
+                @for (int i = 0; i < Model.BookedMedicalServices.Count; i++)
+                {
+                    MedicalService service = Model.MedicalServices[i];
+                    if (i % 2 == 1)
+                    {
+                        <br>
+                    }
+                    @service.Name
+                }
+
+            </h5>*@
 
         </div>
+        <div class="p-2 flex-grow-1 pt-3 m-auto flex-grow-1" style="width:400px;text-align:center">
+            <h5>
 
-        <div class="p-2 flex-grow-1 pt-3 m-auto flex-grow-1" style="width:400px;">
-            <div class="d-flex flex-column align-content-end justify-content-evenly m-auto">
-                <a asp-area="PatientArea" asp-controller="Patient" asp-action="MedicalWorkerDetails" asp-route-id="@Model.Id" class="btn btn-primary btn-icon-split ">
+                <p>
+                    Kategoria: @Model.VisitCategory.CategoryName
+                </p>
+                <p>Usługi</p>
+                @for (int i = 0; i < Model.BookedMedicalServices.Count; i++)
+                {
+                    MedicalService service = Model.BookedMedicalServices[i];
+                    <p>
+                        @service.Name : @Model.GetPrice(service); PLN
+                    </p>
+                }
+                <p>Koszt całkowity: @Model.GetTotalPrice() PLN</p>
+            </h5>
+
+
+
+        </div>
+        <div class="p-2 flex-grow-1 pt-3 m-auto flex-grow-1" style="width:400px;text-align:center">
+            <form class="d-flex flex-column">
+                <h5>
+
+                    <p>
+                        Recenzja
+                    </p>
+                    <p>Usługi</p>
+                    @for (int i = 0; i < Model.BookedMedicalServices.Count; i++)
+                    {
+                        MedicalService service = Model.BookedMedicalServices[i];
+                        <p>
+                            @service.Name : @Model.GetPrice(service); PLN
+                        </p>
+                    }
+                    <p>Koszt całkowity: @Model.GetTotalPrice() PLN</p>
+                </h5>
+
+                <a asp-area="PatientArea" asp-controller="Patient" asp-action="BookVisit" class="btn btn-primary btn-icon-split  flex-grow-1 ml-2">
+                    <span class="icon text-white-50">
+                        <i class="fas fa-book"></i>
+                    </span>
+                    <span class="text ">Zrecenzuj!</span>
+                </a>
+
+            </form>
+        </div>
+
+
+    </div>
+    @*@if (Model.)
+    {
+
+    }*@
+    <div class="d-flex">
+        <div class="p-2 flex-grow-1 pt-3 m-auto flex-grow-0" style="width:400px;">
+            <div class="d-flex flex-row align-content-end justify-content-evenly m-auto">
+                @*<a asp-area="PatientArea" asp-controller="Patient" asp-action="MedicalWorkerDetails" asp-route-id="@Model.Id" class="btn btn-primary btn-icon-split flex-grow-1 mr-2">
                     <span class="icon text-white-50 left" style="text-align:left;float:left">
                         <i class="fas fa-address-book"></i>
                     </span>
                     <span class="text" style="float: left">Szczegóły wizyty</span>
-                </a>
+                </a>*@
 
-                <a asp-area="PatientArea" asp-controller="Patient" asp-action="BookVisit" class="btn btn-primary btn-icon-split mt-3">
+                <a asp-area="PatientArea" asp-controller="Patient" asp-action="BookVisit" class="btn btn-primary btn-icon-split  flex-grow-1 ml-2">
                     <span class="icon text-white-50">
                         <i class="fas fa-book"></i>
                     </span>
                     <span class="text">Zarezerwuj ponownie</span>
                 </a>
-                @*style="align-items: flex-start;display:block; padding-left:50px;"
-                    style="text-align:left; align-content:baseline; align-items:flex-start"*@
             </div>
         </div>
     </div>

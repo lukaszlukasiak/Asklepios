@@ -10,9 +10,9 @@
         <div class="form-group">
             <label for="inputState">Temat</label>
             @*<select id="inputState" class="form-control">
-                <option selected>Choose...</option>
-                <option>...</option>
-            </select>*@
+            <option selected>Choose...</option>
+            <option>...</option>
+        </select>*@
             @Html.DropDownListFor(a => a.Subject, new[]
 {
         new SelectListItem() {Text = "Zgłoszenie błędu na portalu pacjenta"},
@@ -21,6 +21,7 @@
         new SelectListItem() {Text = "Zapytanie dotyczące usług medycznych" },
         new SelectListItem() {Text = "Inne..." },
         }, "Wybierz temat...", new { @class = "form-control" })
+            <span asp-validation-for="Subject" type="text" class="text-danger"></span>
 
 
         </div>
@@ -28,7 +29,9 @@
         <div class="form-group">
             <label for="inputAddress">Wiadomość</label>
             @*<input type="text" class="form-control" id="inputAddress" placeholder="1234 Main St">*@
+
             @Html.TextAreaFor(m => m.Message, 10, 1, new { @class = "form-control" })
+            <span asp-validation-for="Message" type="text" class="text-danger"></span>
 
         </div>
         <button type="submit" class="btn btn-primary w-100">Wyślij</button>
@@ -39,7 +42,7 @@
             {
                 if (Model.AlertMessageType == Asklepios.Web.Enums.AlertMessageType.Info)
                 {
-                    <div class="messages" style="margin-top:10px">
+                    <div class="messages" style="margin-top:10px;text-align:center">
                         <p class="alert alert-success">
                             @Model.AlertMessage
                         </p>
@@ -48,8 +51,8 @@
                 }
                 else
                 {
-                    <div class="messages" style="margin-top:10px">
-                        <p class="alert alert-dismissable">
+                    <div class="messages" style="margin-top: 10px; text-align: center ">
+                        <p class="alert alert-danger">
                             @Model.AlertMessage
                         </p>
                     </div>

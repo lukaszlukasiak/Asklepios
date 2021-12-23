@@ -1,7 +1,7 @@
 ﻿@model Asklepios.Core.Models.Visit
 
 <div class="d-flex jumbotron w-80" style=" padding:20px;display:flex;align-content:center;position:relative">
-    <div class="d-flex mb-3 flex-wrap align-self-center align-items-center">
+    @*<div class="d-flex mb-3 flex-wrap align-self-center align-items-center">*@
         <div class="p-2   align-content-center align-items-center align-self-center mx-auto" style="width:400px; text-align:center">
             <div class="d-flex flex-fill flex-column justify-content-center" style="text-align:center">
                 <h3 style="font-weight:900;">
@@ -57,17 +57,17 @@
                     <span class="icon text-white-50 left" style="text-align:left;float:left">
                         <i class="fas fa-address-book"></i>
                     </span>
-                    <span class="text" style="float: left">Zrezygnuj z wizyty</span>
+                    <span class="text" style="float: left">Przełóż wizytę</span>
                 </a>
-                <a asp-area="PatientArea" asp-controller="Patient" asp-action="VisitDetails" asp-route-id="@Model.Id" class="btn btn-primary btn-icon-split ">
+                <a asp-area="PatientArea" asp-controller="Patient" asp-action="VisitDetails" asp-route-id="@Model.Id" class="btn btn-primary btn-icon-split mt-3">
                     <span class="icon text-white-50 left" style="text-align:left;float:left">
                         <i class="fas fa-address-book"></i>
                     </span>
-                    <span class="text" style="float: left">Przełóż wizytę</span>
+                    <span class="text" style="float: left">Zrezygnuj z wizyty</span>
                 </a>
                 @*style="align-items: flex-start;display:block; padding-left:50px;"
         style="text-align:left; align-content:baseline; align-items:flex-start"*@
             </div>
         </div>
-    </div>
+    @*</div>*@
 </div>

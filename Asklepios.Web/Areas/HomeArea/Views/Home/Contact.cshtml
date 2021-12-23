@@ -21,12 +21,24 @@
                     <h3>Prześlij wiadomość</h3>
 
                     <form class="form" asp-action="Contact" method="post">
-                        <input class="name" type="text" placeholder="Imie i nazwisko" asp-for="ContactName">
+                        <span asp-validation-for="ContactName" class="text-danger pt-5 mt-5" style="font-size:large;color:orange"></span>
+
+                        <input class="name mb-0 pb-0" type="text" placeholder="Imie i nazwisko" asp-for="ContactName">
+                        <span asp-validation-for="ContactEMailAddress" class="text-danger" style="font-size: large; color: orange"></span>
+
                         <input class="email" type="email" placeholder="Email" asp-for="ContactEMailAddress">
+                        <span asp-validation-for="PhoneNumber" class="text-danger" style="font-size: large; color: orange"></span>
+
                         <input class="phone" type="tel" placeholder="Numer telefonu:" asp-for="PhoneNumber">
+                        <span asp-validation-for="Subject" class="text-danger" style="font-size: large; color: orange"></span>
+
                         <input class="person-detail" type="text" placeholder="Temat:" asp-for="Subject">
+
+                        <span asp-validation-for="Message" type="text" class="text-danger" style="font-size: large; color: orange"></span>
+
                         <textarea class="message" name="message" id="message" cols="30" rows="10" placeholder="Wiadomość" asp-for="Message"></textarea>
-                        <input class="submit-btn" type="submit" value="Wyślij">
+
+                        <input class="submit-btn w-100" type="submit" value="Wyślij">
 
                     </form>
                 </div>
@@ -49,7 +61,7 @@
                 if (Model.AlertMessageType == Asklepios.Web.Enums.AlertMessageType.Info)
                 {
                     <div>
-                        <div class="messages" style="margin-top:10px;">
+                        <div class="messages" style="margin-top: 10px; text-align: center">
                             <p class="alert alert-success">
                                 @Model.AlertMessage
                             </p>
@@ -59,8 +71,8 @@
                 else
                 {
                     <div>
-                        <div class="messages" style="margin-top:10px;">
-                            <p class="alert alert-dismissable">
+                        <div class="messages" style="margin-top:10px;text-align:center">
+                            <p class="alert alert-warning">
                                 @Model.AlertMessage
                             </p>
                         </div>

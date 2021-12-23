@@ -84,7 +84,7 @@
             </div>
 
             <li class="nav-item">
-                <a class="nav-link" asp-area="PatientArea" asp-controller="Patient" asp-action="PastVisits">
+                <a class="nav-link" asp-area="PatientArea" asp-controller="Patient" asp-action="HistoricalVisits">
                     <i class="fas fa-fw fa-chart-area"></i>
                     <span>Wizyty</span>
                 </a>
@@ -117,12 +117,12 @@
                     <span>Wyniki badań</span>
                 </a>
             </li>
-            <li class="nav-item">
+            @*<li class="nav-item">
                 <a class="nav-link" asp-area="PatientArea" asp-controller="Patient" asp-action="MedicalAdvice">
                     <i class="fas fa-fw fa-table"></i>
                     <span>Zalecenia</span>
                 </a>
-            </li>
+            </li>*@
             <hr class="sidebar-divider d-none d-md-block">
 
             <div class="sidebar-heading">
@@ -286,12 +286,12 @@
                 <!-- End of Topbar -->
                 <!-- Begin Page Content -->
                 <div class="container-fluid">
-                    <div class="d-flex flex-column">
 
-                        <main role="main" class="d-flex flex-column pb-3 align-items-center align-top" style="min-height:900px">
+                    <main role="main" class="d-flex flex-column pb-3 align-items-center align-top my-5" style="min-height:900px">
+                        <div class="d-flex flex-column w-100 ">
                             @RenderBody()
-                        </main>
-                    </div>
+                        </div>
+                    </main>
                 </div>
 
 
