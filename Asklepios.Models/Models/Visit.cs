@@ -70,7 +70,7 @@ namespace Asklepios.Core.Models
                 {
                     if (this.VisitSummary != null)
                     {
-                        if (this.VisitSummary.MedicalResults == null)
+                        if (this.VisitSummary.MedicalResult == null)
                         {
                             return true;
                         }
