@@ -1508,32 +1508,32 @@ namespace Asklepios.Data.InMemoryContexts
                 {
                     Id=3,
                     MedicalHistory="RTG nadgarstka",
-                    MedicalResults= new List<MedicalTestResult>(){ medicalTestResults[3] },
+                    MedicalResult=  medicalTestResults[3] ,
                 }
 ,
                 new VisitSummary()
                 {
                     Id=4,
                     MedicalHistory="Badania laboratoryjne",
-                    MedicalResults=new List<MedicalTestResult>(){medicalTestResults[4] },
+                    MedicalResult=medicalTestResults[4] ,
                 },
                 new VisitSummary()
                 {
                     Id=4,
                     MedicalHistory="Badania laboratoryjne",
-                    MedicalResults=new List<MedicalTestResult>(){medicalTestResults[4] },
+                    MedicalResult=medicalTestResults[4] ,
                 },
                 new VisitSummary()
                 {
                     Id=4,
                     MedicalHistory="Badania laboratoryjne",
-                    MedicalResults=new List<MedicalTestResult>(){medicalTestResults[4] },
+                    MedicalResult=medicalTestResults[4] ,
                 },
                                 new VisitSummary()
                 {
                     Id=4,
                     MedicalHistory="EKG serca",
-                    MedicalResults=new List<MedicalTestResult>(){medicalTestResults[4] },
+                    MedicalResult=medicalTestResults[4] ,
                 },
 
                 new VisitSummary()
@@ -1686,6 +1686,7 @@ namespace Asklepios.Data.InMemoryContexts
             patient.BookedVisits = plannedVisits;
             patient.HistoricalVisits = patientHistoricalVisits;
             patient.MedicalPackage = medicalPackages[0];
+            
             return patient;
         }
         //        VisitSummary="Pacjent skarży się na swędzenie skóry, mam lekką nadwagę, bywa śpiący po większym posiłku. W rodzinie są cukrzycy. Podejrzenie cykrzycy, zlecone badania"

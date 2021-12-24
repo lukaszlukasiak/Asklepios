@@ -1,6 +1,7 @@
 ﻿using Asklepios.Core.Enums;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 
 namespace Asklepios.Core.Models
@@ -11,10 +12,31 @@ namespace Asklepios.Core.Models
         public string EmployerName { get; set; }
         public string EmployerNIP { get; set; }
         public NFZUnit NFZUnit { get; set; }
-        public List<MedicalTestResult> TestsResults { get; set; }
-        public List<ExaminationReferral> MedicalReferrals { get; set; }
-        public List<Prescription> Prescriptions { get; set; }
-        public List<IssuedMedicine> IssuedMedicines { get; set; }
+        public List<MedicalTestResult> TestsResults 
+        { 
+            get
+            {
+                List<MedicalTestResult> results = HistoricalVisits.Where(c => c.VisitSummary?.MedicalResult != null).Select(c => c.VisitSummary.MedicalResult).ToList();
+                return results;
+            }
+        }
+        public List<ExaminationReferral> MedicalReferrals 
+        {
+            get
+            {
+                List<ExaminationReferral> referrals = HistoricalVisits.Where(c => c.VisitSummary?.ExaminationReferrals != null).SelectMany(c => c.VisitSummary.ExaminationReferrals).ToList();
+                return referrals;
+            }
+        }
+        public List<Prescription> Prescriptions 
+        {
+            get
+            {
+                List<Prescription> prescs = HistoricalVisits.Where(c => c.VisitSummary?.Prescription!=null).Select(c=>c.VisitSummary.Prescription).ToList();
+                return prescs;
+            }          
+        }
+        //public List<IssuedMedicine> IssuedMedicines { get; set; }
         public List<Visit> HistoricalVisits { get; set; }
         public List<Visit> BookedVisits { get; set; }
         //public List<NotificationFilter> Notifications {get;set;}
