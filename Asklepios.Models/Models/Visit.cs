@@ -14,10 +14,33 @@ namespace Asklepios.Core.Models
         public MedicalWorker MedicalWorker { get; set; }
         public DateTimeOffset DateTimeSince { get; set; }
         public DateTimeOffset DateTimeTill { get; set; }
-        public List<MedicalService> BookedMedicalServices { get; set; }
+        public List<MedicalService> MinorMedicalServices { get; set; }
+        public MedicalService PrimaryService { get; set; }
         public Location Location { get; set; }
         public MedicalRoom MedicalRoom { get; set; }
-        public VisitSummary VisitSummary { get; set; }
+        public string MedicalHistory { get; set; }
+        public MedicalTestResult MedicalResult { get; set; }
+        public List<Recommendation> Recommendations { get; set; }
+        public Prescription Prescription { get; set; }
+        public List<MedicalReferral> ExaminationReferrals { get; set; }
+        public VisitReview _visitReview;
+        public VisitReview VisitReview 
+        {
+            get
+            {
+                return _visitReview;
+            }
+            set
+            {
+                _visitReview = value;
+                _visitReview.Reviewee = MedicalWorker;
+                _visitReview.Reviewer = Patient;
+                _visitReview.Visit = this;
+                
+            }
+        }
+
+        //public VisitSummary VisitSummary { get; set; }
         public string GetVisitDateDescription()
         {
             string dateDescription = DateTimeSince.ToString("dd-MM-yyyy") + " " + DateTimeSince.ToString("HH:mm");// + "-" + DateTimeTill.ToString("HH:mm");
@@ -33,7 +56,7 @@ namespace Asklepios.Core.Models
         {
             get
             {
-                string description = BookedMedicalServices[0].Name;
+                string description = PrimaryService.Name;
                 switch (VisitCategory.Type)
                 {
                     case VisitCategoryType.Consultations:
@@ -68,37 +91,42 @@ namespace Asklepios.Core.Models
             {
                 if (VisitCategory.Type == VisitCategoryType.MedicalImaging || VisitCategory.Type == VisitCategoryType.MedicalImaging)
                 {
-                    if (this.VisitSummary != null)
+                    if (this.MedicalResult == null)
                     {
-                        if (this.VisitSummary.MedicalResult == null)
-                        {
-                            return true;
-                        }
+                        return true;
                     }
+
+                    //if (this.VisitSummary != null)
+                    //{
+                    //    if (this.VisitSummary.MedicalResult == null)
+                    //    {
+                    //        return true;
+                    //    }
+                    //}
                 }
                 return false;
             }
         }
-        public List<decimal> GetPrices()
-        {
-            List<decimal> subPrices = new List<decimal>();
-            MedicalPackage package = Patient.MedicalPackage;
+        //public List<decimal> GetPrices()
+        //{
+        //    List<decimal> subPrices = new List<decimal>();
+        //    MedicalPackage package = Patient.MedicalPackage;
 
-            for (int i = 0; i < BookedMedicalServices.Count; i++)
-            {
-                MedicalService service = BookedMedicalServices[i];
-                if (package.ServicesDiscounts.ContainsKey(service))
-                {
-                    decimal price = service.StandardPrice * package.ServicesDiscounts[service];
-                    subPrices.Add(price);
-                }
-                else
-                {
-                    return null;
-                }
-            }
-            return subPrices;
-        }
+        //    for (int i = 0; i < BookedMinorMedicalServices.Count; i++)
+        //    {
+        //        MedicalService service = BookedMinorMedicalServices[i];
+        //        if (package.ServicesDiscounts.ContainsKey(service))
+        //        {
+        //            decimal price = service.StandardPrice * package.ServicesDiscounts[service];
+        //            subPrices.Add(price);
+        //        }
+        //        else
+        //        {
+        //            return null;
+        //        }
+        //    }
+        //    return subPrices;
+        //}
         public decimal GetPrice(MedicalService service)
         {
             MedicalPackage package = Patient.MedicalPackage;
@@ -118,9 +146,15 @@ namespace Asklepios.Core.Models
             MedicalPackage package = Patient.MedicalPackage;
             decimal totalPrice = decimal.MinusOne;
 
-            for (int i = 0; i < BookedMedicalServices.Count; i++)
+            if (package.ServicesDiscounts.ContainsKey(PrimaryService))
             {
-                MedicalService service = BookedMedicalServices[i];
+                decimal price = PrimaryService.StandardPrice * package.ServicesDiscounts[PrimaryService];
+                totalPrice += price;
+            }
+
+            for (int i = 0; i < MinorMedicalServices.Count; i++)
+            {
+                MedicalService service = MinorMedicalServices[i];
                 if (package.ServicesDiscounts.ContainsKey(service))
                 {
                     decimal price = service.StandardPrice * package.ServicesDiscounts[service];

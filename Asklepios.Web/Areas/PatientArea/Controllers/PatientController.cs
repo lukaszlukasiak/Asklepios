@@ -1,6 +1,7 @@
 ﻿using Asklepios.Core.Models;
 using Asklepios.Data.Interfaces;
 using Asklepios.Web.Areas.HomeArea.Models;
+using Asklepios.Web.Areas.PatientArea.Models;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
@@ -48,9 +49,18 @@ namespace Asklepios.Web.Areas.PatientArea.Controllers
             model.Locations = _context.GetAllLocations().ToList();
             return View(model);
         }
+        [HttpPost]
+        public IActionResult BookVisit(BookVisitViewModel model)
+        {
+            //BookVisitViewModel bookVisitViewModel = new BookVisitViewModel(_context.GetAvailableVisits().ToList(), model);
+            model.AllVisitsList = _context.GetAvailableVisits().ToList();
+            return View(model);
+        }
+        [HttpGet]
         public IActionResult BookVisit()
         {
-            return View();
+            BookVisitViewModel model = new BookVisitViewModel() { AllVisitsList = _context.GetAvailableVisits().ToList() }; //(_context.GetAvailableVisits().ToList(),new VisitSearchOptions());
+            return View(model);
         }
         [HttpGet]
         public IActionResult Contact()
@@ -94,7 +104,55 @@ namespace Asklepios.Web.Areas.PatientArea.Controllers
             MedicalWorker worker= _context.GetMedicalWorkers().Where(c => c.Id.ToString() == id).FirstOrDefault();
             return View(worker);
         }
+        [HttpPost]
+        public IActionResult RateVisit(RateVisitViewModel model)
+        {
+            Visit visit = _context.GetHistoricalVisitById(model.VisitId);
+            if (visit==null)
+            {
+                return NotFound();
+            }
+            //RateVisitViewModel model = new RateVisitViewModel() { VisitId = m.VisitId };
+            model.MedicalWorker = _context.GetHistoricalVisitById(model.VisitId).MedicalWorker;
+            if (model.IsDataProper)
+            {
+                visit.VisitReview = model.GetVisitReview();
+                return RedirectToAction("VisitDetails", "Patient", new { area = "PatientArea", id = visit.Id });
+            }
+            else
+            {
+                return View(model);
+            }
+            //visit.VisitReview = model.GetVisitReview();
+            //return View(model);
 
+        }
+        [HttpGet]
+        public IActionResult RateVisit(string id)
+        {
+
+            if (long.TryParse(id, out long lid))
+            {
+
+                Visit visit = _context.GetHistoricalVisitById(lid);
+                if (visit == null)
+                {
+                    return NotFound();
+                }
+                else
+                {
+                    RateVisitViewModel model = new RateVisitViewModel() { VisitId = lid };
+                    model.MedicalWorker = _context.GetHistoricalVisitById(lid).MedicalWorker;
+                    //visit.VisitReview = model.GetVisitReview();
+                    return View(model);
+                }
+            }
+            else
+            {
+                return NotFound();
+
+            }
+        }
         public IActionResult VisitDetails(string id)
         {
             if (long.TryParse(id, out long lid))
@@ -139,6 +197,26 @@ namespace Asklepios.Web.Areas.PatientArea.Controllers
             return View(viewModel);
         }
 
+        public IActionResult DownloadFile(string id)
+        {
+            //Build the File Path.
+            if (long.TryParse(id,out long idL))
+            {
+                //PdfSharpCore.Pdf.PdfDocument pdf = _context.CurrentPatient.TestsResults.Where(c => c.Id == idL).FirstOrDefault().PdfDocument;
+
+                //Read the File data into Byte Array.
+                byte[] bytes = _context.CurrentPatient.TestsResults.Where(c => c.Id == idL).FirstOrDefault()?.PdfDocument;//pdf.  System.IO.File.ReadAllBytes(pdf);
+
+                //Send the File to Download.
+                return File(bytes, "application/octet-stream", "results.pdf");
+
+            }
+            else
+            {
+                return NotFound();
+            }
+            //string path = Path.Combine(this.Environment.WebRootPath, "Files/") + fileName;
+        }
 
 
 

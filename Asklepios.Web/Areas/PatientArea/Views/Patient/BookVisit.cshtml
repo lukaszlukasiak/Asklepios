@@ -1,7 +1,61 @@
-﻿@*
-    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
-*@
+﻿@model Asklepios.Web.Areas.PatientArea.Models.BookVisitViewModel
 @{
+    ViewData["Title"] = "View";
 }
 
-<h1>Zarezerwuj wizytę</h1>
+<h1 style="text-align:center">
+    Zarezerwuj wizytę
+</h1>
+
+<form asp-action="BookVisit" method="post">
+    @{
+        SelectList workersItems = new SelectList(Model.GetMedicalWorkers, "Id", "FullProffesionalName");
+        SelectList locationItems = new SelectList(Model.GetLocations, "Id", "Name");
+        SelectList categoriesList = new SelectList(Model.GetVisitCategories, "Id", "CategoryName");
+        SelectList servicesList = new SelectList(Model.GetMedicalServices, "Id", "Name");
+    }
+    <select class="form-control  mb-1" asp-for="SelectedLocationId"  asp-items="locationItems">
+        <option value="0">Wybierz oddział</option>
+    </select>
+
+    <select class="form-control  mb-1" asp-for="SelectedVisitCategoryId"  asp-items="categoriesList">
+        <option value="0">Wybierz kategorię wizyty</option>
+    </select>
+    <select class="form-control  mb-1" asp-for="SelectedPrimaryServiceId"  asp-items="servicesList">
+        <option value="0">Wybierz specjalność</option>
+    </select>
+
+    <select class="form-control mb-1" asp-for="SelectedWorkerId"  asp-items="workersItems" onchange="">
+        <option value="0">Wybierz lekarza</option>
+    </select>
+    <div class="d-flex flex-column">
+        <button class=" btn btn-secondary   mb-1">Filtruj!</button>
+
+    </div>
+    @*<select asp-for="@Model.SearchOptions.SelectedDoctor" asp-items="@Model.GetMedicalWorkers.ToList()" class="form-control">
+            <option>Select Role</option>
+        </select>
+        @Html.DropDownList("Title", Model.Select(m => new SelectListItem() { Text = m., Value = m.Title }).ToList(), "Select")*@
+</form>
+
+@{
+    List<Visit> visits = Model.FilteredVisits;
+    if (visits.Count > 0)
+    {
+        @for (int i = 0; i < visits.Count; i++)
+        {
+            Visit visit = visits[i];
+            <partial name="_AvailableVisit" model="visit" />
+        }
+    }
+    else
+    {
+        <h3>Brak dostępnych wizyt przy założonych kryteriach...</h3>
+        <a asp-area="PatientArea" asp-controller="Patient" asp-action="BookVisit" class="btn btn-primary btn-icon-split mt-3">
+            <span class="icon text-white-50">
+                <i class="fas fa-book"></i>
+            </span>
+            <span class="text">Zarezerwuj wizytę</span>
+        </a>
+    }
+}

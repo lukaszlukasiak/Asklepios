@@ -9,8 +9,9 @@ namespace Asklepios.Core.Models
         public float CompetenceRate { get; set; }
         public float AtmosphereRate { get; set; }
         public string ShortDescription { get; set; }
-        public DateTime ReviewDate { get; set; }
+        public DateTimeOffset ReviewDate { get; set; }
         public MedicalWorker Reviewee { get; set; }
         public Patient Reviewer { get; set; }
+        public Visit Visit { get; set; }
     }
 }

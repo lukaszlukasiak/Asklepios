@@ -6,6 +6,14 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="Areas\PatientArea\Models\ExaminationReferralViewModel.cs" />
+    <Compile Remove="Areas\PatientArea\Models\ExaminationResultsViewModel.cs" />
+    <Compile Remove="Areas\PatientArea\Models\PatientViewModel - Copy.cs" />
+    <Compile Remove="Areas\PatientArea\Models\PrescriptionsViewModel.cs" />
+    <Compile Remove="Areas\PatientArea\Views\Patient\_RateVisit.cshtml.cs" />
+  </ItemGroup>
+
+  <ItemGroup>
     <Content Remove="Areas\HomeArea\Views\Home\_Location_deop.cshtml" />
     <Content Remove="Areas\HomeArea\Views\Shared\_Layout.cshtml" />
     <Content Remove="Areas\PatientArea\Views\Patient\AboutUs.cshtml" />

@@ -97,6 +97,11 @@ namespace Asklepios.Web.Areas.PatientArea.Models
                 return pastVisits;
             }
         }
-
+        public List<MedicalReferral> GetValidReferrals()
+        {
+            List<MedicalReferral> referrals = null;// new List<MedicalReferral>();
+            referrals = Patient.MedicalReferrals.Where(c => c.IsActive == true).ToList();
+            return referrals;
+        }
     }
 }

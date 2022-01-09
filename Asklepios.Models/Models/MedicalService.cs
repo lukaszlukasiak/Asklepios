@@ -6,7 +6,7 @@ namespace Asklepios.Core.Models
 {
     public class MedicalService
     {
-        public int Id { get; set; }
+        public long Id { get; set; }
         public string Name { get; set; }
         public decimal StandardPrice { get; set; }
         public string Description { get; set; }

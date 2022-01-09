@@ -11,7 +11,8 @@ namespace Asklepios.Core.Models
         public long Id { get; set; }
         public string Title { get; set; }
         public string Description { get; set; }
-        public VisitSummary VisitSummary { get; set; }
+        public Visit Visit { get; set; }
+        //public VisitSummary VisitSummary { get; set; }
 
     }
 }

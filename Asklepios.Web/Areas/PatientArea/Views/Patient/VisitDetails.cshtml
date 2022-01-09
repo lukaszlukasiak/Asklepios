@@ -26,106 +26,88 @@
                 <p>
                     Piętro: @Model.MedicalRoom.FloorNumber, pokój: @Model.MedicalRoom.Name
                 </p>
-
-                @*<h5>
-                    @Model.VisitCategory.CategoryName - @Model.BookedMedicalServices[0].Name
-
-                </h5>*@
-                @if (Model.IsNotCompletedMedicalTest)
-                {
-                    <h5>
-                        "Badanie  realizacji..."
-                    </h5>
-
-                }
             </h5>
-
-            @*<h4>Zakres specjalizacji:</h4>
-            <h5>
-                @for (int i = 0; i < Model.BookedMedicalServices.Count; i++)
-                {
-                    MedicalService service = Model.MedicalServices[i];
-                    if (i % 2 == 1)
-                    {
-                        <br>
-                    }
-                    @service.Name
-                }
-
-            </h5>*@
-
         </div>
-        <div class="p-2 flex-grow-1 pt-3 m-auto flex-grow-1" style="width:400px;text-align:center">
+        <div class="p-2 pt-3 m-auto flex-grow-1" style="width:400px;text-align:center">
             <h5>
 
                 <p>
                     Kategoria: @Model.VisitCategory.CategoryName
                 </p>
                 <p>Usługi</p>
-                @for (int i = 0; i < Model.BookedMedicalServices.Count; i++)
+                <p>
+                    @Model.PrimaryService.Name : @Model.GetPrice(Model.PrimaryService); PLN
+                </p>
+
+                @for (int i = 0; i < Model.MinorMedicalServices.Count; i++)
                 {
-                    MedicalService service = Model.BookedMedicalServices[i];
+                    MedicalService service = Model.MinorMedicalServices[i];
                     <p>
                         @service.Name : @Model.GetPrice(service); PLN
                     </p>
                 }
                 <p>Koszt całkowity: @Model.GetTotalPrice() PLN</p>
             </h5>
-
-
-
         </div>
-        <div class="p-2 flex-grow-1 pt-3 m-auto flex-grow-1" style="width:400px;text-align:center">
-            <form class="d-flex flex-column">
-                <h5>
-
+        @if (Model.VisitReview != null)
+        {
+            <div class="d-flex flex-column flex-fill flex-grow-1 m-auto" style="width:400px;text-align:center">
+                <div class="d-flex flex-column">
                     <p>
-                        Recenzja
+                        Atmosfera:
+                        <partial name="_Stars" model="@Model.VisitReview.AtmosphereRate" />
                     </p>
-                    <p>Usługi</p>
-                    @for (int i = 0; i < Model.BookedMedicalServices.Count; i++)
-                    {
-                        MedicalService service = Model.BookedMedicalServices[i];
-                        <p>
-                            @service.Name : @Model.GetPrice(service); PLN
-                        </p>
-                    }
-                    <p>Koszt całkowity: @Model.GetTotalPrice() PLN</p>
-                </h5>
-
-                <a asp-area="PatientArea" asp-controller="Patient" asp-action="BookVisit" class="btn btn-primary btn-icon-split  flex-grow-1 ml-2">
-                    <span class="icon text-white-50">
-                        <i class="fas fa-book"></i>
-                    </span>
-                    <span class="text ">Zrecenzuj!</span>
-                </a>
-
-            </form>
-        </div>
-
-
-    </div>
-    @*@if (Model.)
-    {
-
-    }*@
-    <div class="d-flex">
-        <div class="p-2 flex-grow-1 pt-3 m-auto flex-grow-0" style="width:400px;">
-            <div class="d-flex flex-row align-content-end justify-content-evenly m-auto">
-                @*<a asp-area="PatientArea" asp-controller="Patient" asp-action="MedicalWorkerDetails" asp-route-id="@Model.Id" class="btn btn-primary btn-icon-split flex-grow-1 mr-2">
-                    <span class="icon text-white-50 left" style="text-align:left;float:left">
-                        <i class="fas fa-address-book"></i>
-                    </span>
-                    <span class="text" style="float: left">Szczegóły wizyty</span>
-                </a>*@
-
-                <a asp-area="PatientArea" asp-controller="Patient" asp-action="BookVisit" class="btn btn-primary btn-icon-split  flex-grow-1 ml-2">
-                    <span class="icon text-white-50">
-                        <i class="fas fa-book"></i>
-                    </span>
-                    <span class="text">Zarezerwuj ponownie</span>
-                </a>
+                    <p>
+                        Kompetencje:
+                        <partial name="_Stars" model="@Model.VisitReview.CompetenceRate" />
+                    </p>
+                    <p>
+                        Ocena ogólna: <partial name="_Stars" model="@Model.VisitReview.GeneralRate" />
+                    </p>
+                    <p>
+                        Opis:
+                        @Model.VisitReview.ShortDescription
+                    </p>
+                </div>
             </div>
-        </div>
+        }
+        else
+        {
+
+            @*Asklepios.Web.Areas.PatientArea.Models.RateVisitViewModel lol = new Asklepios.Web.Areas.PatientArea.Models.RateVisitViewModel();
+            lol.VisitId = Model.Id;
+
+            <partial name="_RateVisit" model="lol" />*@
+        }
+        <div class="d-flex flex-grow-1">
+            <div class="p-2  pt-3 m-auto flex-grow-0" style="min-width:400px;">
+                @*<div class="d-flex flex-row align-content-end justify-content-evenly m-auto">*@
+                @*<a asp-area="PatientArea" asp-controller="Patient" asp-action="RateVisit" asp-route-id="@Model.Id" class="btn btn-primary btn-icon-split flex-grow-1 mr-2">
+            <span class="icon text-white-50 left" style="text-align:left;float:left">
+                <i class="fas fa-address-book"></i>
+            </span>
+            <span class="text" style="float: left">Oceń wizytę</span>
+        </a>*@
+                @if (Model.VisitReview == null)
+                {
+                    <div class="d-flex">
+                        <a asp-area="PatientArea" asp-controller="Patient" asp-action="RateVisit" asp-route-id="@Model.Id" class="btn btn-primary btn-icon-split flex-grow-1 m-2">
+                            <span class="icon text-white-50 left" style="text-align:left;float:left">
+                                <i class="fas fa-address-book"></i>
+                            </span>
+                            <span class="text" style="float: left">Oceń wizytę</span>
+                        </a>
+                    </div>
+                }
+                <div class="d-flex">
+
+                    <a asp-area="PatientArea" asp-controller="Patient" asp-action="BookVisit" class="btn btn-primary btn-icon-split  flex-grow-1 m-2">
+                        <span class="icon text-white-50">
+                            <i class="fas fa-book"></i>
+                        </span>
+                        <span class="text">Zarezerwuj ponownie</span>
+                    </a>
+                    </div>
+                </div>
+            </div>
     </div>
-</div>
