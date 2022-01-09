@@ -16,15 +16,17 @@ namespace Asklepios.Core.Models
         { 
             get
             {
-                List<MedicalTestResult> results = HistoricalVisits.Where(c => c.VisitSummary?.MedicalResult != null).Select(c => c.VisitSummary.MedicalResult).ToList();
+                List<MedicalTestResult> results = HistoricalVisits.Where(c => c.MedicalResult != null).Select(c => c.MedicalResult).ToList();
                 return results;
             }
         }
-        public List<ExaminationReferral> MedicalReferrals 
+        public List<MedicalReferral> MedicalReferrals 
         {
             get
             {
-                List<ExaminationReferral> referrals = HistoricalVisits.Where(c => c.VisitSummary?.ExaminationReferrals != null).SelectMany(c => c.VisitSummary.ExaminationReferrals).ToList();
+                List<MedicalReferral> referrals = HistoricalVisits.Where(c => c.ExaminationReferrals != null).SelectMany(c => c.ExaminationReferrals).ToList();
+                //List<ExaminationReferral> referrals = HistoricalVisits.Where(c => c.VisitSummary?.ExaminationReferrals != null).SelectMany(c => c.VisitSummary.ExaminationReferrals).ToList();
+
                 return referrals;
             }
         }
@@ -32,7 +34,8 @@ namespace Asklepios.Core.Models
         {
             get
             {
-                List<Prescription> prescs = HistoricalVisits.Where(c => c.VisitSummary?.Prescription!=null).Select(c=>c.VisitSummary.Prescription).ToList();
+                List<Prescription> prescs = HistoricalVisits.Where(c => c.Prescription!=null).Select(c=>c.Prescription).ToList();
+                //List<Prescription> prescs = HistoricalVisits.Where(c => c.VisitSummary?.Prescription != null).Select(c => c.VisitSummary.Prescription).ToList();
                 return prescs;
             }          
         }

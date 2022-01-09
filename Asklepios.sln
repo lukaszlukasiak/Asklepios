@@ -7,7 +7,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Asklepios.Core", "Asklepios
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Asklepios.Web", "Asklepios.Web\Asklepios.Web.csproj", "{442AA2C3-9EB8-457A-81E7-758FC7E34A74}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Asklepios.Data", "Asklepios.Data\Asklepios.Data.csproj", "{7D4DC751-179B-4721-824A-C808FED41390}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Asklepios.Data", "Asklepios.Data\Asklepios.Data.csproj", "{7D4DC751-179B-4721-824A-C808FED41390}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

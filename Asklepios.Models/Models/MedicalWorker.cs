@@ -33,6 +33,7 @@ namespace Asklepios.Core.Models
                 {
                     if (VisitReviews.Count > 0)
                     {
+                        
                         return VisitReviews.Average(c => c.GeneralRate);
                     }
                 }

@@ -21,13 +21,13 @@ namespace Asklepios.Data.Interfaces
         IEnumerable<Patient> GetAllPatients();
         Patient GetPatientById(long id);
         Location GetLocationById(long locationId);
-        Visit GetAvailableVisitById();
-        MedicalWorker GetMedicalWorkerById();
+        Visit GetAvailableVisitById(long id);
+        MedicalWorker GetMedicalWorkerById(long id);
         Visit GetHistoricalVisitById(long id);
-        MedicalService GetMedicalServiceById();
-        MedicalPackage GetMedicalPackageById();
-        NFZUnit GetNFZUnitById();
-        VisitCategory GetVisitCategoryById();
+        MedicalService GetMedicalServiceById(long id);
+        MedicalPackage GetMedicalPackageById(long id);
+        NFZUnit GetNFZUnitById(long id);
+        VisitCategory GetVisitCategoryById(long id);
         Patient CurrentPatient { get; set; }
         //IEnumerable<MedicalRoom> GetMedicalRooms();
         //MedicalRoom GetMedicalRoomById();
