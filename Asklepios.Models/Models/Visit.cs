@@ -19,7 +19,19 @@ namespace Asklepios.Core.Models
         public Location Location { get; set; }
         public MedicalRoom MedicalRoom { get; set; }
         public string MedicalHistory { get; set; }
-        public MedicalTestResult MedicalResult { get; set; }
+        private MedicalTestResult _medicalTestResult;
+        public MedicalTestResult MedicalResult 
+        { 
+            get
+            {
+                return _medicalTestResult;
+            }
+            set
+            {
+                _medicalTestResult = value;
+                _medicalTestResult.ExamDate = DateTimeOffset.Now;
+            }
+        }
         public List<Recommendation> Recommendations { get; set; }
         public Prescription Prescription { get; set; }
         public List<MedicalReferral> ExaminationReferrals { get; set; }
@@ -95,38 +107,11 @@ namespace Asklepios.Core.Models
                     {
                         return true;
                     }
-
-                    //if (this.VisitSummary != null)
-                    //{
-                    //    if (this.VisitSummary.MedicalResult == null)
-                    //    {
-                    //        return true;
-                    //    }
-                    //}
                 }
                 return false;
             }
         }
-        //public List<decimal> GetPrices()
-        //{
-        //    List<decimal> subPrices = new List<decimal>();
-        //    MedicalPackage package = Patient.MedicalPackage;
 
-        //    for (int i = 0; i < BookedMinorMedicalServices.Count; i++)
-        //    {
-        //        MedicalService service = BookedMinorMedicalServices[i];
-        //        if (package.ServicesDiscounts.ContainsKey(service))
-        //        {
-        //            decimal price = service.StandardPrice * package.ServicesDiscounts[service];
-        //            subPrices.Add(price);
-        //        }
-        //        else
-        //        {
-        //            return null;
-        //        }
-        //    }
-        //    return subPrices;
-        //}
         public decimal GetPrice(MedicalService service)
         {
             MedicalPackage package = Patient.MedicalPackage;

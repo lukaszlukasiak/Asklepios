@@ -36,8 +36,7 @@
   <ItemGroup>
     <Folder Include="Areas\AdministrativeWorkerArea\Data\" />
     <Folder Include="Areas\AdministrativeWorkerArea\Models\" />
-    <Folder Include="Areas\CustomerServiceWorkerArea\Data\" />
-    <Folder Include="Areas\CustomerServiceWorkerArea\Models\" />
+    <Folder Include="Areas\CustomerServiceArea\Data\" />
     <Folder Include="Areas\HomeArea\Data\" />
     <Folder Include="Areas\MedicalWorkerArea\Data\" />
     <Folder Include="Areas\MedicalWorkerArea\Models\" />
@@ -52,19 +51,23 @@
       <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
       <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
     </Content>
-    <Content Update="Areas\CustomerServiceWorkerArea\Views\Shared\Error.cshtml">
+    <Content Update="Areas\CustomerServiceArea\Views\CustomerService\Index.cshtml">
       <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
       <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
     </Content>
-    <Content Update="Areas\CustomerServiceWorkerArea\Views\Shared\_Layout1.cshtml">
+    <Content Update="Areas\CustomerServiceArea\Views\Shared\Error.cshtml">
       <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
       <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
     </Content>
-    <Content Update="Areas\CustomerServiceWorkerArea\Views\Shared\_ValidationScriptsPartial.cshtml">
+    <Content Update="Areas\CustomerServiceArea\Views\Shared\_Layout1.cshtml">
       <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
       <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
     </Content>
-    <Content Update="Areas\CustomerServiceWorkerArea\Views\Shared\_ViewImports.cshtml">
+    <Content Update="Areas\CustomerServiceArea\Views\Shared\_ValidationScriptsPartial.cshtml">
+      <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
+      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+    </Content>
+    <Content Update="Areas\CustomerServiceArea\Views\Shared\_ViewImports.cshtml">
       <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
       <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
     </Content>

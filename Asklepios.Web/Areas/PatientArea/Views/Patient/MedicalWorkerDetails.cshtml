@@ -14,7 +14,7 @@
                     @Model.FullProffesionalName
                 </h3>
                 <br />
-                <h5>Region - @Model.DefaultAglomeration</h5>
+                <h5>Region - @Model.Person.DefaultAglomeration</h5>
                 <h5>Edukacja:</h5>
                 @for (int i = 0; i < Model.Education.Count; i++)
                 {
@@ -32,10 +32,10 @@
                 @for (int i = 0; i < Model.MedicalServices.Count; i++)
                 {
                     MedicalService service = Model.MedicalServices[i];
-                    if (i % 2 == 1)
-                    {
+                    //if (i % 2 == 1)
+                    //{
                         <br>
-                    }
+                    @*}*@
                     @service.Name
                 }
 

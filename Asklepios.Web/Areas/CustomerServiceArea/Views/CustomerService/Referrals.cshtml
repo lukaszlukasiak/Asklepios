@@ -1,0 +1,21 @@
+﻿@model Asklepios.Web.Areas.PatientArea.Models.PatientViewModel
+@{
+    ViewData["Title"] = "View";
+}
+
+
+@if (Model.Patient.MedicalReferrals?.Count>0)
+{
+    <h1 style="text-align:center">Skierowania</h1>
+
+    @foreach (var referrals in Model.Patient.MedicalReferrals)
+    {
+
+        <partial name="_MedicalReferral" model="referrals" />
+    }
+}
+else
+{
+    <h1>Brak wystawionych skierowań</h1>
+
+}

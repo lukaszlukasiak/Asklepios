@@ -1,0 +1,21 @@
+﻿@model Asklepios.Web.Areas.PatientArea.Models.PatientViewModel
+@{
+    ViewData["Title"] = "View";
+}
+
+
+@if (Model.Patient.MedicalReferrals != null)
+{
+    <h1 style="text-align:center">Recepty</h1>
+
+    @foreach (var prescription in Model.Patient.Prescriptions)
+    {
+
+        <partial name="_Prescription" model="prescription" />
+    }
+}
+else
+{
+    <h1>Brak wystawionych recept</h1>
+
+}

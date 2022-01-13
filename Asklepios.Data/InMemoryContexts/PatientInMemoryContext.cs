@@ -42,7 +42,7 @@ namespace Asklepios.Data.InMemoryContexts
             //medicalRooms = GetMedicalRooms().ToList();
             locations = GetAllLocations();
             medicalWorkers = GetMedicalWorkers();
-            availableVisits = GetAvailableVisits();
+            availableVisits = GetAvailableVisits().Where(c => c.Patient == null).ToList(); ;
             CurrentPatient = GetPatientData();
         }
 
@@ -108,7 +108,7 @@ namespace Asklepios.Data.InMemoryContexts
 
         public Visit GetAvailableVisitById(long id)
         {
-            return PatientMockDB.GetAvailableVisitById(id);
+            return GetAvailableVisits().Where(c => c.Id == id).FirstOrDefault();
         }
 
         public MedicalWorker GetMedicalWorkerById(long id)
@@ -139,6 +139,20 @@ namespace Asklepios.Data.InMemoryContexts
         public VisitCategory GetVisitCategoryById(long id)
         {
             return PatientMockDB.GetVisitCategoryById(id);
+        }
+
+        public void UpdateReferral(MedicalReferral referral)
+        {
+            throw new NotImplementedException();
+        }
+
+        public void UpdateVisit(Visit visit)
+        {
+            Visit oldVisit = PatientMockDB.AvailableVisits.Where(c => c.Id == visit.Id).FirstOrDefault();
+            oldVisit = visit;
+            //PatientMockDB.CurrentPatient.BookedVisits.Add(visit);
+            //PatientMockDB.AvailableVisits.
+            //throw new NotImplementedException();
         }
     }
 }

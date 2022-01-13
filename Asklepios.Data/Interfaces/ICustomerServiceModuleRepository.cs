@@ -12,6 +12,27 @@ namespace Asklepios.Data.Interfaces
         Patient GetCurrentPatientData();
         IEnumerable<Visit> GetAvailableVisits();
         IEnumerable<Location> GetLocations();
-
+        IEnumerable<MedicalWorker> GetMedicalWorkers();
+        IEnumerable<Visit> GetHistoricalVisits();
+        IEnumerable<MedicalService> GetMedicalServices();
+        IEnumerable<MedicalPackage> GetMedicalPackages();
+        IEnumerable<NFZUnit> GetNFZUnits();
+        IEnumerable<VisitCategory> GetVisitCategories();
+        IEnumerable<Location> GetAllLocations();
+        IEnumerable<Patient> GetAllPatients();
+        Patient GetPatientById(long id);
+        Location GetLocationById(long locationId);
+        Visit GetAvailableVisitById(long id);
+        MedicalWorker GetMedicalWorkerById(long id);
+        Visit GetHistoricalVisitById(long id);
+        MedicalService GetMedicalServiceById(long id);
+        MedicalPackage GetMedicalPackageById(long id);
+        NFZUnit GetNFZUnitById(string id);
+        VisitCategory GetVisitCategoryById(long id);
+        Patient CurrentPatient { get; set; }
+        void UpdateReferral(MedicalReferral referral);
+        void UpdateVisit(Visit visit);
+        User GetUser(int parsedId);
+        Person GetPerson(long personId);
     }
 }

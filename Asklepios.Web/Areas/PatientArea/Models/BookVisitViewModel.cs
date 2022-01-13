@@ -9,11 +9,17 @@ namespace Asklepios.Web.Areas.PatientArea.Models
     public class BookVisitViewModel
     {
         public List<Visit> AllVisitsList { get; set; }
+        public List<Visit> _filteredVisits;
         public List<Visit> FilteredVisits
         {
             get
             {
-                return FilterVisits();
+                if (_filteredVisits==null)
+                {
+                    _filteredVisits = FilterVisits();
+                }
+                
+                return _filteredVisits;
             }
 
         }
@@ -37,8 +43,17 @@ namespace Asklepios.Web.Areas.PatientArea.Models
         public string SelectedVisitCategoryId
         { get; set; }
 
+        public int CurrentPageNum { get; set; } = 0;
+        public int NumberOfPages
+        {
+            get
+            {
+                return FilteredVisits.Count / ItemsPerPage;
+            }
+        }
+        const int ItemsPerPage = 100;
 
-
+        public bool NoReferral { get; set; }
 
         public BookVisitViewModel()
         {
@@ -193,7 +208,15 @@ namespace Asklepios.Web.Areas.PatientArea.Models
             //        return null;
             //    }
             //}
-            return filteredVisits;
+            filteredVisits = filteredVisits.OrderBy(c => c.DateTimeSince).ToList();
+            if (filteredVisits.Count<ItemsPerPage)
+            {
+                return filteredVisits;
+            }
+            else
+            {
+                return filteredVisits.GetRange(CurrentPageNum, ItemsPerPage);
+            }           
         }
     }
 }

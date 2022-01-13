@@ -14,18 +14,18 @@
         SelectList categoriesList = new SelectList(Model.GetVisitCategories, "Id", "CategoryName");
         SelectList servicesList = new SelectList(Model.GetMedicalServices, "Id", "Name");
     }
-    <select class="form-control  mb-1" asp-for="SelectedLocationId"  asp-items="locationItems">
+    <select class="form-control  mb-1" asp-for="SelectedLocationId" asp-items="locationItems">
         <option value="0">Wybierz oddział</option>
     </select>
 
-    <select class="form-control  mb-1" asp-for="SelectedVisitCategoryId"  asp-items="categoriesList">
+    <select class="form-control  mb-1" asp-for="SelectedVisitCategoryId" asp-items="categoriesList">
         <option value="0">Wybierz kategorię wizyty</option>
     </select>
-    <select class="form-control  mb-1" asp-for="SelectedPrimaryServiceId"  asp-items="servicesList">
+    <select class="form-control  mb-1" asp-for="SelectedPrimaryServiceId" asp-items="servicesList">
         <option value="0">Wybierz specjalność</option>
     </select>
 
-    <select class="form-control mb-1" asp-for="SelectedWorkerId"  asp-items="workersItems" onchange="">
+    <select class="form-control mb-1" asp-for="SelectedWorkerId" asp-items="workersItems" onchange="">
         <option value="0">Wybierz lekarza</option>
     </select>
     <div class="d-flex flex-column">
@@ -37,6 +37,7 @@
         </select>
         @Html.DropDownList("Title", Model.Select(m => new SelectListItem() { Text = m., Value = m.Title }).ToList(), "Select")*@
 </form>
+
 
 @{
     List<Visit> visits = Model.FilteredVisits;
@@ -50,12 +51,12 @@
     }
     else
     {
-        <h3>Brak dostępnych wizyt przy założonych kryteriach...</h3>
-        <a asp-area="PatientArea" asp-controller="Patient" asp-action="BookVisit" class="btn btn-primary btn-icon-split mt-3">
-            <span class="icon text-white-50">
-                <i class="fas fa-book"></i>
-            </span>
-            <span class="text">Zarezerwuj wizytę</span>
-        </a>
+        <h3 style="text-align:center">Brak dostępnych wizyt przy założonych kryteriach...</h3>
+        @*<a asp-area="PatientArea" asp-controller="Patient" asp-action="BookVisit" class="btn btn-primary btn-icon-split mt-3">
+                <span class="icon text-white-50">
+                    <i class="fas fa-book"></i>
+                </span>
+                <span class="text">Zarezerwuj wizytę</span>
+            </a>*@
     }
 }

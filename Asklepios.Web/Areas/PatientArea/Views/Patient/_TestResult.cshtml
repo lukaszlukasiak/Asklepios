@@ -24,7 +24,7 @@
                 </h2>
 
                 <div>
-                    Wykonane: @Model.Date.ToString("dd-MM-yyyy")
+                    Wykonane: @Model.ExamDate.ToString("dd-MM-yyyy")
                 </div>
                 <a  class="btn btn-primary btn-icon-split mt-3" asp-area="PatientArea" asp-controller="Patient" asp-action="DownloadFile" asp-route-id="@Model.Id">
                     <span class="icon text-white-50">

@@ -7,10 +7,15 @@ namespace Asklepios.Core.Models
 {
     public class ElectroradiologyTechnician : MedicalWorker
     {
-        public ElectroradiologyTechnician(string name, string surName, long id, string pesel, bool hasPolishCitizenship, string passportNumber, string passportCode, string email, Aglomeration aglomeration) : base(name, surName, id, pesel, hasPolishCitizenship, passportNumber, passportCode, email, aglomeration)
-        {
-        }
+        //public ElectroradiologyTechnician(string name, string surName, long id, string pesel, bool hasPolishCitizenship, string passportNumber, string passportCode, string email, Aglomeration aglomeration) : base(name, surName, id, pesel, hasPolishCitizenship, passportNumber, passportCode, email, aglomeration)
+        //{
+        //}
 
+        public ElectroradiologyTechnician(Person person, string profNumber ): base(person)
+        {
+            ProfessionalNumber = profNumber;
+            MedicalWorkerType = MedicalWorkerType.ElectroriadologyTechnician;
+        }
         public override string ProfessionalTitle => "Technik elektroradiolog";
     }
 }

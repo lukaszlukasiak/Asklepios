@@ -9,6 +9,7 @@ namespace Asklepios.Core.Enums
         Doctor,
         Nurse,
         Physiotherapist,
-        ElectroriadologyTechnician
+        ElectroriadologyTechnician,
+        DentalHygienist
     }
 }

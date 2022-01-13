@@ -1,0 +1,17 @@
+﻿@model Asklepios.Web.Areas.HomeArea.Models.LocationsViewModel
+
+@{
+    ViewData["Title"] = "View";
+}
+
+<h2 style="text-align:center" >Lista Placówek</h2>
+
+
+@*<div class="container"  >*@
+
+    @foreach (var loc in Model.Locations)
+    {
+
+        <partial name="_Location" model="loc" />
+    }
+@*</div>*@

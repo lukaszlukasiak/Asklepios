@@ -6,22 +6,29 @@ using System.Text;
 
 namespace Asklepios.Core.Models
 {
-    public abstract class MedicalWorker : Person
+    public abstract class MedicalWorker //: Person
     {
-        public MedicalWorker(string name, string surName, long id, string pesel, bool hasPolishCitizenship, string passportNumber, string passportCode, string email, Aglomeration aglomeration)
-            : base(name, surName, id, pesel, hasPolishCitizenship, passportNumber, passportCode, email, aglomeration)
+        //public MedicalWorker(string name, string surName, long id, string pesel, bool hasPolishCitizenship, string passportNumber, string passportCode, string email, Aglomeration aglomeration)
+        //    : base(name, surName, id, pesel, hasPolishCitizenship, passportNumber, passportCode, email, aglomeration)
+        //{
+        //}
+        public MedicalWorker(Person person)
         {
+            Person = person;
         }
         //public MedicalWorker(Person person,DateTime hiredSince, string professionlTitle, MedicalWorkerType medicalWorkerType,List<string> education ,string experience, string imaagePath)
         //{
 
         //}
+        public long Id { get; set; }
+        public Person Person { get; set; }
+        public string ProfessionalNumber {get;set;}
         public DateTime HiredSince { get; set; }
         //public DateTime HiredUntil { get; set; }
         public bool IsCurrentlyHired { get; set; }
         public abstract string ProfessionalTitle { get; }
         //public abstract string FullProffesionalName { get; }
-        public string FullProffesionalName => ProfessionalTitle + " " + Name + " " + Surname;
+        public string FullProffesionalName => ProfessionalTitle + " " + Person.Name + " " + Person.Surname;
         public List<Visit> FutureVisits { get; set; }
         public List<Visit> PastVisits { get; set; }
         public List<VisitReview> VisitReviews { get; set; }

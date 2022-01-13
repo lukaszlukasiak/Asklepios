@@ -8,9 +8,10 @@ namespace Asklepios.Core.Enums
 {
     public enum WorkerModuleType
     {
+        //[Description("Nie dotyczy")]
+        //[Display(Name = "Nie dotyczy")]
+        //NotApplicable,
         [Description("Obsługa klienta")]
-        //[DisplayName(Name = "Obsługa klienta")]
-        //[EnumDisplayName(DisplayName = "Super Admin")]
         [Display(Name ="Obsługa klienta")]
         CustomerServiceModule,
         [Description("Administracja")]

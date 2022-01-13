@@ -7,13 +7,17 @@ namespace Asklepios.Core.Models
 {
     public class Nurse : MedicalWorker
     {
-        public Nurse(string name, string surName, long id, string pesel, bool hasPolishCitizenship, string passportNumber, string passportCode, string pwzNumber, string email, Aglomeration aglomeration) : base(name, surName, id, pesel, hasPolishCitizenship, passportNumber, passportCode, email, aglomeration)
+        //public Nurse(string name, string surName, long id, string pesel, bool hasPolishCitizenship, string passportNumber, string passportCode, string pwzNumber, string email, Aglomeration aglomeration) : base(name, surName, id, pesel, hasPolishCitizenship, passportNumber, passportCode, email, aglomeration)
+        //{
+        //    PWZNumber = pwzNumber;
+        //}
+        public Nurse(Person person , string profNumber) :base(person)
         {
-            PWZNumber = pwzNumber;
+            ProfessionalNumber = profNumber;
+            MedicalWorkerType = MedicalWorkerType.Nurse;
         }
-
         public override string ProfessionalTitle => "Pielęgniarka";
-        public string   PWZNumber { get;}
+        //public string   PWZNumber { get;}
     }
 
 }
