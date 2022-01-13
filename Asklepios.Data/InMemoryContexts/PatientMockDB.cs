@@ -32,11 +32,15 @@ namespace Asklepios.Data.InMemoryContexts
         public  static List<NFZUnit> NfzUnits { get; set; }
         public  static List<Patient> AllPatients { get; set; }
         public static List<List<MedicalRoom>> MedicalRooms { get; set; }
+        public static List<User> Users { get; set; }
         public static Patient CurrentPatient { get; set; }
+        public static List<Person> GetPersons { get; internal set; }
+
         public static bool IsCreated;
         public static void SetData()
         {
             IsCreated = true;
+            Users = GetAllUsers();
             NfzUnits = GetNFZUnits().ToList();
             MedicalServices = GetMedicalServices().ToList();
             MedicalPackages = GetMedicalPackages().ToList();
@@ -52,37 +56,114 @@ namespace Asklepios.Data.InMemoryContexts
 
         }
 
+        private static List<User> GetAllUsers()
+        {
+            List<User> users = new List<User>()
+            {
+                new User()
+                {
+                    Id=1,
+                    Password="PasswordPatient1",
+                    UserName="patient1@asklepios.com",
+                    UserType=Core.Enums.UserType.Patient,
+                    WorkerModuleType=null,
+                    PersonId=1
+                },
+                new User()
+                {
+                    Id=2,
+                    Password="PasswordPatient2",
+                    UserName="patient2@asklepios.com",
+                    UserType=Core.Enums.UserType.Patient,
+                    WorkerModuleType=null,
+                    PersonId=2
+                },
+                new User()
+                {
+                    Id=3,
+                    Password="PasswordPatient3",
+                    UserName="patient3@asklepios.com",
+                    UserType=Core.Enums.UserType.Patient,
+                    WorkerModuleType=null,
+                    PersonId=3
+                },
+                new User()
+                {
+                    Id=4,
+                    Password="PasswordService1",
+                    UserName="sw1@asklepios.com",
+                    UserType=Core.Enums.UserType.Employee,
+                    WorkerModuleType=Core.Enums.WorkerModuleType.CustomerServiceModule
+                },
+                new User()
+                {
+                    Id=5,
+                    Password="PasswordService2",
+                    UserName="sw2@asklepios.com",
+                    UserType=Core.Enums.UserType.Employee,
+                    WorkerModuleType=Core.Enums.WorkerModuleType.CustomerServiceModule
+                },                
+                new User()
+                {
+                    Id=6,
+                    Password="PasswordAdmin",
+                    UserName="ad1@asklepios.com",
+                    UserType=Core.Enums.UserType.Employee,
+                    WorkerModuleType=Core.Enums.WorkerModuleType.AdministrativeWorkerModule
+                },
+                new User()
+                {
+                    Id=7,
+                    Password="PasswordMedical1",
+                    UserName="mw1@asklepios.com",
+                    UserType=Core.Enums.UserType.Employee,
+                    WorkerModuleType=Core.Enums.WorkerModuleType.MedicalWorkerModule
+                },
+                new User()
+                {
+                    Id=8,
+                    Password="PasswordMedical2",
+                    UserName="mw2@asklepios.com",
+                    UserType=Core.Enums.UserType.Employee,
+                    WorkerModuleType=Core.Enums.WorkerModuleType.MedicalWorkerModule
+                }
+            };
+
+            return users;
+        }
 
         public static  IEnumerable<Visit> GetAvailableVisits()
         {
             DateTimeOffset dateTimeOffset = DateTime.Now;
 
             List<Visit> availableVisits = new List<Visit>();
-            int dayOffset = -1;
-
+            int dayOffset = 0;
+            DateTimeOffset start = new DateTimeOffset(dateTimeOffset.Year, dateTimeOffset.Month, dateTimeOffset.Day, 8, 0, 0, new TimeSpan(0, 0, 0)).AddDays(1);
+            long startId = 100;
             for (int i = 0; i <= 3; i++)
             {
                 dayOffset++;
-                if (dateTimeOffset.AddDays(dayOffset).DayOfWeek==DayOfWeek.Saturday )
+                if (start.AddDays(dayOffset).DayOfWeek==DayOfWeek.Saturday )
                 {
                     dayOffset += 2;
                 }
-                else if(dateTimeOffset.AddDays(dayOffset).DayOfWeek == DayOfWeek.Sunday)
+                else if(start.AddDays(dayOffset).DayOfWeek == DayOfWeek.Sunday)
                 {
                     dayOffset++;
                 }
 
                 int minutsOffset = -1;
 
+
                 for (int j = 0; j < 12; j++)
                 {
                     minutsOffset++;
                     Visit visit = new Visit()
                     {
-                        
+                        Id= startId++,
                         PrimaryService = PrimaryMedicalServices[0],
-                        DateTimeSince = dateTimeOffset.AddDays(dayOffset).AddMinutes(minutsOffset * 15),                       
-                        DateTimeTill = dateTimeOffset.AddDays(dayOffset).AddMinutes(minutsOffset* 15+15),
+                        DateTimeSince = start.AddDays(dayOffset).AddMinutes(minutsOffset * 15),                       
+                        DateTimeTill = start.AddDays(dayOffset).AddMinutes(minutsOffset* 15+15),
                         Location = Locations.ElementAt(3),
                         MedicalRoom = Locations.ElementAt(3).MedicalRooms.ElementAt(4),
                         MedicalWorker = MedicalWorkers.ElementAt(36),
@@ -95,13 +176,14 @@ namespace Asklepios.Data.InMemoryContexts
                     minutsOffset++;
                     Visit visit = new Visit()
                     {
+                        Id = startId++,
 
                         PrimaryService = PrimaryMedicalServices[9],
-                        DateTimeSince = dateTimeOffset.AddDays(dayOffset).AddMinutes(minutsOffset * 15),
-                        DateTimeTill = dateTimeOffset.AddDays(dayOffset).AddMinutes(minutsOffset * 15 + 15),
+                        DateTimeSince = start.AddDays(dayOffset).AddMinutes(minutsOffset * 15),
+                        DateTimeTill = start.AddDays(dayOffset).AddMinutes(minutsOffset * 15 + 15),
                         Location = Locations.ElementAt(1),
-                        MedicalRoom = Locations.ElementAt(1).MedicalRooms.ElementAt(3),
-                        MedicalWorker = MedicalWorkers.ElementAt(12),
+                        MedicalRoom = Locations.ElementAt(1).MedicalRooms.ElementAt(6),
+                        MedicalWorker = MedicalWorkers.ElementAt(34),
                         VisitCategory = VisitCategories.ElementAt(1),
                     };
                     availableVisits.Add(visit);
@@ -111,14 +193,33 @@ namespace Asklepios.Data.InMemoryContexts
                     minutsOffset++;
                     Visit visit = new Visit()
                     {
+                        Id = startId++,
+
+                        PrimaryService = PrimaryMedicalServices[23],
+                        DateTimeSince = start.AddDays(dayOffset).AddMinutes(minutsOffset * 15),
+                        DateTimeTill = start.AddDays(dayOffset).AddMinutes(minutsOffset * 15 + 15),
+                        Location = Locations.ElementAt(1),
+                        MedicalRoom = Locations.ElementAt(1).MedicalRooms.ElementAt(3),
+                        MedicalWorker = MedicalWorkers.ElementAt(12),
+                        VisitCategory = VisitCategories.ElementAt(2),
+                    };
+                    availableVisits.Add(visit);
+                }
+
+                for (int j = 0; j < 12; j++)
+                {
+                    minutsOffset++;
+                    Visit visit = new Visit()
+                    {
+                        Id = startId++,
 
                         PrimaryService = PrimaryMedicalServices[2],
-                        DateTimeSince = dateTimeOffset.AddDays(dayOffset).AddMinutes(minutsOffset * 15),
-                        DateTimeTill = dateTimeOffset.AddDays(dayOffset).AddMinutes(minutsOffset * 15 + 15),
+                        DateTimeSince = start.AddDays(dayOffset).AddMinutes(minutsOffset * 15),
+                        DateTimeTill = start.AddDays(dayOffset).AddMinutes(minutsOffset * 15 + 15),
                         Location = Locations.ElementAt(5),
                         MedicalRoom = Locations.ElementAt(5).MedicalRooms.ElementAt(3),
-                        MedicalWorker = MedicalWorkers.ElementAt(20),
-                        VisitCategory = VisitCategories.ElementAt(2),
+                        MedicalWorker = MedicalWorkers.ElementAt(37),
+                        VisitCategory = VisitCategories.ElementAt(1),
                     };
                     availableVisits.Add(visit);
                 }
@@ -127,9 +228,29 @@ namespace Asklepios.Data.InMemoryContexts
                     minutsOffset++;
                     Visit visit = new Visit()
                     {
-                        PrimaryService = PrimaryMedicalServices[3],
-                        DateTimeSince = dateTimeOffset.AddDays(dayOffset).AddMinutes(minutsOffset * 15),
-                        DateTimeTill = dateTimeOffset.AddDays(dayOffset).AddMinutes(minutsOffset * 15 + 15),
+                        Id = startId++,
+
+                        PrimaryService = PrimaryMedicalServices[16],
+                        DateTimeSince = start.AddDays(dayOffset).AddMinutes(minutsOffset * 15),
+                        DateTimeTill = start.AddDays(dayOffset).AddMinutes(minutsOffset * 15 + 15),
+                        Location = Locations.ElementAt(4),
+                        MedicalRoom = Locations.ElementAt(5).MedicalRooms.ElementAt(2),
+                        MedicalWorker = MedicalWorkers.ElementAt(20),
+                        VisitCategory = VisitCategories.ElementAt(0),
+                    };
+                    availableVisits.Add(visit);
+                }
+
+                for (int j = 0; j < 12; j++)
+                {
+                    minutsOffset++;
+                    Visit visit = new Visit()
+                    {
+                        Id = startId++,
+
+                        PrimaryService = PrimaryMedicalServices[28],
+                        DateTimeSince = start.AddDays(dayOffset).AddMinutes(minutsOffset * 15),
+                        DateTimeTill = start.AddDays(dayOffset).AddMinutes(minutsOffset * 15 + 15),
                         Location = Locations.ElementAt(1),
                         MedicalRoom = Locations.ElementAt(1).MedicalRooms.ElementAt(3),
                         MedicalWorker = MedicalWorkers.ElementAt(55),
@@ -142,13 +263,31 @@ namespace Asklepios.Data.InMemoryContexts
                     minutsOffset++;
                     Visit visit = new Visit()
                     {
+                        Id = startId++,
 
-                        PrimaryService = PrimaryMedicalServices[4],
-                        DateTimeSince = dateTimeOffset.AddDays(dayOffset).AddMinutes(minutsOffset * 15),
-                        DateTimeTill = dateTimeOffset.AddDays(dayOffset).AddMinutes(minutsOffset * 15 + 15),
+                        PrimaryService = PrimaryMedicalServices[20],
+                        DateTimeSince = start.AddDays(dayOffset).AddMinutes(minutsOffset * 15),
+                        DateTimeTill = start.AddDays(dayOffset).AddMinutes(minutsOffset * 15 + 15),
                         Location = Locations.ElementAt(4),
-                        MedicalRoom = Locations.ElementAt(4).MedicalRooms.ElementAt(3),
+                        MedicalRoom = Locations.ElementAt(5).MedicalRooms.ElementAt(1),
                         MedicalWorker = MedicalWorkers.ElementAt(5),
+                        VisitCategory = VisitCategories.ElementAt(2),
+                    };
+                    availableVisits.Add(visit);
+                }
+                for (int j = 0; j < 12; j++)
+                {
+                    minutsOffset++;
+                    Visit visit = new Visit()
+                    {
+                        Id = startId++,
+
+                        PrimaryService = PrimaryMedicalServices[32],
+                        DateTimeSince = start.AddDays(dayOffset).AddMinutes(minutsOffset * 15),
+                        DateTimeTill = start.AddDays(dayOffset).AddMinutes(minutsOffset * 15 + 15),
+                        Location = Locations.ElementAt(0),
+                        MedicalRoom = Locations.ElementAt(0).MedicalRooms.ElementAt(11),
+                        MedicalWorker = MedicalWorkers.ElementAt(2),
                         VisitCategory = VisitCategories.ElementAt(4),
                     };
                     availableVisits.Add(visit);
@@ -158,29 +297,14 @@ namespace Asklepios.Data.InMemoryContexts
                     minutsOffset++;
                     Visit visit = new Visit()
                     {
-
-                        PrimaryService = PrimaryMedicalServices[4],
-                        DateTimeSince = dateTimeOffset.AddDays(dayOffset).AddMinutes(minutsOffset * 15),
-                        DateTimeTill = dateTimeOffset.AddDays(dayOffset).AddMinutes(minutsOffset * 15 + 15),
-                        Location = Locations.ElementAt(0),
-                        MedicalRoom = Locations.ElementAt(0).MedicalRooms.ElementAt(3),
-                        MedicalWorker = MedicalWorkers.ElementAt(44),
-                        VisitCategory = VisitCategories.ElementAt(5),
-                    };
-                    availableVisits.Add(visit);
-                }
-                for (int j = 0; j < 12; j++)
-                {
-                    minutsOffset++;
-                    Visit visit = new Visit()
-                    {
+                        Id = startId++,
 
                         PrimaryService = PrimaryMedicalServices[34],
-                        DateTimeSince = dateTimeOffset.AddDays(dayOffset).AddMinutes(minutsOffset * 15),
-                        DateTimeTill = dateTimeOffset.AddDays(dayOffset).AddMinutes(minutsOffset * 15 + 15),
+                        DateTimeSince = start.AddDays(dayOffset).AddMinutes(minutsOffset * 15),
+                        DateTimeTill = start.AddDays(dayOffset).AddMinutes(minutsOffset * 15 + 15),
                         Location = Locations.ElementAt(1),
                         MedicalRoom = Locations.ElementAt(1).MedicalRooms.ElementAt(1),
-                        MedicalWorker = MedicalWorkers.ElementAt(30),
+                        MedicalWorker = MedicalWorkers.ElementAt(61),
                         VisitCategory = VisitCategories.ElementAt(5),
                     };
                     availableVisits.Add(visit);
@@ -235,6 +359,12 @@ namespace Asklepios.Data.InMemoryContexts
             //};
 
             return availableVisits;
+        }
+
+        internal static User GetUserById(int parsedId)
+        {
+            User user = Users.Where(c => c.Id == parsedId).FirstOrDefault();
+            return user;
         }
 
         public static IEnumerable<Visit> GetHistoricalVisits()
@@ -373,24 +503,28 @@ namespace Asklepios.Data.InMemoryContexts
             {
                 new MedicalPackage()
                 {
+                    Id=1,
                     Name="Podstawowy",
                     Description="Podstawowy pakiet dla osób szukajacych podstawowej opieki zdrowotnej. W cenie pakietu są zawarte bezpłatne konsultacje z 7 specjalizacji oraz podstawowe badania",
                     //ServicesDiscounts=new Dictionary<MedicalService, decimal>(),
                 },
                 new MedicalPackage()
                 {
+                    Id=2,
                     Name="Srebrny",
                     Description="Srebrny pakiet jest pakietem dla osób szukajacych rozszerzonej opieki zdrowotnej. W ramach abonamentu medycznego są darmowe konsultacje u większości specjalistów, rozszerzony pakiet badań medycznych oraz 3 wizyty rehabilitacyjnE rocznie.",
                     //ServicesDiscounts=new Dictionary<MedicalService, decimal>(),
                 },
                                 new MedicalPackage()
                 {
+                                    Id=3,
                     Name="Złoty",
                     Description="Srebrny pakiet dla osób szukajacych specjalistycznej opieki, w tym opieki dentystycznej oraz rehabilitacji.",
                     //ServicesDiscounts=new Dictionary<MedicalService, decimal>(),
                 },
                 new MedicalPackage()
                 {
+                    Id=4,
                     Name="Platynowy",
                     Description="Platynowy pakiet jest pakietem dla osób szukajacych pełnej ochrony zdrowia. Wszystkie oferowane przez nas usługi są oferowane nieodpłatnie. Priorytetowa obsługa w przypadku badań/operacji niecierpiących zwłoki. ",
                     //ServicesDiscounts=new Dictionary<MedicalService, decimal>(),
@@ -518,10 +652,11 @@ namespace Asklepios.Data.InMemoryContexts
                 }
             };
 
+            //Person person = new Person(name: "Mariusz", surName: "Puto", id: 1, pesel: "77784512598", hasPolishCitizenship: true, passportNumber: null, passportCode: "POL", email: "person1@gmail.com", aglomeration: Core.Enums.Aglomeration.Bialystok);
 
             List<MedicalWorker> MedicalWorkers = new List<MedicalWorker>()
             {
-                new Doctor( name:"Mariusz",surName:"Puto",id:1, pesel:"77784512598",hasPolishCitizenship: true,passportNumber: null,passportCode:"POL",email:"person1@gmail.com", aglomeration:Core.Enums.Aglomeration.Bialystok)
+                new Doctor(new Person( name:"Mariusz",surName:"Puto",id:1, pesel:"77784512598",hasPolishCitizenship: true,passportNumber: null,passportCode:"POL",email:"person1@gmail.com", aglomeration:Core.Enums.Aglomeration.Bialystok),"IUHIDUASHDI545613216")
                 {
                     Education=new List<string>() {UM_1,UM_2},
                     Experience="W latach 2005-2020 praca w szpitalu Bródnowskim",
@@ -534,7 +669,7 @@ namespace Asklepios.Data.InMemoryContexts
                     }
                 },
 
-                new Doctor(name:"Witold",surName:"Głąbek",id:2,pesel:"156456465465",hasPolishCitizenship: true,passportNumber: null,passportCode:"POL", email:"person2@gmail.com", aglomeration:Core.Enums.Aglomeration.Cracow)
+                new Doctor(new Person( name:"Witold",surName:"Głąbek",id:2,pesel:"156456465465",hasPolishCitizenship: true,passportNumber: null,passportCode:"POL", email:"person2@gmail.com", aglomeration:Core.Enums.Aglomeration.Cracow), "ASGER51541213")
                 {
                     Education=new List<string>() {UM_3,UM_2},
                     Experience="W latach 2005-2020 praca w szpitalu praskim",
@@ -547,7 +682,7 @@ namespace Asklepios.Data.InMemoryContexts
                     }
 
                 },
-                new Physiotherapist(name:"Henryk",surName:"Bąbel",id:3,pesel:"879794561231323",npwzNumber:"FACXASD6654656", hasPolishCitizenship: true,passportNumber: null,passportCode:"POL", email:"person3@gmail.com", aglomeration:Core.Enums.Aglomeration.Kielce)
+                new Physiotherapist(new Person( name:"Henryk",surName:"Bąbel",id:3,pesel:"879794561231323", hasPolishCitizenship: true,passportNumber: null,passportCode:"POL", email:"person3@gmail.com", aglomeration:Core.Enums.Aglomeration.Kielce), "GVCXDS56151321")
                 {
                     Education=new List<string>() {UM_2},
                     Experience="W latach 2005-2020 praca w szpitalu MSWiA",
@@ -560,7 +695,7 @@ namespace Asklepios.Data.InMemoryContexts
                     }
 
                 },
-                new Physiotherapist   (name:"Ferdynand",surName:"Małolepszy",id:4,pesel:"56754334534543",hasPolishCitizenship: true,passportNumber: null,passportCode:"POL", "GFJHGJ4546134", email:"person4@gmail.com", aglomeration:Core.Enums.Aglomeration.Cracow)
+                new Physiotherapist   (new Person(name:"Ferdynand",surName:"Małolepszy",id:4,pesel:"56754334534543",hasPolishCitizenship: true,passportNumber: null,passportCode:"POL", email:"person4@gmail.com", aglomeration:Core.Enums.Aglomeration.Cracow),"IUJNKJN54321165")
                 {
                     Education=new List<string>() {UM_1,UM_2},
                     Experience="W latach 2005-2020 praca w szpitalu UMK",
@@ -575,7 +710,7 @@ namespace Asklepios.Data.InMemoryContexts
                     }
 
                 },
-                new Doctor(name:"Zenon",surName:"Krzywy",id:5,pesel:"54346546454543",hasPolishCitizenship: true,passportNumber: null,passportCode:"POL", email:"person5@gmail.com", aglomeration:Core.Enums.Aglomeration.Cracow)
+                new Doctor(new Person( name:"Zenon",surName:"Krzywy",id:5,pesel:"54346546454543",hasPolishCitizenship: true,passportNumber: null,passportCode:"POL", email:"person5@gmail.com", aglomeration:Core.Enums.Aglomeration.Cracow),"IUJKHJK546121646")
                 {
                     Education=new List<string>() {UM_1,UM_2},
                     Experience="W latach 2005-2020 praca w szpitalu Bródnowskim",
@@ -588,7 +723,7 @@ namespace Asklepios.Data.InMemoryContexts
                     }
 
                 },
-                new Doctor(name:"Tadeusz",surName:"Nowak",id:6,pesel:"6548797654654654",hasPolishCitizenship: true,passportNumber: null,passportCode:"POL", email:"person6@gmail.com", aglomeration:Core.Enums.Aglomeration.Cracow)
+                new Doctor(new Person(name:"Tadeusz",surName:"Nowak",id:6,pesel:"6548797654654654",hasPolishCitizenship: true,passportNumber: null,passportCode:"POL", email:"person6@gmail.com", aglomeration:Core.Enums.Aglomeration.Cracow),"OPASDASP54156142313")
                 {
                     Education=new List<string>() {UM_1,UM_2},
                     Experience="W latach 2005-2020 praca w szpitalu Bródnowskim",
@@ -600,7 +735,7 @@ namespace Asklepios.Data.InMemoryContexts
                         PrimaryMedicalServices[20],PrimaryMedicalServices[21]
                     }
                 },
-                new Doctor(name:"Tomasz",surName:"Woda",id:7,pesel:"78945646312313",hasPolishCitizenship: true,passportNumber: null,passportCode:"POL", email:"person7@gmail.com", aglomeration:Core.Enums.Aglomeration.Cracow)
+                new Doctor(new Person( name:"Tomasz",surName:"Woda",id:7,pesel:"78945646312313",hasPolishCitizenship: true,passportNumber: null,passportCode:"POL", email:"person7@gmail.com", aglomeration:Core.Enums.Aglomeration.Cracow), "IAOSD5161231564")
                 {
                     Education=new List<string>() {UM_1,UM_2},
                     Experience="W latach 2005-2020 praca w szpitalu wrocławskim",
@@ -612,7 +747,7 @@ namespace Asklepios.Data.InMemoryContexts
                         PrimaryMedicalServices[8]
                     }
                 },
-                new Doctor(name:"Łukasz",surName:"Czekaj",id:8,pesel:"756546546466",hasPolishCitizenship: true,passportNumber: null,passportCode:"POL", email:"person8@gmail.com", aglomeration:Core.Enums.Aglomeration.Cracow)
+                new Doctor(new Person( name:"Łukasz",surName:"Czekaj",id:8,pesel:"756546546466",hasPolishCitizenship: true,passportNumber: null,passportCode:"POL", email:"person8@gmail.com", aglomeration:Core.Enums.Aglomeration.Cracow), "UNCAJSDS51651323")
                 {
                     Education=new List<string>() {UM_1,UM_2},
                     Experience="W latach 2005-2020 praca w szpitalu podlaskim",
@@ -625,7 +760,7 @@ namespace Asklepios.Data.InMemoryContexts
                     }
 
                 },
-                new Doctor(name:"Mateusz",surName:"Chodzień",id:9,pesel:"841313216546",hasPolishCitizenship: true,passportNumber: null,passportCode:"POL", email:"person9@gmail.com", aglomeration:Core.Enums.Aglomeration.Cracow)
+                new Doctor(new Person( name:"Mateusz",surName:"Chodzień",id:9,pesel:"841313216546",hasPolishCitizenship: true,passportNumber: null,passportCode:"POL", email:"person9@gmail.com", aglomeration:Core.Enums.Aglomeration.Cracow), "DFSDFD4654213")
                 {
                     Education=new List<string>() {UM_1,UM_2},
                     Experience="W latach 2005-2020 praca w szpitalu Bródnowskim",
@@ -637,7 +772,7 @@ namespace Asklepios.Data.InMemoryContexts
                         PrimaryMedicalServices[4],PrimaryMedicalServices[2]
                     }
                 },
-                new Doctor(name:"Leszek",surName:"Ancymon",id:10,pesel:"44445465456465",hasPolishCitizenship: true,passportNumber: null,passportCode:"POL", email:"person10@gmail.com", aglomeration:Core.Enums.Aglomeration.Cracow)
+                new Doctor(new Person( name:"Leszek",surName:"Ancymon",id:10,pesel:"44445465456465",hasPolishCitizenship: true,passportNumber: null,passportCode:"POL", email:"person10@gmail.com", aglomeration:Core.Enums.Aglomeration.Cracow),"IOWNCAS5613245")
                 {
                     Education=new List<string>() {UM_1,UM_2},
                     Experience="W latach 2005-2020 praca w szpitalu suwalskim",
@@ -650,7 +785,7 @@ namespace Asklepios.Data.InMemoryContexts
                     }
 
                 },
-                new Doctor(name:"Karol",surName:"Szczęsny",id:11,pesel:"7532123165465",hasPolishCitizenship: true,passportNumber: null,passportCode:"POL", email:"person11@gmail.com", aglomeration:Core.Enums.Aglomeration.Cracow)
+                new Doctor(new Person( name:"Karol",surName:"Szczęsny",id:11,pesel:"7532123165465",hasPolishCitizenship: true,passportNumber: null,passportCode:"POL", email:"person11@gmail.com", aglomeration:Core.Enums.Aglomeration.Cracow),"MNMCXISA561235")
                 {
                     Education=new List<string>() {UM_9},
                     Experience="W latach 2008-2019 praca w szpitalu podkarpackim",
@@ -663,7 +798,7 @@ namespace Asklepios.Data.InMemoryContexts
                     }
 
                 },
-                new Doctor(name:"Remigiusz",surName:"Czystka",id:12,pesel:"654213215649546",hasPolishCitizenship: true,passportNumber: null,passportCode:"POL", email:"person12@gmail.com", aglomeration:Core.Enums.Aglomeration.Cracow)
+                new Doctor(new Person( name:"Remigiusz",surName:"Czystka",id:12,pesel:"654213215649546",hasPolishCitizenship: true,passportNumber: null,passportCode:"POL", email:"person12@gmail.com", aglomeration:Core.Enums.Aglomeration.Cracow),"ASIUDAS5123463")
                 {
                     Education=new List<string>() {UM_8},
                     Experience="W latach 2005-2020 praca w szpitalu Bródnowskim",
@@ -676,7 +811,7 @@ namespace Asklepios.Data.InMemoryContexts
                     }
 
                 },
-                new ElectroradiologyTechnician (name:"Robert",surName:"Pawłowski",id:13,pesel:"798879875456132",hasPolishCitizenship: true,passportNumber: null,passportCode:"POL", email:"person13@gmail.com", aglomeration:Core.Enums.Aglomeration.Cracow)
+                new ElectroradiologyTechnician (new Person( name:"Robert",surName:"Pawłowski",id:13,pesel:"798879875456132",hasPolishCitizenship: true,passportNumber: null,passportCode:"POL", email:"person13@gmail.com", aglomeration:Core.Enums.Aglomeration.Cracow),"QPSCS5346448")
                 {
                     Education=new List<string>() {UM_7},
                     Experience="W latach 2005-2020 praca w szpitalu wojskowym",
@@ -690,7 +825,7 @@ namespace Asklepios.Data.InMemoryContexts
                     }
 
                 },
-                new Doctor(name:"Szymon",surName:"Sosna",id:14,pesel:"71123156456456",hasPolishCitizenship: true,passportNumber: null,passportCode:"POL", email:"person14@gmail.com", aglomeration:Core.Enums.Aglomeration.Cracow)
+                new Doctor(new Person( name:"Szymon",surName:"Sosna",id:14,pesel:"71123156456456",hasPolishCitizenship: true,passportNumber: null,passportCode:"POL", email:"person14@gmail.com", aglomeration:Core.Enums.Aglomeration.Cracow), "CXCXZS6543215")
                 {
                     Education=new List<string>() {UM_6},
                     Experience="W latach 2010-2019 praca w szpitalu matki i dziecka",
@@ -702,7 +837,7 @@ namespace Asklepios.Data.InMemoryContexts
                         PrimaryMedicalServices[7]}
 
                 },
-                new Doctor(name:"Sergiusz",surName:"Ząbek",id:15,pesel:"6523154645633",hasPolishCitizenship: true,passportNumber: null,passportCode:"POL", email:"person15@gmail.com", aglomeration:Core.Enums.Aglomeration.Cracow)
+                new Doctor(new Person(name:"Sergiusz",surName:"Ząbek",id:15,pesel:"6523154645633",hasPolishCitizenship: true,passportNumber: null,passportCode:"POL", email:"person15@gmail.com", aglomeration:Core.Enums.Aglomeration.Cracow), "PASXCA516164")
                 {
                     Education=new List<string>() {UM_5},
                     Experience="W latach 2011-2021 praca w szpitalu zakaźnym",
@@ -715,7 +850,7 @@ namespace Asklepios.Data.InMemoryContexts
                     }
 
                 },
-                new Doctor(name:"Tymoteusz",surName:"Zez",id:16,pesel:"64561231564546",hasPolishCitizenship: true,passportNumber: null,passportCode:"POL", email:"person16@gmail.com", aglomeration:Core.Enums.Aglomeration.Cracow)
+                new Doctor(new Person( name:"Tymoteusz",surName:"Zez",id:16,pesel:"64561231564546",hasPolishCitizenship: true,passportNumber: null,passportCode:"POL", email:"person16@gmail.com", aglomeration:Core.Enums.Aglomeration.Cracow), "PSADNASJ1564613")
                 {
                     Education=new List<string>() {UM_1,UM_2},
                     Experience="W latach 2007-2021 praca w szpitalu kujawskim",
@@ -728,7 +863,7 @@ namespace Asklepios.Data.InMemoryContexts
                     }
 
                 },
-                new Doctor(name:"Zbigniew",surName:"Korzeń",id:17,pesel:"45632132456486",hasPolishCitizenship: true,passportNumber: null,passportCode:"POL", email:"person17@gmail.com", aglomeration:Core.Enums.Aglomeration.Cracow)
+                new Doctor(new Person( name:"Zbigniew",surName:"Korzeń",id:17,pesel:"45632132456486",hasPolishCitizenship: true,passportNumber: null,passportCode:"POL", email:"person17@gmail.com", aglomeration:Core.Enums.Aglomeration.Cracow),"AHUHIFDSD18564513")
                 {
                     Education=new List<string>() {UM_4},
                     Experience="W latach 2005-2020 praca w szpitalu łódzkim",
@@ -741,7 +876,7 @@ namespace Asklepios.Data.InMemoryContexts
                     }
 
                 },
-                new Doctor(name:"Zbigniew",surName:"Osiński",id:18,pesel:"49987945646133",hasPolishCitizenship: true,passportNumber: null,passportCode:"POL", email:"person18@gmail.com", aglomeration:Core.Enums.Aglomeration.Cracow)
+                new Doctor(new Person( name:"Zbigniew",surName:"Osiński",id:18,pesel:"49987945646133",hasPolishCitizenship: true,passportNumber: null,passportCode:"POL", email:"person18@gmail.com", aglomeration:Core.Enums.Aglomeration.Cracow),"UYGSDAS541321")
                 {
                     Education=new List<string>() {UM_1,UM_2},
                     Experience="W latach 2005-2020 praca w szpitalu Bródnowskim",
@@ -754,7 +889,7 @@ namespace Asklepios.Data.InMemoryContexts
                     }
 
                 },
-                new Doctor(name:"Michał",surName:"Czosnek",id:19,pesel:"654321546563331",hasPolishCitizenship: true,passportNumber: null,passportCode:"POL", email:"person19@gmail.com", aglomeration:Core.Enums.Aglomeration.Cracow)
+                new Doctor(new Person( name:"Michał",surName:"Czosnek",id:19,pesel:"654321546563331",hasPolishCitizenship: true,passportNumber: null,passportCode:"POL", email:"person19@gmail.com", aglomeration:Core.Enums.Aglomeration.Cracow),"JHGDAJSH516145")
                 {
                     Education=new List<string>() {UM_3},
                     Experience="W latach 2009-2020 praca w POZ Węgrów.",
@@ -767,7 +902,7 @@ namespace Asklepios.Data.InMemoryContexts
                     }
 
                 },
-                new Doctor(name:"Tomasz",surName:"Truteń",id:20,pesel:"8012131654613",hasPolishCitizenship: true,passportNumber: null,passportCode:"POL", email:"person20@gmail.com", aglomeration:Core.Enums.Aglomeration.Cracow)
+                new Doctor(new Person( name:"Tomasz",surName:"Truteń",id:20,pesel:"8012131654613",hasPolishCitizenship: true,passportNumber: null,passportCode:"POL", email:"person20@gmail.com", aglomeration:Core.Enums.Aglomeration.Cracow), "GSFEQWDXA515646")
                 {
                     Education=new List<string>() {UM_1},
                     Experience="W latach 2005-2020 praca w szpitalu miejskim w Krośnie",
@@ -780,7 +915,7 @@ namespace Asklepios.Data.InMemoryContexts
                     }
 
                 },
-                new Doctor(name:"Bogusław",surName:"Śmiały",id:21,pesel:"5546545641231234",hasPolishCitizenship: true,passportNumber: null,passportCode:"POL", email:"person21@gmail.com", aglomeration:Core.Enums.Aglomeration.Cracow)
+                new Doctor(new Person( name:"Bogusław",surName:"Śmiały",id:21,pesel:"5546545641231234",hasPolishCitizenship: true,passportNumber: null,passportCode:"POL", email:"person21@gmail.com", aglomeration:Core.Enums.Aglomeration.Cracow), "ISJAD4465132")
                 {
                     Education=new List<string>() {UM_1,UM_2},
                     Experience="W latach 2005-2020 praca w szpitalu tarnowskim",
@@ -793,7 +928,7 @@ namespace Asklepios.Data.InMemoryContexts
                     }
 
                 },
-                new Doctor(name:"Jan",surName:"Dutki",id:22,pesel:"54654321314564",hasPolishCitizenship: true,passportNumber: null,passportCode:"POL", email:"person22@gmail.com", aglomeration:Core.Enums.Aglomeration.Cracow)
+                new Doctor(new Person( name:"Jan",surName:"Dutki",id:22,pesel:"54654321314564",hasPolishCitizenship: true,passportNumber: null,passportCode:"POL", email:"person22@gmail.com", aglomeration:Core.Enums.Aglomeration.Cracow), "UISDR216443")
                 {
                     Education=new List<string>() {UM_1,UM_2},
                     Experience="W latach 2005-2020 praca w szpitalu miejskim w Zakopanem",
@@ -806,7 +941,7 @@ namespace Asklepios.Data.InMemoryContexts
                     }
 
                 },
-                new Doctor(name:"Jarosław",surName:"Kurczak",id:23,pesel:"65461234564546",hasPolishCitizenship: true,passportNumber: null,passportCode:"POL", email:"person23@gmail.com", aglomeration:Core.Enums.Aglomeration.Cracow)
+                new Doctor(new Person( name:"Jarosław",surName:"Kurczak",id:23,pesel:"65461234564546",hasPolishCitizenship: true,passportNumber: null,passportCode:"POL", email:"person23@gmail.com", aglomeration:Core.Enums.Aglomeration.Cracow), "VASDK5421324")
                 {
                     Education=new List<string>() {UM_7},
                     Experience="W latach 2005-2020 praca w szpitalu Bródnowskim",
@@ -818,7 +953,7 @@ namespace Asklepios.Data.InMemoryContexts
                         PrimaryMedicalServices[18]
                     }
                 },
-                new Doctor(name:"Grzegorz",surName:"Grześkowiak",id:24,pesel:"6548745646546",hasPolishCitizenship: true,passportNumber: null,passportCode:"POL", email:"person24@gmail.com", aglomeration:Core.Enums.Aglomeration.Cracow)
+                new Doctor(new Person( name:"Grzegorz",surName:"Grześkowiak",id:24,pesel:"6548745646546",hasPolishCitizenship: true,passportNumber: null,passportCode:"POL", email:"person24@gmail.com", aglomeration:Core.Enums.Aglomeration.Cracow), "ASPDUI56321587")
                 {
                     Education=new List<string>() {UM_5},
                     Experience="W latach 2008-2014 praca w szpitalu kardiologicznym",
@@ -830,7 +965,7 @@ namespace Asklepios.Data.InMemoryContexts
                         PrimaryMedicalServices[19]
                     }
                 },
-                new Doctor(name:"Gerwazy",surName:"Zasada",id:25,pesel:"4561231564654",hasPolishCitizenship: true,passportNumber: null,passportCode:"POL", email:"person25@gmail.com", aglomeration:Core.Enums.Aglomeration.Cracow)
+                new Doctor(new Person( name:"Gerwazy",surName:"Zasada",id:25,pesel:"4561231564654",hasPolishCitizenship: true,passportNumber: null,passportCode:"POL", email:"person25@gmail.com", aglomeration:Core.Enums.Aglomeration.Cracow), "BVNMXCA4623148")
                 {
                     Education=new List<string>() {UM_5},
                     Experience="W latach 2005-2020 praca w szpitalu w Dębicy",
@@ -843,7 +978,7 @@ namespace Asklepios.Data.InMemoryContexts
                     }
 
                 },
-                new Physiotherapist(name:"Czesław",surName:"Wilk",id:26,pesel:"5487897564646",hasPolishCitizenship: true,passportNumber: null,passportCode:"POL","UJHAISD545646456", email:"person26@gmail.com", aglomeration:Core.Enums.Aglomeration.Cracow)
+                new Physiotherapist(new Person( name:"Czesław",surName:"Wilk",id:26,pesel:"5487897564646",hasPolishCitizenship: true,passportNumber: null,passportCode:"POL", email:"person26@gmail.com", aglomeration:Core.Enums.Aglomeration.Cracow),"FAHDJ665413215")
                 {
                     Education=new List<string>() {UM_4},
                     Experience="W latach 2005-2020 praca w szpitalu powiatowym w Zamościu",
@@ -856,7 +991,7 @@ namespace Asklepios.Data.InMemoryContexts
                     }
 
                 },
-                new Doctor(name:"Tadeusz",surName:"Gąska",id:27,pesel:"64621321564564",hasPolishCitizenship: true,passportNumber: null,passportCode:"POL", email:"person27@gmail.com", aglomeration:Core.Enums.Aglomeration.Cracow)
+                new Doctor(new Person( name:"Tadeusz",surName:"Gąska",id:27,pesel:"64621321564564",hasPolishCitizenship: true,passportNumber: null,passportCode:"POL", email:"person27@gmail.com", aglomeration:Core.Enums.Aglomeration.Cracow),"ALKJSD5461321")
                 {
                     Education=new List<string>() {UM_2},
                     Experience="W latach 2005-2020 praca w szpitalu zakaźnym na Woli",
@@ -869,7 +1004,7 @@ namespace Asklepios.Data.InMemoryContexts
                     }
 
                 },
-                new ElectroradiologyTechnician(name:"Waldemar",surName:"Kucaj",id:28,pesel:"5945612315645",hasPolishCitizenship: true,passportNumber: null,passportCode:"POL", email:"person28@gmail.com", aglomeration:Core.Enums.Aglomeration.Cracow)
+                new ElectroradiologyTechnician(new Person( name:"Waldemar",surName:"Kucaj",id:28,pesel:"5945612315645",hasPolishCitizenship: true,passportNumber: null,passportCode:"POL", email:"person28@gmail.com", aglomeration:Core.Enums.Aglomeration.Cracow), "HGSDAS545641231")
                 {
                     Education=new List<string>() {UM_6},
                     Experience="W latach 2006-2019 praca w szpitalu świętokrzyskim",
@@ -882,7 +1017,7 @@ namespace Asklepios.Data.InMemoryContexts
                     }
 
                 },
-                new Doctor(name:"Piotr",surName:"Kuropatwa",id:29,pesel:"789465132132",hasPolishCitizenship: true,passportNumber: null,passportCode:"POL", email:"person29@gmail.com", aglomeration:Core.Enums.Aglomeration.Cracow)
+                new Doctor(new Person( name:"Piotr",surName:"Kuropatwa",id:29,pesel:"789465132132",hasPolishCitizenship: true,passportNumber: null,passportCode:"POL", email:"person29@gmail.com", aglomeration:Core.Enums.Aglomeration.Cracow),"BHJASGDJAS54613254")
                 {
                     Education=new List<string>() {UM_8},
                     Experience="W latach 2005-2020 praca w szpitalu akademickim w Białymstoku",
@@ -895,7 +1030,7 @@ namespace Asklepios.Data.InMemoryContexts
                     }
 
                 },
-                new Doctor(name:"Paweł",surName:"Łąkietka",id:30,pesel:"7894654654965",hasPolishCitizenship: true,passportNumber: null,passportCode:"POL", email:"person30@gmail.com", aglomeration:Core.Enums.Aglomeration.Cracow)
+                new Doctor(new Person( name:"Paweł",surName:"Łąkietka",id:30,pesel:"7894654654965",hasPolishCitizenship: true,passportNumber: null,passportCode:"POL", email:"person30@gmail.com", aglomeration:Core.Enums.Aglomeration.Cracow),"OJIHJDAS543156")
                 {
                     Education=new List<string>() {UM_6},
                     Experience="W latach 2005-2020 praca w szpitalu miejskim w Słupsku",
@@ -908,7 +1043,7 @@ namespace Asklepios.Data.InMemoryContexts
                     }
 
                 },
-                new Doctor(name:"Rozmus",surName:"Remus",id:31,pesel:"4564134156465",hasPolishCitizenship: true,passportNumber: null,passportCode:"POL", email:"person31@gmail.com", aglomeration:Core.Enums.Aglomeration.Cracow)
+                new Doctor(new Person( name:"Rozmus",surName:"Remus",id:31,pesel:"4564134156465",hasPolishCitizenship: true,passportNumber: null,passportCode:"POL", email:"person31@gmail.com", aglomeration:Core.Enums.Aglomeration.Cracow),"JHASKDAS65461321")
                 {
                     Education=new List<string>() {UM_3},
                     Experience="W latach 2005-2012 praca w szpitalu klinicznym w Gnieźnie. Wcześniej pracował w Zielonej górze.",
@@ -921,7 +1056,7 @@ namespace Asklepios.Data.InMemoryContexts
                     }
 
                 },
-                new Doctor(name:"Miłosz",surName:"Ciapek",id:32,pesel:"487945643213",hasPolishCitizenship: true,passportNumber: null,passportCode:"POL", email:"person32@gmail.com", aglomeration:Core.Enums.Aglomeration.Cracow)
+                new Doctor(new Person( name:"Miłosz",surName:"Ciapek",id:32,pesel:"487945643213",hasPolishCitizenship: true,passportNumber: null,passportCode:"POL", email:"person32@gmail.com", aglomeration:Core.Enums.Aglomeration.Cracow),"JHKSDASD546123")
                 {
                     Education=new List<string>() {UM_4},
                     Experience="W latach 2005-2020 praca w szpitalu akademickim w Krakowie",
@@ -934,7 +1069,7 @@ namespace Asklepios.Data.InMemoryContexts
                     }
 
                 },
-                new Doctor(name:"Czesława",surName:"Kret",id:33,pesel:"6546123156464",hasPolishCitizenship: true,passportNumber: null,passportCode:"POL", email:"person33@gmail.com", aglomeration:Core.Enums.Aglomeration.Cracow)
+                new Doctor(new Person( name:"Czesława",surName:"Kret",id:33,pesel:"6546123156464",hasPolishCitizenship: true,passportNumber: null,passportCode:"POL", email:"person33@gmail.com", aglomeration:Core.Enums.Aglomeration.Cracow),"JHASHJDGJA4516354")
                 {
                     Education=new List<string>() {UM_6},
                     Experience="W latach 2009-2019 praca w szpitalu w Węgrowie",
@@ -947,7 +1082,7 @@ namespace Asklepios.Data.InMemoryContexts
                     }
 
                 },
-                new DentalHygienist(name:"Marlena",surName:"Bajka",id:34,pesel:"894561132156",pNumber:"FDSAFDFS1564613", hasPolishCitizenship: true,passportNumber: null,passportCode:"POL", email:"person34@gmail.com", aglomeration:Core.Enums.Aglomeration.Cracow)
+                new DentalHygienist(new Person( name:"Marlena",surName:"Bajka",id:34,pesel:"894561132156", hasPolishCitizenship: true,passportNumber: null,passportCode:"POL", email:"person34@gmail.com", aglomeration:Core.Enums.Aglomeration.Cracow),"HASDUQ561613")
                 {
                     Education=new List<string>() {UM_1,UM_2},
                     Experience="W latach 2015-2021 praca w szpitalu uniwersyteckim w Poznaniu",
@@ -960,7 +1095,7 @@ namespace Asklepios.Data.InMemoryContexts
                     }
 
                 },
-                new Doctor(name:"Bożena",surName:"Arbuz",id:35,pesel:"5456463216546",hasPolishCitizenship: true,passportNumber: null,passportCode:"POL", email:"person35@gmail.com", aglomeration:Core.Enums.Aglomeration.Cracow)
+                new Doctor(new Person( name:"Bożena",surName:"Arbuz",id:35,pesel:"5456463216546",hasPolishCitizenship: true,passportNumber: null,passportCode:"POL", email:"person35@gmail.com", aglomeration:Core.Enums.Aglomeration.Cracow),"JHSAD6564513")
                 {
                     Education=new List<string>() {UM_3},
                     Experience="W latach 2011-2021 praca w szpitalu miejskim w Łowiczu",
@@ -973,7 +1108,7 @@ namespace Asklepios.Data.InMemoryContexts
                     }
 
                 },
-                new Doctor(name:"Klaudia",surName:"Kąkol",id:36,pesel:"8015646546546",hasPolishCitizenship: true,passportNumber: null,passportCode:"POL", email:"person36@gmail.com", aglomeration:Core.Enums.Aglomeration.Cracow)
+                new Doctor(new Person( name:"Klaudia",surName:"Kąkol",id:36,pesel:"8015646546546",hasPolishCitizenship: true,passportNumber: null,passportCode:"POL", email:"person36@gmail.com", aglomeration:Core.Enums.Aglomeration.Cracow),"GASHJD56441231")
                 {
                     Education=new List<string>() {UM_1,UM_2},
                     Experience="W latach 2008-2020 praca w szpitalu zakaźnym w Krakowie",
@@ -986,7 +1121,7 @@ namespace Asklepios.Data.InMemoryContexts
                     }
 
                 },
-                new Doctor(name:"Sandra",surName:"Sosna",id:37,pesel:"864654564645",hasPolishCitizenship: true,passportNumber: null,passportCode:"POL", email:"person37@gmail.com", aglomeration:Core.Enums.Aglomeration.Cracow)
+                new Doctor(new Person( name:"Sandra",surName:"Sosna",id:37,pesel:"864654564645",hasPolishCitizenship: true,passportNumber: null,passportCode:"POL", email:"person37@gmail.com", aglomeration:Core.Enums.Aglomeration.Cracow),"HBJASD546132")
                 {
                     Education=new List<string>() {UM_4},
                     Experience="W latach 2007-2020 praca w szpitalu Bródnowskim",
@@ -999,7 +1134,7 @@ namespace Asklepios.Data.InMemoryContexts
                     }
 
                 },
-                new Doctor(name:"Teodora",surName:"Wiśniowiecka",id:38,pesel:"515648946513245",hasPolishCitizenship: true,passportNumber: null,passportCode:"POL", email:"person38@gmail.com", aglomeration:Core.Enums.Aglomeration.Cracow)
+                new Doctor(new Person( name:"Teodora",surName:"Wiśniowiecka",id:38,pesel:"515648946513245",hasPolishCitizenship: true,passportNumber: null,passportCode:"POL", email:"person38@gmail.com", aglomeration:Core.Enums.Aglomeration.Cracow),"BIKDAS5416132")
                 {
                     Education=new List<string>() {UM_1,UM_2},
                     Experience="W latach 2005-2020 praca w szpitalu Bródnowskim",
@@ -1012,7 +1147,7 @@ namespace Asklepios.Data.InMemoryContexts
                     }
 
                 },
-                new Doctor(name:"Kornelia",surName:"Krasicka",id:39,pesel:"664545646546546",hasPolishCitizenship: true,passportNumber: null,passportCode:"POL", email:"person39@gmail.com", aglomeration:Core.Enums.Aglomeration.Cracow)
+                new Doctor(new Person( name:"Kornelia",surName:"Krasicka",id:39,pesel:"664545646546546",hasPolishCitizenship: true,passportNumber: null,passportCode:"POL", email:"person39@gmail.com", aglomeration:Core.Enums.Aglomeration.Cracow),"HJGASW4654613")
                 {
                     Education=new List<string>() {UM_1,UM_2},
                     Experience="W latach 2012-2020 praca w szpitalu południowym w Warszawie",
@@ -1025,7 +1160,7 @@ namespace Asklepios.Data.InMemoryContexts
                     }
 
                 },
-                new Nurse(name:"Marzena",surName:"Rudnicka",id:40,pesel:"7516454654645",pwzNumber:"JBHKJ3423423", hasPolishCitizenship: true,passportNumber: null,passportCode:"POL", email:"person40@gmail.com", aglomeration:Core.Enums.Aglomeration.Cracow)
+                new Nurse(new Person( name:"Marzena",surName:"Rudnicka",id:40,pesel:"7516454654645", hasPolishCitizenship: true,passportNumber: null,passportCode:"POL", email:"person40@gmail.com", aglomeration:Core.Enums.Aglomeration.Cracow),"IOSHJD4613245")
                 {
                     Education=new List<string>() {UM_1,UM_2},
                     Experience="W latach 2005-2020 praca w szpitalu chorób serca w Gdańsku",
@@ -1038,7 +1173,7 @@ namespace Asklepios.Data.InMemoryContexts
                     }
 
                 },
-                new Nurse(name:"Beata",surName:"Bomba",id:41,pesel:"61231546546546",pwzNumber:"GUYGKAS46461324",hasPolishCitizenship: true,passportNumber: null,passportCode:"POL", email:"person41@gmail.com", aglomeration:Core.Enums.Aglomeration.Cracow)
+                new Nurse(new Person( name:"Beata",surName:"Bomba",id:41,pesel:"61231546546546",hasPolishCitizenship: true,passportNumber: null,passportCode:"POL", email:"person41@gmail.com", aglomeration:Core.Enums.Aglomeration.Cracow),"UGHSDS56134564")
                 {
                     Education=new List<string>() {UM_6},
                     Experience="W latach 2007-2018 praca w szpitalu praskim w Warszawie",
@@ -1051,7 +1186,7 @@ namespace Asklepios.Data.InMemoryContexts
                     }
 
                 },
-                new Doctor(name:"Katarzyna",surName:"Łasinkiewicz",id:42,pesel:"7112345647656",hasPolishCitizenship: true,passportNumber: null,passportCode:"POL", email:"person42@gmail.com", aglomeration:Core.Enums.Aglomeration.Cracow)
+                new Doctor(new Person( name:"Katarzyna",surName:"Łasinkiewicz",id:42,pesel:"7112345647656",hasPolishCitizenship: true,passportNumber: null,passportCode:"POL", email:"person42@gmail.com", aglomeration:Core.Enums.Aglomeration.Cracow),"USHDKAS744561513")
                 {
                     Education=new List<string>() {UM_8},
                     Experience="W latach 2009-2019 praca w szpitalu praskim w Warszawie",
@@ -1064,7 +1199,7 @@ namespace Asklepios.Data.InMemoryContexts
                     }
 
                     },
-                new Doctor(name:"Weronika",surName:"Kurzydło",id:43,pesel:"8154654654656",hasPolishCitizenship: true,passportNumber: null,passportCode:"POL", email:"person43@gmail.com", aglomeration:Core.Enums.Aglomeration.Cracow)
+                new Doctor(new Person( name:"Weronika",surName:"Kurzydło",id:43,pesel:"8154654654656",hasPolishCitizenship: true,passportNumber: null,passportCode:"POL", email:"person43@gmail.com", aglomeration:Core.Enums.Aglomeration.Cracow),"NMBVDSDA546123")
                 {
                     Education=new List<string>() {UM_5},
                     Experience="W latach 2005-2020 praca w szpitalu Bródnowskim",
@@ -1077,7 +1212,7 @@ namespace Asklepios.Data.InMemoryContexts
                     }
 
                 },
-                new Doctor(name:"Maria",surName:"Kurka",id:44,pesel:"7879465461654",hasPolishCitizenship: true,passportNumber: null,passportCode:"POL", email:"person44@gmail.com", aglomeration:Core.Enums.Aglomeration.Cracow)
+                new Doctor(new Person( name:"Maria",surName:"Kurka",id:44,pesel:"7879465461654",hasPolishCitizenship: true,passportNumber: null,passportCode:"POL", email:"person44@gmail.com", aglomeration:Core.Enums.Aglomeration.Cracow),"LKASJD465315")
                 {
                     Education=new List<string>() {UM_1,UM_2},
                     Experience="W latach 2012-2019 praca w szpitalu MSWIA w Warszawie",
@@ -1090,7 +1225,7 @@ namespace Asklepios.Data.InMemoryContexts
                     }
 
                 },
-                new Doctor(name:"Bronisława",surName:"Czesiek",id:45,pesel:"49489646146546",hasPolishCitizenship: true,passportNumber: null,passportCode:"POL", email:"person45@gmail.com", aglomeration:Core.Enums.Aglomeration.Cracow)
+                new Doctor(new Person( name:"Bronisława",surName:"Czesiek",id:45,pesel:"49489646146546",hasPolishCitizenship: true,passportNumber: null,passportCode:"POL", email:"person45@gmail.com", aglomeration:Core.Enums.Aglomeration.Cracow),"IOHDSFDS46132456")
                 {
                     Education=new List<string>() {UM_7},
                     Experience="W latach 2005-2020 praca w szpitalu centralnym w Krakowie",
@@ -1103,7 +1238,7 @@ namespace Asklepios.Data.InMemoryContexts
                     }
 
                 },
-                new Doctor(name:"Aleksandra",surName:"Ruda",id:46,pesel:"65487987446",hasPolishCitizenship: true,passportNumber: null,passportCode:"POL", email:"person46@gmail.com", aglomeration:Core.Enums.Aglomeration.Cracow)
+                new Doctor(new Person( name:"Aleksandra",surName:"Ruda",id:46,pesel:"65487987446",hasPolishCitizenship: true,passportNumber: null,passportCode:"POL", email:"person46@gmail.com", aglomeration:Core.Enums.Aglomeration.Cracow),"UHJDSF5645132")
                 {
                     Education=new List<string>() {UM_1,UM_2},
                     Experience="W latach 2019-2021 praca w szpitalu u Koziołka Matołka w Poznaniu",
@@ -1116,7 +1251,7 @@ namespace Asklepios.Data.InMemoryContexts
                     }
 
                 },
-                new DentalHygienist(name:"Iga",surName:"Bodzio",id:47,pesel:"7848465465454",pNumber:"ASDWRRE4564213", hasPolishCitizenship: true,passportNumber: null,passportCode:"POL", email:"person47@gmail.com", aglomeration:Core.Enums.Aglomeration.Cracow)
+                new DentalHygienist(new Person( name:"Iga",surName:"Bodzio",id:47,pesel:"7848465465454", hasPolishCitizenship: true,passportNumber: null,passportCode:"POL", email:"person47@gmail.com", aglomeration:Core.Enums.Aglomeration.Cracow),"SDFJL4654131")
                 {
                     Education=new List<string>() {UM_1,UM_2},
                     Experience="W latach 2005-2020 praca w szpitalu klinicznym we Wrocławiu",
@@ -1129,7 +1264,7 @@ namespace Asklepios.Data.InMemoryContexts
                     }
 
                 },
-                new Doctor(name:"Agnieszka",surName:"Pluto",id:48,pesel:"84879486546548",hasPolishCitizenship: true,passportNumber: null,passportCode:"POL", email:"person48@gmail.com", aglomeration:Core.Enums.Aglomeration.Cracow)
+                new Doctor(new Person( name:"Agnieszka",surName:"Pluto",id:48,pesel:"84879486546548",hasPolishCitizenship: true,passportNumber: null,passportCode:"POL", email:"person48@gmail.com", aglomeration:Core.Enums.Aglomeration.Cracow),"JBNBJHSD45642131")
                 {
                     Education=new List<string>() {UM_1,UM_2},
                     Experience="W latach 2018-2021 praca w szpitalu klinicznym we Wrocławiu",
@@ -1142,7 +1277,7 @@ namespace Asklepios.Data.InMemoryContexts
                     }
 
                 },
-                new Doctor(name:"Karolina",surName:"Majak",id:49,pesel:"856415413216",hasPolishCitizenship: true,passportNumber: null,passportCode:"POL", email:"person49@gmail.com", aglomeration:Core.Enums.Aglomeration.Cracow)
+                new Doctor(new Person( name:"Karolina",surName:"Majak",id:49,pesel:"856415413216",hasPolishCitizenship: true,passportNumber: null,passportCode:"POL", email:"person49@gmail.com", aglomeration:Core.Enums.Aglomeration.Cracow),"JHGFJDS564165412")
                 {
                     Education=new List<string>() {UM_8},
                     Experience="W latach 2019-2020 praca w szpitalu Bródnowskim",
@@ -1155,7 +1290,7 @@ namespace Asklepios.Data.InMemoryContexts
                     }
 
                 },
-                new Doctor(name:"Karina",surName:"Wąsacz",id:50,pesel:"894564113244",hasPolishCitizenship: true,passportNumber: null,passportCode:"POL", email:"person50@gmail.com", aglomeration:Core.Enums.Aglomeration.Cracow)
+                new Doctor(new Person( name:"Karina",surName:"Wąsacz",id:50,pesel:"894564113244",hasPolishCitizenship: true,passportNumber: null,passportCode:"POL", email:"person50@gmail.com", aglomeration:Core.Enums.Aglomeration.Cracow),"JHFDSF4561231")
                 {
                     Education=new List<string>() {UM_4},
                     Experience="W latach 2005-2020 praca w szpitalu Bródnowskim",
@@ -1168,7 +1303,7 @@ namespace Asklepios.Data.InMemoryContexts
                     }
 
                 },
-                new Doctor(name:"Grażyna",surName:"Rudniewska",id:51,pesel:"5641321564964",hasPolishCitizenship: true,passportNumber: null,passportCode:"POL", email:"person51@gmail.com", aglomeration:Core.Enums.Aglomeration.Cracow)
+                new Doctor(new Person( name:"Grażyna",surName:"Rudniewska",id:51,pesel:"5641321564964",hasPolishCitizenship: true,passportNumber: null,passportCode:"POL", email:"person51@gmail.com", aglomeration:Core.Enums.Aglomeration.Cracow),"UIFSDF4561321")
                 {
                     Education=new List<string>() {UM_5,UM_7},
                     Experience="W latach 2005-2020 praca w szpitalu Bródnowskim",
@@ -1181,7 +1316,7 @@ namespace Asklepios.Data.InMemoryContexts
                     }
 
                 },
-                new ElectroradiologyTechnician(name:"Marta",surName:"Tracka",id:52,pesel:"846516549646411",hasPolishCitizenship: true,passportNumber: null,passportCode:"POL", email:"person52@gmail.com", aglomeration:Core.Enums.Aglomeration.Cracow)
+                new ElectroradiologyTechnician(new Person( name:"Marta",surName:"Tracka",id:52,pesel:"846516549646411",hasPolishCitizenship: true,passportNumber: null,passportCode:"POL", email:"person52@gmail.com", aglomeration:Core.Enums.Aglomeration.Cracow),"DHJKFSD4564132")
                 {
                     Education=new List<string>() {UM_7,UM_9},
                     Experience="Staż odbyła w szpitalu Bródnowskim w Warszawie. Od 2016 roku pracuje w szpitalu Praskim w Warszawie.",
@@ -1194,7 +1329,7 @@ namespace Asklepios.Data.InMemoryContexts
                     }
 
                 },
-                new Nurse(name:"Marta",surName:"Trąbicka",id:53,pesel:"862311654482631", pwzNumber:"RERDSDF2134969", hasPolishCitizenship: true,passportNumber: null,passportCode:"POL", email:"person53@gmail.com", aglomeration:Core.Enums.Aglomeration.Cracow)
+                new Nurse(new Person( name:"Marta",surName:"Trąbicka",id:53,pesel:"862311654482631", hasPolishCitizenship: true,passportNumber: null,passportCode:"POL", email:"person53@gmail.com", aglomeration:Core.Enums.Aglomeration.Cracow),"HBJKSDF56413215")
                 {
                     Education=new List<string>() {UM_6,UM_2},
                     Experience="Staż odbyty w szpitalu akademickim w Białymstoku. Od 2018 roku praca w szpitalu powiatowym w Węgrowie",
@@ -1207,7 +1342,7 @@ namespace Asklepios.Data.InMemoryContexts
                     }
 
                 },
-                new Doctor(name:"Sylwia",surName:"Sarna",id:54,pesel:"7913213156465",hasPolishCitizenship: true,passportNumber: null,passportCode:"POL", email:"person54@gmail.com", aglomeration:Core.Enums.Aglomeration.Cracow)
+                new Doctor(new Person( name:"Sylwia",surName:"Sarna",id:54,pesel:"7913213156465",hasPolishCitizenship: true,passportNumber: null,passportCode:"POL", email:"person54@gmail.com", aglomeration:Core.Enums.Aglomeration.Cracow), "RERDSDF2134969")
                 {
                     Education=new List<string>() {UM_4,UM_2},
                     Experience="W latach 2005-2020 praca w szpitalu Bródnowskim",
@@ -1220,7 +1355,7 @@ namespace Asklepios.Data.InMemoryContexts
                     }
 
                 },
-                new Nurse(name:"Kamila",surName:"Kozera",id:55,pesel:"751231654654612",pwzNumber:"JIJHKJH265464", hasPolishCitizenship: true,passportNumber: null,passportCode:"POL", email:"person55@gmail.com", aglomeration:Core.Enums.Aglomeration.Cracow)
+                new Nurse(new Person( name:"Kamila",surName:"Kozera",id:55,pesel:"751231654654612", hasPolishCitizenship: true,passportNumber: null,passportCode:"POL", email:"person55@gmail.com", aglomeration:Core.Enums.Aglomeration.Cracow),"BNMDSF546123")
                 {
                     Education=new List<string>() {UM_5},
                     Experience="W latach 2005-2020 praca w szpitalu Bródnowskim",
@@ -1233,7 +1368,7 @@ namespace Asklepios.Data.InMemoryContexts
                     }
 
                 },
-                new ElectroradiologyTechnician(name:"Bogumiła",surName:"Braniewska",id:56,pesel:"548789461231546",hasPolishCitizenship: true,passportNumber: null,passportCode:"POL", email:"person56@gmail.com", aglomeration:Core.Enums.Aglomeration.Cracow)
+                new ElectroradiologyTechnician(new Person( name:"Bogumiła",surName:"Braniewska",id:56,pesel:"548789461231546",hasPolishCitizenship: true,passportNumber: null,passportCode:"POL", email:"person56@gmail.com", aglomeration:Core.Enums.Aglomeration.Cracow),"PODBASHJ4454321")
                 {
                     Education=new List<string>() {UM_1,UM_2},
                     Experience="W latach 2005-2020 praca w szpitalu Bródnowskim",
@@ -1246,7 +1381,7 @@ namespace Asklepios.Data.InMemoryContexts
                     }
 
                 },
-                new Doctor(name:"Teresa",surName:"Winniczek",id:57,pesel:"62348979521",hasPolishCitizenship: true,passportNumber: null,passportCode:"POL", email:"person57@gmail.com", aglomeration:Core.Enums.Aglomeration.Cracow)
+                new Doctor(new Person( name:"Teresa",surName:"Winniczek",id:57,pesel:"62348979521",hasPolishCitizenship: true,passportNumber: null,passportCode:"POL", email:"person57@gmail.com", aglomeration:Core.Enums.Aglomeration.Cracow),"YHBKASD5465123")
                 {
                     Education=new List<string>() {UM_3},
                     Experience="W latach 2014-2021 praca w szpitalu zielonogórskim",
@@ -1259,7 +1394,7 @@ namespace Asklepios.Data.InMemoryContexts
                     }
 
                 },
-                new Doctor(name:"Danuta",surName:"Werys",id:58,pesel:"61321234189",hasPolishCitizenship: true,passportNumber: null,passportCode:"POL", email:"person58@gmail.com", aglomeration:Core.Enums.Aglomeration.Cracow)
+                new Doctor(new Person( name:"Danuta",surName:"Werys",id:58,pesel:"61321234189",hasPolishCitizenship: true,passportNumber: null,passportCode:"POL", email:"person58@gmail.com", aglomeration:Core.Enums.Aglomeration.Cracow),"OPQEW6546132")
                 {
                     Education=new List<string>() {UM_5},
                     Experience="W latach 2005-2020 praca w szpitalu wojewódzkim w Olsztynie",
@@ -1272,7 +1407,7 @@ namespace Asklepios.Data.InMemoryContexts
                     }
 
                 },
-                    new Doctor(name:"Daria",surName:"Jaszczur",id:59,pesel:"74561213898",hasPolishCitizenship: true,passportNumber: null,passportCode:"POL", email:"person59@gmail.com", aglomeration:Core.Enums.Aglomeration.Cracow)
+                    new Doctor(new Person( name:"Daria",surName:"Jaszczur",id:59,pesel:"74561213898",hasPolishCitizenship: true,passportNumber: null,passportCode:"POL", email:"person59@gmail.com", aglomeration:Core.Enums.Aglomeration.Cracow),"OPNKWEJR546132")
                 {
                     Education=new List<string>() {UM_8},
                     Experience="Od 2010 roku pracuje jako ordynator w szpitalu Matki i Dziecka w Warszawie",
@@ -1285,7 +1420,7 @@ namespace Asklepios.Data.InMemoryContexts
                     }
 
                 },
-                    new Physiotherapist(name:"Daria",surName:"Biernacka",id:60,pesel:"791231564948213",npwzNumber:"UGUGHFHG154613", hasPolishCitizenship: true,passportNumber: null,passportCode:"POL", email:"person60@gmail.com", aglomeration:Core.Enums.Aglomeration.Cracow)
+                    new Physiotherapist(new Person( name:"Daria",surName:"Biernacka",id:60,pesel:"791231564948213", hasPolishCitizenship: true,passportNumber: null,passportCode:"POL", email:"person60@gmail.com", aglomeration:Core.Enums.Aglomeration.Cracow),"GVJDAS54645")
                 {
                     Education=new List<string>() {UM_9},
                     Experience="W latach 2016-2020 praca w szpitalu miejskim w Grudziądzu",
@@ -1298,7 +1433,7 @@ namespace Asklepios.Data.InMemoryContexts
                     }
 
                 },
-                new Doctor(name:"Maria",surName:"Balon",id:61,pesel:"785321546456",hasPolishCitizenship: true,passportNumber: null,passportCode:"POL", email:"person61@gmail.com", aglomeration:Core.Enums.Aglomeration.Cracow)
+                new Doctor(new Person   (name:"Maria",surName:"Balon",id:61,pesel:"785321546456",hasPolishCitizenship: true,passportNumber: null,passportCode:"POL", email:"person61@gmail.com", aglomeration:Core.Enums.Aglomeration.Cracow),"UIHDAS546516")
                 {
                     Education=new List<string>() {UM_1,UM_9},
                     Experience="W latach 2009-2020 praca w szpitalu miejskim w Suwałkach",
@@ -1311,7 +1446,7 @@ namespace Asklepios.Data.InMemoryContexts
                     }
 
                 },
-                new Nurse(name:"Anna",surName:"Poranna",id:62,pesel:"84561321499476",hasPolishCitizenship: true,pwzNumber:"ASDASD56464", passportNumber: null,passportCode:"POL", email:"person62@gmail.com", aglomeration:Core.Enums.Aglomeration.Cracow)
+                new Nurse(new Person( name:"Anna",surName:"Poranna",id:62,pesel:"84561321499476",hasPolishCitizenship: true, passportNumber: null,passportCode:"POL", email:"person62@gmail.com", aglomeration:Core.Enums.Aglomeration.Cracow),"ADASD46123")
                 {
                     Education=new List<string>() {UM_7,UM_2},
                     Experience="W latach 2009-2020 praca w szpitalu wojewódzkim w Toruniu",
@@ -1324,7 +1459,7 @@ namespace Asklepios.Data.InMemoryContexts
                     }
 
                 },
-                new ElectroradiologyTechnician(name:"Anna",surName:"Poletko",id:63,pesel:"8845641321546",hasPolishCitizenship: true,passportNumber: null,passportCode:"POL", email:"person63@gmail.com", aglomeration:Core.Enums.Aglomeration.Cracow)
+                new ElectroradiologyTechnician(new Person( name:"Anna",surName:"Poletko",id:63,pesel:"8845641321546",hasPolishCitizenship: true,passportNumber: null,passportCode:"POL", email:"person63@gmail.com", aglomeration:Core.Enums.Aglomeration.Cracow),"YUGDSD56131")
                 {
                     Education=new List<string>() {UM_2,UM_4},
                     Experience="Od 2016 pracuje w szpitalu Bródnowskim",
@@ -1338,7 +1473,7 @@ namespace Asklepios.Data.InMemoryContexts
 
                 },
 
-                new Doctor(name:"Agata",surName:"Bosko",id:64,pesel:"8956132156463",hasPolishCitizenship: true,passportNumber: null,passportCode:"POL", email:"person64@gmail.com", aglomeration:Core.Enums.Aglomeration.Warsaw)
+                new Doctor(new Person( name:"Agata",surName:"Bosko",id:64,pesel:"8956132156463",hasPolishCitizenship: true,passportNumber: null,passportCode:"POL", email:"person64@gmail.com", aglomeration:Core.Enums.Aglomeration.Warsaw),"YAJHD5461321")
                 {
                     Education=new List<string>() {UM_5},
                     Experience="W latach 2009-2021 praca w szpitalu w Przemyślu",
@@ -1351,7 +1486,7 @@ namespace Asklepios.Data.InMemoryContexts
                     }
 
                 },
-                new Doctor(name:"Agata",surName:"Mińska",id:65,pesel:"78465413131468",hasPolishCitizenship: true,passportNumber: null,passportCode:"POL", email:"person65@gmail.com", aglomeration:Core.Enums.Aglomeration.Wroclaw)
+                new Doctor(new Person( name:"Agata",surName:"Mińska",id:65,pesel:"78465413131468",hasPolishCitizenship: true,passportNumber: null,passportCode:"POL", email:"person65@gmail.com", aglomeration:Core.Enums.Aglomeration.Wroclaw),"OOXCZX6541546")
                 {
                     Education=new List<string>() {UM_3},
                     Experience="W latach 2008-2020 praca w szpitalu w Lublinie",
@@ -1364,7 +1499,7 @@ namespace Asklepios.Data.InMemoryContexts
                     }
 
                 },
-                new Physiotherapist(name:"Monika",surName:"Szajka",id:66,pesel:"80156467513236",npwzNumber:"ADASSD415676", hasPolishCitizenship: true,passportNumber: null,passportCode:"POL", email:"person66@gmail.com", aglomeration:Core.Enums.Aglomeration.Bialystok)
+                new Physiotherapist(new Person( name:"Monika",surName:"Szajka",id:66,pesel:"80156467513236", hasPolishCitizenship: true,passportNumber: null,passportCode:"POL", email:"person66@gmail.com", aglomeration:Core.Enums.Aglomeration.Bialystok),"FSDRGD54543")
                 {
                     Education=new List<string>() {UM_1,UM_2},
                     Experience="W latach 2005-2020 praca w szpitalu Bródnowskim",
@@ -1377,7 +1512,7 @@ namespace Asklepios.Data.InMemoryContexts
                     }
 
                 },
-                new Doctor(name:"Mariola",surName:"Kiepska",id:67,pesel:"798564613216546",hasPolishCitizenship: true,passportNumber: null,passportCode:"POL", email:"person67@gmail.com", aglomeration:Core.Enums.Aglomeration.Kielce)
+                new Doctor(new Person( name:"Mariola",surName:"Kiepska",id:67,pesel:"798564613216546",hasPolishCitizenship: true,passportNumber: null,passportCode:"POL", email:"person67@gmail.com", aglomeration:Core.Enums.Aglomeration.Kielce),"UHJKSAD51321")
                 {
                     Education=new List<string>() {UM_1,UM_2},
                     Experience="W latach 2005-2020 praca w szpitalu Bródnowskim",
@@ -1390,7 +1525,7 @@ namespace Asklepios.Data.InMemoryContexts
                     }
 
                 },
-                new Doctor(name:"Dorota",surName:"Zawisza",id:68,pesel:"7441321264987984",hasPolishCitizenship: true,passportNumber: null,passportCode:"POL", email:"person68@gmail.com", aglomeration:Core.Enums.Aglomeration.Silesia)
+                new Doctor(new Person( name:"Dorota",surName:"Zawisza",id:68,pesel:"7441321264987984",hasPolishCitizenship: true,passportNumber: null,passportCode:"POL", email:"person68@gmail.com", aglomeration:Core.Enums.Aglomeration.Silesia),"BNSDSA546123")
                 {
                     Education=new List<string>() {UM_5,UM_2},
                     Experience="W latach 2005-2020 praca w szpitalu Bródnowskim",
@@ -1402,7 +1537,7 @@ namespace Asklepios.Data.InMemoryContexts
                     }
 
                 },
-                new ElectroradiologyTechnician(name:"Anastasia",surName:"Radczuk",id:69,pesel:"",hasPolishCitizenship: false,passportNumber: "AAAA87946121646",passportCode:"UKR", email:"person69@gmail.com", aglomeration:Core.Enums.Aglomeration.Tricity)
+                new ElectroradiologyTechnician(new Person( name:"Anastasia",surName:"Radczuk",id:69,pesel:"",hasPolishCitizenship: false,passportNumber: "AAAA87946121646",passportCode:"UKR", email:"person69@gmail.com", aglomeration:Core.Enums.Aglomeration.Tricity),"KLSAD546123")
                 {
                     Education=new List<string>() {UM_1,UM_2},
                     Experience="W latach 2016-2020 praca w szpitalu lwowskim na Ukrainie",
@@ -1415,7 +1550,7 @@ namespace Asklepios.Data.InMemoryContexts
                     }
 
                 },
-                new DentalHygienist(name:"Karolina",surName:"Kulka",id:70,pesel:"798465132156486",pNumber:"ADSASD45646", hasPolishCitizenship: true,passportNumber: null,passportCode:"POL", email:"person70@gmail.com", aglomeration:Core.Enums.Aglomeration.Rzeszów)
+                new DentalHygienist(new Person( name:"Karolina",surName:"Kulka",id:70,pesel:"798465132156486", hasPolishCitizenship: true,passportNumber: null,passportCode:"POL", email:"person70@gmail.com", aglomeration:Core.Enums.Aglomeration.Rzeszów),"JHDAS4564231")
                 {
                     Education=new List<string>() {UM_1,UM_2},
                     Experience="W latach 2005-2020 praca w szpitalu Bródnowskim",
@@ -1524,7 +1659,7 @@ namespace Asklepios.Data.InMemoryContexts
 
                     }
                 },
-                                new Prescription()
+                new Prescription()
                 {
                     AccessCode = "55554654646",
                     Id = 3,
@@ -1546,7 +1681,49 @@ namespace Asklepios.Data.InMemoryContexts
                             PackageSize="100 tabletek",MedicineName="Metoprolol",PaymentDiscount=40},
 
                     }
+                },
+                new Prescription()
+                {
+                    AccessCode = "45641345695",
+                    Id = 4,
+                    //IssuedBy = (MedicalWorkers.ElementAt(2) as Doctor),
+                    IssueDate = dateTimeOffset.AddDays(-20),
+                    ExpirationDate = dateTimeOffset.AddDays(40),
+                    IdentificationCode="dsfgdad4sf4ds56af4sd6f4",
+
+                    IssuedMedicines = new List<IssuedMedicine>()
+                    {
+                        new IssuedMedicine(){
+                            //Dosage="Dwa razy dziennie po 1 tabletce",
+                            PackageSize="100 tabletek",MedicineName="Debretin 100 mg",PaymentDiscount=30},
+                        new IssuedMedicine() {
+                            //Dosage="Dwa razy dziennie po 1 tabletce",
+                            PackageSize="60 tabletek",MedicineName="Duspatalin 200 mg",PaymentDiscount=40},
+
+                    }
+                },
+            new Prescription()  //kardio
+                {
+                    AccessCode = "45641345695",
+                    Id = 5,
+                    //IssuedBy = (MedicalWorkers.ElementAt(2) as Doctor),
+                    IssueDate = dateTimeOffset.AddDays(-20),
+                    ExpirationDate = dateTimeOffset.AddDays(40),
+                    IdentificationCode="dsfgdad4sf4ds56af4sd6f4",
+
+                    IssuedMedicines = new List<IssuedMedicine>()
+                    {
+                        new IssuedMedicine(){
+                            //Dosage="Dwa razy dziennie po 1 tabletce",
+                            PackageSize="28 tabletek",MedicineName="Betaloc ZOK 100 mg",PaymentDiscount=30},
+                        new IssuedMedicine() {
+                            //Dosage="Dwa razy dziennie po 1 tabletce",
+                            PackageSize="60 tabletek",MedicineName="Vivacor 25 mg",PaymentDiscount=40},
+
+                    }
                 }
+
+
 
             };
 
@@ -1554,16 +1731,16 @@ namespace Asklepios.Data.InMemoryContexts
             {
                 new MedicalTestResult()
                 {
-                    Descritpion="Wyniki badań krwi i moczu",
-                    MedicalService=MedicalServices[50],
+                    Descritpion="Wyniki rozszerzonych badań krwi",
+                    MedicalService=MedicalServices[8],
                     PdfDocument= Properties.Resources.Badania_krwi_i_moczu                ,  //new PdfSharpCore.Pdf.PdfDocument( new MemoryStream( Properties.Resources.Badania_krwi_i_moczu                )),
                     Id=1,
                 },
                 new MedicalTestResult()
                 {
                     Id=2,
-                    Descritpion="Wyniki badań krwi",
-                    MedicalService=MedicalServices[50],
+                    Descritpion="Wyniki podstawowych badań krwi",
+                    MedicalService=MedicalServices[7],
                     PdfDocument= Properties.Resources.badania_krwi,// new PdfSharpCore.Pdf.PdfDocument( new MemoryStream( Properties.Resources.badania_krwi                ))
                 },
                 new MedicalTestResult()
@@ -1577,14 +1754,14 @@ namespace Asklepios.Data.InMemoryContexts
                 {
                     Id=4,
                     Descritpion="Wyniki ekg serca",
-                    MedicalService=MedicalServices[50],
+                    MedicalService=MedicalServices[0],
                     PdfDocument=Properties.Resources.ekg,//  new PdfSharpCore.Pdf.PdfDocument( new MemoryStream( Properties.Resources.ekg))
                 },
                 new MedicalTestResult()
                 {
                     Id=5,
                     Descritpion="RTG nadgarstka z trzech stron",
-                    MedicalService=MedicalServices[50],//wybrać ekg serca
+                    MedicalService=MedicalServices[86],//wybrać ekg serca
                     PdfDocument=Properties.Resources.ekg,//new PdfSharpCore.Pdf.PdfDocument(new MemoryStream(Properties.Resources.ekg)),
                 }
 
@@ -1675,20 +1852,18 @@ namespace Asklepios.Data.InMemoryContexts
                     Id=5,
                     IssueDate=now.AddDays(-22),
                     ExpireDate=now.AddDays(-15).AddMonths(3),
-                    IssuedBy=MedicalWorkers.ElementAt(5),
+                    IssuedBy=MedicalWorkers.ElementAt(26),
                     IssuedTo=patient,
-                    MedicalService=MedicalServices[5],
-                    //VisitSummary=visitSummaries.ElementAt(5)
-
+                    MedicalService=MedicalServices[90],
                 },
                 new MedicalReferral()
                 {
                     Id=6,
                     IssueDate=now.AddDays(-23),
                     ExpireDate=now.AddDays(-15).AddMonths(3),
-                    IssuedBy=MedicalWorkers.ElementAt(6),
+                    IssuedBy=MedicalWorkers.ElementAt(5),
                     IssuedTo=patient,
-                    MedicalService=MedicalServices[6],
+                    MedicalService=MedicalServices[81],
                     //VisitSummary=visitSummaries.ElementAt(6)
 
                 },
@@ -1697,12 +1872,46 @@ namespace Asklepios.Data.InMemoryContexts
                     Id=7,
                     IssueDate=now.AddDays(-24),
                     ExpireDate=now.AddDays(-15).AddMonths(3),
-                    IssuedBy=MedicalWorkers.ElementAt(7),
+                    IssuedBy=MedicalWorkers.ElementAt(26),
+                    IssuedTo=patient,
+                    MedicalService=MedicalServices[91],
+                    //VisitSummary=visitSummaries.ElementAt(7)
+
+                },
+                                new MedicalReferral()
+                {
+                    Id=8,
+                    IssueDate=now.AddDays(-24),
+                    ExpireDate=now.AddDays(-15).AddMonths(3),
+                    IssuedBy=MedicalWorkers.ElementAt(26),
                     IssuedTo=patient,
                     MedicalService=MedicalServices[7],
                     //VisitSummary=visitSummaries.ElementAt(7)
 
                 },
+                        new MedicalReferral()
+                {
+                    Id=9,
+                    IssueDate=now.AddDays(-24),
+                    ExpireDate=now.AddDays(-15).AddMonths(3),
+                    IssuedBy=MedicalWorkers.ElementAt(26),
+                    IssuedTo=patient,
+                    MedicalService=MedicalServices[8],
+                    //VisitSummary=visitSummaries.ElementAt(7)
+
+                },
+                new MedicalReferral()
+                {
+                    Id=10,
+                    IssueDate=now.AddDays(-24),
+                    ExpireDate=now.AddDays(-15).AddMonths(3),
+                    IssuedBy=MedicalWorkers.ElementAt(26),
+                    IssuedTo=patient,
+                    MedicalService=MedicalServices[9],
+                    //VisitSummary=visitSummaries.ElementAt(7)
+
+                },
+
                 //new ExaminationReferral()
                 //{
                 //    Id=8,
@@ -1735,112 +1944,30 @@ namespace Asklepios.Data.InMemoryContexts
                 //},
             };
 
-            //            List<VisitSummary> visitSummaries = new List<VisitSummary>()
-            //            {
-            //                new VisitSummary()
-            //                {
-            //                    Id=1,
-            //                    MedicalHistory="Pacjent skarży się na chroniczne zmęczenie. Wspomina też o tym, że mimo że je tyle samo co wcześniej, to ostatnio sporo przytył. Ma nadwagę, 170 cm wzrostu, 90 kg.",
-            //                    Prescription=prescriptions[0],
-            //                    Recommendations= new List<Recommendation>   (){ recommendations[0] , recommendations[4]},
-            //                    ExaminationReferrals=new List<ExaminationReferral>(){referrals[0], referrals[1]}
-            //                },
-            //                new VisitSummary()
-            //                {
-            //                    Id=2,
-            //                    MedicalHistory="Swędzenie skóry, uczucie senności po posiłku",
-            //                    Prescription=prescriptions[1],
-            //                    Recommendations=new List<Recommendation>(){ recommendations[1] },
-            //                    ExaminationReferrals=new List<ExaminationReferral>(){referrals[2], referrals[3]}
-
-            //                },
-            //                new VisitSummary()
-            //                {
-            //                    Id=3,
-            //                    MedicalHistory="RTG nadgarstka",
-            //                    MedicalResult=  medicalTestResults[3] ,
-            //                }
-            //,
-            //                new VisitSummary()
-            //                {
-            //                    Id=4,
-            //                    MedicalHistory="Badania laboratoryjne",
-            //                    MedicalResult=medicalTestResults[4] ,
-            //                },
-            //                new VisitSummary()
-            //                {
-            //                    Id=5,
-            //                    MedicalHistory="Badania laboratoryjne",
-            //                    MedicalResult=medicalTestResults[4] ,
-            //                },
-            //                new VisitSummary()
-            //                {
-            //                    Id=6,
-            //                    MedicalHistory="Badania laboratoryjne",
-            //                    MedicalResult=medicalTestResults[4] ,
-            //                },
-            //                                new VisitSummary()
-            //                {
-            //                    Id=7,
-            //                    MedicalHistory="EKG serca",
-            //                    MedicalResult=medicalTestResults[4] ,
-            //                },
-
-            //                new VisitSummary()
-            //                {
-            //                    Id=8,
-            //                    MedicalHistory="Pacjent posiada typowe dla łuszczycy zmiany skórne: na skórze głowy oraz pod pachami. Twierdzi, że ma je ok. 3 miesięcy.",
-            //                    Prescription=prescriptions[2],
-            //                    Recommendations=new List<Recommendation>(){ recommendations[4] },
-
-            //                },
-            //                new VisitSummary()
-            //                {
-            //                    Id=9,
-            //                    MedicalHistory="Podejrzenie złamania nadgarstka. Pacjent przewrócił się wczoraj na rowerze, od tego czasu odczuwa ból w okolicach nadgarstka, mocno ograniczone ruchy nadgarstka, duża opuchlizna. Skierowanie na rtg oraz zalecenie zakupu ortezy na nadgarstek.",
-            //                    Prescription=null,
-            //                    Recommendations=new List<Recommendation>(){ recommendations[3] }, //wybrać stomatologię zachowawczą
-            //                                        ExaminationReferrals=new List<ExaminationReferral>(){referrals[4]}
-
-            //                },
-            //                new VisitSummary()
-            //                {
-            //                    Id=10,
-            //                    MedicalHistory="Rehabilitacja nadgarstka złamanego 3 miesiące temu. Orteza noszona przez miesiąc, pacjent uskarża się na sztywność nadgarstka i lekkie bóle podczas wyginania nadgarstka.",
-            //                    Recommendations=new List<Recommendation>(){ recommendations[4] }, //wybrać coś z rehabilitacji
-            //                }
-
-            //            };
-
-
-
             List<Visit> patientHistoricalVisits = new List<Visit>()
             {
 
                 new Visit()
                 {
                     Id=1,
-                    PrimaryService=PrimaryMedicalServices[0],
+                    PrimaryService=PrimaryMedicalServices[7],
                     MinorMedicalServices=new List<MedicalService>(){MedicalServices[20]},
                     DateTimeSince=now.AddDays(-20).AddHours(5).AddMinutes(0),
                     DateTimeTill=now.AddDays(-20).AddHours(5).AddMinutes(15),
                     Location=Locations.ElementAt(0),
                     MedicalRoom=Locations.ElementAt(0).MedicalRooms.ElementAt(1),
-                    MedicalWorker=MedicalWorkers.ElementAt(1),
+                    MedicalWorker=MedicalWorkers.ElementAt(29),
                     Patient=patient,
                     VisitCategory=VisitCategories.ElementAt(0),
-                                        MedicalHistory="Pacjent skarży się na chroniczne zmęczenie. Wspomina też o tym, że mimo że je tyle samo co wcześniej, to ostatnio sporo przytył. Ma nadwagę, 170 cm wzrostu, 90 kg.",
-                    Prescription=prescriptions[0],
+                                        MedicalHistory="Pacjent skarży się na problemy z układem pokarmowym, nawracające biegunki, gazy, bóle brzucha",
+                    Prescription=prescriptions[4],
                     Recommendations= new List<Recommendation>   (){ recommendations[0] , recommendations[4]},
                     ExaminationReferrals=new List<MedicalReferral>(){referrals[0], referrals[1]}
-
-                    //VisitSummary=visitSummaries.ElementAt(0)
-                    //MedicalRoom=medicalr//
                 },
                 new Visit()
                 {
                     Id=2,
-                    PrimaryService=PrimaryMedicalServices[2],
+                    PrimaryService=PrimaryMedicalServices[0],
                     MinorMedicalServices=new List<MedicalService>(){MedicalServices[3], MedicalServices[5]},
                     MedicalRoom=Locations.ElementAt(0).MedicalRooms.ElementAt(0),
                     DateTimeSince=dateTimeOffset.AddDays(-20),
@@ -1852,98 +1979,141 @@ namespace Asklepios.Data.InMemoryContexts
                     MedicalHistory="Swędzenie skóry, uczucie senności po posiłku",
                     Prescription=prescriptions[1],
                     Recommendations=new List<Recommendation>(){ recommendations[1] },
-                    ExaminationReferrals=new List<MedicalReferral>(){referrals[2], referrals[3]}
-
-                    //VisitSummary=visitSummaries.ElementAt(1)
+                    ExaminationReferrals=new List<MedicalReferral>(){referrals[2], referrals[3], referrals[8] }
                 },
                 new Visit()
                 {
                     Id=3,
-                    PrimaryService=PrimaryMedicalServices[5],
+                    PrimaryService=PrimaryMedicalServices[28],
                     MinorMedicalServices=new List<MedicalService>(){ MedicalServices[20], MedicalServices[21] },
                     MedicalRoom=Locations.ElementAt(0).MedicalRooms.ElementAt(0),
                     DateTimeSince=dateTimeOffset.AddDays(-20),
                     DateTimeTill=dateTimeOffset.AddDays(-20).AddMinutes(15),
                     Location=Locations.ElementAt(0),
-                    MedicalWorker=MedicalWorkers.ElementAt(0),
+                    MedicalWorker=MedicalWorkers.ElementAt(51),
                     Patient=patient,
-                    VisitCategory=VisitCategories.ElementAt(0),
+                    VisitCategory=VisitCategories.ElementAt(3),
                     MedicalHistory="RTG nadgarstka",
-                    MedicalResult=  medicalTestResults[3] ,
-
-                    //VisitSummary=visitSummaries.ElementAt(2)
+                    MedicalResult=  medicalTestResults[4] ,
                 },
                 new Visit()
                 {
                     Id=4,
-                    PrimaryService=PrimaryMedicalServices[6],
-                    MinorMedicalServices=new List<MedicalService>(){ MedicalServices[10], MedicalServices[1] },
+                    PrimaryService=PrimaryMedicalServices[9],
                     MedicalRoom=Locations.ElementAt(0).MedicalRooms.ElementAt(0),
                     DateTimeSince=dateTimeOffset.AddDays(-20),
                     DateTimeTill=dateTimeOffset.AddDays(-20).AddMinutes(15),
                     Location=Locations.ElementAt(0),
-                    MedicalWorker=MedicalWorkers.ElementAt(0),
+                    MedicalWorker=MedicalWorkers.ElementAt(50),
                     Patient=patient,
                     VisitCategory=VisitCategories.ElementAt(0),
                     MedicalHistory="Pacjent posiada typowe dla łuszczycy zmiany skórne: na skórze głowy oraz pod pachami. Twierdzi, że ma je ok. 3 miesięcy.",
-                    Prescription=prescriptions[2],
+                    Prescription=prescriptions[0],
                     Recommendations=new List<Recommendation>(){ recommendations[4] },
-
-                    //VisitSummary=visitSummaries.ElementAt(3)
                 },
                 new Visit()
                 {
                     Id=5,
-                    PrimaryService=PrimaryMedicalServices[9],
-                    MinorMedicalServices=new List<MedicalService>(){ MedicalServices[7], MedicalServices[8] },
+                    PrimaryService=PrimaryMedicalServices[6],
+                    MinorMedicalServices=new List<MedicalService>(){ MedicalServices[57] },
                     MedicalRoom=Locations.ElementAt(0).MedicalRooms.ElementAt(0),
                     DateTimeSince=dateTimeOffset.AddDays(-20),
                     DateTimeTill=dateTimeOffset.AddDays(-20).AddMinutes(15),
                     Location=Locations.ElementAt(0),
-                    MedicalWorker=MedicalWorkers.ElementAt(0),
+                    MedicalWorker=MedicalWorkers.ElementAt(26),
                     Patient=patient,
                     VisitCategory=VisitCategories.ElementAt(1),
                                         MedicalHistory="Podejrzenie złamania nadgarstka. Pacjent przewrócił się wczoraj na rowerze, od tego czasu odczuwa ból w okolicach nadgarstka, mocno ograniczone ruchy nadgarstka, duża opuchlizna. Skierowanie na rtg oraz zalecenie zakupu ortezy na nadgarstek.",
                     Prescription=null,
                     Recommendations=new List<Recommendation>(){ recommendations[3] }, //wybrać stomatologię zachowawczą
-                                        ExaminationReferrals=new List<MedicalReferral>(){referrals[4]}
-
-                    //VisitSummary=visitSummaries.ElementAt(4)
+                                        ExaminationReferrals=new List<MedicalReferral>(){referrals[4], referrals[6]}
                 },
                 new Visit()
                 {
                     Id=6,
-                    PrimaryService=PrimaryMedicalServices[7],
-                    MinorMedicalServices=new List<MedicalService>(){ MedicalServices[21], MedicalServices[22] },
+                    PrimaryService=PrimaryMedicalServices[32],
+                    //MinorMedicalServices=new List<MedicalService>(){ MedicalServices[21], MedicalServices[22] },
                     MedicalRoom=Locations.ElementAt(0).MedicalRooms.ElementAt(0),
                     DateTimeSince=dateTimeOffset.AddDays(-20),
                     DateTimeTill=dateTimeOffset.AddDays(-20).AddMinutes(15),
                     Location=Locations.ElementAt(0),
-                    MedicalWorker=MedicalWorkers.ElementAt(0),
+                    MedicalWorker=MedicalWorkers.ElementAt(2),
                     Patient=patient,
                     VisitCategory=VisitCategories.ElementAt(1),
             MedicalHistory = "Rehabilitacja nadgarstka złamanego 3 miesiące temu. Orteza noszona przez miesiąc, pacjent uskarża się na sztywność nadgarstka i lekkie bóle podczas wyginania nadgarstka.",
-                    Recommendations = new List<Recommendation>() { recommendations[4] }, //wybrać coś z rehabilitacji
-
-                    //VisitSummary=visitSummaries.ElementAt(4)
+                },
+                new Visit()
+                {
+                    Id=7,
+                    PrimaryService=PrimaryMedicalServices[20],
+                    MinorMedicalServices=new List<MedicalService>(){ MedicalServices[48], MedicalServices[49], MedicalServices[52]},
+                    MedicalRoom=Locations.ElementAt(0).MedicalRooms.ElementAt(1),
+                    DateTimeSince=dateTimeOffset.AddDays(-20),
+                    DateTimeTill=dateTimeOffset.AddDays(-20).AddMinutes(15),
+                    Location=Locations.ElementAt(0),
+                    MedicalWorker=MedicalWorkers.ElementAt(9),
+                    Patient=patient,
+                    VisitCategory=VisitCategories.ElementAt(2),
+            MedicalHistory = "Ból lewej, dolnej szóstki od kilku tygodni.",
+            ExaminationReferrals=new List<MedicalReferral>() {referrals[5]},
+                },
+                new Visit()
+                {
+                    Id=8,
+                    PrimaryService=PrimaryMedicalServices[34],
+                    MinorMedicalServices=new List<MedicalService>(){ MedicalServices[7],MedicalServices[9]},
+                    MedicalRoom=Locations.ElementAt(0).MedicalRooms.ElementAt(1),
+                    DateTimeSince=dateTimeOffset.AddDays(-10),
+                    DateTimeTill=dateTimeOffset.AddDays(-10).AddMinutes(15),
+                    Location=Locations.ElementAt(3),
+                    MedicalWorker=MedicalWorkers.ElementAt(39),
+                    Patient=patient,
+                    VisitCategory=VisitCategories.ElementAt(2),
+                    MedicalResult=medicalTestResults[1],
+            
+                },
+                                new Visit()
+                {
+                    Id=9,
+                    PrimaryService=PrimaryMedicalServices[1],
+                    MedicalRoom=Locations.ElementAt(0).MedicalRooms.ElementAt(1),
+                    DateTimeSince=dateTimeOffset.AddDays(-5),
+                    DateTimeTill=dateTimeOffset.AddDays(-5).AddMinutes(15),
+                    Location=Locations.ElementAt(3),
+                    MedicalWorker=MedicalWorkers.ElementAt(35),
+                    Patient=patient,
+                    VisitCategory=VisitCategories.ElementAt(0),
+                    MedicalHistory="Pacjent skarży się na chroniczne zmęczenie. Wspomina też o tym, że mimo że je tyle samo co wcześniej, to ostatnio sporo przytył. Ma nadwagę, 170 cm wzrostu, 90 kg.",
+                    ExaminationReferrals=new List<MedicalReferral>(){referrals[7], referrals[9] }
                 },
 
+
             };
-            prescriptions[0].Visit = patientHistoricalVisits.ElementAt(0);
+            prescriptions[0].Visit = patientHistoricalVisits.ElementAt(3);
             prescriptions[1].Visit = patientHistoricalVisits.ElementAt(1);
-            prescriptions[2].Visit = patientHistoricalVisits.ElementAt(2);
+            //prescriptions[2].Visit = patientHistoricalVisits.ElementAt(2);
+            prescriptions[4].Visit = patientHistoricalVisits.ElementAt(0);
+
             referrals[0].Visit = patientHistoricalVisits.ElementAt(0);
             referrals[1].Visit = patientHistoricalVisits.ElementAt(0);
             referrals[2].Visit = patientHistoricalVisits.ElementAt(1);
-            referrals[3].Visit = patientHistoricalVisits.ElementAt(2);
-            referrals[4].Visit = patientHistoricalVisits.ElementAt(3);
-            referrals[5].Visit = patientHistoricalVisits.ElementAt(4);
-            referrals[6].Visit = patientHistoricalVisits.ElementAt(5);
-            medicalTestResults[0].Visit = patientHistoricalVisits.ElementAt(0);
-            medicalTestResults[1].Visit = patientHistoricalVisits.ElementAt(1);
-            medicalTestResults[2].Visit = patientHistoricalVisits.ElementAt(2);
-            medicalTestResults[3].Visit = patientHistoricalVisits.ElementAt(3);
-            medicalTestResults[4].Visit = patientHistoricalVisits.ElementAt(4);
+            referrals[3].Visit = patientHistoricalVisits.ElementAt(1);
+            referrals[4].Visit = patientHistoricalVisits.ElementAt(4);
+            referrals[5].Visit = patientHistoricalVisits.ElementAt(6);
+            referrals[6].Visit = patientHistoricalVisits.ElementAt(4);
+            referrals[7].Visit= patientHistoricalVisits.ElementAt(8);
+            referrals[8].Visit= patientHistoricalVisits.ElementAt(1);
+            referrals[9].Visit= patientHistoricalVisits.ElementAt(8); 
+            //////wyniki badan krwi i moczu
+       //     medicalTestResults[0].Visit = patientHistoricalVisits.ElementAt(0);
+            //krwi
+            medicalTestResults[1].Visit = patientHistoricalVisits.ElementAt(7);
+            //cholesterolu
+            //medicalTestResults[2].Visit = patientHistoricalVisits.ElementAt(2);
+            //ekg serca
+           // medicalTestResults[3].Visit = patientHistoricalVisits.ElementAt(3);
+            //rtg nadgarstka
+            medicalTestResults[4].Visit = patientHistoricalVisits.ElementAt(2);
 
 
             List<Visit> plannedVisits = new List<Visit>()
@@ -2023,7 +2193,7 @@ namespace Asklepios.Data.InMemoryContexts
             {
 
                 //kardiolog
-                new MedicalService(){Id=91,Name="EKG spoczynkowe",Description="EKG spoczynkowe", StandardPrice=200, IsPrimaryService=false},
+                new MedicalService(){Id=91,Name="EKG spoczynkowe",Description="EKG spoczynkowe", StandardPrice=200, IsPrimaryService=false,},
                 new MedicalService(){Id=92,Name="EKG wysiłkowe",Description="EKG wysiłkowe", StandardPrice=200, IsPrimaryService=false},
                 new MedicalService(){Id=93,Name="Echo serca",Description="Echo serca", StandardPrice=200, IsPrimaryService=false},
 
@@ -2038,7 +2208,7 @@ namespace Asklepios.Data.InMemoryContexts
 
                 //gabinet zabiegowy
                 new MedicalService(){Id=24,Name="Podstawowe badanie krwi",Description="Podstawowe badanie krwi", StandardPrice=400, IsPrimaryService=false},
-                new MedicalService(){Id=25,Name="Rozszerzone badanie krwi",Description="Rozszerzone zęba po leczeniu kanałowym", StandardPrice=400, IsPrimaryService=false},
+                new MedicalService(){Id=25,Name="Rozszerzone badanie krwi",Description="Rozszerzone badanie krwi", StandardPrice=400, IsPrimaryService=false},
                 new MedicalService(){Id=26,Name="Badanie moczu",Description="Badanie moczu", StandardPrice=400, IsPrimaryService=false},
                 new MedicalService(){Id=27,Name="Badanie kału",Description="Badanie kału", StandardPrice=400, IsPrimaryService=false},
                 new MedicalService(){Id=28,Name="Test genetyczny COVID-19",Description="Test genetyczny COVID-19", StandardPrice=400, IsPrimaryService=false},
@@ -2048,7 +2218,7 @@ namespace Asklepios.Data.InMemoryContexts
                 //fizykoterapia
                 new MedicalService(){Id=32,Name="Krioterapia",Description="Krioterapia", StandardPrice=100, IsPrimaryService=false},
                 new MedicalService(){Id=33,Name="Elektrostymulacja",Description="Elektrostymulacja", StandardPrice=100, IsPrimaryService=false},
-                new MedicalService(){Id=34,Name="Krioterapia",Description="Krioterapia", StandardPrice=200, IsPrimaryService=false},
+                new MedicalService(){Id=34,Name="Laseroterpaia",Description="Laseroterpaia", StandardPrice=200, IsPrimaryService=false},
                 new MedicalService(){Id=35,Name="Ultradźwięki",Description="Ultradźwięki", StandardPrice=100, IsPrimaryService=false},
                 new MedicalService(){Id=36,Name="Magnetoterapia",Description="Magnetoterapia", StandardPrice=100, IsPrimaryService=false},
 
@@ -2137,26 +2307,22 @@ namespace Asklepios.Data.InMemoryContexts
                 new MedicalService(){Id=57,Name="Stomatologia zachowawcza",Description="Stomatologia zachowawcza", StandardPrice=200, IsPrimaryService=true},
                 new MedicalService(){Id=58,Name="Ortodoncja",Description="Ortodoncja", StandardPrice=200, IsPrimaryService=true, SubServices=new List<MedicalService>(){ } },
                 new MedicalService(){Id=59,Name="Chirurgia stomatologiczna",Description="Chirurgia stomatologiczna", StandardPrice=200, IsPrimaryService=true},
-                new MedicalService(){Id=60,Name="Stomatologiczna diagnostyka obrazowa",Description="Rentgen stomatologiczny", StandardPrice=200, IsPrimaryService=true},
+                new MedicalService(){Id=60,Name="Stomatologiczna diagnostyka obrazowa",Description="Rentgen stomatologiczny", StandardPrice=200, IsPrimaryService=true, RequireRefferal=true},
                 new MedicalService(){Id=61,Name="Protetyka",Description="Protetyka", StandardPrice=200, IsPrimaryService=true},
                 new MedicalService(){Id=62,Name="Profilaktyka stomatologiczna",Description="Profilaktyka stomatologiczna", StandardPrice=200, IsPrimaryService=true},
 
-                new MedicalService(){Id=76,Name="Szczepienia",Description="Szczepienia", StandardPrice=100, IsPrimaryService=true, SubServices=new List<MedicalService>() { } },
+                new MedicalService(){Id=76,Name="Szczepienia",Description="Szczepienia", StandardPrice=100, IsPrimaryService=true },
 
-                new MedicalService(){Id=1,Name="USG",Description="USG", StandardPrice=200, IsPrimaryService=true},
-                new MedicalService(){Id=2,Name="RTG",Description="RTG", StandardPrice=200, IsPrimaryService=true},
-                new MedicalService(){Id=3,Name="Rezonans magnetyczny",Description="Rezonans magnetyczny", StandardPrice=200, IsPrimaryService=true},
-                new MedicalService(){Id=73,Name="Medycyna pracy",Description="Medycyna pracy", StandardPrice=200, IsPrimaryService=true},
+                new MedicalService(){Id=1,Name="USG",Description="USG", StandardPrice=200, IsPrimaryService=true, RequireRefferal=true},
+                new MedicalService(){Id=2,Name="RTG",Description="RTG", StandardPrice=200, IsPrimaryService=true, RequireRefferal=true},
+                new MedicalService(){Id=3,Name="Rezonans magnetyczny",Description="Rezonans magnetyczny", StandardPrice=200, IsPrimaryService=true, RequireRefferal=true},
+                new MedicalService(){Id=73,Name="Medycyna pracy",Description="Medycyna pracy", StandardPrice=200, IsPrimaryService=true, RequireRefferal=true},
 
-                new MedicalService(){Id=30,Name="Masaż leczniczy",Description="Masaż leczniczy", StandardPrice=300, IsPrimaryService=true},
-                new MedicalService(){Id=31,Name="Zajęcia rehabilitacyjne",Description="Zajęcia rehabilitacyjne", StandardPrice=300, IsPrimaryService=true},
-                new MedicalService(){Id=75,Name="Fizykoterapia",Description="Fizykoterapia", StandardPrice=400, IsPrimaryService=true} ,
-
-
-                new MedicalService(){Id=74,Name="Badanie laboratoryjne",Description="Badanie laboratoryjne", StandardPrice=100, IsPrimaryService=true},
-
-
-
+                new MedicalService(){Id=30,Name="Masaż leczniczy",Description="Masaż leczniczy", StandardPrice=300, IsPrimaryService=true, RequireRefferal=true},
+                new MedicalService(){Id=31,Name="Zajęcia rehabilitacyjne",Description="Zajęcia rehabilitacyjne", StandardPrice=300, IsPrimaryService=true, RequireRefferal=true},
+                new MedicalService(){Id=75,Name="Fizykoterapia",Description="Fizykoterapia", StandardPrice=400, IsPrimaryService=true, RequireRefferal=true} ,
+                new MedicalService(){Id=74,Name="Badanie laboratoryjne",Description="Badanie laboratoryjne", StandardPrice=100, IsPrimaryService=true, RequireRefferal=true},
+                new MedicalService(){Id=94,Name="Badanie cholesterolu",Description="Badanie cholesterolu", StandardPrice=100, IsPrimaryService=false, RequireRefferal=true},
 
             };
 
@@ -2198,6 +2364,7 @@ namespace Asklepios.Data.InMemoryContexts
 
             //fizjoterapia
             services[75].SubServices = new List<MedicalService>(services.GetRange(32, 5));
+            //szczepienia
 
             return services;
         }

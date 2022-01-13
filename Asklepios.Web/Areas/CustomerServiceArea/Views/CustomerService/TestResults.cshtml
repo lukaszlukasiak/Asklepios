@@ -1,0 +1,29 @@
+﻿@model Asklepios.Web.Areas.PatientArea.Models.PatientViewModel
+@{
+    ViewData["Title"] = "View";
+}
+@{
+    List<Asklepios.Core.Models.MedicalTestResult> results = null;
+    if (Model.Patient.TestsResults != null)
+    {
+        results = Model.Patient.TestsResults.Where(c => c.PdfDocument != null).ToList();
+    }
+
+    if (results!=null)
+    {
+        <h1 style="text-align:center">Wyniki badań</h1>
+        //List<Asklepios.Core.Models.MedicalTestResult> results = Model.Patient.TestsResults.Where(c => c.PdfDocument != null).ToList();
+        foreach (var result in results)
+        {
+            <partial name="_TestResult" model="result" />
+        }
+    }
+    else
+    {
+        <h1>Brak wyników badań</h1>
+    }
+
+}
+
+
+

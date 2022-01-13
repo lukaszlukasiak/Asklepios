@@ -1,0 +1,14 @@
+﻿@model Asklepios.Core.Models.Visit
+@{
+    ViewData["Title"] = "View";
+}
+
+<partial name="_AvailableVisit" model="@Model" />
+
+
+<div class="messages" style="text-align: center ">
+    <p class="alert alert-danger">
+        Nie posiadasz wymaganego skierowania dla wybranej wizyty!
+    </p>
+</div>
+

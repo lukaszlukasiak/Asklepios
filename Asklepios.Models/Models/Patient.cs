@@ -42,6 +42,13 @@ namespace Asklepios.Core.Models
         //public List<IssuedMedicine> IssuedMedicines { get; set; }
         public List<Visit> HistoricalVisits { get; set; }
         public List<Visit> BookedVisits { get; set; }
+
+        public void BookVisit(Visit visit)
+        {
+            visit.Patient = this;
+            BookedVisits.Add(visit);
+        }
+
         //public List<NotificationFilter> Notifications {get;set;}
         public Patient(string name, string surName, long id, string pesel, bool hasPolishCitizenship, string passportNumber, string passportCode, string email, Aglomeration aglomeration) : base(name, surName, id, pesel, hasPolishCitizenship, passportNumber, passportCode, email, aglomeration)
         {

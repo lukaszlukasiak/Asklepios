@@ -10,8 +10,8 @@
                     <label>Zaloguj się do modułu pacjenta</label>
                 </h2>
                 <form class="form" asp-action="LogInPatient" method="post">
-                    <input class="email" type="email" required placeholder="Twój adres e-mail" asp-for="UserName">
-                    <input class="person-detail" required type="password" minlength="8" placeholder="Hasło" asp-for="Password">
+                    <input class="email" type="email" required placeholder="Twój adres e-mail" asp-for="User.UserName">
+                    <input class="person-detail" required type="password" minlength="8" placeholder="Hasło" asp-for="User.Password">
                     <input class="submit-btn" type="submit" value="Wyślij">
                 </form>
             </div>
@@ -24,11 +24,11 @@
                     <label>Zaloguj się do modułu pracownika</label>
                 </h2>
                 <form class="form" asp-action="LogInEmployee" method="post">
-                    <input class="email" type="email" placeholder="Twój adres e-mail" asp-for="UserName">
-                    <input class="person-detail" type="password" minlength="8" placeholder="Hasło" asp-for="Password">
+                    <input class="email" type="email" placeholder="Twój adres e-mail" asp-for="User.UserName">
+                    <input class="person-detail" type="password" minlength="8" placeholder="Hasło" asp-for="User.Password">
                     <p>
                         Wybierz moduł:
-                        <select asp-for="WorkerModuleType" asp-items="Html.GetEnumSelectList<Asklepios.Core.Enums.WorkerModuleType>()"></select>
+                        <select asp-for="User.WorkerModuleType" asp-items="Html.GetEnumSelectList<Asklepios.Core.Enums.WorkerModuleType>()"></select>
                     </p>
                     <input class="submit-btn" type="submit" value="Wyślij">
                 </form>

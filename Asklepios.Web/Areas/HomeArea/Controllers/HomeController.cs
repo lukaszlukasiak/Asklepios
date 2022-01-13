@@ -67,14 +67,15 @@ namespace Asklepios.Web.Areas.HomeArea.Controllers
         [HttpPost]
         public IActionResult LogInEmployee(LogInViewModel model)
         {
-            switch (model.WorkerModuleType)
+            long userId = model.User.Id;
+            switch (model.User.WorkerModuleType)
             {
                 case Core.Enums.WorkerModuleType.CustomerServiceModule:
-                    return RedirectToAction("Index", "CustomerServiceWorker", new { area = "CustomerServiceWorkerArea" });
+                    return RedirectToAction("Index", "CustomerService", new { area = "CustomerServiceArea", id = userId.ToString() });
                 case Core.Enums.WorkerModuleType.AdministrativeWorkerModule:
-                    return RedirectToAction("Index", "AdministrativeWorker", new { area = "AdministrativeWorkerArea" });
+                    return RedirectToAction("Index", "AdministrativeWorker", new { area = "AdministrativeWorkerArea", id = userId.ToString() });
                 case Core.Enums.WorkerModuleType.MedicalWorkerModule:
-                    return RedirectToAction("Index", "MedicalWorker", new { area = "MedicalWorkerArea" });
+                    return RedirectToAction("Index", "MedicalWorker", new { area = "MedicalWorkerArea", id = userId.ToString() });
                 default:
                     break;
             }

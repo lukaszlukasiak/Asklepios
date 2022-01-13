@@ -3,7 +3,7 @@ using System;
 
 namespace Asklepios.Core.Models
 {
-    public abstract class Person
+    public  class Person
     {
         public long Id { get; set; }
         public string Name { get; set; }
