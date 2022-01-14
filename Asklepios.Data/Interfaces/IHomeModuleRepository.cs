@@ -12,5 +12,6 @@ namespace Asklepios.Data.Interfaces
     {
         IEnumerable<Location> GetAllLocations();
         Location GetLocationById(long locationId);
+        User LogIn(User user);
     }
 }

@@ -6,8 +6,11 @@ using System.Text;
 
 namespace Asklepios.Core.Models
 {
-    public class Patient : Person
+    public class Patient 
     {
+        public long Id { get; set; }
+        public long PersonId { get; set; }
+        public Person Person { get; set; }
         public MedicalPackage MedicalPackage { get; set; }
         public string EmployerName { get; set; }
         public string EmployerNIP { get; set; }
@@ -50,8 +53,13 @@ namespace Asklepios.Core.Models
         }
 
         //public List<NotificationFilter> Notifications {get;set;}
-        public Patient(string name, string surName, long id, string pesel, bool hasPolishCitizenship, string passportNumber, string passportCode, string email, Aglomeration aglomeration) : base(name, surName, id, pesel, hasPolishCitizenship, passportNumber, passportCode, email, aglomeration)
+        //public Patient(string name, string surName, long id, string pesel, bool hasPolishCitizenship, string passportNumber, string passportCode, string email, Aglomeration aglomeration) : base(name, surName, id, pesel, hasPolishCitizenship, passportNumber, passportCode, email, aglomeration)
+        //{
+        //}
+        public Patient (Person person)
         {
+            Person = person;
+            PersonId = person.Id;
         }
     }
 }

@@ -970,13 +970,11 @@ C:\Users\lukas\source\repos\Asklepios8\Asklepios.Web\obj\Debug\net5.0\Razor\Area
 C:\Users\lukas\source\repos\Asklepios8\Asklepios.Web\obj\Debug\net5.0\Razor\Areas\CustomerServiceArea\Views\CustomerService\HistoricalVisits.cshtml.g.cs
 C:\Users\lukas\source\repos\Asklepios8\Asklepios.Web\obj\Debug\net5.0\Razor\Areas\CustomerServiceArea\Views\CustomerService\Index.cshtml.g.cs
 C:\Users\lukas\source\repos\Asklepios8\Asklepios.Web\obj\Debug\net5.0\Razor\Areas\CustomerServiceArea\Views\CustomerService\Locations.cshtml.g.cs
-C:\Users\lukas\source\repos\Asklepios8\Asklepios.Web\obj\Debug\net5.0\Razor\Areas\CustomerServiceArea\Views\CustomerService\MedicalAdvice.cshtml.g.cs
 C:\Users\lukas\source\repos\Asklepios8\Asklepios.Web\obj\Debug\net5.0\Razor\Areas\CustomerServiceArea\Views\CustomerService\MedicalWorkerDetails.cshtml.g.cs
 C:\Users\lukas\source\repos\Asklepios8\Asklepios.Web\obj\Debug\net5.0\Razor\Areas\CustomerServiceArea\Views\CustomerService\MedicalWorkersList.cshtml.g.cs
 C:\Users\lukas\source\repos\Asklepios8\Asklepios.Web\obj\Debug\net5.0\Razor\Areas\CustomerServiceArea\Views\CustomerService\NoReferral.cshtml.g.cs
 C:\Users\lukas\source\repos\Asklepios8\Asklepios.Web\obj\Debug\net5.0\Razor\Areas\CustomerServiceArea\Views\CustomerService\PlannedVisits.cshtml.g.cs
 C:\Users\lukas\source\repos\Asklepios8\Asklepios.Web\obj\Debug\net5.0\Razor\Areas\CustomerServiceArea\Views\CustomerService\Prescriptions.cshtml.g.cs
-C:\Users\lukas\source\repos\Asklepios8\Asklepios.Web\obj\Debug\net5.0\Razor\Areas\CustomerServiceArea\Views\CustomerService\RateVisit.cshtml.g.cs
 C:\Users\lukas\source\repos\Asklepios8\Asklepios.Web\obj\Debug\net5.0\Razor\Areas\CustomerServiceArea\Views\CustomerService\Referrals.cshtml.g.cs
 C:\Users\lukas\source\repos\Asklepios8\Asklepios.Web\obj\Debug\net5.0\Razor\Areas\CustomerServiceArea\Views\CustomerService\TestResults.cshtml.g.cs
 C:\Users\lukas\source\repos\Asklepios8\Asklepios.Web\obj\Debug\net5.0\Razor\Areas\CustomerServiceArea\Views\CustomerService\VisitDetails.cshtml.g.cs
@@ -991,5 +989,7 @@ C:\Users\lukas\source\repos\Asklepios8\Asklepios.Web\obj\Debug\net5.0\Razor\Area
 C:\Users\lukas\source\repos\Asklepios8\Asklepios.Web\obj\Debug\net5.0\Razor\Areas\CustomerServiceArea\Views\CustomerService\_Prescription.cshtml.g.cs
 C:\Users\lukas\source\repos\Asklepios8\Asklepios.Web\obj\Debug\net5.0\Razor\Areas\CustomerServiceArea\Views\CustomerService\_Stars.cshtml.g.cs
 C:\Users\lukas\source\repos\Asklepios8\Asklepios.Web\obj\Debug\net5.0\Razor\Areas\CustomerServiceArea\Views\CustomerService\_TestResult.cshtml.g.cs
-C:\Users\lukas\source\repos\Asklepios8\Asklepios.Web\obj\Debug\net5.0\Razor\Areas\CustomerServiceArea\Views\CustomerService\PatientsList.cshtml.g.cs
 C:\Users\lukas\source\repos\Asklepios8\Asklepios.Web\obj\Debug\net5.0\Razor\Areas\CustomerServiceArea\Views\CustomerService\_Patient.cshtml.g.cs
+C:\Users\lukas\source\repos\Asklepios8\Asklepios.Web\obj\Debug\net5.0\Razor\Areas\CustomerServiceArea\Views\CustomerService\_User.cshtml.g.cs
+C:\Users\lukas\source\repos\Asklepios8\Asklepios.Web\obj\Debug\net5.0\Razor\Areas\CustomerServiceArea\Views\CustomerService\_SelectedPatient.cshtml.g.cs
+C:\Users\lukas\source\repos\Asklepios8\Asklepios.Web\obj\Debug\net5.0\Razor\Areas\PatientArea\Views\Patient\RescheduleVisit.cshtml.g.cs

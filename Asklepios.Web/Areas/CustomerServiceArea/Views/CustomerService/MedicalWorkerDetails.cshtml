@@ -1,27 +1,27 @@
 ﻿
-@model Asklepios.Core.Models.MedicalWorker
+@model Asklepios.Web.Areas.CustomerServiceArea.Models.MedicalWorkerViewModel
 <div class="d-flex  flex-column jumbotron w-80 h-auto" style=" padding:20px;display:flex;align-content:center;position:relative">
     <div class="d-flex mb-3 flex-wrap align-self-center align-items-center">
         <div class="p-2  pt-3 align-content-center align-items-center align-self-center mx-auto" style="width:400px; text-align:center">
             <div class="d-flex flex-fill  justify-content-center" style="text-align:center">
-                <img alt="@Model.FullProffesionalName" src="@Model.ImagePath" class="img-fluid" style="display: block; max-height:300px;
+                <img alt="@Model.MedicalWorker.FullProffesionalName" src="@Model.MedicalWorker.ImagePath" class="img-fluid" style="display: block; max-height:300px;
         border-radius: 6px; ">
             </div>
         </div>
         <div class="d-flex  p-2 flex-grow-1 pt-3  align-content-stretch align-items-center" style="width:400px; text-align:center">
             <div class="d-flex flex-column m-auto">
                 <h3 style="font-weight:900;">
-                    @Model.FullProffesionalName
+                    @Model.MedicalWorker.FullProffesionalName
                 </h3>
                 <br />
-                <h5>Region - @Model.Person.DefaultAglomeration</h5>
+                <h5>Region - @Model.MedicalWorker.Person.DefaultAglomeration</h5>
                 <h5>Edukacja:</h5>
-                @for (int i = 0; i < Model.Education.Count; i++)
+                @for (int i = 0; i < Model.MedicalWorker.Education.Count; i++)
                 {
-                    <p>@Model.Education[i] </p>
+                    <p>@Model.MedicalWorker.Education[i] </p>
                 }
                 <h5>Doświadczenie:</h5>
-                <div>@Model.Experience</div>
+                <div>@Model.MedicalWorker.Experience</div>
             </div>
         </div>
 
@@ -29,9 +29,9 @@
             <h3 style="font-weight:900;"> </h3>
             <h5>Zakres specjalizacji:</h5>
             <h5>
-                @for (int i = 0; i < Model.MedicalServices.Count; i++)
+                @for (int i = 0; i < Model.MedicalWorker.MedicalServices.Count; i++)
                 {
-                    MedicalService service = Model.MedicalServices[i];
+                    MedicalService service = Model.MedicalWorker.MedicalServices[i];
                     //if (i % 2 == 1)
                     //{
                         <br>
@@ -40,11 +40,11 @@
                 }
 
             </h5>
-            <partial name="_Stars" model="@Model.AverageRating" />
+            <partial name="_Stars" model="@Model.MedicalWorker.AverageRating" />
 
-            @if (Model.VisitReviews.Count > 0)
+            @if (Model.MedicalWorker.VisitReviews.Count > 0)
             {
-                @Model.RatingDescription
+                @Model.MedicalWorker.RatingDescription
             }
             <div>
                 <a asp-area="PatientArea" asp-controller="Patient" asp-action="BookVisit" class="btn btn-primary btn-icon-split mt-3">
@@ -62,9 +62,9 @@
     <div  class="d-flex flex-column">
         <h2>Opinie</h2>
         <div class="d-flex flex-column">
-            @for (int i = 0; i < Model.VisitReviews.Count; i++)
+            @for (int i = 0; i < Model.MedicalWorker.VisitReviews.Count; i++)
             {
-                VisitReview review = Model.VisitReviews[i];
+                VisitReview review = Model.MedicalWorker.VisitReviews[i];
                 if (i % 2 == 0)
                 {
             <div class="d-flex mt-2">

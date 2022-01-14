@@ -42,14 +42,14 @@ using Asklepios.Core.Models;
 #nullable disable
 #nullable restore
 #line 5 "C:\Users\lukas\source\repos\Asklepios8\Asklepios.Web\Areas\CustomerServiceArea\Views\Shared\_ViewImports.cshtml"
-using Asklepios.Web.Areas.PatientArea.Models;
+using Asklepios.Web.Areas.CustomerServiceArea.Models;
 
 #line default
 #line hidden
 #nullable disable
     [global::Microsoft.AspNetCore.Razor.Hosting.RazorSourceChecksumAttribute(@"SHA1", @"d6a5625cc8fb4476f348b0fe9041c550465d8bf9", @"/Areas/CustomerServiceArea/Views/Shared/Error.cshtml")]
     [global::Microsoft.AspNetCore.Razor.Hosting.RazorSourceChecksumAttribute(@"SHA1", @"8363068bd805e1ea8857622c67a9d36b577d03f7", @"/Areas/_ViewImports.cshtml")]
-    [global::Microsoft.AspNetCore.Razor.Hosting.RazorSourceChecksumAttribute(@"SHA1", @"8a762ac2206251194ab6b3bc8ad01edf0356e16d", @"/Areas/CustomerServiceArea/Views/Shared/_ViewImports.cshtml")]
+    [global::Microsoft.AspNetCore.Razor.Hosting.RazorSourceChecksumAttribute(@"SHA1", @"f0cdf4cc17c565b4623602ac102415c12b5b3c21", @"/Areas/CustomerServiceArea/Views/Shared/_ViewImports.cshtml")]
     public class Areas_CustomerServiceArea_Views_Shared_Error : global::Microsoft.AspNetCore.Mvc.Razor.RazorPage<ErrorViewModel>
     {
         #pragma warning disable 1998

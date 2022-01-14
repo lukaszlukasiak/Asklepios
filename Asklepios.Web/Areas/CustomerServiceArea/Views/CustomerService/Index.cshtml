@@ -1,4 +1,4 @@
-﻿@model Asklepios.Web.Areas.PatientArea.Models.PatientViewModel
+﻿@model Asklepios.Web.Areas.CustomerServiceArea.Models.SelectPatientViewModel
 @{
     ViewData["Title"] = "View";
 }
@@ -6,47 +6,53 @@
 <h1 style="text-align:center">
     Pulpit pracownika obsługi klienta
 </h1>
+@if (Model.SelectedPatient != null)
+{
+    <h3 >
+        Wybrany pacjent:
+    </h3>
 
-@*@{
-    List<Visit> plannedVisits = Model.GetCommingVisits(10);
-    if (plannedVisits.Count > 0)
+    <partial name="_SelectedPatient" model="Model.SelectedPatient" />
+
+}
+
+<form asp-action="Index" method="post">
+    <label for="SelectedName">Imię</label>
+    @Html.TextBoxFor(m => m.SelectedName, new { @class = "form-control mb-2" })
+    <label for="SelectedSurName">Nazwisko</label>
+    @Html.TextBoxFor(m => m.SelectedSurname, new { @class = "form-control mb-2" })
+    <label for="SelectedPESEL">PESEL</label>
+    @Html.TextBoxFor(m => m.SelectedPESEL, new { @class = "form-control mb-2" })
+    <label for="SelectedPassportNumber">Numer paszportu</label>
+    @Html.TextBoxFor(m => m.SelectedPassportNumber, new { @class = "form-control mb-2" })
+
+    <div class="d-flex flex-column my-4">
+        <button class=" btn btn-secondary   mb-1">Filtruj!</button>
+
+    </div>
+    @*<select asp-for="@Model.SearchOptions.SelectedDoctor" asp-items="@Model.GetMedicalWorkers.ToList()" class="form-control">
+            <option>Select Role</option>
+        </select>
+        @Html.DropDownList("Title", Model.Select(m => new SelectListItem() { Text = m., Value = m.Title }).ToList(), "Select")*@
+</form>
+
+
+
+@{
+
+    List<Patient> patients = Model.FilteredPatients.ToList();
+    if (patients.Count > 0)
     {
-        <h3 class="my-4 text-center">Nadchodzące wizyty</h3>
-        @for (int i = 0; i < plannedVisits.Count; i++)
+        <h3 >Lista pacjentów:</h3>
+        @for (int i = 0; i < patients.Count; i++)
         {
-            Visit visit = plannedVisits[i];
-            <partial name="_PlannedVisit" model="visit" />
+            Patient patient = patients[i];
+            <partial name="_Patient" model="patient" />
 
         }
     }
     else
     {
-        <h3>Brak zaplanowanych wizyt...</h3>
+        <h3 >Brak pacjentów spełniających warunki...</h3>
     }
-
-    List<Visit> historicalVisits = Model.GetHistoricalVisits(10);
-
-    if (historicalVisits.Count > 0)
-    {
-        <h3 class="mb-4 text-center">Poprzednie konsultacje/badania</h3>
-
-        for (int i = 0; i < historicalVisits.Count; i++)
-        {
-            Visit visit = historicalVisits[i];
-            <partial name="_HistoricalVisit" model="visit" />
-
-        }
-    }
-    else
-    {
-        <h3>Nie byłeś jeszcze na żadnej wizycie u nas...</h3>
-        <a asp-area="PatientArea" asp-controller="Patient" asp-action="BookVisit" class="btn btn-primary btn-icon-split mt-3">
-            <span class="icon text-white-50">
-                <i class="fas fa-book"></i>
-            </span>
-            <span class="text">Zarezerwuj ponownie</span>
-        </a>
-    }
-
-
-}*@
+}

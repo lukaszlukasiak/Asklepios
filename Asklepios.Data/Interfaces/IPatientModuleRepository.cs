@@ -29,9 +29,11 @@ namespace Asklepios.Data.Interfaces
         NFZUnit GetNFZUnitById(long id);
         VisitCategory GetVisitCategoryById(long id);
         Patient CurrentPatient { get; set; }
+        User GetUser(int parsedId);
 
         void UpdateReferral(MedicalReferral referral);
         void UpdateVisit(Visit visit);
+        void ResignFromVisit(Visit plannedVisit, Patient patient);
         //IEnumerable<MedicalRoom> GetMedicalRooms();
         //MedicalRoom GetMedicalRoomById();
 

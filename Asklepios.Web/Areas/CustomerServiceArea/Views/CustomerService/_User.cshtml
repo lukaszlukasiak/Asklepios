@@ -1,0 +1,54 @@
+﻿@model Asklepios.Core.Models.Patient
+<div class="d-flex jumbotron flex-column" style=" padding:20px;">
+    <div class="d-flex mb-3 flex-wrap align-content-stretch" style="text-align:center">
+        <div class="p-2  pt-3 align-content-center align-items-center align-self-center mx-auto" style="width:400px; text-align:center">
+            <div class="d-flex flex-fill  justify-content-center" style="text-align:center">
+                @*<img alt="@Model.Person.FullName" src="@Model.ImagePath" class="img-fluid" style="display: block; max-height:300px;*@
+                <i class="fas fa-camera"></i>
+
+                @*border-radius: 6px; ">*@
+            </div>
+        </div>
+        <div class="p-2 flex-grow-1 pt-3 m-auto flex-grow-1" style="width:400px;text-align:center">
+            <h3 style="font-weight:900;">
+                @Model.Person.FullName
+            </h3>
+            <br>
+            <h3 style="font-weight:900;">
+                @Model.MedicalPackage.Name
+            </h3>
+            <h3 style="font-weight:900;">
+                @Model.NFZUnit.Description
+            </h3>
+            @if (Model.Person.HasPolishCitizenship)
+            {
+                <h3 style="font-weight:900;">
+                    @Model.Person.PESEL
+                </h3>
+
+            }
+            else
+            {
+                <h3 style="font-weight:900;">
+                    @Model.Person.PassportNumber
+                </h3>
+            }
+            <h3 style="font-weight:900;">
+                @Model.Person.BirthDate.ToString("dd-MM-yyyy")
+            </h3>
+
+
+        </div>
+
+        <div class="d-flex p-2 pt-3 m-auto flex-grow-1 flex-fill" style="min-width:400px;text-align:center">
+            <div class="d-flex flex-column flex-grow-1">
+                <a asp-area="CustomerServiceArea" asp-controller="CustomerService" asp-action="SelectPatient" asp-route-id="@Model.Id" class="btn btn-primary btn-icon-split ">
+                    <span class="icon text-white-50 left" style="text-align:left;float:left">
+                        <i class="fas fa-address-book"></i>
+                    </span>
+                    <span class="text" style="float: left">Wybierz</span>
+                </a>
+            </div>
+        </div>
+    </div>
+</div>

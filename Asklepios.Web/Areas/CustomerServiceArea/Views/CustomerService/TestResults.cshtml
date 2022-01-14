@@ -1,12 +1,12 @@
-﻿@model Asklepios.Web.Areas.PatientArea.Models.PatientViewModel
+﻿@model Asklepios.Web.Areas.CustomerServiceArea.Models.PatientViewModel
 @{
     ViewData["Title"] = "View";
 }
 @{
     List<Asklepios.Core.Models.MedicalTestResult> results = null;
-    if (Model.Patient.TestsResults != null)
+    if (Model.SelectedPatient.TestsResults != null)
     {
-        results = Model.Patient.TestsResults.Where(c => c.PdfDocument != null).ToList();
+        results = Model.SelectedPatient.TestsResults.Where(c => c.PdfDocument != null).ToList();
     }
 
     if (results!=null)

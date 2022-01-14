@@ -15,6 +15,7 @@ namespace Asklepios.Core.Models
         {
             ProfessionalNumber = profNumber;
             MedicalWorkerType = MedicalWorkerType.ElectroriadologyTechnician;
+            PersonId = person.Id;
         }
         public override string ProfessionalTitle => "Technik elektroradiolog";
     }

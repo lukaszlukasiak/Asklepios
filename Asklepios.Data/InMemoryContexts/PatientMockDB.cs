@@ -25,21 +25,41 @@ namespace Asklepios.Data.InMemoryContexts
         public static IEnumerable<Location> Locations;
         //public  Patient Patient { get; set; }
         public static IEnumerable<MedicalWorker> MedicalWorkers;
-        public  static List<MedicalService> MedicalServices { get; set; }
-        public  static List<MedicalService> PrimaryMedicalServices { get; set; }
-        public  static List<VisitCategory> VisitCategories { get; set; }
-        public  static List<MedicalPackage> MedicalPackages { get; set; }
-        public  static List<NFZUnit> NfzUnits { get; set; }
-        public  static List<Patient> AllPatients { get; set; }
+        public static List<MedicalService> MedicalServices { get; set; }
+        public static List<MedicalService> PrimaryMedicalServices { get; set; }
+        public static List<VisitCategory> VisitCategories { get; set; }
+        public static List<MedicalPackage> MedicalPackages { get; set; }
+        public static List<NFZUnit> NfzUnits { get; set; }
+        public static List<Patient> AllPatients { get; set; }
         public static List<List<MedicalRoom>> MedicalRooms { get; set; }
-        public static List<User> Users { get; set; }
+        private static List<User> _users;
+        public static List<User> Users
+        {
+            get
+            {
+                if (_users == null)
+                {
+                    _users = GetAllUsers();
+                    return _users;
+                }
+                else
+                {
+                    return _users;
+                }
+            }
+            set
+            {
+                _users = value;
+            }
+        }
         public static Patient CurrentPatient { get; set; }
-        public static List<Person> GetPersons { get; internal set; }
+        public static List<Person> Persons { get; internal set; }
 
         public static bool IsCreated;
         public static void SetData()
         {
             IsCreated = true;
+            Persons = GetAllPersons();
             Users = GetAllUsers();
             NfzUnits = GetNFZUnits().ToList();
             MedicalServices = GetMedicalServices().ToList();
@@ -51,10 +71,12 @@ namespace Asklepios.Data.InMemoryContexts
             Locations = GetAllLocations();
             MedicalWorkers = GetMedicalWorkers();
             AvailableVisits = GetAvailableVisits();
+            //AllPatients = GetAllPatients().ToList();
             //List<Visit> HistoricalVisits GetHistoricalVisits();
-            CurrentPatient = GetPatientData();
+            CurrentPatient = GetPatientData(AllPatients[0]);
 
         }
+
 
         private static List<User> GetAllUsers()
         {
@@ -67,7 +89,7 @@ namespace Asklepios.Data.InMemoryContexts
                     UserName="patient1@asklepios.com",
                     UserType=Core.Enums.UserType.Patient,
                     WorkerModuleType=null,
-                    PersonId=1
+                    PersonId=71
                 },
                 new User()
                 {
@@ -76,7 +98,7 @@ namespace Asklepios.Data.InMemoryContexts
                     UserName="patient2@asklepios.com",
                     UserType=Core.Enums.UserType.Patient,
                     WorkerModuleType=null,
-                    PersonId=2
+                    PersonId=72
                 },
                 new User()
                 {
@@ -85,7 +107,7 @@ namespace Asklepios.Data.InMemoryContexts
                     UserName="patient3@asklepios.com",
                     UserType=Core.Enums.UserType.Patient,
                     WorkerModuleType=null,
-                    PersonId=3
+                    PersonId=73
                 },
                 new User()
                 {
@@ -93,7 +115,8 @@ namespace Asklepios.Data.InMemoryContexts
                     Password="PasswordService1",
                     UserName="sw1@asklepios.com",
                     UserType=Core.Enums.UserType.Employee,
-                    WorkerModuleType=Core.Enums.WorkerModuleType.CustomerServiceModule
+                    WorkerModuleType=Core.Enums.WorkerModuleType.CustomerServiceModule,
+                    PersonId=74
                 },
                 new User()
                 {
@@ -101,15 +124,17 @@ namespace Asklepios.Data.InMemoryContexts
                     Password="PasswordService2",
                     UserName="sw2@asklepios.com",
                     UserType=Core.Enums.UserType.Employee,
-                    WorkerModuleType=Core.Enums.WorkerModuleType.CustomerServiceModule
-                },                
+                    WorkerModuleType=Core.Enums.WorkerModuleType.CustomerServiceModule,
+                    PersonId=75
+                },
                 new User()
                 {
                     Id=6,
                     Password="PasswordAdmin",
                     UserName="ad1@asklepios.com",
                     UserType=Core.Enums.UserType.Employee,
-                    WorkerModuleType=Core.Enums.WorkerModuleType.AdministrativeWorkerModule
+                    WorkerModuleType=Core.Enums.WorkerModuleType.AdministrativeWorkerModule,
+                    PersonId=76
                 },
                 new User()
                 {
@@ -117,7 +142,8 @@ namespace Asklepios.Data.InMemoryContexts
                     Password="PasswordMedical1",
                     UserName="mw1@asklepios.com",
                     UserType=Core.Enums.UserType.Employee,
-                    WorkerModuleType=Core.Enums.WorkerModuleType.MedicalWorkerModule
+                    WorkerModuleType=Core.Enums.WorkerModuleType.MedicalWorkerModule,
+                    PersonId=77
                 },
                 new User()
                 {
@@ -125,14 +151,15 @@ namespace Asklepios.Data.InMemoryContexts
                     Password="PasswordMedical2",
                     UserName="mw2@asklepios.com",
                     UserType=Core.Enums.UserType.Employee,
-                    WorkerModuleType=Core.Enums.WorkerModuleType.MedicalWorkerModule
+                    WorkerModuleType=Core.Enums.WorkerModuleType.MedicalWorkerModule,
+                    PersonId=78
                 }
             };
 
             return users;
         }
 
-        public static  IEnumerable<Visit> GetAvailableVisits()
+        public static IEnumerable<Visit> GetAvailableVisits()
         {
             DateTimeOffset dateTimeOffset = DateTime.Now;
 
@@ -143,11 +170,11 @@ namespace Asklepios.Data.InMemoryContexts
             for (int i = 0; i <= 3; i++)
             {
                 dayOffset++;
-                if (start.AddDays(dayOffset).DayOfWeek==DayOfWeek.Saturday )
+                if (start.AddDays(dayOffset).DayOfWeek == DayOfWeek.Saturday)
                 {
                     dayOffset += 2;
                 }
-                else if(start.AddDays(dayOffset).DayOfWeek == DayOfWeek.Sunday)
+                else if (start.AddDays(dayOffset).DayOfWeek == DayOfWeek.Sunday)
                 {
                     dayOffset++;
                 }
@@ -160,10 +187,10 @@ namespace Asklepios.Data.InMemoryContexts
                     minutsOffset++;
                     Visit visit = new Visit()
                     {
-                        Id= startId++,
+                        Id = startId++,
                         PrimaryService = PrimaryMedicalServices[0],
-                        DateTimeSince = start.AddDays(dayOffset).AddMinutes(minutsOffset * 15),                       
-                        DateTimeTill = start.AddDays(dayOffset).AddMinutes(minutsOffset* 15+15),
+                        DateTimeSince = start.AddDays(dayOffset).AddMinutes(minutsOffset * 15),
+                        DateTimeTill = start.AddDays(dayOffset).AddMinutes(minutsOffset * 15 + 15),
                         Location = Locations.ElementAt(3),
                         MedicalRoom = Locations.ElementAt(3).MedicalRooms.ElementAt(4),
                         MedicalWorker = MedicalWorkers.ElementAt(36),
@@ -563,22 +590,245 @@ namespace Asklepios.Data.InMemoryContexts
             return MedicalPackages;
         }
 
+        private static List<Person> GetAllPersons()
+        {
+            List<Person> people = new List<Person>()
+            {
+                new Person(id:1, name:"Mariusz",surName:"Puto",pesel:"77784512598",birthDate:new DateTimeOffset(new DateTime(1977,7,8)) ,hasPolishCitizenship: true,passportNumber: null,passportCode:"POL",email:"person1@gmail.com", aglomeration:Core.Enums.Aglomeration.Bialystok),
+                new Person(id:2, name:"Witold",surName:"Głąbek",pesel:"651010465465",birthDate:new DateTimeOffset(new DateTime(1965,10,10)),hasPolishCitizenship: true,passportNumber: null,passportCode:"POL", email:"person2@gmail.com", aglomeration:Core.Enums.Aglomeration.Cracow),
+                new Person(id:3, name:"Henryk",surName:"Bąbel",pesel:"870102561231323",birthDate:new DateTimeOffset(new DateTime(1987,1,2)), hasPolishCitizenship: true,passportNumber: null,passportCode:"POL", email:"person3@gmail.com", aglomeration:Core.Enums.Aglomeration.Kielce),
+                new Person(id:4, name:"Ferdynand",surName:"Małolepszy",pesel:"56050834534543",birthDate:new DateTimeOffset(new DateTime(1956,05,08)),hasPolishCitizenship: true,passportNumber: null,passportCode:"POL", email:"person4@gmail.com", aglomeration:Core.Enums.Aglomeration.Rzeszów),
+                new Person(id:5, name:"Zenon",surName:"Krzywy",pesel:"54020246454543",birthDate:new DateTimeOffset(new DateTime(1954,2,2)),hasPolishCitizenship: true,passportNumber: null,passportCode:"POL", email:"person5@gmail.com", aglomeration:Core.Enums.Aglomeration.Cracow),
+                new Person(id:6, name:"Tadeusz",surName:"Nowak",pesel:"6511117654654654",birthDate:new DateTimeOffset(new DateTime(1965,11,11)),hasPolishCitizenship: true,passportNumber: null,passportCode:"POL", email:"person6@gmail.com", aglomeration:Core.Enums.Aglomeration.Warsaw),
+                new Person(id:7,birthDate:new DateTimeOffset(new DateTime(1978,7,8)) , name:"Tomasz",surName:"Woda",pesel:"78945646312313",hasPolishCitizenship: true,passportNumber: null,passportCode:"POL", email:"person7@gmail.com", aglomeration:Core.Enums.Aglomeration.Warsaw),
+                new Person(id:8,birthDate:new DateTimeOffset(new DateTime(1975,7,8)) , name:"Łukasz",surName:"Czekaj",pesel:"756546546466",hasPolishCitizenship: true,passportNumber: null,passportCode:"POL", email:"person8@gmail.com", aglomeration:Core.Enums.Aglomeration.Tricity),
+                new Person(id:9,birthDate:new DateTimeOffset(new DateTime(1961,7,8)) , name:"Danuta",surName:"Werys",pesel:"61321234189",hasPolishCitizenship: true,passportNumber: null,passportCode:"POL", email:"person58@gmail.com", aglomeration:Core.Enums.Aglomeration.Cracow),
+                new Person(id:10,birthDate:new DateTimeOffset(new DateTime(1984,7,8)) , name:"Mateusz",surName:"Chodzień",pesel:"841313216546",hasPolishCitizenship: true,passportNumber: null,passportCode:"POL", email:"person9@gmail.com", aglomeration:Core.Enums.Aglomeration.Cracow),
+                new Person(id:11,birthDate:new DateTimeOffset(new DateTime(1944,7,8)) , name:"Leszek",surName:"Ancymon",pesel:"44445465456465",hasPolishCitizenship: true,passportNumber: null,passportCode:"POL", email:"person10@gmail.com", aglomeration:Core.Enums.Aglomeration.Warsaw),
+                new Person(id:12,birthDate:new DateTimeOffset(new DateTime(1975,7,8)) , name:"Karol",surName:"Szczęsny",pesel:"7532123165465",hasPolishCitizenship: true,passportNumber: null,passportCode:"POL", email:"person11@gmail.com", aglomeration:Core.Enums.Aglomeration.Silesia),
+                new Person(id:13,birthDate:new DateTimeOffset(new DateTime(1965,7,8)) , name:"Remigiusz",surName:"Czystka",pesel:"654213215649546",hasPolishCitizenship: true,passportNumber: null,passportCode:"POL", email:"person12@gmail.com", aglomeration:Core.Enums.Aglomeration.Tricity),
+                new Person(id:14,birthDate:new DateTimeOffset(new DateTime(1979,7,8)) , name:"Robert",surName:"Pawłowski",pesel:"798879875456132",hasPolishCitizenship: true,passportNumber: null,passportCode:"POL", email:"person13@gmail.com", aglomeration:Core.Enums.Aglomeration.Cracow),
+                new Person(id:15,birthDate:new DateTimeOffset(new DateTime(1971,7,8)) , name:"Szymon",surName:"Sosna",pesel:"71123156456456",hasPolishCitizenship: true,passportNumber: null,passportCode:"POL", email:"person14@gmail.com", aglomeration:Core.Enums.Aglomeration.Warsaw),
+                new Person(id:16,birthDate:new DateTimeOffset(new DateTime(1965,7,8)) , name:"Sergiusz",surName:"Ząbek",pesel:"6523154645633",hasPolishCitizenship: true,passportNumber: null,passportCode:"POL", email:"person15@gmail.com", aglomeration:Core.Enums.Aglomeration.Tricity),
+                new Person(id:17,birthDate:new DateTimeOffset(new DateTime(1964,7,8)) , name:"Tymoteusz",surName:"Zez",pesel:"64561231564546",hasPolishCitizenship: true,passportNumber: null,passportCode:"POL", email:"person16@gmail.com", aglomeration:Core.Enums.Aglomeration.Warsaw),
+                new Person(id:18,birthDate:new DateTimeOffset(new DateTime(1945,7,8)) , name:"Zbigniew",surName:"Korzeń",pesel:"45632132456486",hasPolishCitizenship: true,passportNumber: null,passportCode:"POL", email:"person17@gmail.com", aglomeration:Core.Enums.Aglomeration.Bialystok),
+                new Person(id:19,birthDate:new DateTimeOffset(new DateTime(1949,7,8)) , name:"Zbigniew",surName:"Osiński",pesel:"49987945646133",hasPolishCitizenship: true,passportNumber: null,passportCode:"POL", email:"person18@gmail.com", aglomeration:Core.Enums.Aglomeration.Cracow),
+                new Person(id:20,birthDate:new DateTimeOffset(new DateTime(1965,7,8)) , name:"Michał",surName:"Czosnek",pesel:"654321546563331",hasPolishCitizenship: true,passportNumber: null,passportCode:"POL", email:"person19@gmail.com", aglomeration:Core.Enums.Aglomeration.Tricity),
+                new Person(id:21,birthDate:new DateTimeOffset(new DateTime(1980,7,8)) , name:"Tomasz",surName:"Truteń",pesel:"8012131654613",hasPolishCitizenship: true,passportNumber: null,passportCode:"POL", email:"person20@gmail.com", aglomeration:Core.Enums.Aglomeration.Cracow),
+                new Person(id:22,birthDate:new DateTimeOffset(new DateTime(1955,7,8)) , name:"Bogusław",surName:"Śmiały",pesel:"5546545641231234",hasPolishCitizenship: true,passportNumber: null,passportCode:"POL", email:"person21@gmail.com", aglomeration:Core.Enums.Aglomeration.Warsaw),
+                new Person(id:23,birthDate:new DateTimeOffset(new DateTime(1954,7,8)) , name:"Jan",surName:"Dutki",pesel:"54654321314564",hasPolishCitizenship: true,passportNumber: null,passportCode:"POL", email:"person22@gmail.com", aglomeration:Core.Enums.Aglomeration.Warsaw),
+                new Person(id:24,birthDate:new DateTimeOffset(new DateTime(1965,7,8)) , name:"Jarosław",surName:"Kurczak",pesel:"65461234564546",hasPolishCitizenship: true,passportNumber: null,passportCode:"POL", email:"person23@gmail.com", aglomeration:Core.Enums.Aglomeration.Cracow),
+                new Person(id:25,birthDate:new DateTimeOffset(new DateTime(1965,7,8)) , name:"Grzegorz",surName:"Grześkowiak",pesel:"6548745646546",hasPolishCitizenship: true,passportNumber: null,passportCode:"POL", email:"person24@gmail.com", aglomeration:Core.Enums.Aglomeration.Cracow),
+                new Person(id:26,birthDate:new DateTimeOffset(new DateTime(1945,7,8)) , name:"Gerwazy",surName:"Zasada",pesel:"4561231564654",hasPolishCitizenship: true,passportNumber: null,passportCode:"POL", email:"person25@gmail.com", aglomeration:Core.Enums.Aglomeration.Silesia),
+                new Person(id:27,birthDate:new DateTimeOffset(new DateTime(1954,7,8)) , name:"Czesław",surName:"Wilk",pesel:"5487897564646",hasPolishCitizenship: true,passportNumber: null,passportCode:"POL", email:"person26@gmail.com", aglomeration:Core.Enums.Aglomeration.Cracow),
+                new Person(id:28,birthDate:new DateTimeOffset(new DateTime(1964,7,8)) , name:"Tadeusz",surName:"Gąska",pesel:"64621321564564",hasPolishCitizenship: true,passportNumber: null,passportCode:"POL", email:"person27@gmail.com", aglomeration:Core.Enums.Aglomeration.Bialystok),
+                new Person(id:29,birthDate:new DateTimeOffset(new DateTime(1959,7,8)) , name:"Waldemar",surName:"Kucaj",pesel:"5945612315645",hasPolishCitizenship: true,passportNumber: null,passportCode:"POL", email:"person28@gmail.com", aglomeration:Core.Enums.Aglomeration.Tricity),
+                new Person(id:30,birthDate:new DateTimeOffset(new DateTime(1978,7,8)) , name:"Piotr",surName:"Kuropatwa",pesel:"789465132132",hasPolishCitizenship: true,passportNumber: null,passportCode:"POL", email:"person29@gmail.com", aglomeration:Core.Enums.Aglomeration.Bialystok),
+                new Person(id:31,birthDate:new DateTimeOffset(new DateTime(1978,10,8)) , name:"Paweł",surName:"Łąkietka",pesel:"7894654654965",hasPolishCitizenship: true,passportNumber: null,passportCode:"POL", email:"person30@gmail.com", aglomeration:Core.Enums.Aglomeration.Warsaw),
+                new Person(id:32,birthDate:new DateTimeOffset(new DateTime(1945,7,8)) , name:"Rozmus",surName:"Remus",pesel:"4564134156465",hasPolishCitizenship: true,passportNumber: null,passportCode:"POL", email:"person31@gmail.com", aglomeration:Core.Enums.Aglomeration.Cracow),
+                new Person(id:33,birthDate:new DateTimeOffset(new DateTime(1948,7,8)) , name:"Miłosz",surName:"Ciapek",pesel:"487945643213",hasPolishCitizenship: true,passportNumber: null,passportCode:"POL", email:"person32@gmail.com", aglomeration:Core.Enums.Aglomeration.Silesia),
+                new Person(id:34,birthDate:new DateTimeOffset(new DateTime(1965,7,8)) , name:"Czesława",surName:"Kret",pesel:"6546123156464",hasPolishCitizenship: true,passportNumber: null,passportCode:"POL", email:"person33@gmail.com", aglomeration:Core.Enums.Aglomeration.Bialystok),
+                new Person(id:35,birthDate:new DateTimeOffset(new DateTime(1989,7,8)) , name:"Marlena",surName:"Bajka",pesel:"894561132156", hasPolishCitizenship: true,passportNumber: null,passportCode:"POL", email:"person34@gmail.com", aglomeration:Core.Enums.Aglomeration.Tricity),
+                new Person(id:36,birthDate:new DateTimeOffset(new DateTime(1954,7,8)) , name:"Bożena",surName:"Arbuz",pesel:"5456463216546",hasPolishCitizenship: true,passportNumber: null,passportCode:"POL", email:"person35@gmail.com", aglomeration:Core.Enums.Aglomeration.Bialystok),
+                new Person(id:37,birthDate:new DateTimeOffset(new DateTime(1980,7,8)) , name:"Klaudia",surName:"Kąkol",pesel:"8015646546546",hasPolishCitizenship: true,passportNumber: null,passportCode:"POL", email:"person36@gmail.com", aglomeration:Core.Enums.Aglomeration.Warsaw),
+                new Person(id:38,birthDate:new DateTimeOffset(new DateTime(1986,7,8)) , name:"Sandra",surName:"Sosna",pesel:"864654564645",hasPolishCitizenship: true,passportNumber: null,passportCode:"POL", email:"person37@gmail.com", aglomeration:Core.Enums.Aglomeration.Kielce),
+                new Person(id:39,birthDate:new DateTimeOffset(new DateTime(1951,7,8)) , name:"Teodora",surName:"Wiśniowiecka",pesel:"515648946513245",hasPolishCitizenship: true,passportNumber: null,passportCode:"POL", email:"person38@gmail.com", aglomeration:Core.Enums.Aglomeration.Rzeszów),
+                new Person(id:40,birthDate:new DateTimeOffset(new DateTime(1966,7,8)) , name:"Kornelia",surName:"Krasicka",pesel:"664545646546546",hasPolishCitizenship: true,passportNumber: null,passportCode:"POL", email:"person39@gmail.com", aglomeration:Core.Enums.Aglomeration.Warsaw),
+                new Person(id:41,birthDate:new DateTimeOffset(new DateTime(1975,7,8)) , name:"Marzena",surName:"Rudnicka",pesel:"7516454654645", hasPolishCitizenship: true,passportNumber: null,passportCode:"POL", email:"person40@gmail.com", aglomeration:Core.Enums.Aglomeration.Tricity),
+                new Person(id:42,birthDate:new DateTimeOffset(new DateTime(1961,7,8)) , name:"Beata",surName:"Bomba",pesel:"61231546546546",hasPolishCitizenship: true,passportNumber: null,passportCode:"POL", email:"person41@gmail.com", aglomeration:Core.Enums.Aglomeration.Silesia),
+                new Person(id:43,birthDate:new DateTimeOffset(new DateTime(1971,7,8)) , name:"Katarzyna",surName:"Łasinkiewicz",pesel:"7112345647656",hasPolishCitizenship: true,passportNumber: null,passportCode:"POL", email:"person42@gmail.com", aglomeration:Core.Enums.Aglomeration.Bialystok),
+                new Person(id:44,birthDate:new DateTimeOffset(new DateTime(1981,7,8)) , name:"Weronika",surName:"Kurzydło",pesel:"8154654654656",hasPolishCitizenship: true,passportNumber: null,passportCode:"POL", email:"person43@gmail.com", aglomeration:Core.Enums.Aglomeration.Warsaw),
+                new Person(id:45,birthDate:new DateTimeOffset(new DateTime(1978,7,8)) , name:"Maria",surName:"Kurka",pesel:"7879465461654",hasPolishCitizenship: true,passportNumber: null,passportCode:"POL", email:"person44@gmail.com", aglomeration:Core.Enums.Aglomeration.Cracow),
+                new Person(id:46,birthDate:new DateTimeOffset(new DateTime(1949,7,8)) , name:"Bronisława",surName:"Czesiek",pesel:"49489646146546",hasPolishCitizenship: true,passportNumber: null,passportCode:"POL", email:"person45@gmail.com", aglomeration:Core.Enums.Aglomeration.Warsaw),
+                new Person(id:47,birthDate:new DateTimeOffset(new DateTime(1965,7,8)) , name:"Aleksandra",surName:"Ruda",pesel:"65487987446",hasPolishCitizenship: true,passportNumber: null,passportCode:"POL", email:"person46@gmail.com", aglomeration:Core.Enums.Aglomeration.Tricity),
+                new Person(id:48,birthDate:new DateTimeOffset(new DateTime(1978,7,8)) , name:"Iga",surName:"Bodzio",pesel:"7848465465454", hasPolishCitizenship: true,passportNumber: null,passportCode:"POL", email:"person47@gmail.com", aglomeration:Core.Enums.Aglomeration.Cracow),
+                new Person(id:49,birthDate:new DateTimeOffset(new DateTime(1984,7,8)) , name:"Agnieszka",surName:"Pluto",pesel:"84879486546548",hasPolishCitizenship: true,passportNumber: null,passportCode:"POL", email:"person48@gmail.com", aglomeration:Core.Enums.Aglomeration.Bialystok),
+                new Person(id:50,birthDate:new DateTimeOffset(new DateTime(1985,7,8)) , name:"Karolina",surName:"Majak",pesel:"856415413216",hasPolishCitizenship: true,passportNumber: null,passportCode:"POL", email:"person49@gmail.com", aglomeration:Core.Enums.Aglomeration.Warsaw),
+                new Person(id:51,birthDate:new DateTimeOffset(new DateTime(1989,7,8)) , name:"Karina",surName:"Wąsacz",pesel:"894564113244",hasPolishCitizenship: true,passportNumber: null,passportCode:"POL", email:"person50@gmail.com", aglomeration:Core.Enums.Aglomeration.Warsaw),
+                new Person(id:52,birthDate:new DateTimeOffset(new DateTime(1956,7,8)) , name:"Grażyna",surName:"Rudniewska",pesel:"5641321564964",hasPolishCitizenship: true,passportNumber: null,passportCode:"POL", email:"person51@gmail.com", aglomeration:Core.Enums.Aglomeration.Tricity),
+                new Person(id:53,birthDate:new DateTimeOffset(new DateTime(1984,7,8)) , name:"Marta",surName:"Tracka",pesel:"846516549646411",hasPolishCitizenship: true,passportNumber: null,passportCode:"POL", email:"person52@gmail.com", aglomeration:Core.Enums.Aglomeration.Warsaw),
+                new Person(id:54,birthDate:new DateTimeOffset(new DateTime(1986,7,8)) , name:"Marta",surName:"Trąbicka",pesel:"862311654482631", hasPolishCitizenship: true,passportNumber: null,passportCode:"POL", email:"person53@gmail.com", aglomeration:Core.Enums.Aglomeration.Bialystok),
+                new Person(id:55,birthDate:new DateTimeOffset(new DateTime(1979,7,8)) , name:"Sylwia",surName:"Sarna",pesel:"7913213156465",hasPolishCitizenship: true,passportNumber: null,passportCode:"POL", email:"person54@gmail.com", aglomeration:Core.Enums.Aglomeration.Rzeszów),
+                new Person(id:56,birthDate:new DateTimeOffset(new DateTime(1975,7,8)) , name:"Kamila",surName:"Kozera",pesel:"751231654654612", hasPolishCitizenship: true,passportNumber: null,passportCode:"POL", email:"person55@gmail.com", aglomeration:Core.Enums.Aglomeration.Warsaw),
+                new Person(id:57,birthDate:new DateTimeOffset(new DateTime(1954,7,8)) , name:"Bogumiła",surName:"Braniewska",pesel:"548789461231546",hasPolishCitizenship: true,passportNumber: null,passportCode:"POL", email:"person56@gmail.com", aglomeration:Core.Enums.Aglomeration.Cracow),
+                new Person(id:58,birthDate:new DateTimeOffset(new DateTime(1962,7,8)) , name:"Teresa",surName:"Winniczek",pesel:"62348979521",hasPolishCitizenship: true,passportNumber: null,passportCode:"POL", email:"person57@gmail.com", aglomeration:Core.Enums.Aglomeration.Bialystok),
+                new Person(id:59,birthDate:new DateTimeOffset(new DateTime(1974,7,8)) , name:"Daria",surName:"Jaszczur",pesel:"74561213898",hasPolishCitizenship: true,passportNumber: null,passportCode:"POL", email:"person59@gmail.com", aglomeration:Core.Enums.Aglomeration.Tricity),
+                new Person(id:60,birthDate:new DateTimeOffset(new DateTime(1979,7,8)) , name:"Daria",surName:"Biernacka",pesel:"791231564948213", hasPolishCitizenship: true,passportNumber: null,passportCode:"POL", email:"person60@gmail.com", aglomeration:Core.Enums.Aglomeration.Cracow),
+                new Person(id:61,birthDate:new DateTimeOffset(new DateTime(1978,7,8)) , name:"Maria",surName:"Balon",pesel:"785321546456",hasPolishCitizenship: true,passportNumber: null,passportCode:"POL", email:"person61@gmail.com", aglomeration:Core.Enums.Aglomeration.Bialystok),
+                new Person(id:62,birthDate:new DateTimeOffset(new DateTime(1984,7,8)) , name:"Anna",surName:"Poranna",pesel:"84561321499476",hasPolishCitizenship: true, passportNumber: null,passportCode:"POL", email:"person62@gmail.com", aglomeration:Core.Enums.Aglomeration.Cracow),
+                new Person(id:63,birthDate:new DateTimeOffset(new DateTime(1988,7,8)) , name:"Anna",surName:"Poletko",pesel:"8845641321546",hasPolishCitizenship: true,passportNumber: null,passportCode:"POL", email:"person63@gmail.com", aglomeration:Core.Enums.Aglomeration.Tricity),
+                new Person(id:64,birthDate:new DateTimeOffset(new DateTime(1989,7,8)) , name:"Agata",surName:"Bosko",pesel:"8956132156463",hasPolishCitizenship: true,passportNumber: null,passportCode:"POL", email:"person64@gmail.com", aglomeration:Core.Enums.Aglomeration.Warsaw),
+                new Person(id:65,birthDate:new DateTimeOffset(new DateTime(1978,7,8)) , name:"Agata",surName:"Mińska",pesel:"78465413131468",hasPolishCitizenship: true,passportNumber: null,passportCode:"POL", email:"person65@gmail.com", aglomeration:Core.Enums.Aglomeration.Wroclaw),
+                new Person(id:66,birthDate:new DateTimeOffset(new DateTime(1980,7,8)) , name:"Monika",surName:"Szajka",pesel:"80156467513236", hasPolishCitizenship: true,passportNumber: null,passportCode:"POL", email:"person66@gmail.com", aglomeration:Core.Enums.Aglomeration.Bialystok),
+                new Person(id:67,birthDate:new DateTimeOffset(new DateTime(1979,7,8)) , name:"Mariola",surName:"Kiepska",pesel:"798564613216546",hasPolishCitizenship: true,passportNumber: null,passportCode:"POL", email:"person67@gmail.com", aglomeration:Core.Enums.Aglomeration.Kielce),
+                new Person(id:68,birthDate:new DateTimeOffset(new DateTime(1974,7,8)) , name:"Dorota",surName:"Zawisza",pesel:"7441321264987984",hasPolishCitizenship: true,passportNumber: null,passportCode:"POL", email:"person68@gmail.com", aglomeration:Core.Enums.Aglomeration.Silesia),
+                new Person(id:69,birthDate:new DateTimeOffset(new DateTime(1988,7,8)) , name:"Anastasia",surName:"Radczuk",pesel:"",hasPolishCitizenship: false,passportNumber: "AAAA87946121646",passportCode:"UKR", email:"person69@gmail.com", aglomeration:Core.Enums.Aglomeration.Tricity),
+                new Person(id:70,birthDate:new DateTimeOffset(new DateTime(1979,7,8)) , name:"Karolina",surName:"Kulka",pesel:"798465132156486", hasPolishCitizenship: true,passportNumber: null,passportCode:"POL", email:"person70@gmail.com", aglomeration:Core.Enums.Aglomeration.Rzeszów),
+                new Person(id:71,birthDate:new DateTimeOffset(new DateTime(1987,7,8)) , name:"Łukasz", surName:"Łukasiak",pesel:"871010101051", hasPolishCitizenship: true, passportNumber:"484654asd4a5sd4", passportCode:"PL", email:"s11437@pjwstk.edu.pl", aglomeration: Core.Enums.Aglomeration.Warsaw),//główny pacjent
+
+            new Person(name: "Magdalena",
+                    surName: "Bomba",
+                    id: 72,
+                    birthDate:new DateTimeOffset(new DateTime(1974,5,12)) ,
+                    pesel: "7405125612164",
+                    hasPolishCitizenship: true,
+                    passportCode: null,
+                    passportNumber: null,
+                    email: "patient2@live.com",
+
+                    aglomeration: Core.Enums.Aglomeration.Cracow
+),
+            new Person(name: "Katarzyna",
+                    surName: "Jelitko",
+                    id: 73,
+                    birthDate:new DateTimeOffset(new DateTime(1966,4,8)) ,
+                    pesel: "6604086545649",
+                    hasPolishCitizenship: true,
+                    passportCode: null,
+                    passportNumber: null,
+                    email: "patient3@live.com",
+                    aglomeration: Core.Enums.Aglomeration.Kielce
+),
+            new Person(name: "Krzysztof",
+                    surName: "Kitka",
+                    id: 74,
+                    birthDate:new DateTimeOffset(new DateTime(1979,8,5)) ,
+                    pesel: "790805462134",
+                    hasPolishCitizenship: true,
+                    passportCode: null,
+                    passportNumber: null,
+                    email: "patient4@live.com",
+                    aglomeration: Core.Enums.Aglomeration.Kuyavia
+),
+            new Person(name: "Dariusz",
+                    surName: "Czapa",
+                    id: 75,
+                    birthDate:new DateTimeOffset(new DateTime(1982,1,24)) ,
+                    pesel: "820124646951234",
+                    hasPolishCitizenship: true,
+                    passportCode: null,
+                    passportNumber: null,
+                    email: "patient6@live.com",
+                    aglomeration: Core.Enums.Aglomeration.Poznan
+                    ),
+            new Person(name: "Tomasz",
+                    surName: "Komar",
+                    id: 76,
+                    birthDate:new DateTimeOffset(new DateTime(1981,6,7)) ,
+                    pesel: "8106075461233",
+                    hasPolishCitizenship: true,
+                    passportCode: null,
+                    passportNumber: null,
+                    email: "patient5@live.com",
+                    aglomeration: Core.Enums.Aglomeration.Rzeszów
+),
+            new Person(name: "Arkadiusz",
+                    surName: "Patka",
+                    id: 77,
+                    birthDate:new DateTimeOffset(new DateTime(1979,10,20)) ,
+                    pesel: "791020134654",
+                    hasPolishCitizenship: true,
+                    passportCode: null,
+                    passportNumber: null,
+                    email: "patient6@live.com",
+                    aglomeration: Core.Enums.Aglomeration.Silesia
+),
+            new Person(name: "Marta",
+                    surName: "Rakieta",
+                    id: 78,
+                    birthDate:new DateTimeOffset(new DateTime(1991,2,12)) ,
+                    pesel: "910212456461",
+                    hasPolishCitizenship: true,
+                    passportCode: null,
+                    passportNumber: null,
+                    email: "patient7@live.com",
+                    aglomeration: Core.Enums.Aglomeration.Tricity
+),
+            new Person(name: "Ada",
+                    surName: "Ruda",
+                    id: 79,
+                    birthDate:new DateTimeOffset(new DateTime(1994,12,13)) ,
+                    pesel: "941213216541",
+                    hasPolishCitizenship: true,
+                    passportCode: null,
+                    passportNumber: null,
+                    email: "patient8@live.com",
+                    aglomeration: Core.Enums.Aglomeration.Warsaw
+),
+            new Person(name: "Genowefa",
+                    surName: "Pigwa",
+                    id: 80,
+                    birthDate:new DateTimeOffset(new DateTime(1954,6,13)) ,
+                    pesel: "54061324651322",
+                    hasPolishCitizenship: true,
+                    passportCode: null,
+                    passportNumber: null,
+                    email: "patient9@live.com",
+                    aglomeration: Core.Enums.Aglomeration.Wroclaw
+),
+            new Person(name: "Wacław",
+                    surName: "Kopytko",
+                    id: 81,
+                    birthDate:new DateTimeOffset(new DateTime(1955,3,13)) ,
+                    pesel: "5503136549494",
+                    hasPolishCitizenship: true,
+                    passportCode: null,
+                    passportNumber: null,
+                    email: "patient11@live.com",
+                    aglomeration: Core.Enums.Aglomeration.Warsaw
+),
+            new Person(name: "Bożena",
+                    surName: "Raj",
+                    id: 82,
+                    birthDate:new DateTimeOffset(new DateTime(1949,11,18)) ,
+                    pesel: "49111816546513",
+                    hasPolishCitizenship: true,
+                    passportCode: null,
+                    passportNumber: null,
+                    email: "patient12@live.com",
+                    aglomeration: Core.Enums.Aglomeration.Cracow
+),
+
+            new Person(name: "Fryderek",
+                    surName: "Czyż",
+                    id: 83,
+                    birthDate:new DateTimeOffset(new DateTime(1956,12,18)) ,
+                    pesel: "56121864984561",
+                    hasPolishCitizenship: true,
+                    passportCode: null,
+                    passportNumber: null,
+                    email: "patient13@live.com",
+                    aglomeration: Core.Enums.Aglomeration.Warsaw
+),
+            new Person(name: "Monika",
+                    surName: "Zalewska",
+                    id: 84,
+                    birthDate:new DateTimeOffset(new DateTime(1982,9,9)) ,
+                    pesel: "820909132156462",
+                    hasPolishCitizenship: true,
+                    passportCode: null,
+                    passportNumber: null,
+                    email: "patient14@live.com",
+                    aglomeration: Core.Enums.Aglomeration.Warsaw
+),
+                    new Person(name: "Daria",
+                    surName: "Raszpan",
+                    id: 85,
+                    birthDate:new DateTimeOffset(new DateTime(1984,6,16)) ,
+                    pesel: "840616321316342",
+                    hasPolishCitizenship: true,
+                    passportCode: null,
+                    passportNumber: null,
+                    email: "patient1@live.com",
+                    aglomeration: Core.Enums.Aglomeration.Bialystok),
+
+        };
+            return people;
+        }
 
         public static IEnumerable<MedicalWorker> GetMedicalWorkers()
         {
 
-            //List<Person> people = new List<Person>()
-            //{
-            //    new Person()
-            //    {
-            //        EmailAddress="person1@gmail.com",
-            //        HasPolishCitizenship=true,
-            //        Name="Mariusz",
-            //        Surname="Puto",
-            //        PESEL=77784512598
-            //    };
-            //}
-            //
             DateTime now = DateTime.Now;
 
             List<VisitReview> visitRatings1 = new List<VisitReview>()
@@ -656,7 +906,7 @@ namespace Asklepios.Data.InMemoryContexts
 
             List<MedicalWorker> MedicalWorkers = new List<MedicalWorker>()
             {
-                new Doctor(new Person( name:"Mariusz",surName:"Puto",id:1, pesel:"77784512598",hasPolishCitizenship: true,passportNumber: null,passportCode:"POL",email:"person1@gmail.com", aglomeration:Core.Enums.Aglomeration.Bialystok),"IUHIDUASHDI545613216")
+                new Doctor(Persons[0],"IUHIDUASHDI545613216")
                 {
                     Education=new List<string>() {UM_1,UM_2},
                     Experience="W latach 2005-2020 praca w szpitalu Bródnowskim",
@@ -669,7 +919,7 @@ namespace Asklepios.Data.InMemoryContexts
                     }
                 },
 
-                new Doctor(new Person( name:"Witold",surName:"Głąbek",id:2,pesel:"156456465465",hasPolishCitizenship: true,passportNumber: null,passportCode:"POL", email:"person2@gmail.com", aglomeration:Core.Enums.Aglomeration.Cracow), "ASGER51541213")
+                new Doctor(Persons[1], "ASGER51541213")
                 {
                     Education=new List<string>() {UM_3,UM_2},
                     Experience="W latach 2005-2020 praca w szpitalu praskim",
@@ -682,7 +932,7 @@ namespace Asklepios.Data.InMemoryContexts
                     }
 
                 },
-                new Physiotherapist(new Person( name:"Henryk",surName:"Bąbel",id:3,pesel:"879794561231323", hasPolishCitizenship: true,passportNumber: null,passportCode:"POL", email:"person3@gmail.com", aglomeration:Core.Enums.Aglomeration.Kielce), "GVCXDS56151321")
+                new Physiotherapist(Persons[2], "GVCXDS56151321")
                 {
                     Education=new List<string>() {UM_2},
                     Experience="W latach 2005-2020 praca w szpitalu MSWiA",
@@ -695,7 +945,7 @@ namespace Asklepios.Data.InMemoryContexts
                     }
 
                 },
-                new Physiotherapist   (new Person(name:"Ferdynand",surName:"Małolepszy",id:4,pesel:"56754334534543",hasPolishCitizenship: true,passportNumber: null,passportCode:"POL", email:"person4@gmail.com", aglomeration:Core.Enums.Aglomeration.Cracow),"IUJNKJN54321165")
+                new Physiotherapist   (Persons[3],"IUJNKJN54321165")
                 {
                     Education=new List<string>() {UM_1,UM_2},
                     Experience="W latach 2005-2020 praca w szpitalu UMK",
@@ -705,12 +955,10 @@ namespace Asklepios.Data.InMemoryContexts
                     MedicalServices=new List<MedicalService>()
                     {
                         PrimaryMedicalServices[33],                        PrimaryMedicalServices[31],                        PrimaryMedicalServices[32]
-
-
                     }
 
                 },
-                new Doctor(new Person( name:"Zenon",surName:"Krzywy",id:5,pesel:"54346546454543",hasPolishCitizenship: true,passportNumber: null,passportCode:"POL", email:"person5@gmail.com", aglomeration:Core.Enums.Aglomeration.Cracow),"IUJKHJK546121646")
+                new Doctor(Persons[4],"IUJKHJK546121646")
                 {
                     Education=new List<string>() {UM_1,UM_2},
                     Experience="W latach 2005-2020 praca w szpitalu Bródnowskim",
@@ -723,7 +971,7 @@ namespace Asklepios.Data.InMemoryContexts
                     }
 
                 },
-                new Doctor(new Person(name:"Tadeusz",surName:"Nowak",id:6,pesel:"6548797654654654",hasPolishCitizenship: true,passportNumber: null,passportCode:"POL", email:"person6@gmail.com", aglomeration:Core.Enums.Aglomeration.Cracow),"OPASDASP54156142313")
+                new Doctor(Persons[5],"OPASDASP54156142313")
                 {
                     Education=new List<string>() {UM_1,UM_2},
                     Experience="W latach 2005-2020 praca w szpitalu Bródnowskim",
@@ -735,7 +983,7 @@ namespace Asklepios.Data.InMemoryContexts
                         PrimaryMedicalServices[20],PrimaryMedicalServices[21]
                     }
                 },
-                new Doctor(new Person( name:"Tomasz",surName:"Woda",id:7,pesel:"78945646312313",hasPolishCitizenship: true,passportNumber: null,passportCode:"POL", email:"person7@gmail.com", aglomeration:Core.Enums.Aglomeration.Cracow), "IAOSD5161231564")
+                new Doctor(Persons[6], "IAOSD5161231564")
                 {
                     Education=new List<string>() {UM_1,UM_2},
                     Experience="W latach 2005-2020 praca w szpitalu wrocławskim",
@@ -747,7 +995,7 @@ namespace Asklepios.Data.InMemoryContexts
                         PrimaryMedicalServices[8]
                     }
                 },
-                new Doctor(new Person( name:"Łukasz",surName:"Czekaj",id:8,pesel:"756546546466",hasPolishCitizenship: true,passportNumber: null,passportCode:"POL", email:"person8@gmail.com", aglomeration:Core.Enums.Aglomeration.Cracow), "UNCAJSDS51651323")
+                new Doctor(Persons[7], "UNCAJSDS51651323")
                 {
                     Education=new List<string>() {UM_1,UM_2},
                     Experience="W latach 2005-2020 praca w szpitalu podlaskim",
@@ -760,7 +1008,7 @@ namespace Asklepios.Data.InMemoryContexts
                     }
 
                 },
-                new Doctor(new Person( name:"Mateusz",surName:"Chodzień",id:9,pesel:"841313216546",hasPolishCitizenship: true,passportNumber: null,passportCode:"POL", email:"person9@gmail.com", aglomeration:Core.Enums.Aglomeration.Cracow), "DFSDFD4654213")
+                new Doctor(Persons[8], "DFSDFD4654213")
                 {
                     Education=new List<string>() {UM_1,UM_2},
                     Experience="W latach 2005-2020 praca w szpitalu Bródnowskim",
@@ -772,7 +1020,7 @@ namespace Asklepios.Data.InMemoryContexts
                         PrimaryMedicalServices[4],PrimaryMedicalServices[2]
                     }
                 },
-                new Doctor(new Person( name:"Leszek",surName:"Ancymon",id:10,pesel:"44445465456465",hasPolishCitizenship: true,passportNumber: null,passportCode:"POL", email:"person10@gmail.com", aglomeration:Core.Enums.Aglomeration.Cracow),"IOWNCAS5613245")
+                new Doctor(Persons[9],"IOWNCAS5613245")
                 {
                     Education=new List<string>() {UM_1,UM_2},
                     Experience="W latach 2005-2020 praca w szpitalu suwalskim",
@@ -783,9 +1031,8 @@ namespace Asklepios.Data.InMemoryContexts
                     {
                         PrimaryMedicalServices[20],PrimaryMedicalServices[22]
                     }
-
                 },
-                new Doctor(new Person( name:"Karol",surName:"Szczęsny",id:11,pesel:"7532123165465",hasPolishCitizenship: true,passportNumber: null,passportCode:"POL", email:"person11@gmail.com", aglomeration:Core.Enums.Aglomeration.Cracow),"MNMCXISA561235")
+                new Doctor(Persons[10],"MNMCXISA561235")
                 {
                     Education=new List<string>() {UM_9},
                     Experience="W latach 2008-2019 praca w szpitalu podkarpackim",
@@ -798,7 +1045,7 @@ namespace Asklepios.Data.InMemoryContexts
                     }
 
                 },
-                new Doctor(new Person( name:"Remigiusz",surName:"Czystka",id:12,pesel:"654213215649546",hasPolishCitizenship: true,passportNumber: null,passportCode:"POL", email:"person12@gmail.com", aglomeration:Core.Enums.Aglomeration.Cracow),"ASIUDAS5123463")
+                new Doctor(Persons[11],"ASIUDAS5123463")
                 {
                     Education=new List<string>() {UM_8},
                     Experience="W latach 2005-2020 praca w szpitalu Bródnowskim",
@@ -811,7 +1058,7 @@ namespace Asklepios.Data.InMemoryContexts
                     }
 
                 },
-                new ElectroradiologyTechnician (new Person( name:"Robert",surName:"Pawłowski",id:13,pesel:"798879875456132",hasPolishCitizenship: true,passportNumber: null,passportCode:"POL", email:"person13@gmail.com", aglomeration:Core.Enums.Aglomeration.Cracow),"QPSCS5346448")
+                new ElectroradiologyTechnician (Persons[12],"QPSCS5346448")
                 {
                     Education=new List<string>() {UM_7},
                     Experience="W latach 2005-2020 praca w szpitalu wojskowym",
@@ -825,7 +1072,7 @@ namespace Asklepios.Data.InMemoryContexts
                     }
 
                 },
-                new Doctor(new Person( name:"Szymon",surName:"Sosna",id:14,pesel:"71123156456456",hasPolishCitizenship: true,passportNumber: null,passportCode:"POL", email:"person14@gmail.com", aglomeration:Core.Enums.Aglomeration.Cracow), "CXCXZS6543215")
+                new Doctor(Persons[13], "CXCXZS6543215")
                 {
                     Education=new List<string>() {UM_6},
                     Experience="W latach 2010-2019 praca w szpitalu matki i dziecka",
@@ -837,7 +1084,7 @@ namespace Asklepios.Data.InMemoryContexts
                         PrimaryMedicalServices[7]}
 
                 },
-                new Doctor(new Person(name:"Sergiusz",surName:"Ząbek",id:15,pesel:"6523154645633",hasPolishCitizenship: true,passportNumber: null,passportCode:"POL", email:"person15@gmail.com", aglomeration:Core.Enums.Aglomeration.Cracow), "PASXCA516164")
+                new Doctor(Persons[14], "PASXCA516164")
                 {
                     Education=new List<string>() {UM_5},
                     Experience="W latach 2011-2021 praca w szpitalu zakaźnym",
@@ -850,7 +1097,7 @@ namespace Asklepios.Data.InMemoryContexts
                     }
 
                 },
-                new Doctor(new Person( name:"Tymoteusz",surName:"Zez",id:16,pesel:"64561231564546",hasPolishCitizenship: true,passportNumber: null,passportCode:"POL", email:"person16@gmail.com", aglomeration:Core.Enums.Aglomeration.Cracow), "PSADNASJ1564613")
+                new Doctor(Persons[15], "PSADNASJ1564613")
                 {
                     Education=new List<string>() {UM_1,UM_2},
                     Experience="W latach 2007-2021 praca w szpitalu kujawskim",
@@ -861,9 +1108,8 @@ namespace Asklepios.Data.InMemoryContexts
                     {
                         PrimaryMedicalServices[8]
                     }
-
                 },
-                new Doctor(new Person( name:"Zbigniew",surName:"Korzeń",id:17,pesel:"45632132456486",hasPolishCitizenship: true,passportNumber: null,passportCode:"POL", email:"person17@gmail.com", aglomeration:Core.Enums.Aglomeration.Cracow),"AHUHIFDSD18564513")
+                new Doctor(Persons[16], "AHUHIFDSD18564513")
                 {
                     Education=new List<string>() {UM_4},
                     Experience="W latach 2005-2020 praca w szpitalu łódzkim",
@@ -876,7 +1122,7 @@ namespace Asklepios.Data.InMemoryContexts
                     }
 
                 },
-                new Doctor(new Person( name:"Zbigniew",surName:"Osiński",id:18,pesel:"49987945646133",hasPolishCitizenship: true,passportNumber: null,passportCode:"POL", email:"person18@gmail.com", aglomeration:Core.Enums.Aglomeration.Cracow),"UYGSDAS541321")
+                new Doctor(Persons[17],"UYGSDAS541321")
                 {
                     Education=new List<string>() {UM_1,UM_2},
                     Experience="W latach 2005-2020 praca w szpitalu Bródnowskim",
@@ -889,7 +1135,7 @@ namespace Asklepios.Data.InMemoryContexts
                     }
 
                 },
-                new Doctor(new Person( name:"Michał",surName:"Czosnek",id:19,pesel:"654321546563331",hasPolishCitizenship: true,passportNumber: null,passportCode:"POL", email:"person19@gmail.com", aglomeration:Core.Enums.Aglomeration.Cracow),"JHGDAJSH516145")
+                new Doctor(Persons[18],"JHGDAJSH516145")
                 {
                     Education=new List<string>() {UM_3},
                     Experience="W latach 2009-2020 praca w POZ Węgrów.",
@@ -902,7 +1148,7 @@ namespace Asklepios.Data.InMemoryContexts
                     }
 
                 },
-                new Doctor(new Person( name:"Tomasz",surName:"Truteń",id:20,pesel:"8012131654613",hasPolishCitizenship: true,passportNumber: null,passportCode:"POL", email:"person20@gmail.com", aglomeration:Core.Enums.Aglomeration.Cracow), "GSFEQWDXA515646")
+                new Doctor(Persons[19], "GSFEQWDXA515646")
                 {
                     Education=new List<string>() {UM_1},
                     Experience="W latach 2005-2020 praca w szpitalu miejskim w Krośnie",
@@ -915,7 +1161,7 @@ namespace Asklepios.Data.InMemoryContexts
                     }
 
                 },
-                new Doctor(new Person( name:"Bogusław",surName:"Śmiały",id:21,pesel:"5546545641231234",hasPolishCitizenship: true,passportNumber: null,passportCode:"POL", email:"person21@gmail.com", aglomeration:Core.Enums.Aglomeration.Cracow), "ISJAD4465132")
+                new Doctor(Persons[20], "ISJAD4465132")
                 {
                     Education=new List<string>() {UM_1,UM_2},
                     Experience="W latach 2005-2020 praca w szpitalu tarnowskim",
@@ -928,7 +1174,7 @@ namespace Asklepios.Data.InMemoryContexts
                     }
 
                 },
-                new Doctor(new Person( name:"Jan",surName:"Dutki",id:22,pesel:"54654321314564",hasPolishCitizenship: true,passportNumber: null,passportCode:"POL", email:"person22@gmail.com", aglomeration:Core.Enums.Aglomeration.Cracow), "UISDR216443")
+                new Doctor(Persons[21], "UISDR216443")
                 {
                     Education=new List<string>() {UM_1,UM_2},
                     Experience="W latach 2005-2020 praca w szpitalu miejskim w Zakopanem",
@@ -941,7 +1187,7 @@ namespace Asklepios.Data.InMemoryContexts
                     }
 
                 },
-                new Doctor(new Person( name:"Jarosław",surName:"Kurczak",id:23,pesel:"65461234564546",hasPolishCitizenship: true,passportNumber: null,passportCode:"POL", email:"person23@gmail.com", aglomeration:Core.Enums.Aglomeration.Cracow), "VASDK5421324")
+                new Doctor(Persons[22], "VASDK5421324")
                 {
                     Education=new List<string>() {UM_7},
                     Experience="W latach 2005-2020 praca w szpitalu Bródnowskim",
@@ -953,7 +1199,7 @@ namespace Asklepios.Data.InMemoryContexts
                         PrimaryMedicalServices[18]
                     }
                 },
-                new Doctor(new Person( name:"Grzegorz",surName:"Grześkowiak",id:24,pesel:"6548745646546",hasPolishCitizenship: true,passportNumber: null,passportCode:"POL", email:"person24@gmail.com", aglomeration:Core.Enums.Aglomeration.Cracow), "ASPDUI56321587")
+                new Doctor(Persons[23], "ASPDUI56321587")
                 {
                     Education=new List<string>() {UM_5},
                     Experience="W latach 2008-2014 praca w szpitalu kardiologicznym",
@@ -965,7 +1211,7 @@ namespace Asklepios.Data.InMemoryContexts
                         PrimaryMedicalServices[19]
                     }
                 },
-                new Doctor(new Person( name:"Gerwazy",surName:"Zasada",id:25,pesel:"4561231564654",hasPolishCitizenship: true,passportNumber: null,passportCode:"POL", email:"person25@gmail.com", aglomeration:Core.Enums.Aglomeration.Cracow), "BVNMXCA4623148")
+                new Doctor(Persons[24], "BVNMXCA4623148")
                 {
                     Education=new List<string>() {UM_5},
                     Experience="W latach 2005-2020 praca w szpitalu w Dębicy",
@@ -978,7 +1224,7 @@ namespace Asklepios.Data.InMemoryContexts
                     }
 
                 },
-                new Physiotherapist(new Person( name:"Czesław",surName:"Wilk",id:26,pesel:"5487897564646",hasPolishCitizenship: true,passportNumber: null,passportCode:"POL", email:"person26@gmail.com", aglomeration:Core.Enums.Aglomeration.Cracow),"FAHDJ665413215")
+                new Physiotherapist(Persons[25],"FAHDJ665413215")
                 {
                     Education=new List<string>() {UM_4},
                     Experience="W latach 2005-2020 praca w szpitalu powiatowym w Zamościu",
@@ -991,7 +1237,7 @@ namespace Asklepios.Data.InMemoryContexts
                     }
 
                 },
-                new Doctor(new Person( name:"Tadeusz",surName:"Gąska",id:27,pesel:"64621321564564",hasPolishCitizenship: true,passportNumber: null,passportCode:"POL", email:"person27@gmail.com", aglomeration:Core.Enums.Aglomeration.Cracow),"ALKJSD5461321")
+                new Doctor(Persons[26],"ALKJSD5461321")
                 {
                     Education=new List<string>() {UM_2},
                     Experience="W latach 2005-2020 praca w szpitalu zakaźnym na Woli",
@@ -1004,7 +1250,7 @@ namespace Asklepios.Data.InMemoryContexts
                     }
 
                 },
-                new ElectroradiologyTechnician(new Person( name:"Waldemar",surName:"Kucaj",id:28,pesel:"5945612315645",hasPolishCitizenship: true,passportNumber: null,passportCode:"POL", email:"person28@gmail.com", aglomeration:Core.Enums.Aglomeration.Cracow), "HGSDAS545641231")
+                new ElectroradiologyTechnician(Persons[27], "HGSDAS545641231")
                 {
                     Education=new List<string>() {UM_6},
                     Experience="W latach 2006-2019 praca w szpitalu świętokrzyskim",
@@ -1017,7 +1263,7 @@ namespace Asklepios.Data.InMemoryContexts
                     }
 
                 },
-                new Doctor(new Person( name:"Piotr",surName:"Kuropatwa",id:29,pesel:"789465132132",hasPolishCitizenship: true,passportNumber: null,passportCode:"POL", email:"person29@gmail.com", aglomeration:Core.Enums.Aglomeration.Cracow),"BHJASGDJAS54613254")
+                new Doctor(Persons[28],"BHJASGDJAS54613254")
                 {
                     Education=new List<string>() {UM_8},
                     Experience="W latach 2005-2020 praca w szpitalu akademickim w Białymstoku",
@@ -1030,7 +1276,7 @@ namespace Asklepios.Data.InMemoryContexts
                     }
 
                 },
-                new Doctor(new Person( name:"Paweł",surName:"Łąkietka",id:30,pesel:"7894654654965",hasPolishCitizenship: true,passportNumber: null,passportCode:"POL", email:"person30@gmail.com", aglomeration:Core.Enums.Aglomeration.Cracow),"OJIHJDAS543156")
+                new Doctor(Persons[29],"OJIHJDAS543156")
                 {
                     Education=new List<string>() {UM_6},
                     Experience="W latach 2005-2020 praca w szpitalu miejskim w Słupsku",
@@ -1043,7 +1289,7 @@ namespace Asklepios.Data.InMemoryContexts
                     }
 
                 },
-                new Doctor(new Person( name:"Rozmus",surName:"Remus",id:31,pesel:"4564134156465",hasPolishCitizenship: true,passportNumber: null,passportCode:"POL", email:"person31@gmail.com", aglomeration:Core.Enums.Aglomeration.Cracow),"JHASKDAS65461321")
+                new Doctor(Persons[30],"JHASKDAS65461321")
                 {
                     Education=new List<string>() {UM_3},
                     Experience="W latach 2005-2012 praca w szpitalu klinicznym w Gnieźnie. Wcześniej pracował w Zielonej górze.",
@@ -1054,9 +1300,8 @@ namespace Asklepios.Data.InMemoryContexts
                     {
                         PrimaryMedicalServices[11],PrimaryMedicalServices[12],PrimaryMedicalServices[13]
                     }
-
                 },
-                new Doctor(new Person( name:"Miłosz",surName:"Ciapek",id:32,pesel:"487945643213",hasPolishCitizenship: true,passportNumber: null,passportCode:"POL", email:"person32@gmail.com", aglomeration:Core.Enums.Aglomeration.Cracow),"JHKSDASD546123")
+                new Doctor(Persons[31],"JHKSDASD546123")
                 {
                     Education=new List<string>() {UM_4},
                     Experience="W latach 2005-2020 praca w szpitalu akademickim w Krakowie",
@@ -1069,7 +1314,7 @@ namespace Asklepios.Data.InMemoryContexts
                     }
 
                 },
-                new Doctor(new Person( name:"Czesława",surName:"Kret",id:33,pesel:"6546123156464",hasPolishCitizenship: true,passportNumber: null,passportCode:"POL", email:"person33@gmail.com", aglomeration:Core.Enums.Aglomeration.Cracow),"JHASHJDGJA4516354")
+                new Doctor(Persons[32],"JHASHJDGJA4516354")
                 {
                     Education=new List<string>() {UM_6},
                     Experience="W latach 2009-2019 praca w szpitalu w Węgrowie",
@@ -1082,7 +1327,7 @@ namespace Asklepios.Data.InMemoryContexts
                     }
 
                 },
-                new DentalHygienist(new Person( name:"Marlena",surName:"Bajka",id:34,pesel:"894561132156", hasPolishCitizenship: true,passportNumber: null,passportCode:"POL", email:"person34@gmail.com", aglomeration:Core.Enums.Aglomeration.Cracow),"HASDUQ561613")
+                new DentalHygienist(Persons[33],"HASDUQ561613")
                 {
                     Education=new List<string>() {UM_1,UM_2},
                     Experience="W latach 2015-2021 praca w szpitalu uniwersyteckim w Poznaniu",
@@ -1095,7 +1340,7 @@ namespace Asklepios.Data.InMemoryContexts
                     }
 
                 },
-                new Doctor(new Person( name:"Bożena",surName:"Arbuz",id:35,pesel:"5456463216546",hasPolishCitizenship: true,passportNumber: null,passportCode:"POL", email:"person35@gmail.com", aglomeration:Core.Enums.Aglomeration.Cracow),"JHSAD6564513")
+                new Doctor(Persons[34],"JHSAD6564513")
                 {
                     Education=new List<string>() {UM_3},
                     Experience="W latach 2011-2021 praca w szpitalu miejskim w Łowiczu",
@@ -1108,7 +1353,7 @@ namespace Asklepios.Data.InMemoryContexts
                     }
 
                 },
-                new Doctor(new Person( name:"Klaudia",surName:"Kąkol",id:36,pesel:"8015646546546",hasPolishCitizenship: true,passportNumber: null,passportCode:"POL", email:"person36@gmail.com", aglomeration:Core.Enums.Aglomeration.Cracow),"GASHJD56441231")
+                new Doctor(Persons[35],"GASHJD56441231")
                 {
                     Education=new List<string>() {UM_1,UM_2},
                     Experience="W latach 2008-2020 praca w szpitalu zakaźnym w Krakowie",
@@ -1121,7 +1366,7 @@ namespace Asklepios.Data.InMemoryContexts
                     }
 
                 },
-                new Doctor(new Person( name:"Sandra",surName:"Sosna",id:37,pesel:"864654564645",hasPolishCitizenship: true,passportNumber: null,passportCode:"POL", email:"person37@gmail.com", aglomeration:Core.Enums.Aglomeration.Cracow),"HBJASD546132")
+                new Doctor(Persons[36],"HBJASD546132")
                 {
                     Education=new List<string>() {UM_4},
                     Experience="W latach 2007-2020 praca w szpitalu Bródnowskim",
@@ -1134,7 +1379,7 @@ namespace Asklepios.Data.InMemoryContexts
                     }
 
                 },
-                new Doctor(new Person( name:"Teodora",surName:"Wiśniowiecka",id:38,pesel:"515648946513245",hasPolishCitizenship: true,passportNumber: null,passportCode:"POL", email:"person38@gmail.com", aglomeration:Core.Enums.Aglomeration.Cracow),"BIKDAS5416132")
+                new Doctor(Persons[37],"BIKDAS5416132")
                 {
                     Education=new List<string>() {UM_1,UM_2},
                     Experience="W latach 2005-2020 praca w szpitalu Bródnowskim",
@@ -1147,7 +1392,7 @@ namespace Asklepios.Data.InMemoryContexts
                     }
 
                 },
-                new Doctor(new Person( name:"Kornelia",surName:"Krasicka",id:39,pesel:"664545646546546",hasPolishCitizenship: true,passportNumber: null,passportCode:"POL", email:"person39@gmail.com", aglomeration:Core.Enums.Aglomeration.Cracow),"HJGASW4654613")
+                new Doctor(Persons[38],"HJGASW4654613")
                 {
                     Education=new List<string>() {UM_1,UM_2},
                     Experience="W latach 2012-2020 praca w szpitalu południowym w Warszawie",
@@ -1160,7 +1405,7 @@ namespace Asklepios.Data.InMemoryContexts
                     }
 
                 },
-                new Nurse(new Person( name:"Marzena",surName:"Rudnicka",id:40,pesel:"7516454654645", hasPolishCitizenship: true,passportNumber: null,passportCode:"POL", email:"person40@gmail.com", aglomeration:Core.Enums.Aglomeration.Cracow),"IOSHJD4613245")
+                new Nurse(Persons[39],"IOSHJD4613245")
                 {
                     Education=new List<string>() {UM_1,UM_2},
                     Experience="W latach 2005-2020 praca w szpitalu chorób serca w Gdańsku",
@@ -1173,7 +1418,7 @@ namespace Asklepios.Data.InMemoryContexts
                     }
 
                 },
-                new Nurse(new Person( name:"Beata",surName:"Bomba",id:41,pesel:"61231546546546",hasPolishCitizenship: true,passportNumber: null,passportCode:"POL", email:"person41@gmail.com", aglomeration:Core.Enums.Aglomeration.Cracow),"UGHSDS56134564")
+                new Nurse(Persons[40],"UGHSDS56134564")
                 {
                     Education=new List<string>() {UM_6},
                     Experience="W latach 2007-2018 praca w szpitalu praskim w Warszawie",
@@ -1186,7 +1431,7 @@ namespace Asklepios.Data.InMemoryContexts
                     }
 
                 },
-                new Doctor(new Person( name:"Katarzyna",surName:"Łasinkiewicz",id:42,pesel:"7112345647656",hasPolishCitizenship: true,passportNumber: null,passportCode:"POL", email:"person42@gmail.com", aglomeration:Core.Enums.Aglomeration.Cracow),"USHDKAS744561513")
+                new Doctor(Persons[41],"USHDKAS744561513")
                 {
                     Education=new List<string>() {UM_8},
                     Experience="W latach 2009-2019 praca w szpitalu praskim w Warszawie",
@@ -1199,7 +1444,7 @@ namespace Asklepios.Data.InMemoryContexts
                     }
 
                     },
-                new Doctor(new Person( name:"Weronika",surName:"Kurzydło",id:43,pesel:"8154654654656",hasPolishCitizenship: true,passportNumber: null,passportCode:"POL", email:"person43@gmail.com", aglomeration:Core.Enums.Aglomeration.Cracow),"NMBVDSDA546123")
+                new Doctor(Persons[42],"NMBVDSDA546123")
                 {
                     Education=new List<string>() {UM_5},
                     Experience="W latach 2005-2020 praca w szpitalu Bródnowskim",
@@ -1210,9 +1455,8 @@ namespace Asklepios.Data.InMemoryContexts
                     {
                         PrimaryMedicalServices[20],PrimaryMedicalServices[21]
                     }
-
                 },
-                new Doctor(new Person( name:"Maria",surName:"Kurka",id:44,pesel:"7879465461654",hasPolishCitizenship: true,passportNumber: null,passportCode:"POL", email:"person44@gmail.com", aglomeration:Core.Enums.Aglomeration.Cracow),"LKASJD465315")
+                new Doctor(Persons[43],"LKASJD465315")
                 {
                     Education=new List<string>() {UM_1,UM_2},
                     Experience="W latach 2012-2019 praca w szpitalu MSWIA w Warszawie",
@@ -1225,7 +1469,7 @@ namespace Asklepios.Data.InMemoryContexts
                     }
 
                 },
-                new Doctor(new Person( name:"Bronisława",surName:"Czesiek",id:45,pesel:"49489646146546",hasPolishCitizenship: true,passportNumber: null,passportCode:"POL", email:"person45@gmail.com", aglomeration:Core.Enums.Aglomeration.Cracow),"IOHDSFDS46132456")
+                new Doctor(Persons[44],"IOHDSFDS46132456")
                 {
                     Education=new List<string>() {UM_7},
                     Experience="W latach 2005-2020 praca w szpitalu centralnym w Krakowie",
@@ -1238,7 +1482,7 @@ namespace Asklepios.Data.InMemoryContexts
                     }
 
                 },
-                new Doctor(new Person( name:"Aleksandra",surName:"Ruda",id:46,pesel:"65487987446",hasPolishCitizenship: true,passportNumber: null,passportCode:"POL", email:"person46@gmail.com", aglomeration:Core.Enums.Aglomeration.Cracow),"UHJDSF5645132")
+                new Doctor(Persons[45],"UHJDSF5645132")
                 {
                     Education=new List<string>() {UM_1,UM_2},
                     Experience="W latach 2019-2021 praca w szpitalu u Koziołka Matołka w Poznaniu",
@@ -1251,7 +1495,7 @@ namespace Asklepios.Data.InMemoryContexts
                     }
 
                 },
-                new DentalHygienist(new Person( name:"Iga",surName:"Bodzio",id:47,pesel:"7848465465454", hasPolishCitizenship: true,passportNumber: null,passportCode:"POL", email:"person47@gmail.com", aglomeration:Core.Enums.Aglomeration.Cracow),"SDFJL4654131")
+                new DentalHygienist(Persons[46],"SDFJL4654131")
                 {
                     Education=new List<string>() {UM_1,UM_2},
                     Experience="W latach 2005-2020 praca w szpitalu klinicznym we Wrocławiu",
@@ -1264,7 +1508,7 @@ namespace Asklepios.Data.InMemoryContexts
                     }
 
                 },
-                new Doctor(new Person( name:"Agnieszka",surName:"Pluto",id:48,pesel:"84879486546548",hasPolishCitizenship: true,passportNumber: null,passportCode:"POL", email:"person48@gmail.com", aglomeration:Core.Enums.Aglomeration.Cracow),"JBNBJHSD45642131")
+                new Doctor(Persons[47],"JBNBJHSD45642131")
                 {
                     Education=new List<string>() {UM_1,UM_2},
                     Experience="W latach 2018-2021 praca w szpitalu klinicznym we Wrocławiu",
@@ -1275,9 +1519,8 @@ namespace Asklepios.Data.InMemoryContexts
                     {
                         PrimaryMedicalServices[5]
                     }
-
                 },
-                new Doctor(new Person( name:"Karolina",surName:"Majak",id:49,pesel:"856415413216",hasPolishCitizenship: true,passportNumber: null,passportCode:"POL", email:"person49@gmail.com", aglomeration:Core.Enums.Aglomeration.Cracow),"JHGFJDS564165412")
+                new Doctor(Persons[48],"JHGFJDS564165412")
                 {
                     Education=new List<string>() {UM_8},
                     Experience="W latach 2019-2020 praca w szpitalu Bródnowskim",
@@ -1290,7 +1533,7 @@ namespace Asklepios.Data.InMemoryContexts
                     }
 
                 },
-                new Doctor(new Person( name:"Karina",surName:"Wąsacz",id:50,pesel:"894564113244",hasPolishCitizenship: true,passportNumber: null,passportCode:"POL", email:"person50@gmail.com", aglomeration:Core.Enums.Aglomeration.Cracow),"JHFDSF4561231")
+                new Doctor(Persons[49],"JHFDSF4561231")
                 {
                     Education=new List<string>() {UM_4},
                     Experience="W latach 2005-2020 praca w szpitalu Bródnowskim",
@@ -1303,7 +1546,7 @@ namespace Asklepios.Data.InMemoryContexts
                     }
 
                 },
-                new Doctor(new Person( name:"Grażyna",surName:"Rudniewska",id:51,pesel:"5641321564964",hasPolishCitizenship: true,passportNumber: null,passportCode:"POL", email:"person51@gmail.com", aglomeration:Core.Enums.Aglomeration.Cracow),"UIFSDF4561321")
+                new Doctor(Persons[50],"UIFSDF4561321")
                 {
                     Education=new List<string>() {UM_5,UM_7},
                     Experience="W latach 2005-2020 praca w szpitalu Bródnowskim",
@@ -1316,7 +1559,7 @@ namespace Asklepios.Data.InMemoryContexts
                     }
 
                 },
-                new ElectroradiologyTechnician(new Person( name:"Marta",surName:"Tracka",id:52,pesel:"846516549646411",hasPolishCitizenship: true,passportNumber: null,passportCode:"POL", email:"person52@gmail.com", aglomeration:Core.Enums.Aglomeration.Cracow),"DHJKFSD4564132")
+                new ElectroradiologyTechnician(Persons[51],"DHJKFSD4564132")
                 {
                     Education=new List<string>() {UM_7,UM_9},
                     Experience="Staż odbyła w szpitalu Bródnowskim w Warszawie. Od 2016 roku pracuje w szpitalu Praskim w Warszawie.",
@@ -1329,7 +1572,7 @@ namespace Asklepios.Data.InMemoryContexts
                     }
 
                 },
-                new Nurse(new Person( name:"Marta",surName:"Trąbicka",id:53,pesel:"862311654482631", hasPolishCitizenship: true,passportNumber: null,passportCode:"POL", email:"person53@gmail.com", aglomeration:Core.Enums.Aglomeration.Cracow),"HBJKSDF56413215")
+                new Nurse(Persons[52],"HBJKSDF56413215")
                 {
                     Education=new List<string>() {UM_6,UM_2},
                     Experience="Staż odbyty w szpitalu akademickim w Białymstoku. Od 2018 roku praca w szpitalu powiatowym w Węgrowie",
@@ -1342,7 +1585,7 @@ namespace Asklepios.Data.InMemoryContexts
                     }
 
                 },
-                new Doctor(new Person( name:"Sylwia",surName:"Sarna",id:54,pesel:"7913213156465",hasPolishCitizenship: true,passportNumber: null,passportCode:"POL", email:"person54@gmail.com", aglomeration:Core.Enums.Aglomeration.Cracow), "RERDSDF2134969")
+                new Doctor(Persons[53], "RERDSDF2134969")
                 {
                     Education=new List<string>() {UM_4,UM_2},
                     Experience="W latach 2005-2020 praca w szpitalu Bródnowskim",
@@ -1355,7 +1598,7 @@ namespace Asklepios.Data.InMemoryContexts
                     }
 
                 },
-                new Nurse(new Person( name:"Kamila",surName:"Kozera",id:55,pesel:"751231654654612", hasPolishCitizenship: true,passportNumber: null,passportCode:"POL", email:"person55@gmail.com", aglomeration:Core.Enums.Aglomeration.Cracow),"BNMDSF546123")
+                new Nurse(Persons[54],"BNMDSF546123")
                 {
                     Education=new List<string>() {UM_5},
                     Experience="W latach 2005-2020 praca w szpitalu Bródnowskim",
@@ -1368,7 +1611,7 @@ namespace Asklepios.Data.InMemoryContexts
                     }
 
                 },
-                new ElectroradiologyTechnician(new Person( name:"Bogumiła",surName:"Braniewska",id:56,pesel:"548789461231546",hasPolishCitizenship: true,passportNumber: null,passportCode:"POL", email:"person56@gmail.com", aglomeration:Core.Enums.Aglomeration.Cracow),"PODBASHJ4454321")
+                new ElectroradiologyTechnician(Persons[55],"PODBASHJ4454321")
                 {
                     Education=new List<string>() {UM_1,UM_2},
                     Experience="W latach 2005-2020 praca w szpitalu Bródnowskim",
@@ -1381,7 +1624,7 @@ namespace Asklepios.Data.InMemoryContexts
                     }
 
                 },
-                new Doctor(new Person( name:"Teresa",surName:"Winniczek",id:57,pesel:"62348979521",hasPolishCitizenship: true,passportNumber: null,passportCode:"POL", email:"person57@gmail.com", aglomeration:Core.Enums.Aglomeration.Cracow),"YHBKASD5465123")
+                new Doctor(Persons[56],"YHBKASD5465123")
                 {
                     Education=new List<string>() {UM_3},
                     Experience="W latach 2014-2021 praca w szpitalu zielonogórskim",
@@ -1394,7 +1637,7 @@ namespace Asklepios.Data.InMemoryContexts
                     }
 
                 },
-                new Doctor(new Person( name:"Danuta",surName:"Werys",id:58,pesel:"61321234189",hasPolishCitizenship: true,passportNumber: null,passportCode:"POL", email:"person58@gmail.com", aglomeration:Core.Enums.Aglomeration.Cracow),"OPQEW6546132")
+                new Doctor(Persons[57],"OPQEW6546132")
                 {
                     Education=new List<string>() {UM_5},
                     Experience="W latach 2005-2020 praca w szpitalu wojewódzkim w Olsztynie",
@@ -1407,7 +1650,7 @@ namespace Asklepios.Data.InMemoryContexts
                     }
 
                 },
-                    new Doctor(new Person( name:"Daria",surName:"Jaszczur",id:59,pesel:"74561213898",hasPolishCitizenship: true,passportNumber: null,passportCode:"POL", email:"person59@gmail.com", aglomeration:Core.Enums.Aglomeration.Cracow),"OPNKWEJR546132")
+                new Doctor(Persons[58],"OPNKWEJR546132")
                 {
                     Education=new List<string>() {UM_8},
                     Experience="Od 2010 roku pracuje jako ordynator w szpitalu Matki i Dziecka w Warszawie",
@@ -1420,7 +1663,7 @@ namespace Asklepios.Data.InMemoryContexts
                     }
 
                 },
-                    new Physiotherapist(new Person( name:"Daria",surName:"Biernacka",id:60,pesel:"791231564948213", hasPolishCitizenship: true,passportNumber: null,passportCode:"POL", email:"person60@gmail.com", aglomeration:Core.Enums.Aglomeration.Cracow),"GVJDAS54645")
+                new Physiotherapist(Persons[59],"GVJDAS54645")
                 {
                     Education=new List<string>() {UM_9},
                     Experience="W latach 2016-2020 praca w szpitalu miejskim w Grudziądzu",
@@ -1433,7 +1676,7 @@ namespace Asklepios.Data.InMemoryContexts
                     }
 
                 },
-                new Doctor(new Person   (name:"Maria",surName:"Balon",id:61,pesel:"785321546456",hasPolishCitizenship: true,passportNumber: null,passportCode:"POL", email:"person61@gmail.com", aglomeration:Core.Enums.Aglomeration.Cracow),"UIHDAS546516")
+                new Doctor(Persons[60],"UIHDAS546516")
                 {
                     Education=new List<string>() {UM_1,UM_9},
                     Experience="W latach 2009-2020 praca w szpitalu miejskim w Suwałkach",
@@ -1446,7 +1689,7 @@ namespace Asklepios.Data.InMemoryContexts
                     }
 
                 },
-                new Nurse(new Person( name:"Anna",surName:"Poranna",id:62,pesel:"84561321499476",hasPolishCitizenship: true, passportNumber: null,passportCode:"POL", email:"person62@gmail.com", aglomeration:Core.Enums.Aglomeration.Cracow),"ADASD46123")
+                new Nurse(Persons[61],"ADASD46123")
                 {
                     Education=new List<string>() {UM_7,UM_2},
                     Experience="W latach 2009-2020 praca w szpitalu wojewódzkim w Toruniu",
@@ -1459,7 +1702,7 @@ namespace Asklepios.Data.InMemoryContexts
                     }
 
                 },
-                new ElectroradiologyTechnician(new Person( name:"Anna",surName:"Poletko",id:63,pesel:"8845641321546",hasPolishCitizenship: true,passportNumber: null,passportCode:"POL", email:"person63@gmail.com", aglomeration:Core.Enums.Aglomeration.Cracow),"YUGDSD56131")
+                new ElectroradiologyTechnician(Persons[62],"YUGDSD56131")
                 {
                     Education=new List<string>() {UM_2,UM_4},
                     Experience="Od 2016 pracuje w szpitalu Bródnowskim",
@@ -1472,8 +1715,7 @@ namespace Asklepios.Data.InMemoryContexts
                     }
 
                 },
-
-                new Doctor(new Person( name:"Agata",surName:"Bosko",id:64,pesel:"8956132156463",hasPolishCitizenship: true,passportNumber: null,passportCode:"POL", email:"person64@gmail.com", aglomeration:Core.Enums.Aglomeration.Warsaw),"YAJHD5461321")
+                new Doctor(Persons[63],"YAJHD5461321")
                 {
                     Education=new List<string>() {UM_5},
                     Experience="W latach 2009-2021 praca w szpitalu w Przemyślu",
@@ -1486,7 +1728,7 @@ namespace Asklepios.Data.InMemoryContexts
                     }
 
                 },
-                new Doctor(new Person( name:"Agata",surName:"Mińska",id:65,pesel:"78465413131468",hasPolishCitizenship: true,passportNumber: null,passportCode:"POL", email:"person65@gmail.com", aglomeration:Core.Enums.Aglomeration.Wroclaw),"OOXCZX6541546")
+                new Doctor(Persons[64],"OOXCZX6541546")
                 {
                     Education=new List<string>() {UM_3},
                     Experience="W latach 2008-2020 praca w szpitalu w Lublinie",
@@ -1499,7 +1741,7 @@ namespace Asklepios.Data.InMemoryContexts
                     }
 
                 },
-                new Physiotherapist(new Person( name:"Monika",surName:"Szajka",id:66,pesel:"80156467513236", hasPolishCitizenship: true,passportNumber: null,passportCode:"POL", email:"person66@gmail.com", aglomeration:Core.Enums.Aglomeration.Bialystok),"FSDRGD54543")
+                new Physiotherapist(Persons[65],"FSDRGD54543")
                 {
                     Education=new List<string>() {UM_1,UM_2},
                     Experience="W latach 2005-2020 praca w szpitalu Bródnowskim",
@@ -1512,7 +1754,7 @@ namespace Asklepios.Data.InMemoryContexts
                     }
 
                 },
-                new Doctor(new Person( name:"Mariola",surName:"Kiepska",id:67,pesel:"798564613216546",hasPolishCitizenship: true,passportNumber: null,passportCode:"POL", email:"person67@gmail.com", aglomeration:Core.Enums.Aglomeration.Kielce),"UHJKSAD51321")
+                new Doctor(Persons[66],"UHJKSAD51321")
                 {
                     Education=new List<string>() {UM_1,UM_2},
                     Experience="W latach 2005-2020 praca w szpitalu Bródnowskim",
@@ -1525,7 +1767,7 @@ namespace Asklepios.Data.InMemoryContexts
                     }
 
                 },
-                new Doctor(new Person( name:"Dorota",surName:"Zawisza",id:68,pesel:"7441321264987984",hasPolishCitizenship: true,passportNumber: null,passportCode:"POL", email:"person68@gmail.com", aglomeration:Core.Enums.Aglomeration.Silesia),"BNSDSA546123")
+                new Doctor(Persons[67],"BNSDSA546123")
                 {
                     Education=new List<string>() {UM_5,UM_2},
                     Experience="W latach 2005-2020 praca w szpitalu Bródnowskim",
@@ -1537,7 +1779,7 @@ namespace Asklepios.Data.InMemoryContexts
                     }
 
                 },
-                new ElectroradiologyTechnician(new Person( name:"Anastasia",surName:"Radczuk",id:69,pesel:"",hasPolishCitizenship: false,passportNumber: "AAAA87946121646",passportCode:"UKR", email:"person69@gmail.com", aglomeration:Core.Enums.Aglomeration.Tricity),"KLSAD546123")
+                new ElectroradiologyTechnician(Persons[68],"KLSAD546123")
                 {
                     Education=new List<string>() {UM_1,UM_2},
                     Experience="W latach 2016-2020 praca w szpitalu lwowskim na Ukrainie",
@@ -1550,7 +1792,7 @@ namespace Asklepios.Data.InMemoryContexts
                     }
 
                 },
-                new DentalHygienist(new Person( name:"Karolina",surName:"Kulka",id:70,pesel:"798465132156486", hasPolishCitizenship: true,passportNumber: null,passportCode:"POL", email:"person70@gmail.com", aglomeration:Core.Enums.Aglomeration.Rzeszów),"JHDAS4564231")
+                new DentalHygienist(Persons[69],"JHDAS4564231")
                 {
                     Education=new List<string>() {UM_1,UM_2},
                     Experience="W latach 2005-2020 praca w szpitalu Bródnowskim",
@@ -1593,14 +1835,11 @@ namespace Asklepios.Data.InMemoryContexts
             return units;
         }
 
-        public static Patient GetPatientData()
+        public static Patient GetPatientData(Patient patient)
         {
-            Patient patient = new Patient("Łukasz", "Łukasiak", 1, "8710101010", true, "484654asd4a5sd4", "PL", "s11437@pjwstk.edu.pl", aglomeration: Core.Enums.Aglomeration.Warsaw);
+            //Patient patient = AllPatients[1];//new Patient(); //new Patient("Łukasz", "Łukasiak", 1, "8710101010", true, "484654asd4a5sd4", "PL", "s11437@pjwstk.edu.pl", aglomeration: Core.Enums.Aglomeration.Warsaw);
             DateTimeOffset dateTimeOffset = new DateTimeOffset(DateTime.Now);
             DateTimeOffset now = DateTime.Now;
-
-
-
 
             List<Prescription> prescriptions = new List<Prescription>()
             {
@@ -2070,7 +2309,7 @@ namespace Asklepios.Data.InMemoryContexts
                     Patient=patient,
                     VisitCategory=VisitCategories.ElementAt(2),
                     MedicalResult=medicalTestResults[1],
-            
+
                 },
                                 new Visit()
                 {
@@ -2101,17 +2340,17 @@ namespace Asklepios.Data.InMemoryContexts
             referrals[4].Visit = patientHistoricalVisits.ElementAt(4);
             referrals[5].Visit = patientHistoricalVisits.ElementAt(6);
             referrals[6].Visit = patientHistoricalVisits.ElementAt(4);
-            referrals[7].Visit= patientHistoricalVisits.ElementAt(8);
-            referrals[8].Visit= patientHistoricalVisits.ElementAt(1);
-            referrals[9].Visit= patientHistoricalVisits.ElementAt(8); 
+            referrals[7].Visit = patientHistoricalVisits.ElementAt(8);
+            referrals[8].Visit = patientHistoricalVisits.ElementAt(1);
+            referrals[9].Visit = patientHistoricalVisits.ElementAt(8);
             //////wyniki badan krwi i moczu
-       //     medicalTestResults[0].Visit = patientHistoricalVisits.ElementAt(0);
+            //     medicalTestResults[0].Visit = patientHistoricalVisits.ElementAt(0);
             //krwi
             medicalTestResults[1].Visit = patientHistoricalVisits.ElementAt(7);
             //cholesterolu
             //medicalTestResults[2].Visit = patientHistoricalVisits.ElementAt(2);
             //ekg serca
-           // medicalTestResults[3].Visit = patientHistoricalVisits.ElementAt(3);
+            // medicalTestResults[3].Visit = patientHistoricalVisits.ElementAt(3);
             //rtg nadgarstka
             medicalTestResults[4].Visit = patientHistoricalVisits.ElementAt(2);
 
@@ -2120,7 +2359,7 @@ namespace Asklepios.Data.InMemoryContexts
             {
                 new Visit()
                 {
-                    Id=6,
+                    Id=10,
                     PrimaryService=PrimaryMedicalServices[11],
                     MinorMedicalServices=new List<MedicalService>(){ MedicalServices[4], MedicalServices[5] },
                     DateTimeSince=dateTimeOffset.AddDays(10),
@@ -2136,7 +2375,7 @@ namespace Asklepios.Data.InMemoryContexts
                 },
                 new Visit()
                 {
-                    Id=7,
+                    Id=11,
                     PrimaryService=PrimaryMedicalServices[6],
                     MinorMedicalServices=new List<MedicalService>(){ MedicalServices[14], MedicalServices[15] },
                     DateTimeSince=dateTimeOffset.AddDays(14),
@@ -2146,14 +2385,13 @@ namespace Asklepios.Data.InMemoryContexts
                     MedicalWorker=MedicalWorkers.ElementAt(40),
                     Patient=CurrentPatient,
                     VisitCategory=VisitCategories.ElementAt(4),
-
-                                        MedicalHistory="Badania laboratoryjne",
+                    MedicalHistory="Badania laboratoryjne",
                     MedicalResult=medicalTestResults[4] ,
 
                 },
                 new Visit()
                 {
-                    Id=8,
+                    Id=12,
                     PrimaryService=PrimaryMedicalServices[10],
                     MinorMedicalServices=new List<MedicalService>(){ MedicalServices[0], MedicalServices[5] },
                     DateTimeSince=dateTimeOffset.AddDays(20),
@@ -2166,7 +2404,7 @@ namespace Asklepios.Data.InMemoryContexts
                 },
                 new Visit()
                 {
-                    Id=9,
+                    Id=13,
                     PrimaryService=PrimaryMedicalServices[0],
                     //BookedMedicalServices=new List<MedicalService>(){ PrimaryMedicalServices[0], PrimaryMedicalServices[5] },
                     DateTimeSince=dateTimeOffset.AddDays(15),
@@ -2392,231 +2630,114 @@ namespace Asklepios.Data.InMemoryContexts
 
         public static IEnumerable<Patient> GetAllPatients()
         {
+
             List<Patient> patients = new List<Patient>()
             {
-                new Patient (
-                    name: "Daria",
-                    surName: "Raszpan",
-                    id:1,
-                    pesel:"849846321316342",
-                    hasPolishCitizenship:true,
-                    passportCode:null,
-                    passportNumber:null,
-                    email:"patient1@live.com",
-                    aglomeration:Core.Enums.Aglomeration.Bialystok
-                    )
+                new Patient(Persons[70])
                 {
+                    Id=1,
+                    EmployerNIP="845465154654",
+                    MedicalPackage=MedicalPackages[0],
+                    NFZUnit=NfzUnits[0]
+                },
+                new Patient (Persons[71]                    )
+                {
+                    Id=2,
+                    EmployerNIP="7777742132152",
+                    MedicalPackage=MedicalPackages[3],
+                    NFZUnit=NfzUnits[15]
+                },
+
+                new Patient (Persons[72]                    )
+                {
+                    Id=3,
                     EmployerNIP="549642132152",
                     MedicalPackage=MedicalPackages[0],
                     NFZUnit=NfzUnits[0]
                 },
-                new Patient (
-                    name: "Magdalena",
-                    surName: "Bomba",
-                    id:2,
-                    pesel:"7487945612164",
-                    hasPolishCitizenship:true,
-                    passportCode:null,
-                    passportNumber:null,
-                    email:"patient2@live.com",
-                    aglomeration:Core.Enums.Aglomeration.Cracow
-                    )
+                new Patient (Persons[73]                    )
                 {
+                    Id=4,
                     EmployerNIP="549642132152",
                     MedicalPackage=MedicalPackages[1],
                     NFZUnit=NfzUnits[1]
                 },
-                                new Patient (
-                    name: "Katarzyna",
-                    surName: "Jelitko",
-                    id:3,
-                    pesel:"6649816545649",
-                    hasPolishCitizenship:true,
-                    passportCode:null,
-                    passportNumber:null,
-                    email:"patient3@live.com",
-                    aglomeration:Core.Enums.Aglomeration.Kielce
-                    )
+                new Patient (Persons[74]                    )
                 {
+                    Id=5,
                     EmployerNIP="7777742132152",
                     MedicalPackage=MedicalPackages[2],
                     NFZUnit=NfzUnits[2]
                 },
-                new Patient (
-                    name: "Krzysztof",
-                    surName: "Kitka",
-                    id:4,
-                    pesel:"798456462134",
-                    hasPolishCitizenship:true,
-                    passportCode:null,
-                    passportNumber:null,
-                    email:"patient4@live.com",
-                    aglomeration:Core.Enums.Aglomeration.Kuyavia
-                    )
+                new Patient (Persons[75]                    )
                 {
+                    Id=6,
                     EmployerNIP="7777742132152",
                     MedicalPackage=MedicalPackages[3],
                     NFZUnit=NfzUnits[3]
                 },
-                new Patient (
-                    name: "Dariusz",
-                    surName: "Czapa",
-                    id:5,
-                    pesel:"821524646951234",
-                    hasPolishCitizenship:true,
-                    passportCode:null,
-                    passportNumber:null,
-                    email:"patient6@live.com",
-                    aglomeration:Core.Enums.Aglomeration.Poznan
-                    )
+                new Patient (Persons[76])
                 {
+                    Id=7,
                     EmployerNIP="7777742132152",
                     MedicalPackage=MedicalPackages[1],
                     NFZUnit=NfzUnits[4]
                 },
-                new Patient (
-                    name: "Tomasz",
-                    surName: "Komar",
-                    id:6,
-                    pesel:"8126165461233",
-                    hasPolishCitizenship:true,
-                    passportCode:null,
-                    passportNumber:null,
-                    email:"patient5@live.com",
-                    aglomeration:Core.Enums.Aglomeration.Rzeszów
-                    )
+                new Patient (Persons[77]                    )
                 {
+                    Id=8,
                     EmployerNIP="7777742132152",
                     MedicalPackage=MedicalPackages[0],
                     NFZUnit=NfzUnits[5]
                 },
-                new Patient (
-                    name: "Arkadiusz",
-                    surName: "Patka",
-                    id:7,
-                    pesel:"795123134654",
-                    hasPolishCitizenship:true,
-                    passportCode:null,
-                    passportNumber:null,
-                    email:"patient6@live.com",
-                    aglomeration:Core.Enums.Aglomeration.Silesia
-                    )
+                new Patient (Persons[78]                    )
                 {
+                    Id=9,
                     EmployerNIP="7777742132152",
                     MedicalPackage=MedicalPackages[2],
                     NFZUnit=NfzUnits[2]
                 },
-                new Patient (
-                    name: "Marta",
-                    surName: "Rakieta",
-                    id:8,
-                    pesel:"910213456461",
-                    hasPolishCitizenship:true,
-                    passportCode:null,
-                    passportNumber:null,
-                    email:"patient7@live.com",
-                    aglomeration:Core.Enums.Aglomeration.Tricity
-                    )
+                new Patient (Persons[79]                    )
                 {
+                    Id=10,
                     EmployerNIP="7777742132152",
                     MedicalPackage=MedicalPackages[3],
                     NFZUnit=NfzUnits[7]
                 },
-                new Patient (
-                    name: "Ada",
-                    surName: "Ruda",
-                    id:8,
-                    pesel:"941213216541",
-                    hasPolishCitizenship:true,
-                    passportCode:null,
-                    passportNumber:null,
-                    email:"patient8@live.com",
-                    aglomeration:Core.Enums.Aglomeration.Warsaw
-                    )
+                new Patient (Persons[80]                    )
                 {
+                    Id=11,
                     EmployerNIP="984891621654",
                     MedicalPackage=MedicalPackages[2],
                     NFZUnit=NfzUnits[8]
                 },
-                new Patient (
-                    name: "Genowefa",
-                    surName: "Pigwa",
-                    id:9,
-                    pesel:"54651324651322",
-                    hasPolishCitizenship:true,
-                    passportCode:null,
-                    passportNumber:null,
-                    email:"patient9@live.com",
-                    aglomeration:Core.Enums.Aglomeration.Wroclaw
-                    )
+                new Patient (Persons[81]                    )
                 {
+                    Id=12,
                     EmployerNIP="54646516465",
                     MedicalPackage=MedicalPackages[2],
                     NFZUnit=NfzUnits[8]
                 },
-                new Patient (
-                    name: "Wacław",
-                    surName: "Kopytko",
-                    id:10,
-                    pesel:"552336549494",
-                    hasPolishCitizenship:true,
-                    passportCode:null,
-                    passportNumber:null,
-                    email:"patient11@live.com",
-                    aglomeration:Core.Enums.Aglomeration.Warsaw
-                    )
+                new Patient (Persons[82])
                 {
+                    Id=13,
                     EmployerNIP="7777742132152",
                     MedicalPackage=MedicalPackages[1],
                     NFZUnit=NfzUnits[7]
                 },
-                new Patient (
-                    name: "Bożena",
-                    surName: "Raj",
-                    id:11,
-                    pesel:"49212316546513",
-                    hasPolishCitizenship:true,
-                    passportCode:null,
-                    passportNumber:null,
-                    email:"patient12@live.com",
-                    aglomeration:Core.Enums.Aglomeration.Cracow
-                    )
+                new Patient (Persons[83]                    )
                 {
+                    Id=14,
                     EmployerNIP="54646516465",
                     MedicalPackage=MedicalPackages[1],
                     NFZUnit=NfzUnits[2]
                 },
-                new Patient (
-                    name: "Fryderek",
-                    surName: "Czyż",
-                    id:12,
-                    pesel:"5613264984561",
-                    hasPolishCitizenship:true,
-                    passportCode:null,
-                    passportNumber:null,
-                    email:"patient13@live.com",
-                    aglomeration:Core.Enums.Aglomeration.Warsaw
-                    )
+                new Patient (Persons[84]                    )
                 {
+                    Id=15,
                     EmployerNIP="7777742132152",
                     MedicalPackage=MedicalPackages[0],
                     NFZUnit=NfzUnits[10]
-                },
-                new Patient (
-                    name: "Monika",
-                    surName: "Zalewska",
-                    id:13,
-                    pesel:"823456132156462",
-                    hasPolishCitizenship:true,
-                    passportCode:null,
-                    passportNumber:null,
-                    email:"patient14@live.com",
-                    aglomeration:Core.Enums.Aglomeration.Warsaw
-                    )
-                {
-                    EmployerNIP="7777742132152",
-                    MedicalPackage=MedicalPackages[3],
-                    NFZUnit=NfzUnits[15]
                 },
 
             };
