@@ -1,4 +1,6 @@
-﻿<!DOCTYPE html>
+﻿@model  BaseViewModel
+
+<!DOCTYPE html>
 <html lang="en">
 
 <head>
@@ -44,9 +46,12 @@
             <li class="nav-item active">
                 <a class="nav-link" asp-area="CustomerServiceArea" asp-controller="CustomerService" asp-action="Index" >
                     <i class="fas fa-fw fa-tachometer-alt"></i>
-                    <span>Pulpit</span>
+                    <span>Wybierz pacjenta</span>
                 </a>
             </li>
+            @if (Model.SelectedPatient != null)
+            {
+
 
             <!-- Divider -->
             <hr class="sidebar-divider">
@@ -61,7 +66,7 @@
                 <a class="nav-link collapsed" 
                    aria-expanded="true" aria-controls="collapseTwo" asp-area="CustomerServiceArea" asp-controller="CustomerService" asp-action="BookVisit">
                     <i class="fas fa-fw fa-cog"></i>
-                    <span>Umów się na wizytę</span>
+                    <span>Umów na wizytę</span>
                 </a>
             </li>
 
@@ -117,6 +122,7 @@
                     <span>Wyniki badań</span>
                 </a>
             </li>
+            }
             @*<li class="nav-item">
                 <a class="nav-link" asp-area="CustomerServiceArea" asp-controller="CustomerService" asp-action="MedicalAdvice">
                     <i class="fas fa-fw fa-table"></i>

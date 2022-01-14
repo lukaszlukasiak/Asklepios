@@ -137,7 +137,7 @@ namespace Asklepios.Core.Models
                 totalPrice += price;
             }
 
-            for (int i = 0; i < MinorMedicalServices.Count; i++)
+            for (int i = 0; i < MinorMedicalServices?.Count; i++)
             {
                 MedicalService service = MinorMedicalServices[i];
                 if (package.ServicesDiscounts.ContainsKey(service))

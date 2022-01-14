@@ -52,8 +52,8 @@ namespace Asklepios.Web.Areas.HomeArea.Models
         public ContactMessageViewModel(Core.Models.Patient patient )
         {
             UserType = Core.Enums.UserType.Patient;
-            ContactName = patient.FullName;
-            ContactEMailAddress = patient.EmailAddress;
+            ContactName = patient.Person.FullName;
+            ContactEMailAddress = patient.Person.EmailAddress;
             UserId = patient.Id;
         }
         public ContactMessageViewModel(Core.Models.MedicalWorker worker)

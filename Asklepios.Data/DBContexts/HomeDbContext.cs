@@ -20,5 +20,10 @@ namespace Asklepios.Data.DBContexts
         {
             throw new NotImplementedException();
         }
+
+        public User LogIn(User user)
+        {
+            throw new NotImplementedException();
+        }
     }
 }

@@ -63,5 +63,37 @@ namespace Asklepios.Web.ServiceClasses
             smtp.Disconnect(true);
 
         }
+
+        internal static bool CreateAndSendMail(Areas.CustomerServiceArea.Models.ContactMessageViewModel modelP)
+        {
+            try
+            {
+                MimeMessage mimeMessage = CreateMail(modelP);
+                SendEMail(mimeMessage);
+                return true;
+            }
+            catch (Exception e)
+            {
+
+                return false;
+            }
+        }
+
+        private static MimeMessage CreateMail(Areas.CustomerServiceArea.Models.ContactMessageViewModel model)
+        {
+            var email = new MimeMessage();
+            email.From.Add(MailboxAddress.Parse(MAIL_ADDRESS));
+            email.To.Add(MailboxAddress.Parse(MAIL_ADDRESS));
+            email.Subject = model.Subject;
+            string from = "<h2>Sender name: " + model.ContactName + "</h2>";
+            string eAddress = "<h2> Sender e-address: " + model.ContactEMailAddress;
+            string phone = "<h2> Sender phone number: " + model.PhoneNumber;
+            string subject = "<h2> Subject: " + model.Subject;
+            string mess = "<h1>Message from client</h1>" + from + eAddress + phone + subject + "<p>" + model.Message + "</p>";
+            email.Body = new TextPart(MimeKit.Text.TextFormat.Html) { Text = mess };
+
+            // send email
+            return email;
+        }
     }
 }

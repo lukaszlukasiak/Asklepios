@@ -1,4 +1,4 @@
-﻿@model Asklepios.Web.Areas.PatientArea.Models.PatientViewModel
+﻿@model Asklepios.Web.Areas.CustomerServiceArea.Models.PatientViewModel
 @{
     ViewData["Title"] = "View";
 }
@@ -8,7 +8,7 @@
 </h1>
 
 @{
-    List<Visit> plannedVisits = Model.Patient.BookedVisits;
+    List<Visit> plannedVisits = Model.SelectedPatient.BookedVisits;
     if (plannedVisits.Count > 0)
     {
         @for (int i = 0; i < plannedVisits.Count; i++)

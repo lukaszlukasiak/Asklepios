@@ -15,6 +15,7 @@ namespace Asklepios.Core.Models
         {
             ProfessionalNumber = profNumber;
             MedicalWorkerType = MedicalWorkerType.Nurse;
+            PersonId = person.Id;
         }
         public override string ProfessionalTitle => "Pielęgniarka";
         //public string   PWZNumber { get;}

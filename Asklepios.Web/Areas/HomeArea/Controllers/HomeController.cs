@@ -1,4 +1,5 @@
-﻿using Asklepios.Data.Interfaces;
+﻿using Asklepios.Core.Models;
+using Asklepios.Data.Interfaces;
 using Asklepios.Web.Areas.HomeArea.Models;
 using Asklepios.Web.Models;
 using Microsoft.AspNetCore.Mvc;
@@ -55,29 +56,34 @@ namespace Asklepios.Web.Areas.HomeArea.Controllers
         [HttpPost]
         public IActionResult LogInPatient(LogInViewModel model)
         {
-            //RedirectToRoute()
             string userId = "1";
-            //return RedirectToAction("Index", "~/PatientArea/PatientController");
+            model.User.UserType = Core.Enums.UserType.Patient;
             return RedirectToAction("Index", "Patient", new { area = "PatientArea", id= userId });
-            //return  Redirect("/PatientArea/PatientController/Index");
-
-
-            //return View("LogIn", , model);
         }
         [HttpPost]
         public IActionResult LogInEmployee(LogInViewModel model)
         {
             long userId = model.User.Id;
-            switch (model.User.WorkerModuleType)
+            model.User.UserType = Core.Enums.UserType.Employee;
+            User user = _context.LogIn(model.User);
+
+            if (user!=null)
             {
-                case Core.Enums.WorkerModuleType.CustomerServiceModule:
-                    return RedirectToAction("Index", "CustomerService", new { area = "CustomerServiceArea", id = userId.ToString() });
-                case Core.Enums.WorkerModuleType.AdministrativeWorkerModule:
-                    return RedirectToAction("Index", "AdministrativeWorker", new { area = "AdministrativeWorkerArea", id = userId.ToString() });
-                case Core.Enums.WorkerModuleType.MedicalWorkerModule:
-                    return RedirectToAction("Index", "MedicalWorker", new { area = "MedicalWorkerArea", id = userId.ToString() });
-                default:
-                    break;
+                switch (model.User.WorkerModuleType)
+                {
+                    case Core.Enums.WorkerModuleType.CustomerServiceModule:
+                        return RedirectToAction("Index", "CustomerService", new { area = "CustomerServiceArea", id = user.Id.ToString() });
+                    case Core.Enums.WorkerModuleType.AdministrativeWorkerModule:
+                        return RedirectToAction("Index", "AdministrativeWorker", new { area = "AdministrativeWorkerArea", id = user.Id.ToString() });
+                    case Core.Enums.WorkerModuleType.MedicalWorkerModule:
+                        return RedirectToAction("Index", "MedicalWorker", new { area = "MedicalWorkerArea", id = user.Id.ToString() });
+                    default:
+                        break;
+                }
+            }
+            else
+            {
+                model.LogInFailed = true;
             }
             return View("LogIn", model);
         }

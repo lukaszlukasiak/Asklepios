@@ -1,13 +1,13 @@
-﻿@model List<MedicalWorker>
+﻿@model Asklepios.Web.Areas.CustomerServiceArea.Models.MedicalWorkersViewModel
     @{
         ViewData["Title"] = "View";
     }
 
     <h1 style="text-align:center">Lista pracowników medycznych</h1>
 
-    @for (int i = 0; i < Model.Count; i++)
+    @for (int i = 0; i < Model.MedicalWorkers.Count; i++)
     {
-        MedicalWorker med = Model[i];
+        MedicalWorker med = Model.MedicalWorkers[i];
         <partial name="_MedicalWorker" model="med" />
 
     }

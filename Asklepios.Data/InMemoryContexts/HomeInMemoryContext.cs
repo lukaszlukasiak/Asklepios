@@ -117,5 +117,25 @@ namespace Asklepios.Data.InMemoryContexts
                 return null;
             }
         }
+
+        public User LogIn(User user)
+        {
+            List<User> users = PatientMockDB.Users;
+            users = users.Where(c => c.UserType == user.UserType).ToList();
+            User user1 = users.Where(c => c.UserName == user.UserName).FirstOrDefault();
+            if (user1==null)
+            {
+                return null;
+            }
+            if (user.Password==user1.Password)
+            {
+                return user1;
+            }
+            else
+            {
+                return null;
+            }
+            //return PatientMockDB.Users.Where(c => c.UserType == user.UserType && c.UserName == user.UserName && c.Password == user.Password).FirstOrDefault();
+        }
     }
 }

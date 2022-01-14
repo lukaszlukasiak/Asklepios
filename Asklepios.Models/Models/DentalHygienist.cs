@@ -16,6 +16,7 @@ namespace Asklepios.Core.Models
         {
             PNumber = pNumber;
             MedicalWorkerType= MedicalWorkerType.DentalHygienist;
+            PersonId = person.Id;
         }
         public override string ProfessionalTitle => "Higienistka Dentystyczna";
         public string PNumber { get;}

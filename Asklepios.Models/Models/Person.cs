@@ -20,12 +20,14 @@ namespace Asklepios.Core.Models
         public string PassportCode { get; set; }
         public bool HasPolishCitizenship{ get;set; }
         public string EmailAddress { get; set; }
+        public DateTimeOffset BirthDate { get; set; }
         public Aglomeration DefaultAglomeration { get; set; }
-        public Person (string name, string surName, long id, string pesel, bool hasPolishCitizenship, string passportNumber,string  passportCode, string email, Aglomeration aglomeration)
+        public Person (string name, string surName, long id, string pesel, bool hasPolishCitizenship, string passportNumber,string  passportCode, string email, Aglomeration aglomeration, DateTimeOffset birthDate)
         {
             Name = name;
             Surname = surName;
             Id = id;
+            BirthDate = birthDate;
             if (hasPolishCitizenship)
             {
                 if (string.IsNullOrWhiteSpace(pesel))
