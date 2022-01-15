@@ -8,20 +8,22 @@
 </h1>
 
 @{
-    List<Visit>        historicalVisits = Model.GetHistoricalVisits(10);
+    List<Visit> historicalVisits = Model.GetHistoricalVisits(10);
 
-        if (historicalVisits.Count > 0)
-        {
+    if (historicalVisits.Count > 0)
+    {
 
         for (int i = 0; i < historicalVisits.Count; i++)
         {
-        Visit visit = historicalVisits[i];
-        <partial name="_HistoricalVisit" model="visit" />
+            Visit visit = historicalVisits[i];
+            Asklepios.Web.Areas.PatientArea.Models.VisitViewModel model = new Asklepios.Web.Areas.PatientArea.Models.VisitViewModel();
+            model.Visit = visit;
+            <partial name="_HistoricalVisit" model="model" />
 
         }
-        }
-        else
-        {
+    }
+    else
+    {
         <h3>Nie byłeś jeszcze na żadnej wizycie u nas...</h3>
         <a asp-area="PatientArea" asp-controller="Patient" asp-action="BookVisit" class="btn btn-primary btn-icon-split mt-3">
             <span class="icon text-white-50">
@@ -29,7 +31,7 @@
             </span>
             <span class="text">Zarezerwuj wizytę</span>
         </a>
-        }
+    }
 
 
-        }
+}

@@ -6,7 +6,10 @@
             <div class="d-flex flex-fill flex-column justify-content-center" style="text-align:center">
                 <a asp-action="MedicalWorkerDetails" asp-controller="Patient" asp-route-id="@Model.IssuedBy.Id">
                     <h3 style="font-weight:900;">
-                        @Model.IssuedBy.FullProffesionalName
+                        <a asp-action="MedicalWorkerDetails" asp-controller="Patient" asp-route-id="@Model.IssuedBy.Id">
+
+                            @Model.IssuedBy.FullProffesionalName
+                            </a>
                     </h3>
                 </a>
                 <div class="d-flex align-content-center mr-auto pt-2" style="text-align:center">

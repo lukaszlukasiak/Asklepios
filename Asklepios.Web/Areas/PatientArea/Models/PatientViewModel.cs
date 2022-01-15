@@ -74,11 +74,13 @@ namespace Asklepios.Web.Areas.PatientArea.Models
                 return commingVisits;
             }
         }
-        public List<Visit> GetHistoricalVisits(int numberOfVisits = 3)
+        public List<MedicalReferral> GetReferrals(int numberOfVisits = 10)
         {
-            List<Visit> pastVisits = new List<Visit>();
+            List<MedicalReferral> validReferrals= new List<MedicalReferral>();
+            List<Visit> visits = Patient.HistoricalVisits.OrderByDescending(c => c.DateTimeSince).ToList();
 
-            List<Visit> visits = Patient.HistoricalVisits;
+            //referrals = Patient.MedicalReferrals.OrderBy(c => c.IssueDate).ToList();
+
             if (visits.Count > 0)
             {
                 if (numberOfVisits > visits.Count)
@@ -88,7 +90,41 @@ namespace Asklepios.Web.Areas.PatientArea.Models
 
                 for (int i = 0; i < numberOfVisits; i++)
                 {
-                    pastVisits.Add(Patient.HistoricalVisits.ElementAt(i));
+                    if (visits.ElementAt(i).ExaminationReferrals!=null)
+                    {
+                        List<MedicalReferral> referrals = visits.ElementAt(i).ExaminationReferrals;
+                        for (int j = 0; j < referrals.Count; j++)
+                        {
+                            if (referrals.ElementAt(j).IsActive)
+                            {
+                                validReferrals.Add(referrals.ElementAt(j));
+                            }
+                        }
+                    }
+                }
+                return validReferrals;
+            }
+            else
+            {
+                return validReferrals;
+            }
+        }
+
+        public List<Visit> GetHistoricalVisits(int numberOfVisits = 3)
+        {
+            List<Visit> pastVisits = new List<Visit>();
+
+            List<Visit> visits = Patient.HistoricalVisits.OrderByDescending(c => c.DateTimeSince).ToList();
+            if (visits.Count > 0)
+            {
+                if (numberOfVisits > visits.Count)
+                {
+                    numberOfVisits = visits.Count;
+                }
+
+                for (int i = 0; i < numberOfVisits; i++)
+                {
+                    pastVisits.Add(visits.ElementAt(i));
                 }
                 return pastVisits;
             }

@@ -174,5 +174,16 @@ namespace Asklepios.Data.InMemoryContexts
             oldVisit = visit;
         }
 
+        public void ResignFromVisit(Visit plannedVisit, Patient selectedPatient)
+        {
+            plannedVisit.Patient = null;
+            PatientMockDB.CurrentPatient.BookedVisits.Remove(plannedVisit);
+        }
+
+        public void BookVisit(Patient selectedPatient, Visit newVisit)
+        {
+            newVisit.Patient = selectedPatient;
+            PatientMockDB.CurrentPatient.BookedVisits.Add(newVisit);
+        }
     }
 }

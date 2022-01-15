@@ -8,6 +8,9 @@
     @for (int i = 0; i < Model.MedicalWorkers.Count; i++)
     {
         MedicalWorker med = Model.MedicalWorkers[i];
-        <partial name="_MedicalWorker" model="med" />
+        Asklepios.Web.Areas.CustomerServiceArea.Models.MedicalWorkerViewModel model = new Asklepios.Web.Areas.CustomerServiceArea.Models.MedicalWorkerViewModel(Model.SelectedPatient, med);
+        //model.MedicalWorker = med;
+        //model.SelectedPatient = Model.SelectedPatient;
+        <partial name="_MedicalWorker" model="model" />
 
     }

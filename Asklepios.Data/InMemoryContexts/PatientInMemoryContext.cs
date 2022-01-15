@@ -143,7 +143,8 @@ namespace Asklepios.Data.InMemoryContexts
 
         public void UpdateReferral(MedicalReferral referral)
         {
-            throw new NotImplementedException();
+            MedicalReferral refe = PatientMockDB.CurrentPatient.MedicalReferrals.Where(c => c.Id == referral.Id).FirstOrDefault();
+            refe = referral;
         }
 
         public void UpdateVisit(Visit visit)
@@ -163,8 +164,15 @@ namespace Asklepios.Data.InMemoryContexts
         public void ResignFromVisit(Visit plannedVisit, Patient patient)
         {
             plannedVisit.Patient = null;
-            patient.BookedVisits.Remove(plannedVisit);
+            //patient.BookedVisits.Remove(plannedVisit);
+            PatientMockDB.CurrentPatient.BookedVisits.Remove(plannedVisit);
         }
 
+        public void BookVisit(Patient selectedPatient, Visit selectedVisit)
+        {
+            selectedVisit.Patient = selectedPatient;
+            //selectedPatient.BookedVisits.Add(selectedVisit);
+            PatientMockDB.CurrentPatient.BookedVisits.Add(selectedVisit);
+        }
     }
 }

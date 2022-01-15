@@ -10,13 +10,16 @@
 @{
     List<Visit>        historicalVisits = Model.GetHistoricalVisits(10);
 
-        if (historicalVisits.Count > 0)
-        {
+    if (historicalVisits.Count > 0)
+    {
 
         for (int i = 0; i < historicalVisits.Count; i++)
         {
-        Visit visit = historicalVisits[i];
-        <partial name="_HistoricalVisit" model="visit" />
+            Visit visit = historicalVisits[i];
+            Asklepios.Web.Areas.CustomerServiceArea.Models.VisitViewModel model = new Asklepios.Web.Areas.CustomerServiceArea.Models.VisitViewModel(Model.SelectedPatient,visit);
+            model.Visit = visit;
+
+        <partial name="_HistoricalVisit" model="model" />
 
         }
         }

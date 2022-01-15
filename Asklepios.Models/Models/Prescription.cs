@@ -26,6 +26,7 @@ namespace Asklepios.Core.Models
                 _visit = value;
                 IssuedBy = value.MedicalWorker as Doctor;
                 IssuedTo = value.Patient;
+                IssueDate = value.DateTimeSince;
             }
         }
         //public VisitSummary VisitSummary { get; set; }

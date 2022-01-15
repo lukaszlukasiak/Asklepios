@@ -34,6 +34,7 @@ namespace Asklepios.Data.Interfaces
         void UpdateReferral(MedicalReferral referral);
         void UpdateVisit(Visit visit);
         void ResignFromVisit(Visit plannedVisit, Patient patient);
+        void BookVisit(Patient selectedPatient, Visit selectedVisit);
         //IEnumerable<MedicalRoom> GetMedicalRooms();
         //MedicalRoom GetMedicalRoomById();
 

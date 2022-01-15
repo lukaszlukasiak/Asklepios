@@ -1,87 +1,95 @@
 ﻿
 @model Asklepios.Web.Areas.CustomerServiceArea.Models.MedicalWorkerViewModel
-<div class="d-flex  flex-column jumbotron w-80 h-auto" style=" padding:20px;display:flex;align-content:center;position:relative">
-    <div class="d-flex mb-3 flex-wrap align-self-center align-items-center">
-        <div class="p-2  pt-3 align-content-center align-items-center align-self-center mx-auto" style="width:400px; text-align:center">
-            <div class="d-flex flex-fill  justify-content-center" style="text-align:center">
-                <img alt="@Model.MedicalWorker.FullProffesionalName" src="@Model.MedicalWorker.ImagePath" class="img-fluid" style="display: block; max-height:300px;
+    <div class="d-flex  flex-column jumbotron w-100 h-auto align-content-between" style=" padding:20px;">
+        <div class="d-flex mb-3 flex-wrap  align-items-center">
+            <div class="p-2  pt-3 align-content-center align-items-center align-self-center mx-auto" style="width:400px; text-align:center">
+                <div class="d-flex flex-fill  justify-content-center" style="text-align:center">
+                    <img alt="@Model.MedicalWorker.FullProffesionalName" src="@Model.MedicalWorker.ImagePath" class="img-fluid" style="display: block; max-height:300px;
         border-radius: 6px; ">
+                </div>
             </div>
-        </div>
-        <div class="d-flex  p-2 flex-grow-1 pt-3  align-content-stretch align-items-center" style="width:400px; text-align:center">
-            <div class="d-flex flex-column m-auto">
-                <h3 style="font-weight:900;">
-                    @Model.MedicalWorker.FullProffesionalName
-                </h3>
-                <br />
-                <h5>Region - @Model.MedicalWorker.Person.DefaultAglomeration</h5>
-                <h5>Edukacja:</h5>
-                @for (int i = 0; i < Model.MedicalWorker.Education.Count; i++)
-                {
-                    <p>@Model.MedicalWorker.Education[i] </p>
-                }
-                <h5>Doświadczenie:</h5>
-                <div>@Model.MedicalWorker.Experience</div>
+            <div class="d-flex  p-2 flex-grow-1 pt-3  align-content-stretch align-items-center" style="width:400px; text-align:center">
+                <div class="d-flex flex-column m-auto">
+                    <h3 style="font-weight:900;">
+                        @Model.MedicalWorker.FullProffesionalName
+                    </h3>
+                    <br />
+                    <h5>Region - @Model.MedicalWorker.Person.DefaultAglomeration</h5>
+                    <h5>Edukacja:</h5>
+                    @for (int i = 0; i < Model.MedicalWorker.Education.Count; i++)
+                    {
+                        <p>@Model.MedicalWorker.Education[i] </p>
+                    }
+                    <h5>Doświadczenie:</h5>
+                    <div>@Model.MedicalWorker.Experience</div>
+                </div>
             </div>
-        </div>
 
-        <div class="p-2 flex-grow-1 pt-3 mx-auto flex-grow-1 " style="width:400px;text-align:center">
-            <h3 style="font-weight:900;"> </h3>
-            <h5>Zakres specjalizacji:</h5>
-            <h5>
-                @for (int i = 0; i < Model.MedicalWorker.MedicalServices.Count; i++)
-                {
-                    MedicalService service = Model.MedicalWorker.MedicalServices[i];
-                    //if (i % 2 == 1)
-                    //{
+            <div class="p-2 flex-grow-1 pt-3 mx-auto flex-grow-1 " style="width:400px;text-align:center">
+                <h3 style="font-weight:900;"> </h3>
+                <h5>Zakres specjalizacji:</h5>
+                <h5>
+                    @for (int i = 0; i < Model.MedicalWorker.MedicalServices.Count; i++)
+                    {
+                        MedicalService service = Model.MedicalWorker.MedicalServices[i];
+                        //if (i % 2 == 1)
+                        //{
                         <br>
-                    @*}*@
-                    @service.Name
+                        @*}*@
+                        @service.Name
+                    }
+
+                </h5>
+                <partial name="_Stars" model="@Model.MedicalWorker.AverageRating" />
+
+                @if (Model.MedicalWorker.VisitReviews.Count > 0)
+                {
+                    @Model.MedicalWorker.RatingDescription
                 }
-
-            </h5>
-            <partial name="_Stars" model="@Model.MedicalWorker.AverageRating" />
-
-            @if (Model.MedicalWorker.VisitReviews.Count > 0)
-            {
-                @Model.MedicalWorker.RatingDescription
-            }
-            <div>
-                <a asp-area="PatientArea" asp-controller="Patient" asp-action="BookVisit" class="btn btn-primary btn-icon-split mt-3">
+                <div>
+                    @*<a asp-area="CustomerServiceArea" asp-controller="CustomerService" asp-action="BookVisit" class="btn btn-primary btn-icon-split mt-3">
                     <span class="icon text-white-50">
                         <i class="fas fa-book"></i>
                     </span>
                     <span class="text">Zarezerwuj wizytę</span>
-                </a>
+                </a>*@
+                    <form class="form d-flex flex-column m-2" asp-action="BookVisitConditions" method="post">
+                        <button type="submit" class="btn btn-primary btn-icon-split d-flex">
+                            <span class="icon text-white-50 left" style="text-align:left;float:left">
+                                <i class="fas fa-address-book"></i>
+                            </span>
+                            <span class="text" style="float: left">Zarezerwuj wizytę</span>
+                        </button>
+                        @*@Html.TextBoxFor(m => m.SelectedMedicalWorkerId, new { @class = "form-control ", @style = "visibility:hidden;height:0px" },)*@
+                        <input asp-for="SelectedMedicalWorkerId" style="visibility:collapse; height:0px" value="@Model.MedicalWorker.Id.ToString()" />
+                    </form>
+
+                </div>
             </div>
-
-
-
         </div>
-    </div>
-    <div  class="d-flex flex-column">
-        <h2>Opinie</h2>
         <div class="d-flex flex-column">
-            @for (int i = 0; i < Model.MedicalWorker.VisitReviews.Count; i++)
-            {
-                VisitReview review = Model.MedicalWorker.VisitReviews[i];
-                if (i % 2 == 0)
+            <h2>Opinie</h2>
+            <div class="d-flex flex-column">
+                @for (int i = 0; i < Model.MedicalWorker.VisitReviews.Count; i++)
                 {
-            <div class="d-flex mt-2">
-                <partial name="_MedicalReview" model="@review" />
+                    VisitReview review = Model.MedicalWorker.VisitReviews[i];
+                    if (i % 2 == 0)
+                    {
+                        <div class="d-flex mt-2">
+                            <partial name="_MedicalReview" model="@review" />
+                        </div>
+
+                    }
+                    else
+                    {
+                        <div class="d-flex mt-4">
+                            <partial name="_MedicalReview" model="@review" />
+                        </div>
+
+                    }
+
+
+                }
             </div>
-                    
-                }
-                else
-                {
-        <div class="d-flex mt-4">
-            <partial name="_MedicalReview" model="@review" />
-        </div>
-                    
-                }
-
-
-            }
         </div>
     </div>
-</div>

@@ -1,4 +1,5 @@
-﻿using Asklepios.Web.Models;
+﻿using Asklepios.Core.Models;
+using Asklepios.Web.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using System;
@@ -18,6 +19,16 @@ namespace Asklepios.Web.Areas.AdministrativeWorkerArea.Controllers
         public AdministrativeWorkerController(ILogger<AdministrativeWorkerController> logger)
         {
             _logger = logger;
+        }
+        private static User _loggedUser { get; set; }
+        private static Person _person { get; set; }
+        private static Patient _selectedPatient { get; set; }
+
+        internal static void LogOut()
+        {
+            _loggedUser = null;
+            _person = null;
+            _selectedPatient = null;
         }
 
         //public IActionResult Index()
@@ -44,5 +55,6 @@ namespace Asklepios.Web.Areas.AdministrativeWorkerArea.Controllers
         {
             return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
         }
+
     }
 }

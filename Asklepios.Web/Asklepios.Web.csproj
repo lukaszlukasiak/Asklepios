@@ -18,6 +18,7 @@
     <Content Remove="Areas\HomeArea\Views\Home\_Location_deop.cshtml" />
     <Content Remove="Areas\HomeArea\Views\Shared\_Layout.cshtml" />
     <Content Remove="Areas\PatientArea\Views\Patient\AboutUs.cshtml" />
+    <Content Remove="Areas\PatientArea\Views\Patient\MedicalAdvice.cshtml" />
     <Content Remove="Areas\_ViewImports.cshtml" />
     <Content Remove="Areas\_ViewStart.cshtml" />
   </ItemGroup>
@@ -42,7 +43,6 @@
     <Folder Include="Areas\MedicalWorkerArea\Data\" />
     <Folder Include="Areas\MedicalWorkerArea\Models\" />
     <Folder Include="Areas\PatientArea\Data\" />
-    <Folder Include="Models\" />
     <Folder Include="wwwroot\img\MW\" />
     <Folder Include="wwwroot\vendor\" />
   </ItemGroup>

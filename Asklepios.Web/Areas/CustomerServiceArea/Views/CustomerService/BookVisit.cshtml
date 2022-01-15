@@ -18,19 +18,18 @@
         <option value="0">Wybierz oddział</option>
     </select>
 
-    <select class="form-control  mb-1" asp-for="SelectedVisitCategoryId" asp-items="categoriesList">
+    <select class="form-control  mb-1" asp-for="SelectedCategoryId" asp-items="categoriesList">
         <option value="0">Wybierz kategorię wizyty</option>
     </select>
     <select class="form-control  mb-1" asp-for="SelectedPrimaryServiceId" asp-items="servicesList">
         <option value="0">Wybierz specjalność</option>
     </select>
 
-    <select class="form-control mb-1" asp-for="SelectedWorkerId" asp-items="workersItems" onchange="">
+    <select class="form-control mb-1" asp-for="SelectedMedicalWorkerId" asp-items="workersItems" onchange="">
         <option value="0">Wybierz lekarza</option>
     </select>
     <div class="d-flex flex-column">
         <button class=" btn btn-secondary   mb-1">Filtruj!</button>
-
     </div>
     @*<select asp-for="@Model.SearchOptions.SelectedDoctor" asp-items="@Model.GetMedicalWorkers.ToList()" class="form-control">
             <option>Select Role</option>

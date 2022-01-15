@@ -15,6 +15,7 @@
         @for (int i = 0; i < plannedVisits.Count; i++)
         {
             Visit visit = plannedVisits[i];
+            
             <partial name="_PlannedVisit" model="visit" />
 
         }
@@ -33,7 +34,10 @@
         for (int i = 0; i < historicalVisits.Count; i++)
         {
             Visit visit = historicalVisits[i];
-            <partial name="_HistoricalVisit" model="visit" />
+            Asklepios.Web.Areas.PatientArea.Models.VisitViewModel model = new Asklepios.Web.Areas.PatientArea.Models.VisitViewModel();
+            model.Visit = visit;
+            
+            <partial name="_HistoricalVisit" model="model" />
 
         }
     }

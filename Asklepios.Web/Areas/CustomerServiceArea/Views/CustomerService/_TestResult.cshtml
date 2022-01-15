@@ -4,7 +4,7 @@
 
         <div class="d-flex p-2   align-content-center align-items-center align-self-center mx-auto" style="width:400px; text-align:center">
             <div class="d-flex flex-fill flex-column justify-content-center" style="text-align:center">
-                <a asp-action="MedicalWorkerDetails" asp-controller="Patient" asp-route-id="@Model.MedicalWorker.Id">
+                <a asp-action="MedicalWorkerDetails" asp-controller="CustomerService" asp-route-id="@Model.MedicalWorker.Id">
                     <h3 style="font-weight:900;">
                         @Model.MedicalWorker.FullProffesionalName
                     </h3>
@@ -26,7 +26,7 @@
                 <div>
                     Wykonane: @Model.ExamDate.ToString("dd-MM-yyyy")
                 </div>
-                <a  class="btn btn-primary btn-icon-split mt-3" asp-area="PatientArea" asp-controller="Patient" asp-action="DownloadFile" asp-route-id="@Model.Id">
+                <a  class="btn btn-primary btn-icon-split mt-3" asp-area="CustomerServiceArea" asp-controller="CustomerService" asp-action="DownloadFile" asp-route-id="@Model.Id">
                     <span class="icon text-white-50">
                         <i class="fas fa-download"></i>
                     </span>
