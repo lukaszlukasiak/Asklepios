@@ -6,12 +6,14 @@ using System.Threading.Tasks;
 
 namespace Asklepios.Web.Areas.CustomerServiceArea.Models
 {
-    public class PatientViewModel:BaseViewModel
+    public class PatientViewModel:IBaseViewModel
     {
         public PatientViewModel(Patient patient)
         {
             SelectedPatient = patient;
         }
+
+        public Patient SelectedPatient { get; set; }
 
         //public Patient Patient { get; set; }
 

@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace Asklepios.Web.Areas.CustomerServiceArea.Models
 {
-    public class ContactMessageViewModel:BaseViewModel
+    public class ContactMessageViewModel:IBaseViewModel
     {
         [Required(ErrorMessage = "Proszę podaj swoje imię i nazwisko")]
         [Display(Name = "Imię i nazwisko")]
@@ -45,6 +45,8 @@ namespace Asklepios.Web.Areas.CustomerServiceArea.Models
             }
         }
         public AlertMessageType AlertMessageType { get; set; }
+        public Patient SelectedPatient { get; set; }
+
         public ContactMessageViewModel()
         {
             UserType = Core.Enums.UserType.Guest;

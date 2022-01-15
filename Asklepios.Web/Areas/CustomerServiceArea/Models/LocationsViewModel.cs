@@ -6,9 +6,11 @@ using System.Threading.Tasks;
 
 namespace Asklepios.Web.Areas.CustomerServiceArea.Models
 {
-    public class LocationsViewModel:BaseViewModel
+    public class LocationsViewModel:IBaseViewModel
     {
         public List<Asklepios.Core.Models.Location> Locations { get; set; }
+        public Patient SelectedPatient { get; set; }
+
         public LocationsViewModel(Patient patient, List<Asklepios.Core.Models.Location> locations)
         {
             SelectedPatient = patient;

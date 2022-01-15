@@ -85,9 +85,17 @@
                     @{ 
                         MedicalReferral referral = Model.ExaminationReferrals[i];
 
-                    <div>
-                        Usługa: @referral.MedicalService.Name
-                    </div>
+                                        <div>
+                                            Usługa: @referral.PrimaryMedicalService.Name
+                                            @if (referral.MinorMedicalService != null)
+                                            {
+                                                <span>
+                                                    Podusługa: @referral.MinorMedicalService.Name
+                                                </span>
+
+                                            }
+
+                                        </div>
 
                     <div>
                         Wystawione: @referral.IssueDate.ToString("dd-MM-yyyy")

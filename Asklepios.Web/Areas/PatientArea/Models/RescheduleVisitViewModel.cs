@@ -96,7 +96,7 @@ namespace Asklepios.Web.Areas.PatientArea.Models
                 }
             }
         }
-        public List<MedicalService> GetMedicalServices
+        public List<MedicalService> GetMedicalServicesAvailable
         {
             get
             {
@@ -111,6 +111,22 @@ namespace Asklepios.Web.Areas.PatientArea.Models
                 }
             }
         }
+        //public List<MedicalService> GetMedicalServicesAll
+        //{
+        //    get
+        //    {
+        //        if (AllVisitsList?.Count > 0)
+        //        {
+        //            List<MedicalService> services = ;
+        //            return services;
+        //        }
+        //        else
+        //        {
+        //            return null;
+        //        }
+        //    }
+        //}
+
         public List<VisitCategory> GetVisitCategories
         {
             get
@@ -126,6 +142,8 @@ namespace Asklepios.Web.Areas.PatientArea.Models
                 }
             }
         }
+
+        public IEnumerable<MedicalService> MedicalServices { get; internal set; }
 
         private List<Visit> FilterVisits()
         {

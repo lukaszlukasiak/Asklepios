@@ -13,6 +13,11 @@ namespace Asklepios.Data
     {
         public Patient CurrentPatient { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
 
+        public void BookVisit(Patient selectedPatient, Visit newVisit)
+        {
+            throw new NotImplementedException();
+        }
+
         public IEnumerable<Location> GetAllLocations()
         {
             throw new NotImplementedException();
@@ -124,6 +129,11 @@ namespace Asklepios.Data
         }
 
         public VisitCategory GetVisitCategoryById(long id)
+        {
+            throw new NotImplementedException();
+        }
+
+        public void ResignFromVisit(Visit plannedVisit, Patient selectedPatient)
         {
             throw new NotImplementedException();
         }

@@ -34,5 +34,7 @@ namespace Asklepios.Data.Interfaces
         void UpdateVisit(Visit visit);
         User GetUser(int parsedId);
         Person GetPerson(long personId);
+        void ResignFromVisit(Visit plannedVisit, Patient selectedPatient);
+        void BookVisit(Patient selectedPatient, Visit newVisit);
     }
 }

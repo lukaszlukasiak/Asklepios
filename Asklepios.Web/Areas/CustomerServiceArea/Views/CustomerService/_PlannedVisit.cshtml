@@ -11,7 +11,6 @@
                     <img alt="@Model.MedicalWorker.FullProffesionalName" src="@Model.MedicalWorker.ImagePath" class="mx-auto d-block"  style="display: block; max-height:50% ; max-width:50%;
         border-radius: 6px; ">
                 </div>
-                
             </div>
         </div>
         <div class="p-2 flex-grow-1 pt-3 m-auto flex-grow-1" style="width:400px;text-align:center">
@@ -32,25 +31,8 @@
                 <h5>
                     "W realizacji..."
                 </h5>
-
             }
-
-            @*<h4>Zakres specjalizacji:</h4>
-        <h5>
-            @for (int i = 0; i < Model.MedicalServices.Count; i++)
-            {
-                MedicalService service = Model.MedicalServices[i];
-                if (i % 2 == 1)
-                {
-                    <br>
-                }
-                @service.Name
-            }
-
-        </h5>*@
-
         </div>
-
         <div class="p-2 pt-3 m-auto flex-grow-1" style="width:400px;">
             <div class="d-flex flex-column align-content-end justify-content-evenly m-auto">
                 <a asp-area="CustomerServiceArea" asp-controller="CustomerService" asp-action="RescheduleVisit" asp-route-id="@Model.Id" class="btn btn-primary btn-icon-split ">
@@ -59,14 +41,12 @@
                     </span>
                     <span class="text" style="float: left">Przełóż wizytę</span>
                 </a>
-                <a asp-area="CustomerServiceArea" asp-controller="CustomerService" asp-action="ResignFromVisit" asp-route-id="@Model.Id" class="btn btn-primary btn-icon-split mt-3">
+                <a asp-area="CustomerServiceArea" asp-controller="CustomerService" asp-action="ResignFromVisit" asp-route-id="@Model.Id" class="btn btn-primary btn-icon-split mt-2">
                     <span class="icon text-white-50 left" style="text-align:left;float:left">
                         <i class="fas fa-address-book"></i>
                     </span>
                     <span class="text" style="float: left">Zrezygnuj z wizyty</span>
                 </a>
-                @*style="align-items: flex-start;display:block; padding-left:50px;"
-        style="text-align:left; align-content:baseline; align-items:flex-start"*@
             </div>
         </div>
     </div>

@@ -23,7 +23,16 @@ namespace Asklepios.Web.Areas.HomeArea.Controllers
         {
             _context = context;
         }
+        public IActionResult LogOut()
+        {
+            PatientArea.Controllers.PatientController.LogOut();
+            MedicalWorkerArea.Controllers.MedicalWorkerController.LogOut();
+            CustomerServiceArea.Controllers.CustomerServiceController.LogOut();
+            AdministrativeWorkerArea.Controllers.AdministrativeWorkerController.LogOut();
 
+            return RedirectToAction("Index", "Home", new { area = "HomeArea"});
+
+        }
         //public IActionResult Index()
         //{
         //    return View();

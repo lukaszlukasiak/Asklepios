@@ -9,13 +9,16 @@ namespace Asklepios.Core.Models
     {
         public long Id { get; set; }
         public VisitCategory VisitCategory { get; set; }
-
+        public long VisitCategoryId { get; set; }
         public Patient Patient { get; set; }
+        public long PatientId { get; set; }
         public MedicalWorker MedicalWorker { get; set; }
+        public long MedicalWorkerId { get; set; }
         public DateTimeOffset DateTimeSince { get; set; }
         public DateTimeOffset DateTimeTill { get; set; }
         public List<MedicalService> MinorMedicalServices { get; set; }
         public MedicalService PrimaryService { get; set; }
+        public long PrimaryServiceId { get; set; }
         public Location Location { get; set; }
         public MedicalRoom MedicalRoom { get; set; }
         public string MedicalHistory { get; set; }
@@ -47,8 +50,7 @@ namespace Asklepios.Core.Models
                 _visitReview = value;
                 _visitReview.Reviewee = MedicalWorker;
                 _visitReview.Reviewer = Patient;
-                _visitReview.Visit = this;
-                
+                _visitReview.Visit = this;               
             }
         }
 

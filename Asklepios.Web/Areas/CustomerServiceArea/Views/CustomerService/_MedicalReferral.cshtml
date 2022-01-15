@@ -20,7 +20,16 @@
         <div class="d-flex p-2  pt-3 m-auto flex-grow-1" style="width:400px;text-align:center">
             <div class="d-flex flex-fill pt-2 flex-column">
                 <h2>
-                    Usługa: @Model.MedicalService.Name
+                    Usługa: @Model.PrimaryMedicalService.Name
+                    @if (Model.MinorMedicalService != null)
+                    {
+                    <br />
+                        <span>
+                            Podusługa: @Model.MinorMedicalService.Name
+                        </span>
+
+                    }
+
                 </h2>
 
                 <div>

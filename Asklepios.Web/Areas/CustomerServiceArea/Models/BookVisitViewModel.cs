@@ -1,4 +1,5 @@
 ﻿using Asklepios.Core.Models;
+using Asklepios.Web.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -6,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace Asklepios.Web.Areas.CustomerServiceArea.Models
 {
-    public class BookVisitViewModel:BaseViewModel
+    public class BookVisitViewModel: SearchViewModel,IBaseViewModel
     {
         public List<Visit> AllVisitsList { get; set; }
         public List<Visit> _filteredVisits;
@@ -24,24 +25,24 @@ namespace Asklepios.Web.Areas.CustomerServiceArea.Models
 
         }
         //public VisitSearchOptions SearchOptions { get; set; } = new VisitSearchOptions();
-        private string _selectedWorkerId;
-        public string SelectedWorkerId
-        {
-            get
-            {
-                return _selectedWorkerId;
-            }
-            set
-            {
-                _selectedWorkerId = value;
-            }
-        }
-        public string SelectedLocationId
-        { get; set; }
-        public string SelectedPrimaryServiceId
-        { get; set; }
-        public string SelectedVisitCategoryId
-        { get; set; }
+        //private string _selectedWorkerId;
+        //public string SelectedWorkerId
+        //{
+        //    get
+        //    {
+        //        return _selectedWorkerId;
+        //    }
+        //    set
+        //    {
+        //        _selectedWorkerId = value;
+        //    }
+        //}
+        //public string SelectedLocationId
+        //{ get; set; }
+        //public string SelectedPrimaryServiceId
+        //{ get; set; }
+        //public string SelectedVisitCategoryId
+        //{ get; set; }
 
         public int CurrentPageNum { get; set; } = 0;
         public int NumberOfPages
@@ -132,6 +133,20 @@ namespace Asklepios.Web.Areas.CustomerServiceArea.Models
                 }
             }
         }
+        public string SelectedPrimaryServiceId
+        { get; set; }
+        //public string SelectedVisitCategoryId
+        //{ get; set; }
+
+        //public string SelectedLocationId { get; set; }
+        //public string SelectedCategoryId { get; internal set; }
+        //public string SelectedMedicalWorkerId { get; internal set; }
+        //public string SelectedServiceId { get; internal set; }
+        public List<VisitCategory> AllCategories { get; internal set; }
+        public List<MedicalWorker> AllMedicalWorkers { get; internal set; }
+        public List<MedicalService> AllMedicalServices { get; internal set; }
+        public List<Location> AllLocations { get; internal set; }
+        public Patient SelectedPatient { get; set; }
 
         private List<Visit> FilterVisits()
         {
@@ -146,9 +161,9 @@ namespace Asklepios.Web.Areas.CustomerServiceArea.Models
             }
             else
             {
-                if (SelectedWorkerId != null)
+                if (SelectedMedicalWorkerId != null)
                 {
-                    if (long.TryParse(SelectedWorkerId, out long lid))
+                    if (long.TryParse(SelectedMedicalWorkerId, out long lid))
                     {
                         if (lid>0)
                         {
@@ -191,13 +206,13 @@ namespace Asklepios.Web.Areas.CustomerServiceArea.Models
                     
                 }
             }
-            if (SelectedVisitCategoryId != null)
+            if (SelectedCategoryId != null)
             {
-                if (long.TryParse(SelectedVisitCategoryId, out long lid))
+                if (long.TryParse(SelectedCategoryId, out long lid))
                 {
                     if (lid>0)
                     {
-                        filteredVisits = filteredVisits.Where(c => c.VisitCategory.Id == int.Parse(SelectedVisitCategoryId)).ToList();
+                        filteredVisits = filteredVisits.Where(c => c.VisitCategory.Id == int.Parse(SelectedCategoryId)).ToList();
                         if (filteredVisits == null)
                         {
                             return null;

@@ -8,7 +8,7 @@
 </h1>
 
 @{
-    List<Visit> plannedVisits = Model.SelectedPatient.BookedVisits;
+    List<Visit> plannedVisits = Model.GetCommingVisits(10);
     if (plannedVisits.Count > 0)
     {
         @for (int i = 0; i < plannedVisits.Count; i++)
@@ -27,6 +27,5 @@
             </span>
             <span class="text">Zarezerwuj wizytę</span>
         </a>
-
     }
 }

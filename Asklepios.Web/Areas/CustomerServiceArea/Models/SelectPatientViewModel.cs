@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Asklepios.Web.Areas.CustomerServiceArea.Models
 {
-    public class SelectPatientViewModel:BaseViewModel
+    public class SelectPatientViewModel:IBaseViewModel
     {
         public List<Patient> AllPatients { get; set; }
         public string SelectedPESEL { get; set; }
@@ -27,6 +27,8 @@ namespace Asklepios.Web.Areas.CustomerServiceArea.Models
             }
 
         }
+
+        public Patient SelectedPatient { get; set; }
 
         private List<Patient> FilterPatients()
         {

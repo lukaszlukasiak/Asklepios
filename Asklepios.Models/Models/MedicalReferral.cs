@@ -10,7 +10,8 @@ namespace Asklepios.Core.Models
     {
         public long Id { get; set; }
 
-        public MedicalService MedicalService { get; set; }
+        public MedicalService PrimaryMedicalService { get; set; }
+        public MedicalService MinorMedicalService { get; set; }
         public DateTimeOffset IssueDate { get; set; }
         public DateTimeOffset ExpireDate { get; set; }
         public bool IsActive 
@@ -57,6 +58,7 @@ namespace Asklepios.Core.Models
                 _visit = value;
                 IssuedBy = value.MedicalWorker;
                 IssuedTo = value.Patient;
+                IssueDate = value.DateTimeSince;
             }
         }
         //public VisitSummary VisitSummary { get; set; }
