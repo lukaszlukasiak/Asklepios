@@ -13,7 +13,8 @@ namespace Asklepios.Core.Models
         public string ImagePath { get; set; }
         public string PhoneNumber { get; set; }
         public string PostalCode { get; set; }
-        public VoivodeshipType VoivodeshipType { get; set;}
+        //public VoivodeshipType VoivodeshipType { get; set;}
+        public Aglomeration Aglomeration { get; set; }
         public string City { get; set; }
         public string StreetAndNumber { get; set; }
         public IEnumerable<string> Facilities { get; set; }

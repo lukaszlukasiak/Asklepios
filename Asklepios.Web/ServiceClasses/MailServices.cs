@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Asklepios.Web.Areas.HomeArea.Models;
+using Asklepios.Web.Models;
 using MailKit.Net.Smtp;
 using MailKit.Security;
 using MimeKit;
@@ -77,6 +78,38 @@ namespace Asklepios.Web.ServiceClasses
 
                 return false;
             }
+        }
+
+        internal static bool CreateAndSendMail(IContactViewModel model)
+        {
+            try
+            {
+                MimeMessage mimeMessage = CreateMail(model);
+                SendEMail(mimeMessage);
+                return true;
+            }
+            catch (Exception e)
+            {
+
+                return false;
+            }
+        }
+
+        private static MimeMessage CreateMail(IContactViewModel model)
+        {
+            var email = new MimeMessage();
+            email.From.Add(MailboxAddress.Parse(MAIL_ADDRESS));
+            email.To.Add(MailboxAddress.Parse(MAIL_ADDRESS));
+            email.Subject = model.Subject;
+            string from = "<h2>Sender name: " + model.ContactName + "</h2>";
+            string eAddress = "<h2> Sender e-address: " + model.ContactEMailAddress;
+            string phone = "<h2> Sender phone number: " + model.PhoneNumber;
+            string subject = "<h2> Subject: " + model.Subject;
+            string mess = "<h1>Message from client</h1>" + from + eAddress + phone + subject + "<p>" + model.Message + "</p>";
+            email.Body = new TextPart(MimeKit.Text.TextFormat.Html) { Text = mess };
+
+            // send email
+            return email;
         }
 
         private static MimeMessage CreateMail(Areas.CustomerServiceArea.Models.ContactMessageViewModel model)

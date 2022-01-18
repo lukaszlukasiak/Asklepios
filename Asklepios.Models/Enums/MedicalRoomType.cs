@@ -8,17 +8,17 @@ namespace Asklepios.Core.Enums
     //[Flags]
     public enum MedicalRoomType
     {
-        [Description("Ogólny")]
+        [Description("Gabinet ogólny")]
         General,
-        [Description("Kardiologiczny")]
+        [Description("Gabinet kardiologiczny")]
         Cardiological,
-        [Description("Ginekologiczny")]
+        [Description("Gabinet ginekologiczny")]
         Gynecological,
-        [Description("Laryngologiczny")]
+        [Description("Gabinet laryngologiczny")]
         Laryngological,
         //[Description("Urologiczny")]
         //Urological,
-        [Description("Chirurgiczny")]
+        [Description("Gabinet chirurgiczny")]
         Surgical,
         //[Description("Ortopedyczny")]
         //Orthopedic,
@@ -26,17 +26,17 @@ namespace Asklepios.Core.Enums
         Treatment,
         //[Description("Gastrologiczny")]
         //Gastrological,
-        [Description("Okulistyczny")]
+        [Description("Gabinet okulistyczny")]
         Ophthalmology,
-        [Description("Neurologiczny")]
+        [Description("Gabinet neurologiczny")]
         Neurological,
-        [Description("Stomatologiczny")]
+        [Description("Gabinet stomatologiczny")]
         Dental,
-        [Description("Higieny jamy ustnej")]
+        [Description("Gabinet higieny jamy ustnej")]
         OralHygiene,
-        [Description("Rehabilitacyjny")]
+        [Description("Gabinet rehabilitacyjny")]
         Rehabilitation,
-        [Description("Diagnostyki obrazowej")]
+        [Description("Gabinet diagnostyki obrazowej")]
         MedicalImaging
     }
 }

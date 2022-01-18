@@ -470,8 +470,7 @@ using Asklepios.Web.Areas.CustomerServiceArea.Models;
                     </button>
 
                     <!-- Topbar Navbar -->
-                    <ul class=""navbar-nav ml-auto"">
-");
+                    <ul class=""navbar-nav ml-auto"">");
                 WriteLiteral(@"
 
                         <!-- Nav Item - Search Dropdown (Visible Only XS) -->
@@ -503,8 +502,7 @@ using Asklepios.Web.Areas.CustomerServiceArea.Models;
                         <li class=""nav-item dropdown no-arrow mx-1"">
                             <a class=""nav-link dropdown-toggle"" href=""#"" id=""alertsDropdown"" role=""button""
                                data-toggle=""dropdown"" aria-haspopup=""true"" aria-expanded=""false"">
-                                <i class=""fas fa-bell fa-fw""></i>
-");
+                                <i class=""fas fa-bell fa-fw""></i>");
                 WriteLiteral(@"
                                 <!-- Counter - Alerts -->
                                 <span class=""badge badge-danger badge-counter"">3+</span>

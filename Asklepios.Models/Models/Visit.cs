@@ -150,7 +150,20 @@ namespace Asklepios.Core.Models
             }
             return totalPrice;
         }
+        public Visit (Location location,MedicalRoom medicalRoom,MedicalWorker medicalWorker,VisitCategory visitCategory,MedicalService medicalService,DateTimeOffset start, DateTimeOffset end)
+        {
+            Location = location;
+            MedicalRoom = medicalRoom;
+            MedicalWorker = medicalWorker;
+            VisitCategory = visitCategory;
+            PrimaryService = medicalService;
+            DateTimeSince = start;
+            DateTimeTill = end;
+        }
+        public Visit()
+        {
 
+        }
     }
 
 }

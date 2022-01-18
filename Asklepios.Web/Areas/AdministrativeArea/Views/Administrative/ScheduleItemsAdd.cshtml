@@ -1,0 +1,80 @@
+﻿@model Asklepios.Web.Areas.AdministrativeArea.Models.ScheduleItemsAddViewModel
+@{
+    SelectList workersItems = new SelectList(Model.MedicalWorkers, "Id", "FullProffesionalName");
+    SelectList locationItems = new SelectList(Model.Locations, "Id", "Name");
+    SelectList categoriesList = new SelectList(Model.VisitCategories, "Id", "CategoryName");
+    SelectList roomsList = null;
+    if (!string.IsNullOrWhiteSpace(Model.SelectedLocationId))
+    {
+        roomsList= new SelectList(Model.MedicalRooms, "Id", "LongDescription");
+    }
+    //SelectList servicesList = new SelectList(Model.GetMedicalServices, "Id", "Name");
+    //IEnumerable<MedicalService> services = Model.MedicalServices.Where(c => c.Id == long.Parse(Model.SelectedPrimaryServiceId)).ToList();
+
+    SelectList servicesList = new SelectList(Model.PrimaryMedicalServices, "Id", "Name");
+
+}
+
+<div class="d-flex flex-column">
+
+    <form class="form my-2" asp-action="ScheduleItemsAdd" method="post">
+        <div class="form-group d-flex flex-column">
+            <label asp-for="SelectedLocationId" class="control-label"></label>
+            <select class="form-control  mb-2" asp-for="SelectedLocationId" asp-items="locationItems" onchange="document.getElementById('btnSubmit').click();">
+                <option value="0">Wybierz oddział</option>
+            </select>
+            <span asp-validation-for="SelectedLocationId" class="text-danger"></span>
+            <label asp-for="SelectedRoomId" class="control-label"></label>
+            <select class="form-control  mb-2" asp-for="SelectedRoomId" asp-items="roomsList" onchange="document.getElementById('btnSubmit').click();">
+                <option value="0">Wybierz pokój</option>
+            </select>
+            <span asp-validation-for="SelectedRoomId" class="text-danger"></span>
+
+            <label asp-for="SelectedVisitCategoryId" class="control-label"></label>
+            <select class="form-control  mb-2" asp-for="SelectedVisitCategoryId" asp-items="categoriesList" onchange="document.getElementById('btnSubmit').click();">
+                <option value="0">Wybierz kategorię</option>
+            </select>
+            <span asp-validation-for="SelectedVisitCategoryId" class="text-danger"></span>
+
+            <label asp-for="SelectedMedicalServiceId" class="control-label"></label>
+            <select class="form-control  mb-2" asp-for="SelectedMedicalServiceId" asp-items="servicesList" onchange="document.getElementById('btnSubmit').click();">
+                <option value="0">Wybierz usługę</option>
+            </select>
+            <span asp-validation-for="SelectedMedicalServiceId" class="text-danger"></span>
+
+            <label asp-for="SelectedMedicalWorkerId" class="control-label"></label>
+            <select class="form-control  mb-2" asp-for="SelectedMedicalWorkerId" asp-items="workersItems" onchange="document.getElementById('btnSubmit').click();">
+                <option value="0">Wybierz pracownika</option>
+            </select>
+            <span asp-validation-for="SelectedMedicalWorkerId" class="text-danger"></span>
+
+            @if (Model.SelectedMedicalWorker != null)
+            {
+                <partial name="_MedicalWorker" model="Model.SelectedMedicalWorker" />
+
+            }
+
+            <label asp-for="VisitsDate" class="control-label"></label>
+            <input asp-for="VisitsDate" class="form-control mb-2">
+            <span asp-validation-for="VisitsDate" class="text-danger"></span>
+            <label asp-for="FirstVisitTime" class="control-label"></label>
+            <input asp-for="FirstVisitTime" class="form-control mb-2">
+            <span asp-validation-for="FirstVisitTime" class="text-danger"></span>
+
+
+
+            <label asp-for="DurationOfVisit" class="control-label"></label>
+            <input asp-for="DurationOfVisit" class="form-control mb-2" onchange="" />
+            <span asp-validation-for="DurationOfVisit" class="text-danger"></span>
+            <label asp-for="NumberOfVisitsToAdd" class="control-label"></label>
+            <input asp-for="NumberOfVisitsToAdd" class="form-control mb-2" onchange="" />
+            <span asp-validation-for="NumberOfVisitsToAdd" class="text-danger"></span>
+
+            <button id="btnSubmit" type="submit" class="btn btn-primary w-100 mt-2">Dodaj</button>
+        </div>
+    </form>
+    @*  *@
+
+</div>
+
+@*asp-format="{0:dd/MM/yyyy hh:mm}" value="@Model.FirstVisitInitialDateTime.ToString("dd.MM.yyyy HH:mm")"*@
