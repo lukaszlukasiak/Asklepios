@@ -76,7 +76,10 @@ namespace Asklepios.Data.InMemoryContexts
             CurrentPatient = GetPatientData(AllPatients[0]);
 
         }
-
+        public static Person GetPersonById(long id)
+        {
+            return Persons.Where(c => c.Id == id).FirstOrDefault();
+        }
 
         private static List<User> GetAllUsers()
         {
@@ -184,7 +187,7 @@ namespace Asklepios.Data.InMemoryContexts
                 for (int j = 0; j < 12; j++)
                 {
                     minutsOffset++;
-                    Visit visit = new Visit()
+                    Visit visit = new Visit(      )
                     {
                         Id = startId++,
                         PrimaryService = PrimaryMedicalServices[0],
@@ -580,6 +583,11 @@ namespace Asklepios.Data.InMemoryContexts
         internal static User GetUserById(int parsedId)
         {
             User user = Users.Where(c => c.Id == parsedId).FirstOrDefault();
+            if (user != null)
+            {
+                user.PersonId = user.PersonId;
+                user.Person = GetPersonById(user.PersonId);
+            }
             return user;
         }
 
@@ -624,11 +632,13 @@ namespace Asklepios.Data.InMemoryContexts
                     {   City="Warszawa",
                         StreetAndNumber="Jerozolimskie 80",
                         Description="Ośrodek w centrum Warszawy ze świetnym dojazdem z każdej dzielnicy.",
-                        Facilities=new List<string>(){"15 gabinetów ogólno-konsultacyjnych", "Gabinez zabiegowy", "2 gabinety stomatologiczne", "Gabinet higieny jamy ustnej", "Gabinet diagnostyki obrazowej"},
+                        Facilities=new List<string>(){"15 gabinetów ogólno-konsultacyjnych", "Gabinet zabiegowy", "2 gabinety stomatologiczne", "Gabinet higieny jamy ustnej", "Gabinet diagnostyki obrazowej"},
                         Id=1,
                         Name="Ośrodek Warszawa Jerozolimskie",
                         Services=new List<string>(){"Interna", "Ginekologia", "Pediatria", "Diagnostyka obrazowa", "Stomatologia", "Higiena jamy ustnej", "Dermatologia", "Ortopedia", "Neurochirurgia"},
-                        VoivodeshipType=Core.Enums.VoivodeshipType.mazowieckie,
+                        //VoivodeshipType=Core.Enums.VoivodeshipType.mazowieckie,
+                         Aglomeration=Core.Enums.Aglomeration.Warsaw,
+
                         ImagePath="/img/Locations/loc1.jpeg",
                         PhoneNumber="22 780 421 433",
                         PostalCode="01-111",
@@ -639,11 +649,13 @@ namespace Asklepios.Data.InMemoryContexts
                     City="Warszawa",
                         StreetAndNumber="Grójecka 100",
                         Description="Ośrodek w Warszawie w dzielnicy Ochota, z bardzo dobrym dojazdem z zachodniej części Warszawy.",
-                        Facilities=new List<string>(){"12 gabinetów ogólno-konsultacyjnych", "Gabinez zabiegowy", "Gabinet diagnostyki obrazowej", "Gabinek okulistyczny"},
+                        Facilities=new List<string>(){"12 gabinetów ogólno-konsultacyjnych", "Gabinet zabiegowy", "Gabinet diagnostyki obrazowej", "Gabinek okulistyczny"},
                         Id=2,
                         Name="Ośrodek Warszawa Ochota",
                         Services=new List<string>(){"Interna", "Ginekologia", "Pediatria", "Diagnostyka obrazowa", "Stomatologia", "Higiena jamy ustnej", "Dermatologia", "Ortopedia", "Neurochirurgia"},
-                        VoivodeshipType=Core.Enums.VoivodeshipType.mazowieckie,
+                        //VoivodeshipType=Core.Enums.VoivodeshipType.mazowieckie,
+                                                Aglomeration=Core.Enums.Aglomeration.Warsaw,
+
                         ImagePath="/img/Locations/loc2.jpg",
                         PhoneNumber="22 787 477 323",
                         PostalCode="01-211",
@@ -657,7 +669,9 @@ namespace Asklepios.Data.InMemoryContexts
                         Id=3,
                         Name="Ośrodek Warszawa Ursynów",
                         Services=new List<string>(){"Interna", "Ginekologia", "Pediatria", "Diagnostyka obrazowa", "Stomatologia", "Higiena jamy ustnej", "Dermatologia", "Ortopedia", "Neurochirurgia"},
-                        VoivodeshipType=Core.Enums.VoivodeshipType.mazowieckie,
+                        //VoivodeshipType=Core.Enums.VoivodeshipType.mazowieckie,
+                                                Aglomeration=Core.Enums.Aglomeration.Warsaw,
+
                         ImagePath="/img/Locations/loc3.jpg",
                         PhoneNumber="22 777 600 313",
                         PostalCode="03-055",
@@ -668,11 +682,13 @@ namespace Asklepios.Data.InMemoryContexts
                     {   City="Warszawa",
                         StreetAndNumber="Malborska",
                         Description="Ośrodek na wschodzie Warszawy z dobrym dojazdem ze wschodnich dzielnic Warszawy a także wschodnich okolic Warszawy.",
-                        Facilities=new List<string>(){"15 gabinetów ogólno-konsultacyjnych", "Gabinez zabiegowy", "2 gabinety stomatologiczne", "Gabinet higieny jamy ustnej", "Gabinet diagnostyki obrazowej"},
+                        Facilities=new List<string>(){"15 gabinetów ogólno-konsultacyjnych", "Gabinet zabiegowy", "2 gabinety stomatologiczne", "Gabinet higieny jamy ustnej", "Gabinet diagnostyki obrazowej"},
                         Id=4,
                         Name="Ośrodek Warszawa Targówek",
                         Services=new List<string>(){"Interna", "Ginekologia", "Pediatria", "Diagnostyka obrazowa", "Stomatologia", "Higiena jamy ustnej", "Dermatologia", "Ortopedia", "Neurochirurgia"},
-                        VoivodeshipType=Core.Enums.VoivodeshipType.mazowieckie,
+                        //VoivodeshipType=Core.Enums.VoivodeshipType.mazowieckie,
+                                                Aglomeration=Core.Enums.Aglomeration.Warsaw,
+
                         ImagePath="/img/Locations/loc4.jpg",
                         PhoneNumber="22 777 444 333",
                         PostalCode="02-222",
@@ -683,11 +699,13 @@ namespace Asklepios.Data.InMemoryContexts
                     {   City="Kraków",
                         StreetAndNumber="Podgórska 14",
                         Description="Ośrodek w Krakowie, w świetnie skomunikowanym Kazimierzu",
-                        Facilities=new List<string>(){"15 gabinetów ogólno-konsultacyjnych", "Gabinez zabiegowy", "2 gabinety stomatologiczne", "Gabinet higieny jamy ustnej", "Gabinet diagnostyki obrazowej"},
+                        Facilities=new List<string>(){"15 gabinetów ogólno-konsultacyjnych", "Gabinet zabiegowy", "2 gabinety stomatologiczne", "Gabinet higieny jamy ustnej", "Gabinet diagnostyki obrazowej"},
                         Id=5,
                         Name="Ośrodek Kraków Pogórze",
                         Services=new List<string>(){"Interna", "Ginekologia", "Pediatria", "Diagnostyka obrazowa", "Stomatologia", "Higiena jamy ustnej", "Dermatologia", "Ortopedia", "Neurochirurgia"},
-                        VoivodeshipType=Core.Enums.VoivodeshipType.malopolskie,
+                        //VoivodeshipType=Core.Enums.VoivodeshipType.malopolskie,
+                                                Aglomeration=Core.Enums.Aglomeration.Cracow,
+
                         ImagePath="/img/Locations/loc5.jpg",
                         PhoneNumber="20 300 400 111",
                         PostalCode="80-078",
@@ -697,18 +715,71 @@ namespace Asklepios.Data.InMemoryContexts
                 new Location()
                     {   City="Gdańsk",
                         StreetAndNumber="Chlebnicka 11",
-                        Description="Ośrodek w centrum Gdańska na popularnje Wyspie Spichrzów",
-                        Facilities=new List<string>(){"15 gabinetów ogólno-konsultacyjnych", "Gabinez zabiegowy", "2 gabinety stomatologiczne", "Gabinet higieny jamy ustnej", "Gabinet diagnostyki obrazowej"},
+                        Description="Ośrodek w centrum Gdańska na popularnej Wyspie Spichrzów",
+                        Facilities=new List<string>(){"22 gabinety ogólno-konsultacyjne", "Gabinet zabiegowy", "2 gabinety stomatologiczne", "Gabinet higieny jamy ustnej", "Gabinet diagnostyki obrazowej"},
                         Id=6,
                         Name="Ośrodek Gdańsk Wyspa Spichrzów",
                         Services=new List<string>(){"Interna", "Ginekologia", "Pediatria", "Diagnostyka obrazowa", "Stomatologia", "Higiena jamy ustnej", "Dermatologia", "Ortopedia", "Neurochirurgia"},
-                        VoivodeshipType=Core.Enums.VoivodeshipType.pomorskie,
+                        //VoivodeshipType=Core.Enums.VoivodeshipType.pomorskie,
+                                                Aglomeration=Core.Enums.Aglomeration.Tricity,
+
                         ImagePath="/img/Locations/loc6.jpg",
                         PhoneNumber="30 500 500 241",
                         PostalCode="45-100",
                         MedicalRooms=roomsCollections.ElementAt(5)
 
                         },
+                                                new Location()
+                    {   City="Poznań",
+                        StreetAndNumber="Maltańska 1",
+                        Description="Ośrodek położony na terenie Galerie Malta Poznań",
+                        Facilities=new List<string>(){"20 gabinetów ogólno-konsultacyjnych", "Gabinet zabiegowy", "2 gabinety stomatologiczne", "Gabinet higieny jamy ustnej", "Gabinet diagnostyki obrazowej"},
+                        Id=1,
+                        Name="Ośrodek Poznań Malta",
+                        Services=new List<string>(){"Interna", "Ginekologia", "Pediatria", "Diagnostyka obrazowa", "Stomatologia", "Higiena jamy ustnej", "Dermatologia", "Ortopedia", "Neurochirurgia", "Okulistyka"},
+                        //VoivodeshipType=Core.Enums.VoivodeshipType.pomorskie,
+                        Aglomeration=Core.Enums.Aglomeration.Poznan,
+                        ImagePath="/img/locations/loc7.jpg",
+                        PhoneNumber="30 500 500 241",
+                        PostalCode="60-102",
+                        MedicalRooms=roomsCollections.ElementAt(1)
+
+                        },
+                                                new Location()
+                    {   City="Wrocław",
+                        StreetAndNumber="Szczytnicka 11",
+                        Description="Placówka położona nieco na wschód od ścisłego centrum. Łatwo do niej trafić, idąc prosto od strony placu Grunwaldzkiego.",
+                        Facilities=new List<string>(){"15 gabinetów ogólno-konsultacyjnych", "Gabinet zabiegowy", "2 gabinety stomatologiczne", "Gabinet higieny jamy ustnej", "Gabinet diagnostyki obrazowej"},
+                        Id=1,
+                        Name="Ośrodek Wrocław Szczytnicka",
+                        Services=new List<string>(){"Interna", "Ginekologia", "Pediatria", "Diagnostyka obrazowa", "Stomatologia", "Higiena jamy ustnej", "Dermatologia", "Ortopedia"},
+                        //VoivodeshipType=Core.Enums.VoivodeshipType.pomorskie,
+                        Aglomeration=Core.Enums.Aglomeration.Wroclaw,
+                        ImagePath="/img/locations/loc8.jpg",
+                        PhoneNumber="71 500 500 241",
+                        PostalCode="50-031",
+                        MedicalRooms=roomsCollections.ElementAt(2)
+
+                        },
+                                                            new Location()
+                                 {
+                    City="Katowice",
+                        StreetAndNumber="Młyńska 23",
+                        Description="Ośrodek położonyw  bliskiej okolicy dworca PKP oraz Placu Wolności",
+                        Facilities=new List<string>(){"21 gabinetów ogólno-konsultacyjnych", "Gabinet zabiegowy", "2 gabinety stomatologiczne", "Gabinet higieny jamy ustnej", "Gabinet diagnostyki obrazowej"},
+                        Id=1,
+                        Name="Ośrodek Gdańsk Wyspa Spichrzów",
+                        Services=new List<string>(){"Interna", "Ginekologia", "Pediatria", "Diagnostyka obrazowa", "Stomatologia", "Higiena jamy ustnej", "Dermatologia", "Ortopedia", "Neurochirurgia", "Gastrologia"},
+                        //VoivodeshipType=Core.Enums.VoivodeshipType.pomorskie,
+                        Aglomeration=Core.Enums.Aglomeration.Silesia,
+                        ImagePath="/img/locations/loc9.jpg",
+                        PhoneNumber="32 500 500 241",
+                        PostalCode="40-750",
+                        MedicalRooms=roomsCollections.ElementAt(3)
+
+                        },
+
+
             };
 
         }
@@ -2994,7 +3065,7 @@ namespace Asklepios.Data.InMemoryContexts
 
         public static MedicalWorker GetMedicalWorkerById(long id)
         {
-            throw new NotImplementedException();
+            return MedicalWorkers.Where(c => c.Id == id).FirstOrDefault();
         }
 
         public static Visit GetHistoricalVisitById()

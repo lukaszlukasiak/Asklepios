@@ -1,0 +1,12 @@
+﻿@model Asklepios.Web.Areas.AdministrativeArea.Models.ScheduleManageViewModel
+
+@{
+    List<Visit> visits = Model.FilteredSchedule;
+
+    for (int i = 0; i < visits.Count; i++)
+    {
+        Visit visit = visits[i];
+        <partial name="_ScheduleItem" model="visit" />
+    }
+
+}

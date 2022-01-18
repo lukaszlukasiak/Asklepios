@@ -1,10 +1,6 @@
 ﻿using Asklepios.Core.Models;
 using Asklepios.Web.Enums;
-using System;
-using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
-using System.Linq;
-using System.Threading.Tasks;
 
 namespace Asklepios.Web.Areas.CustomerServiceArea.Models
 {
@@ -32,7 +28,6 @@ namespace Asklepios.Web.Areas.CustomerServiceArea.Models
         public string Subject { get; set; }
         [Required(ErrorMessage = "Proszę wprowadź wiadomość")]
         [StringLength(500)]
-
         public string Message { get; set; }
         public string AlertMessage { get; set; }
         public Core.Enums.UserType UserType { get; set; }
@@ -65,8 +60,22 @@ namespace Asklepios.Web.Areas.CustomerServiceArea.Models
             UserType = Core.Enums.UserType.Employee;
             ContactName = worker.Person.FullName;
             ContactEMailAddress = worker.Person.EmailAddress;
-
             UserId = worker.Id;
         }
+        public ContactMessageViewModel(Core.Models.MedicalWorker worker)
+        {
+            UserType = Core.Enums.UserType.Employee;
+            ContactName = worker.Person.FullName;
+            ContactEMailAddress = worker.Person.EmailAddress;
+            UserId = worker.Id;
+        }
+        public ContactMessageViewModel(User user)
+        {
+            UserType = user.UserType;
+            ContactName = user.Person.FullName;
+            ContactEMailAddress = user.Person.EmailAddress;
+            UserId = user.Person.Id;
+        }
+
     }
 }

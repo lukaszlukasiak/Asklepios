@@ -36,8 +36,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Areas\AdministrativeWorkerArea\Data\" />
-    <Folder Include="Areas\AdministrativeWorkerArea\Models\" />
+    <Folder Include="Areas\AdministrativeArea\Data\" />
     <Folder Include="Areas\CustomerServiceArea\Data\" />
     <Folder Include="Areas\HomeArea\Data\" />
     <Folder Include="Areas\MedicalWorkerArea\Data\" />
@@ -48,7 +47,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Content Update="Areas\AdministrativeWorkerArea\Views\Shared\_Layout1.cshtml">
+    <Content Update="Areas\AdministrativeArea\Views\Shared\_Layout1.cshtml">
       <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
       <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
     </Content>

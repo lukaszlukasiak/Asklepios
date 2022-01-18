@@ -15,6 +15,6 @@ namespace Asklepios.Core.Models
         public UserType UserType { get; set; }
         public WorkerModuleType? WorkerModuleType { get; set; }
         public long PersonId { get; set; }
-
+        public Person Person { get; set; }
     }
 }

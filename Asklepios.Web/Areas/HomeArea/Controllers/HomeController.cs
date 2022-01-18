@@ -28,7 +28,7 @@ namespace Asklepios.Web.Areas.HomeArea.Controllers
             PatientArea.Controllers.PatientController.LogOut();
             MedicalWorkerArea.Controllers.MedicalWorkerController.LogOut();
             CustomerServiceArea.Controllers.CustomerServiceController.LogOut();
-            AdministrativeWorkerArea.Controllers.AdministrativeWorkerController.LogOut();
+            AdministrativeArea.Controllers.AdministrativeController.LogOut();
 
             return RedirectToAction("Index", "Home", new { area = "HomeArea"});
 
@@ -83,7 +83,7 @@ namespace Asklepios.Web.Areas.HomeArea.Controllers
                     case Core.Enums.WorkerModuleType.CustomerServiceModule:
                         return RedirectToAction("Index", "CustomerService", new { area = "CustomerServiceArea", id = user.Id.ToString() });
                     case Core.Enums.WorkerModuleType.AdministrativeWorkerModule:
-                        return RedirectToAction("Index", "AdministrativeWorker", new { area = "AdministrativeWorkerArea", id = user.Id.ToString() });
+                        return RedirectToAction("Index", "Administrative", new { area = "AdministrativeArea", id = user.Id.ToString() });
                     case Core.Enums.WorkerModuleType.MedicalWorkerModule:
                         return RedirectToAction("Index", "MedicalWorker", new { area = "MedicalWorkerArea", id = user.Id.ToString() });
                     default:

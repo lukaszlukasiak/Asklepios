@@ -36,7 +36,6 @@ namespace Asklepios.Web.Areas.CustomerServiceArea.Controllers
         public CustomerServiceController(ICustomerServiceModuleRepository context)
         {
             _context = context;
-
         }
         [HttpPost]
         public IActionResult Index(SelectPatientViewModel model)
@@ -294,10 +293,6 @@ namespace Asklepios.Web.Areas.CustomerServiceArea.Controllers
             return NotFound();
 
         }
-        //public IActionResult MedicalAdvice()
-        //{
-        //    return View();
-        //}
         public IActionResult MedicalWorkersList()
         {
             if (_loggedUser != null)
