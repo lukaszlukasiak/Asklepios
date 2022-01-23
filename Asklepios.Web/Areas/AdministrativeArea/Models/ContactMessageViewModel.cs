@@ -68,7 +68,7 @@ namespace Asklepios.Web.Areas.AdministrativeArea.Models
         }
         public ContactMessageViewModel(User user)
         {
-            UserType = user.UserType;
+            UserType = user.UserType.Value;
             ContactName = user.Person.FullName;
             ContactEMailAddress = user.Person.EmailAddress;
             UserId = user.Person.Id;

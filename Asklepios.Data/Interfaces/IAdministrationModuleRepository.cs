@@ -26,5 +26,6 @@ namespace Asklepios.Data.Interfaces
         List<MedicalRoom> GetRoomsByLocationId();
         MedicalService GetMedicalServiceById(long v);
         void AddVisitsToSchedule(List<Visit> visitsToAdd);
+        void RemoveVisitById(long id);
     }
 }
