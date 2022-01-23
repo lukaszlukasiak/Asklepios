@@ -135,5 +135,10 @@ namespace Asklepios.Data.InMemoryContexts
                 PatientMockDB.AvailableVisits.Append(item);
             }          
         }
+
+        public void RemoveVisitById(long id)
+        {
+            PatientMockDB.RemoveVisitById(id);
+        }
     }
 }

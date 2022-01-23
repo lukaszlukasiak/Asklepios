@@ -112,5 +112,10 @@ namespace Asklepios.Data
         {
             throw new NotImplementedException();
         }
+
+        public void RemoveVisitById(long id)
+        {
+            throw new NotImplementedException();
+        }
     }
 }

@@ -4,47 +4,51 @@
     SelectList locationItems = new SelectList(Model.Locations, "Id", "Name");
     SelectList categoriesList = new SelectList(Model.VisitCategories, "Id", "CategoryName");
     SelectList roomsList = null;
-    if (!string.IsNullOrWhiteSpace(Model.SelectedLocationId))
+    if (long.TryParse(Model.SelectedLocationId, out long lid))
     {
-        roomsList= new SelectList(Model.MedicalRooms, "Id", "LongDescription");
+        if (lid > 0)
+        {
+            roomsList = new SelectList(Model.MedicalRooms, "Id", "LongDescription");
+
+        }
     }
     //SelectList servicesList = new SelectList(Model.GetMedicalServices, "Id", "Name");
     //IEnumerable<MedicalService> services = Model.MedicalServices.Where(c => c.Id == long.Parse(Model.SelectedPrimaryServiceId)).ToList();
 
     SelectList servicesList = new SelectList(Model.PrimaryMedicalServices, "Id", "Name");
-
+    Model.Guard = null;
 }
 
 <div class="d-flex flex-column">
-
     <form class="form my-2" asp-action="ScheduleItemsAdd" method="post">
         <div class="form-group d-flex flex-column">
             <label asp-for="SelectedLocationId" class="control-label"></label>
-            <select class="form-control  mb-2" asp-for="SelectedLocationId" asp-items="locationItems" onchange="document.getElementById('btnSubmit').click();">
-                <option value="0">Wybierz oddział</option>
+            <select class="form-control  mb-2" asp-for="SelectedLocationId" asp-items="locationItems"
+                    onchange="AddGuard(); Refresh();">
+                <option value="">Wybierz oddział</option>
             </select>
             <span asp-validation-for="SelectedLocationId" class="text-danger"></span>
             <label asp-for="SelectedRoomId" class="control-label"></label>
-            <select class="form-control  mb-2" asp-for="SelectedRoomId" asp-items="roomsList" onchange="document.getElementById('btnSubmit').click();">
-                <option value="0">Wybierz pokój</option>
+            <select class="form-control  mb-2" asp-for="SelectedRoomId" asp-items="roomsList" onchange="AddGuard(); Refresh();">
+                <option value="">Wybierz pokój</option>
             </select>
             <span asp-validation-for="SelectedRoomId" class="text-danger"></span>
 
             <label asp-for="SelectedVisitCategoryId" class="control-label"></label>
-            <select class="form-control  mb-2" asp-for="SelectedVisitCategoryId" asp-items="categoriesList" onchange="document.getElementById('btnSubmit').click();">
-                <option value="0">Wybierz kategorię</option>
+            <select class="form-control  mb-2" asp-for="SelectedVisitCategoryId" asp-items="categoriesList" onchange="AddGuard(); Refresh();">
+                <option value="">Wybierz kategorię</option>
             </select>
             <span asp-validation-for="SelectedVisitCategoryId" class="text-danger"></span>
 
             <label asp-for="SelectedMedicalServiceId" class="control-label"></label>
-            <select class="form-control  mb-2" asp-for="SelectedMedicalServiceId" asp-items="servicesList" onchange="document.getElementById('btnSubmit').click();">
-                <option value="0">Wybierz usługę</option>
+            <select class="form-control  mb-2" asp-for="SelectedMedicalServiceId" asp-items="servicesList" onchange="AddGuard(); Refresh();">
+                <option value="">Wybierz usługę</option>
             </select>
             <span asp-validation-for="SelectedMedicalServiceId" class="text-danger"></span>
 
             <label asp-for="SelectedMedicalWorkerId" class="control-label"></label>
-            <select class="form-control  mb-2" asp-for="SelectedMedicalWorkerId" asp-items="workersItems" onchange="document.getElementById('btnSubmit').click();">
-                <option value="0">Wybierz pracownika</option>
+            <select class="form-control  mb-2" asp-for="SelectedMedicalWorkerId" asp-items="workersItems" onchange="AddGuard(); Refresh();">
+                <option value="">Wybierz pracownika</option>
             </select>
             <span asp-validation-for="SelectedMedicalWorkerId" class="text-danger"></span>
 
@@ -69,12 +73,52 @@
             <label asp-for="NumberOfVisitsToAdd" class="control-label"></label>
             <input asp-for="NumberOfVisitsToAdd" class="form-control mb-2" onchange="" />
             <span asp-validation-for="NumberOfVisitsToAdd" class="text-danger"></span>
+            <input asp-for="Guard" class="form-control mb-2" type="hidden">
+            @*<button id="btnSubmitAlt" type="submit" style="width:none;height:0px" ;>Dodaj</button>*@
 
-            <button id="btnSubmit" type="submit" class="btn btn-primary w-100 mt-2">Dodaj</button>
+            <button id="btnSubmit" type="submit" class="btn btn-primary w-100 mt-2" onmousedown="RemoveGuard()" onkeydown="RemoveGuard()">Dodaj</button>
         </div>
     </form>
-    @*  *@
+    @{
+        if (!string.IsNullOrWhiteSpace(Model.SuccessMessage))
+        {
+            <div class="messages" style="margin-top:10px;text-align:center">
+                <p class="alert alert-success">
+                    @Model.SuccessMessage
+                </p>
+            </div>
+        }
+        else if (!string.IsNullOrWhiteSpace(Model.ErrorMessage))
+        {
+            <div class="messages" style="margin-top: 10px; text-align: center ">
+                <p class="alert alert-danger">
+                    @Model.ErrorMessage
+                </p>
+            </div>
+
+        }
+    }
+    <form class="form my-2" asp-action="ScheduleItemsAdd" method="get" >
+        <div class="form-group d-flex flex-column">
+            <button type="submit" class="btn btn-primary w-100 mt-2" >Zresetuj formularz</button>
+        </div>
+    </form>
+
+        <script type="text/javascript">
+
+            function Refresh() {
+
+                document.getElementById('btnSubmit').click();
+            }
+            function AddGuard() {
+                document.getElementById('Guard').value = '1';
+            }
+            function RemoveGuard() {
+                document.getElementById('Guard').value = '';
+            }
+
+        </script>
 
 </div>
 
-@*asp-format="{0:dd/MM/yyyy hh:mm}" value="@Model.FirstVisitInitialDateTime.ToString("dd.MM.yyyy HH:mm")"*@
+    @*asp-format="{0:dd/MM/yyyy hh:mm}" value="@Model.FirstVisitInitialDateTime.ToString("dd.MM.yyyy HH:mm")"*@

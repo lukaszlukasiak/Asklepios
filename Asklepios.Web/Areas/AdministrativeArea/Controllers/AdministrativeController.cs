@@ -92,13 +92,107 @@ namespace Asklepios.Web.Areas.AdministrativeArea.Controllers
                     model.AlertMessage = "Wystąpił błąd podczas próby wysłania wiadomości! Spróbuj jeszcze raz!";
                     model.AlertMessageType = Enums.AlertMessageType.Error;
                     ViewBag.Message = "Wystąpił błąd podczas próby wysłania wiadomości! Spróbuj jeszcze raz!";
-
                 }
                 return View(model);
             }
             return NotFound();
-
         }
+        [HttpGet]
+        public IActionResult ScheduleItemsManage()
+        {
+            if (_loggedUser != null)
+            {
+                ScheduleManageViewModel model = null;// new ScheduleManageViewModel();
+
+                if (TempData["ScheduleSearch"] != null)
+                {
+                    model = TempData["ScheduleSearch"] as ScheduleManageViewModel;
+                }
+                else
+                {
+                    model = new ScheduleManageViewModel();
+                }
+                List<Visit> visits = _context.GetAvailableVisits();
+                model.Schedule = visits;
+                model.Locations = _context.GetAllLocations();
+                //model.MedicalRooms=_context
+                model.MedicalWorkers = _context.GetMedicalWorkers();
+                model.PrimaryMedicalServices = _context.GetMedicalServices().Where(c => c.IsPrimaryService == true).ToList();
+                model.VisitCategories = _context.GetVisitCategories();
+                return View(model);
+            }
+            return NotFound();
+        }
+        //[HttpGet]
+        //public IActionResult ScheduleItemsManage(ISearchVisit searchVisit)
+        //{
+        //    if (_loggedUser != null)
+        //    {
+        //        ScheduleManageViewModel model = null;// new ScheduleManageViewModel();
+
+        //        if (TempData["ScheduleSearch"] != null)
+        //        {
+        //            model = TempData["ScheduleSearch"] as ScheduleManageViewModel;
+        //        }
+        //        else
+        //        {
+        //            model = new ScheduleManageViewModel();
+        //        }
+        //        List<Visit> visits = _context.GetAvailableVisits();
+        //        model.Schedule = visits;
+        //        model.Locations = _context.GetAllLocations();
+        //        //model.MedicalRooms=_context
+        //        model.MedicalWorkers = _context.GetMedicalWorkers();
+        //        model.PrimaryMedicalServices = _context.GetMedicalServices().Where(c => c.IsPrimaryService == true).ToList();
+        //        model.VisitCategories = _context.GetVisitCategories();
+        //        return View(model);
+        //    }
+        //    return NotFound();
+        //}
+
+        [HttpPost]
+        public IActionResult ScheduleItemsManage(ScheduleManageViewModel model)
+        {
+            if (_loggedUser != null)
+            {
+                List<Visit> visits = _context.GetAvailableVisits();
+                model.Schedule = visits;
+                model.Locations = _context.GetAllLocations();
+                //model.MedicalRooms=_context
+                model.MedicalWorkers = _context.GetMedicalWorkers();
+                model.VisitCategories = _context.GetVisitCategories();
+                if (long.TryParse(model.SelectedLocationId, out long lid))
+                {
+                    Location location = model.Locations.Where(c => c.Id == lid).FirstOrDefault();
+                    model.MedicalRooms = location.MedicalRooms.ToList();
+                }
+                if (long.TryParse(model.SelectedVisitCategoryId, out long lid2))
+                {
+                    VisitCategory category = model.VisitCategories.Where(c => c.Id == lid2).FirstOrDefault();
+                    model.PrimaryMedicalServices = category.PrimaryMedicalServices.ToList();
+                }
+                else
+                {
+                    model.PrimaryMedicalServices = _context.GetMedicalServices().Where(c => c.IsPrimaryService == true).ToList();
+                }
+                if (long.TryParse(model.SelectedPrimaryServiceId, out long lid3))
+                {
+                    //MedicalService medicalService = model.PrimaryMedicalServices.Where(c => c.Id == lid3).FirstOrDefault();
+                    model.MedicalWorkers = model.MedicalWorkers.Where(c=>c.MedicalServices.Find(d=>d.Id==lid3)!=null).ToList();
+                }
+                else if (long.TryParse(model.SelectedVisitCategoryId, out long lid4))
+                {
+                    List<MedicalService> categoryServices= model.VisitCategories.Where(c => c.Id == lid2).FirstOrDefault().PrimaryMedicalServices;
+                    model.MedicalWorkers = model.MedicalWorkers.Where(c => c.MedicalServices.Intersect(categoryServices).Count()>1 ).ToList();
+
+                }
+
+                return View(model);
+            }
+            return NotFound();
+        }
+
+
         [HttpGet]
         public IActionResult ScheduleItemsAdd()
         {
@@ -121,12 +215,24 @@ namespace Asklepios.Web.Areas.AdministrativeArea.Controllers
         {
             if (_loggedUser != null)
             {
-                if (model.IsValid() && !model.IsDuplicated(_context.GetAvailableVisits()))
+                if (model.IsValid() && !model.IsDuplicated(_context.GetAvailableVisits()) &&  string.IsNullOrWhiteSpace(model.Guard))
                 {
                     List<Visit> visits = CreateNewVisits(model);
                     if (visits!=null)
                     {
                         _context.AddVisitsToSchedule(visits);
+                        
+                        model.SuccessMessage = "Wizyty zostały dodane";
+                        model.ErrorMessage = null;
+
+                        model.VisitCategories = _context.GetVisitCategories();
+                        model.PrimaryMedicalServices = _context.GetMedicalServices().Where(c => c.IsPrimaryService == true).ToList();
+                        model.MedicalWorkers = _context.GetMedicalWorkers();
+                        model.Locations = _context.GetAllLocations();
+
+                        ScheduleItemsAddUpdateLists(model);
+
+                        return View(model);
                     }
                     else
                     {
@@ -140,7 +246,7 @@ namespace Asklepios.Web.Areas.AdministrativeArea.Controllers
                     model.PrimaryMedicalServices = _context.GetMedicalServices().Where(c => c.IsPrimaryService == true).ToList();
                     model.MedicalWorkers = _context.GetMedicalWorkers();
                     model.Locations = _context.GetAllLocations();
-
+                    model.Guard = null;
                     ScheduleItemsAddUpdateLists(model);
 
                     return View(model);
@@ -209,6 +315,7 @@ namespace Asklepios.Web.Areas.AdministrativeArea.Controllers
                         List<MedicalService> services = visitCategory.PrimaryMedicalServices;
                         List<MedicalWorker> workers = model.MedicalWorkers.Where(c => c.MedicalServices.Intersect(visitCategory.PrimaryMedicalServices).Count() > 0).ToList();
                         model.MedicalWorkers = workers;
+                        model.PrimaryMedicalServices = services;
                     }
                 }
             }
@@ -235,12 +342,39 @@ namespace Asklepios.Web.Areas.AdministrativeArea.Controllers
                 }
             }
         }
-
+        [HttpPost]
+        public IActionResult RemoveSpecifiedVisit(VisitViewModel model)
+        {
+            if (_loggedUser!=null)
+            {
+                if (model.Visit != null)
+                {
+                    Visit visit1 = _context.GetAvailableVisitById(model.Visit.Id);
+                    if (visit1!=null)
+                    {
+                        _context.RemoveVisitById(visit1.Id);
+                        ISearchVisit searchOptions = model;
+                        return View(model);
+                    }
+                    else
+                    {
+                        return NotFound();
+                    }
+                }
+                else
+                {
+                    return NotFound();
+                }
+            }
+            else
+            {
+                return NotFound();
+            }
+        }
         public IActionResult MedicalWorkerDetails(string id)
         {
             if (_loggedUser != null)
             {
-
                 MedicalWorker worker = _context.GetMedicalWorkers().Where(c => c.Id.ToString() == id).FirstOrDefault();
                 return View(worker);
             }
@@ -248,8 +382,165 @@ namespace Asklepios.Web.Areas.AdministrativeArea.Controllers
             {
                 return NotFound();
             }
-
         }
+        public IActionResult PatientItemsAdd()
+        {
+            if (_loggedUser != null)
+            {
+                return View();
+            }
+            else
+            {
+                return NotFound();
+            }
+        }
+        public IActionResult PatientItemsManage()
+        {
+            if (_loggedUser != null)
+            {
+                return View();
+            }
+            else
+            {
+                return NotFound();
+            }
+        }
+
+        public IActionResult MedicalWorkerItemsAdd()
+        {
+            if (_loggedUser != null)
+            {
+                return View();
+            }
+            else
+            {
+                return NotFound();
+            }
+        }
+        public IActionResult MedicalWorkerItemsManage()
+        {
+            if (_loggedUser != null)
+            {
+                return View();
+            }
+            else
+            {
+                return NotFound();
+            }
+        }
+        public IActionResult NonMedicalWorkerItemsAdd()
+        {
+            if (_loggedUser != null)
+            {
+                return View();
+            }
+            else
+            {
+                return NotFound();
+            }
+        }
+        public IActionResult NonMedicalWorkerItemsManage()
+        {
+            if (_loggedUser != null)
+            {
+                return View();
+            }
+            else
+            {
+                return NotFound();
+            }
+        }
+        public IActionResult LocationItemsAdd()
+        {
+            if (_loggedUser != null)
+            {
+                return View();
+            }
+            else
+            {
+                return NotFound();
+            }
+        }
+        public IActionResult LocationItemsManage()
+        {
+            if (_loggedUser != null)
+            {
+                return View();
+            }
+            else
+            {
+                return NotFound();
+            }
+        }
+        public IActionResult RoomItemsAdd()
+        {
+            if (_loggedUser != null)
+            {
+                return View();
+            }
+            else
+            {
+                return NotFound();
+            }
+        }
+        public IActionResult RoomItemsManage()
+        {
+            if (_loggedUser != null)
+            {
+                return View();
+            }
+            else
+            {
+                return NotFound();
+            }
+        }
+        public IActionResult MedicalPackageItemsAdd()
+        {
+            if (_loggedUser != null)
+            {
+                return View();
+            }
+            else
+            {
+                return NotFound();
+            }
+        }
+        public IActionResult MedicalPackageItemsManage()
+        {
+            if (_loggedUser != null)
+            {
+                return View();
+            }
+            else
+            {
+                return NotFound();
+            }
+        }
+        public IActionResult MedicalServiceItemsAdd()
+        {
+            if (_loggedUser != null)
+            {
+
+                return View();
+            }
+            else
+            {
+                return NotFound();
+            }
+        }
+        public IActionResult MedicalServiceItemsManage()
+        {
+            if (_loggedUser != null)
+            {
+
+                return View();
+            }
+            else
+            {
+                return NotFound();
+            }
+        }
+
 
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
         public IActionResult Error()

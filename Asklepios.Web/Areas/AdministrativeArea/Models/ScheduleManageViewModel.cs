@@ -1,14 +1,21 @@
 ﻿using Asklepios.Core.Models;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Threading.Tasks;
 
 namespace Asklepios.Web.Areas.AdministrativeArea.Models
 {
-    public class ScheduleManageViewModel
+    public class ScheduleManageViewModel:ISearchVisit
     {
         public List<Visit> Schedule { get; set; }
+        public List<MedicalRoom> MedicalRooms { get; set; }
+        public List<MedicalWorker> MedicalWorkers { get; set; }
+        public List<MedicalService> PrimaryMedicalServices { get; set; }
+        public List<Location> Locations { get; set; }
+        public List<VisitCategory> VisitCategories { get; set; }
+        public MedicalWorker SelectedMedicalWorker { get; set; }
         public List<Visit> FilteredSchedule
         {
             get
@@ -23,17 +30,35 @@ namespace Asklepios.Web.Areas.AdministrativeArea.Models
                 }
             }
         }
+        //private DateTimeOffset? _firstVisitInitialDateTime;
+        [DataType(DataType.Date)]
+        [DisplayFormat(ApplyFormatInEditMode = true)]
+        [Display(Name = "Data od")]
+        public DateTimeOffset? VisitsDateFrom { get; set; }
+        [DataType(DataType.Date)]
+        [DisplayFormat(ApplyFormatInEditMode = true)]
+        [Display(Name = "Data do")]
+        public DateTimeOffset? VisitsDateTo { get; set; }
 
+        [Display(Name = "Placówka medyczna")]
 
         public string SelectedLocationId { get; set; }
+        [Display(Name = "Pokój medyczny")]
+        public string SelectedMedicalRoomId { get; set; }
+        [Display(Name = "Pracownik medyczny")]
+
         public string SelectedMedicalWorkerId { get; set; }
+        [Display(Name = "Usługa medyczna")]
+
         public string SelectedPrimaryServiceId { get; set; }
+        [Display(Name = "Kategoria wizyty")]
+
         public string SelectedVisitCategoryId { get; set; }
         public bool IsFilterOn
         {
             get
             {
-                if (!string.IsNullOrWhiteSpace( SelectedLocationId))
+                if (!string.IsNullOrWhiteSpace(SelectedLocationId))
                 {
                     return true;
                 }
@@ -49,12 +74,32 @@ namespace Asklepios.Web.Areas.AdministrativeArea.Models
                 {
                     return true;
                 }
+                if (VisitsDateFrom.HasValue)
+                {
+                    return true;
+                }
+                if (VisitsDateTo.HasValue)
+                {
+                    return true;
+                }
                 return false;
             }
         }
 
         public int ItemsPerPage { get; private set; } = 100;
         public int CurrentPageNum { get; private set; } = 1;
+
+        //public void SetSearchOptions(ISearchVisit iSearch)
+        //{
+        //    ISearchVisit thisSearch = this;
+        //    thisSearch.SelectedLocationId = iSearch.SelectedLocationId;
+        //    thisSearch.SelectedMedicalRoomId = iSearch.SelectedMedicalRoomId;
+        //    thisSearch.SelectedMedicalWorkerId = iSearch.SelectedMedicalWorkerId;
+        //    thisSearch.SelectedPrimaryServiceId = iSearch.SelectedPrimaryServiceId;
+        //    thisSearch.SelectedVisitCategoryId = iSearch.SelectedVisitCategoryId;
+        //    thisSearch.VisitsDateFrom = iSearch.VisitsDateFrom;
+        //    thisSearch.VisitsDateTo = iSearch.VisitsDateTo;
+        //}
 
         private List<Visit> GetFilteredSchedule()
         {
@@ -94,6 +139,21 @@ namespace Asklepios.Web.Areas.AdministrativeArea.Models
                     }
                 }
             }
+            if (SelectedMedicalRoomId != null)
+            {
+                if (long.TryParse(SelectedMedicalRoomId, out long lid))
+                {
+                    if (lid > 0)
+                    {
+                        filteredVisits = filteredVisits.Where(c => c.MedicalRoom.Id == lid).ToList();
+                        if (filteredVisits == null)
+                        {
+                            return null;
+                        }
+                    }
+                }
+            }
+
             if (SelectedPrimaryServiceId != null)
             {
                 if (long.TryParse(SelectedPrimaryServiceId, out long lid))
@@ -123,6 +183,27 @@ namespace Asklepios.Web.Areas.AdministrativeArea.Models
                     }
                 }
             }
+            if (VisitsDateFrom.HasValue)
+            {
+                filteredVisits = filteredVisits.Where(c => c.DateTimeSince >=VisitsDateFrom).ToList();
+                if (filteredVisits == null)
+                {
+                    return null;
+                }
+
+            }
+            if (VisitsDateTo.HasValue)
+            {
+                filteredVisits = filteredVisits.Where(c => c.DateTimeSince <= VisitsDateTo.Value.AddDays(1)  ).ToList();
+                if (filteredVisits == null)
+                {
+                    return null;
+                }
+
+            }
+
+
+
             filteredVisits = filteredVisits.OrderBy(c => c.DateTimeSince).ToList();
             if (filteredVisits.Count < ItemsPerPage)
             {
@@ -130,7 +211,7 @@ namespace Asklepios.Web.Areas.AdministrativeArea.Models
             }
             else
             {
-                return filteredVisits.GetRange((CurrentPageNum-1)*ItemsPerPage, ItemsPerPage);
+                return filteredVisits.GetRange((CurrentPageNum - 1) * ItemsPerPage, ItemsPerPage);
             }
         }
 

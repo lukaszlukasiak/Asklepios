@@ -1,6 +1,8 @@
-﻿using Asklepios.Core.Enums;
+﻿#nullable enable
+using Asklepios.Core.Enums;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Text;
 
@@ -8,13 +10,24 @@ namespace Asklepios.Core.Models
 {
     public class Patient 
     {
+        
         public long Id { get; set; }
+        [Required]
         public long PersonId { get; set; }
         public Person Person { get; set; }
+        public long UserId { get; set; }
+        public User User { get; set; }
+        [Required]
+        [Display(Name ="Pakiet medyczny")]
+        public long MedicalPackageId { get; set; }
         public MedicalPackage MedicalPackage { get; set; }
+
+        [Display(Name = "Nazwa pracodawcy")]
         public string EmployerName { get; set; }
+        [Display(Name = "NIP pracodawcy")]
         public string EmployerNIP { get; set; }
-        public NFZUnit NFZUnit { get; set; }
+        [Display(Name = "Oddział NFZ")]
+        public NFZUnit? NFZUnit { get; set; }
         public List<MedicalTestResult> TestsResults 
         { 
             get
@@ -60,6 +73,10 @@ namespace Asklepios.Core.Models
         {
             Person = person;
             PersonId = person.Id;
+        }
+        public Patient ()
+        {
+
         }
     }
 }

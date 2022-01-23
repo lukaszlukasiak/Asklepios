@@ -1,12 +1,89 @@
 ﻿@model Asklepios.Web.Areas.AdministrativeArea.Models.ScheduleManageViewModel
-
 @{
-    List<Visit> visits = Model.FilteredSchedule;
-
-    for (int i = 0; i < visits.Count; i++)
+    SelectList workersItems = new SelectList(Model.MedicalWorkers, "Id", "FullProffesionalName");
+    SelectList locationItems = new SelectList(Model.Locations, "Id", "Name");
+    SelectList categoriesList = new SelectList(Model.VisitCategories, "Id", "CategoryName");
+    SelectList roomsList = null;
+    if (long.TryParse(Model.SelectedLocationId, out long lid))
     {
-        Visit visit = visits[i];
-        <partial name="_ScheduleItem" model="visit" />
+        if (lid > 0)
+        {
+            roomsList = new SelectList(Model.MedicalRooms, "Id", "LongDescription");
+
+        }
     }
+    //SelectList servicesList = new SelectList(Model.GetMedicalServices, "Id", "Name");
+    //IEnumerable<MedicalService> services = Model.MedicalServices.Where(c => c.Id == long.Parse(Model.SelectedPrimaryServiceId)).ToList();
+
+    SelectList servicesList = new SelectList(Model.PrimaryMedicalServices, "Id", "Name");
 
 }
+
+<div class="d-flex flex-column">
+
+    <form class="form my-2" asp-action="ScheduleItemsManage" method="post">
+        <div class="form-group d-flex flex-column">
+            <label asp-for="SelectedLocationId" class="control-label"></label>
+            <select class="form-control  mb-2" asp-for="SelectedLocationId" asp-items="locationItems" onchange="document.getElementById('btnSubmit').click();">
+                <option value="">Wybierz oddział</option>
+            </select>
+            <span asp-validation-for="SelectedLocationId" class="text-danger"></span>
+            <label asp-for="SelectedMedicalRoomId" class="control-label"></label>
+            <select class="form-control  mb-2" asp-for="SelectedMedicalRoomId" asp-items="roomsList" onchange="document.getElementById('btnSubmit').click();">
+                <option value="">Wybierz pokój</option>
+            </select>
+            <span asp-validation-for="SelectedMedicalRoomId" class="text-danger"></span>
+
+            <label asp-for="SelectedVisitCategoryId" class="control-label"></label>
+            <select class="form-control  mb-2" asp-for="SelectedVisitCategoryId" asp-items="categoriesList" onchange="document.getElementById('btnSubmit').click();">
+                <option value="">Wybierz kategorię</option>
+            </select>
+            <span asp-validation-for="SelectedVisitCategoryId" class="text-danger"></span>
+
+            <label asp-for="SelectedPrimaryServiceId" class="control-label"></label>
+            <select class="form-control  mb-2" asp-for="SelectedPrimaryServiceId" asp-items="servicesList" onchange="document.getElementById('btnSubmit').click();">
+                <option value="">Wybierz usługę</option>
+            </select>
+            <span asp-validation-for="SelectedPrimaryServiceId" class="text-danger"></span>
+
+            <label asp-for="SelectedMedicalWorkerId" class="control-label"></label>
+            <select class="form-control  mb-2" asp-for="SelectedMedicalWorkerId" asp-items="workersItems" onchange="document.getElementById('btnSubmit').click();">
+                <option value="">Wybierz pracownika</option>
+            </select>
+            <span asp-validation-for="SelectedMedicalWorkerId" class="text-danger"></span>
+
+            @if (Model.SelectedMedicalWorker != null)
+            {
+                <partial name="_MedicalWorker" model="Model.SelectedMedicalWorker" />
+
+            }
+
+            <label asp-for="VisitsDateFrom" class="control-label"></label>
+            <input asp-for="VisitsDateFrom" class="form-control mb-2">
+            <span asp-validation-for="VisitsDateFrom" class="text-danger"></span>
+            <label asp-for="VisitsDateTo" class="control-label"></label>
+            <input asp-for="VisitsDateTo" class="form-control mb-2">
+            <span asp-validation-for="VisitsDateTo" class="text-danger"></span>
+
+            
+            <button id="btnSubmit" type="submit" class="btn btn-primary w-100 mt-2" >Wyszukaj</button>
+        </div>
+    </form>
+    @{
+        List<Visit> visits = Model.FilteredSchedule;
+
+        for (int i = 0; i < visits.Count; i++)
+        {
+            Visit visit = visits[i];
+            Asklepios.Web.Areas.AdministrativeArea.Models.VisitViewModel model = new Asklepios.Web.Areas.AdministrativeArea.Models.VisitViewModel();
+            //Asklepios.Web.Areas.AdministrativeArea.Models.ISearchVisit scheduleSearch = Model;
+
+            //model =scheduleSearch;
+            //model = (Asklepios.Web.Areas.AdministrativeArea.Models.VisitViewModel)scheduleSearch;
+            (model as Asklepios.Web.Areas.AdministrativeArea.Models.ISearchVisit).SetSearchOptions(Model);
+            model.Visit = visit;
+            <partial name="_ScheduleItem" model="model" />
+        }
+
+    }
+    </div>

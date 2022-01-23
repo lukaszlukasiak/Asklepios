@@ -1,7 +1,4 @@
 ﻿using Asklepios.Core.Enums;
-using System;
-using System.Collections.Generic;
-using System.Text;
 
 namespace Asklepios.Core.Models
 {
@@ -14,12 +11,11 @@ namespace Asklepios.Core.Models
         //public Person Person { get; set; }
         public DentalHygienist(Person person, string pNumber):base  (person)
         {
-            PNumber = pNumber;
+            ProfessionalNumber = pNumber;
             MedicalWorkerType= MedicalWorkerType.DentalHygienist;
             PersonId = person.Id;
         }
         public override string ProfessionalTitle => "Higienistka Dentystyczna";
-        public string PNumber { get;}
     }
 
 }
