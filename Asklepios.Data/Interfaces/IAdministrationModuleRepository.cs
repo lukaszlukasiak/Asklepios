@@ -27,5 +27,7 @@ namespace Asklepios.Data.Interfaces
         MedicalService GetMedicalServiceById(long v);
         void AddVisitsToSchedule(List<Visit> visitsToAdd);
         void RemoveVisitById(long id);
+        List<NFZUnit> GetNFZUnits();
+        NFZUnit GetNFZUnitById(long id);
     }
 }

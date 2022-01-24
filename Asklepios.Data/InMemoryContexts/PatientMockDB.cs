@@ -2125,22 +2125,22 @@ namespace Asklepios.Data.InMemoryContexts
         {
             List<NFZUnit> units = new()
             {
-                new NFZUnit() { Code = "DLŚ", Description = "Dolnośląski Fundusz Zdrowia" },
-                new NFZUnit() { Code = "KPM", Description = "Kujawsko-Pomorski Fundusz Zdrowia" },
-                new NFZUnit() { Code = "LBL", Description = "Lubelski Fundusz Zdrowia" },
-                new NFZUnit() { Code = "LBS", Description = "Lubuski Fundusz Zdrowia" },
-                new NFZUnit() { Code = "ŁDZ", Description = "Łódzki Fundusz Zdrowia" },
-                new NFZUnit() { Code = "MŁP", Description = "Małopolski Fundusz Zdrowia" },
-                new NFZUnit() { Code = "MAZ", Description = "Mazowiecki Fundusz Zdrowia" },
-                new NFZUnit() { Code = "OPO", Description = "Opolski Fundusz Zdrowia" },
-                new NFZUnit() { Code = "PDK", Description = "Podkarpacki Fundusz Zdrowia" },
-                new NFZUnit() { Code = "PDL", Description = "Podlaski Fundusz Zdrowia" },
-                new NFZUnit() { Code = "POM", Description = "Pomorski Fundusz Zdrowia" },
-                new NFZUnit() { Code = "ŚLĄ", Description = "Śląski Fundusz Zdrowia" },
-                new NFZUnit() { Code = "ŚWI", Description = "Świętokrzyski Fundusz Zdrowia" },
-                new NFZUnit() { Code = "WAM", Description = "Warmińsko-Mazurski Fundusz Zdrowia" },
-                new NFZUnit() { Code = "WLP", Description = "Wielkopolski Fundusz Zdrowia" },
-                new NFZUnit() { Code = "ZAP", Description = "Zachodniopomorski Fundusz Zdrowia" }
+                new NFZUnit() {Id=1, Code = "DLŚ", Description = "Dolnośląski Fundusz Zdrowia" },
+                new NFZUnit() {Id=2, Code = "KPM", Description = "Kujawsko-Pomorski Fundusz Zdrowia" },
+                new NFZUnit() {Id=3, Code = "LBL", Description = "Lubelski Fundusz Zdrowia" },
+                new NFZUnit() {Id=4, Code = "LBS", Description = "Lubuski Fundusz Zdrowia" },
+                new NFZUnit() {Id=5, Code = "ŁDZ", Description = "Łódzki Fundusz Zdrowia" },
+                new NFZUnit() {Id=6, Code = "MŁP", Description = "Małopolski Fundusz Zdrowia" },
+                new NFZUnit() {Id=7, Code = "MAZ", Description = "Mazowiecki Fundusz Zdrowia" },
+                new NFZUnit() {Id=8, Code = "OPO", Description = "Opolski Fundusz Zdrowia" },
+                new NFZUnit() {Id=9, Code = "PDK", Description = "Podkarpacki Fundusz Zdrowia" },
+                new NFZUnit() {Id=10, Code = "PDL", Description = "Podlaski Fundusz Zdrowia" },
+                new NFZUnit() {Id=11, Code = "POM", Description = "Pomorski Fundusz Zdrowia" },
+                new NFZUnit() {Id=12, Code = "ŚLĄ", Description = "Śląski Fundusz Zdrowia" },
+                new NFZUnit() {Id=13, Code = "ŚWI", Description = "Świętokrzyski Fundusz Zdrowia" },
+                new NFZUnit() {Id=14, Code = "WAM", Description = "Warmińsko-Mazurski Fundusz Zdrowia" },
+                new NFZUnit() {Id=15, Code = "WLP", Description = "Wielkopolski Fundusz Zdrowia" },
+                new NFZUnit() { Id = 16, Code = "ZAP", Description = "Zachodniopomorski Fundusz Zdrowia" }
             };
             return units;
         }

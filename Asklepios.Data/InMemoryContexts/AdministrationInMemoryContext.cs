@@ -140,5 +140,15 @@ namespace Asklepios.Data.InMemoryContexts
         {
             PatientMockDB.RemoveVisitById(id);
         }
+
+        public List<NFZUnit> GetNFZUnits()
+        {
+            return PatientMockDB.NfzUnits;
+        }
+
+        public NFZUnit GetNFZUnitById(long id)
+        {
+            return PatientMockDB.GetNFZUnitById(id);
+        }
     }
 }

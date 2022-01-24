@@ -2,64 +2,85 @@
 
 @{ 
     SelectList medicalPackagesList = new SelectList(Model.MedicalPackages, "Id", "Name");
-
+    SelectList nfzUnits= new SelectList(Model.NFZUnits, "Id", "Description");
+    Model.Person.HasPolishCitizenship = true;
 }
     <div class="d-flex flex-column">
-        <form class="form my-2" asp-action="PatientAdd" method="post">
+        <form class="form my-2" asp-action="PatientItemsAdd" method="post" enctype="multipart/form-data" > 
             <div class="form-group d-flex flex-column">
 
-                <label asp-for="Patient.User.UserName" class="control-label"></label>
-                <input asp-for="Patient.User.UserName" class="form-control mb-2">
-                <span asp-validation-for="Patient.User.UserName" class="text-danger"></span>
+                <label asp-for="User.UserName" class="control-label"></label>
+                <input asp-for="User.UserName" class="form-control mb-2">
+                <span asp-validation-for="User.UserName" class="text-danger"></span>
 
-                <label asp-for="Patient.User.Password" class="control-label"></label>
-                <input asp-for="Patient.User.Password" class="form-control mb-2">
-                <span asp-validation-for="Patient.User.Password" class="text-danger"></span>
+                <label asp-for="User.Password" class="control-label"></label>
+                <input asp-for="User.Password" class="form-control mb-2">
+                <span asp-validation-for="User.Password" class="text-danger"></span>
 
-                <label asp-for="Patient.Person.Name" class="control-label"></label>
-                <input asp-for="Patient.Person.Name" class="form-control mb-2">
-                <span asp-validation-for="Patient.Person.Name" class="text-danger"></span>
+                <label asp-for="Person.Name" class="control-label"></label>
+                <input asp-for="Person.Name" class="form-control mb-2">
+                <span asp-validation-for="Person.Name" class="text-danger"></span>
 
-                <label asp-for="Patient.Person.Surname" class="control-label"></label>
-                <input asp-for="Patient.Person.Surname" class="form-control mb-2">
-                <span asp-validation-for="Patient.Person.Surname" class="text-danger"></span>
+                <label asp-for="Person.Surname" class="control-label"></label>
+                <input asp-for="Person.Surname" class="form-control mb-2">
+                <span asp-validation-for="Person.Surname" class="text-danger"></span>
 
-                <label asp-for="Patient.Person.DefaultAglomeration" class="control-label"></label>
-                <select asp-for="Patient.Person.DefaultAglomeration" asp-items="Html.GetEnumSelectList<Asklepios.Core.Enums.Aglomeration>()"></select>
-                <span asp-validation-for="Patient.Person.DefaultAglomeration" class="text-danger"></span>
+                <label asp-for="Person.DefaultAglomeration" class="control-label"></label>
+                <select asp-for="Person.DefaultAglomeration" asp-items="Html.GetEnumSelectList<Asklepios.Core.Enums.Aglomeration>()"></select>
+                <span asp-validation-for="Person.DefaultAglomeration" class="text-danger"></span>
 
-                <label asp-for="Patient.Person.BirthDate" class="control-label"></label>
-                <input asp-for="Patient.Person.BirthDate" class="form-control mb-2">
-                <span asp-validation-for="Patient.Person.BirthDate" class="text-danger"></span>
+                <label asp-for="Person.BirthDate" class="control-label"></label>
+                <input asp-for="Person.BirthDate" class="form-control mb-2">
+                <span asp-validation-for="Person.BirthDate" class="text-danger"></span>
 
-                <label asp-for="Patient.Person.HasPolishCitizenship" class="control-label"></label>
-                <checkbox asp-for="Patient.Person.HasPolishCitizenship"></checkbox>
-                <span asp-validation-for="Patient.Person.HasPolishCitizenship" class="text-danger"></span>
+                <div class="d-flex flex-row">
+                    <label asp-for="Person.HasPolishCitizenship"></label>
+                    <input type="checkbox" asp-for="Person.HasPolishCitizenship" class="custom-control ml-2 " style="height:20px;width:20px" checked />
+                    <span asp-validation-for="Person.HasPolishCitizenship" class="text-danger"></span>
 
-                <label asp-for="Patient.Person.PESEL" class="control-label"></label>
-                <input asp-for="Patient.Person.PESEL" class="form-control mb-2">
-                <span asp-validation-for="Patient.Person.PESEL" class="text-danger"></span>
-
-
-                <label asp-for="Patient.Person.PassportNumber" class="control-label"></label>
-                <input asp-for="Patient.Person.PassportNumber" class="form-control mb-2">
-                <span asp-validation-for="Patient.Person.PassportNumber" class="text-danger"></span>
-
-                <label asp-for="Patient.Person.PassportCode" class="control-label"></label>
-                <input asp-for="Patient.Person.PassportCode" class="form-control mb-2">
-                <span asp-validation-for="Patient.Person.PassportCode" class="text-danger"></span>
+                </div>
 
 
+                <label asp-for="Person.PESEL" class="control-label"></label>
+                <input asp-for="Person.PESEL" class="form-control mb-2">
+                <span asp-validation-for="Person.PESEL" class="text-danger"></span>
 
-                    <label asp-for="Patient.Person.ImageFile" class="control-label"></label>
-                    <input asp-for="Patient.Person.ImageFile" accept="image/*" />
-                    <span asp-validation-for="Patient.Person.ImageFile" class="text-danger"></span>
 
-                    <label asp-for="Patient.MedicalPackage" class="control-label"></label>
-                    <select class="form-control  mb-2" asp-for="Patient.MedicalPackage" asp-items="medicalPackagesList" >
-                        <option value="">Wybierz pokój</option>
-                    </select>
-                    <span asp-validation-for="Patient.MedicalPackage" class="text-danger"></span>
+                <label asp-for="Person.PassportNumber" class="control-label"></label>
+                <input asp-for="Person.PassportNumber" class="form-control mb-2">
+                <span asp-validation-for="Person.PassportNumber" class="text-danger"></span>
+
+                <label asp-for="Person.PassportCode" class="control-label"></label>
+                <input asp-for="Person.PassportCode" class="form-control mb-2">
+                <span asp-validation-for="Person.PassportCode" class="text-danger"></span>
+
+
+
+                <label asp-for="Person.ImageFile" class="control-label"></label>
+                <input asp-for="Person.ImageFile" accept="image/*" class="form-control-file btn btn-secondary" style="text-align:center" />
+                @*<input asp-for="ImageFile" type="file" class="form-control-file" >*@
+
+                <span asp-validation-for="Person.ImageFile" class="text-danger"></span>
+
+                <label asp-for="Patient.MedicalPackageId" class="control-label"></label>
+                <select class="form-control  mb-2" asp-for="Patient.MedicalPackageId" asp-items="medicalPackagesList">
+                    <option value="">Wybierz pakiet</option>
+                </select>
+                <span asp-validation-for="Patient.MedicalPackageId" class="text-danger"></span>
+
+                <label asp-for="Patient.NFZUnitId" class="control-label"></label>
+                <select class="form-control  mb-2" asp-for="Patient.NFZUnitId" asp-items="nfzUnits">
+                    <option value="">Wybierz oddział NFZ</option>
+                </select>
+                <span asp-validation-for="Patient.NFZUnitId" class="text-danger"></span>
+
+                <label asp-for="Patient.EmployerName" class="control-label"></label>
+                <input asp-for="Patient.EmployerName" class="form-control mb-2">
+                <span asp-validation-for="Patient.EmployerName" class="text-danger"></span>
+
+                <label asp-for="Patient.EmployerNIP" class="control-label"></label>
+                <input asp-for="Patient.EmployerNIP" class="form-control mb-2">
+                <span asp-validation-for="Patient.EmployerNIP" class="text-danger"></span>
 
 
                 <button id="btnSubmit" type="submit" class="btn btn-primary w-100 mt-2">Dodaj</button>

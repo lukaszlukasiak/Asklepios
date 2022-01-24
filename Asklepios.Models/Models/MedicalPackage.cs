@@ -9,7 +9,7 @@ namespace Asklepios.Core.Models
     {
         public long Id { get; set; }
         [Required(ErrorMessage ="Proszę podać nazwę pakietu medycznego")]
-        [Display(Name="Nazwa pakietu medycnzego")]
+        [Display(Name="Nazwa pakietu medycznego")]
         public String Name { get; set; }
         [Required(ErrorMessage = "Proszę podać opis pakietu medycznego")]
         [Display(Name = "Opis pakietu medycnzego")]

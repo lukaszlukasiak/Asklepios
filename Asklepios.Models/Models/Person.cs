@@ -9,11 +9,11 @@ namespace Asklepios.Core.Models
     public class Person
     {
         public long Id { get; set; }
-        [Required]
+        [Required(ErrorMessage = "Proszę podać imię")]
         [DataType(DataType.Text)]
         [Display(Name = "Imię")]
         public string Name { get; set; }
-        [Required]
+        [Required(ErrorMessage = "Proszę podać nazwisko")]
         [DataType(DataType.Text)]
         [Display(Name = "Nazwisko")]
         public string Surname { get; set; }
@@ -24,7 +24,7 @@ namespace Asklepios.Core.Models
                 return Name + " " + Surname;
             }
         }
-
+        [StringLength(13,ErrorMessage ="Niepoprawny PESEL, długość musi wynosić 13 znaków",MinimumLength =13)]
         [DataType(DataType.Text)]
         [Display(Name = "PESEL")]
 
@@ -34,24 +34,25 @@ namespace Asklepios.Core.Models
 
         public string PassportNumber { get; set; }
         [DataType(DataType.Text)]
-        [Display(Name = "Kod kraju (w paszporcie")]
+        [Display(Name = "Kod kraju (w paszporcie)")]
 
+        [StringLength(3, ErrorMessage = "Niepoprawny kod, długość musi wynosić 3 znaki", MinimumLength =3)]
         public string PassportCode { get; set; }
-        [Display(Name = "Czy posiada obywatelstwo")]
+        [Display(Name = "Czy posiada polskie obywatelstwo?")]
 
-        public bool HasPolishCitizenship { get; set; }
-        [Required]
+        public bool HasPolishCitizenship { get; set; } = true;
+        [Required(ErrorMessage = "Proszę podać adres e-mail")]
         [DataType(DataType.EmailAddress)]
         [Display(Name = "Adres e-mail")]
-
         public string EmailAddress { get; set; }
+        [Required(ErrorMessage = "Proszę podać datę urodzenia")]
         [DataType(DataType.Date)]
         [Display(Name = "Data urodzenia")]
 
         public DateTimeOffset? BirthDate { get; set; }
         [Display(Name = "Domyślna aglomeracja")]
         public Aglomeration? DefaultAglomeration { get; set; }
-        [NotMapped]
+        //[NotMapped]
         [Display(Name = "Zdjęcie (300x500 pikseli)")]
         public IFormFile ImageFile { get; set; }
         public string ImageFilePath { get; set; }
