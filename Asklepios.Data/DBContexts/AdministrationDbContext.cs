@@ -83,6 +83,16 @@ namespace Asklepios.Data
             throw new NotImplementedException();
         }
 
+        public NFZUnit GetNFZUnitById(long id)
+        {
+            throw new NotImplementedException();
+        }
+
+        public List<NFZUnit> GetNFZUnits()
+        {
+            throw new NotImplementedException();
+        }
+
         public Patient GetPatientById(long id)
         {
             throw new NotImplementedException();

@@ -12,13 +12,14 @@ namespace Asklepios.Core.Models
     {
         [Key]
         public long Id { get; set; }
-        [Required(ErrorMessage = "Proszę podać adres e-mail. Będzie on zarówno nazwą użytkownika.")]
+        [Required(ErrorMessage = "Proszę podać adres e-mail. Będzie on pełnił również funckję nazwy użytkownika.")]
         [DataType(DataType.EmailAddress)]
         [Display(Name = "Adres e-mail")]
         public string UserName { get; set; }
         [Required(ErrorMessage = "Proszę podać hasło")]
         [DataType(DataType.Password)]
-        [Display(Name = "Haslo (minimum 8 znaków")]
+        [Display(Name = "Haslo (minimum 8 znaków)")]
+        [StringLength(100, MinimumLength = 8,ErrorMessage = "Proszę podać hasło o długości  minimum 8 znaków (i maksymalnie 100)")]
         public string Password { get; set; }
         [Display(Name = "Typ użytkownika")]
         public UserType? UserType { get; set; }
@@ -33,19 +34,30 @@ namespace Asklepios.Core.Models
             {
                 if (!string.IsNullOrWhiteSpace(UserName))
                 {
-                    if (!string.IsNullOrWhiteSpace(UserName) && UserName.Length>=8)
+                    if (!string.IsNullOrWhiteSpace(Password) && Password.Length >= 8)
                     {
                         if (UserType.HasValue)
                         {
-                            if (WorkerModuleType.HasValue)
+                            if (UserType == Enums.UserType.Employee)
                             {
-                                if (PersonId>0)
+                                if (WorkerModuleType.HasValue)
                                 {
-                                    if (Person!=null)
+                                        if (Person != null)
+                                        {
+                                            return true;
+                                        }
+                                    
+                                }
+
+                            }
+                            else
+                            {
+                                    if (Person != null)
                                     {
                                         return true;
                                     }
-                                }
+                                
+
                             }
                         }
                     }

@@ -383,11 +383,50 @@ namespace Asklepios.Web.Areas.AdministrativeArea.Controllers
                 return NotFound();
             }
         }
+        [HttpPost]
+        public IActionResult PatientItemsAdd(PatientAddViewModel model)
+        {
+            if (_loggedUser != null)
+            {
+                model.User.Person = model.Person;
+                model.User.UserType = Core.Enums.UserType.Patient;
+                model.User.WorkerModuleType = null;
+                model.Person.EmailAddress = model.User.UserName;
+                model.Patient.Person = model.Person;
+                model.Patient.User = model.User;
+                
+
+                if (model.IsValid)
+                {
+                    model.MedicalPackages = _context.GetMedicalPackages();
+                    model.NFZUnits = _context.GetNFZUnits();
+
+                    return View(model);
+                }
+                else
+                {
+                    model.MedicalPackages = _context.GetMedicalPackages();
+                    model.NFZUnits = _context.GetNFZUnits();
+
+                    return View(model);
+                }
+                //PatientAddViewModel model = new PatientAddViewModel();
+            }
+            else
+            {
+                return NotFound();
+            }
+        }
+
         public IActionResult PatientItemsAdd()
         {
             if (_loggedUser != null)
             {
-                return View();
+                PatientAddViewModel model = new PatientAddViewModel();
+                model.MedicalPackages = _context.GetMedicalPackages();
+                model.NFZUnits = _context.GetNFZUnits();
+
+                return View(model);
             }
             else
             {
@@ -498,6 +537,7 @@ namespace Asklepios.Web.Areas.AdministrativeArea.Controllers
         {
             if (_loggedUser != null)
             {
+                
                 return View();
             }
             else
