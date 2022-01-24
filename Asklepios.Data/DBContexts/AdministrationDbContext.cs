@@ -8,6 +8,11 @@ namespace Asklepios.Data
 {
     public class AdministrationDbContext : DbContext, IAdministrationModuleRepository
     {
+        public void AddPatientObjects(User user, Person person, Patient patient)
+        {
+            throw new NotImplementedException();
+        }
+
         public void AddVisitsToSchedule(List<Visit> visitsToAdd)
         {
             throw new NotImplementedException();

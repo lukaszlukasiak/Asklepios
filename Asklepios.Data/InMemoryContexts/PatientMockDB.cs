@@ -162,6 +162,33 @@ namespace Asklepios.Data.InMemoryContexts
             return users;
         }
 
+        internal static void AddPerson(Person person)
+        {
+            if (person.Id == 0)
+            {
+                person.Id = Persons.Max(c => c.Id) + 1;
+            }
+            Persons.Add(person);
+        }
+
+        internal static void AddPatient(Patient patient)
+        {
+            if (patient.Id == 0)
+            {
+                patient.Id = AllPatients.Max(c => c.Id) + 1;
+            }
+            AllPatients.Add(patient);
+        }
+
+        internal static void AddUser(User user)
+        {
+            if (user.Id==0)
+            {
+                user.Id = Users.Max(c => c.Id) + 1;
+            }
+            Users.Add(user);
+        }
+
         internal static void RemoveVisitById(long id)
         {
             Visit visit = AvailableVisits.Where(c => c.Id == id).FirstOrDefault();

@@ -44,6 +44,7 @@
     <Folder Include="Areas\MedicalWorkerArea\Models\" />
     <Folder Include="Areas\PatientArea\Data\" />
     <Folder Include="wwwroot\img\MW\" />
+    <Folder Include="wwwroot\img\PersonsImages\" />
     <Folder Include="wwwroot\vendor\" />
   </ItemGroup>
 

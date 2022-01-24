@@ -101,6 +101,13 @@ namespace Asklepios.Core.Models
                         return false;
                         //throw new TypeInitializationException("Polski obywatel musi mieć podany PESEL!", null);
                     }
+                    else
+                    {
+                        if (PESEL.Length!=13)
+                        {
+                            return false;
+                        }
+                    }
                 }
                 else
                 {
