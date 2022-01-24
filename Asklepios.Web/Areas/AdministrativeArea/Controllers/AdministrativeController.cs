@@ -1,12 +1,17 @@
 ﻿using Asklepios.Core.Models;
 using Asklepios.Data.Interfaces;
 using Asklepios.Web.Areas.AdministrativeArea.Models;
+using Asklepios.Web.Enums;
 using Asklepios.Web.Models;
+using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.IO;
 using System.Linq;
+
 
 namespace Asklepios.Web.Areas.AdministrativeArea.Controllers
 {
@@ -20,8 +25,10 @@ namespace Asklepios.Web.Areas.AdministrativeArea.Controllers
         //{
         //    _logger = logger;
         //}
-        public AdministrativeController(IAdministrationModuleRepository context)
+        IWebHostEnvironment _hostEnvironment { get; set; }
+        public AdministrativeController(IAdministrationModuleRepository context, IWebHostEnvironment hostEnvironment)
         {
+            _hostEnvironment = hostEnvironment;
             _context = context;
 
         }
@@ -37,10 +44,6 @@ namespace Asklepios.Web.Areas.AdministrativeArea.Controllers
             _selectedPatient = null;
         }
 
-        //public IActionResult Index()
-        //{
-        //    return View();
-        //}
         public IActionResult Index( string id)
         {
             if (int.TryParse(id, out int parsedId))
@@ -184,9 +187,7 @@ namespace Asklepios.Web.Areas.AdministrativeArea.Controllers
                 {
                     List<MedicalService> categoryServices= model.VisitCategories.Where(c => c.Id == lid2).FirstOrDefault().PrimaryMedicalServices;
                     model.MedicalWorkers = model.MedicalWorkers.Where(c => c.MedicalServices.Intersect(categoryServices).Count()>1 ).ToList();
-
                 }
-
                 return View(model);
             }
             return NotFound();
@@ -400,7 +401,16 @@ namespace Asklepios.Web.Areas.AdministrativeArea.Controllers
                 {
                     model.MedicalPackages = _context.GetMedicalPackages();
                     model.NFZUnits = _context.GetNFZUnits();
+                    if (model.Person.ImageFile!=null)
+                    {
+                        string imagePath = SaveImage(model.Person.ImageFile, ImageFolderType.Persons, _hostEnvironment.WebRootPath);
+                        model.Person.ImageFilePath = imagePath;
+                    }
 
+                    _context.AddPatientObjects(model.User,model.Person,model.Patient);
+
+                    model.Message = "Pacjent został dodany!";
+                    
                     return View(model);
                 }
                 else
@@ -580,7 +590,45 @@ namespace Asklepios.Web.Areas.AdministrativeArea.Controllers
                 return NotFound();
             }
         }
+        private string SaveImage(IFormFile formFile, ImageFolderType type, string basePath)
+        {
+            string path = null;
+            switch (type)
+            {
+                // _hostEnvironment
+                case ImageFolderType.Persons:
+                    path = Path.Combine(basePath ,"img", "Persons"); //Directory.GetCurrentDirectory() + "\\Persons";
+                    break;
+                case ImageFolderType.Locations:
+                    path = Path.Combine(basePath, "img", "Locations"); //Directory.GetCurrentDirectory() + "\\Locations";
+                    break;
+                default:
+                    break;
+            }
+            string extension = Path.GetExtension(formFile.FileName);
+            //string resourcePath=Path.Combine(basePath,)
+            string myUniqueFileName = null;//string.Format(@"{0}{1}" , Guid.NewGuid(), extension);
+            string fullFileName = null;// Path.Combine(path, myUniqueFileName);
 
+            do
+            {
+                myUniqueFileName = string.Format(@"{0}{1}", Guid.NewGuid(), extension);
+                fullFileName = Path.Combine(path, myUniqueFileName);
+            } while (System.IO.File.Exists(fullFileName));
+            //if (System.IO.File.Exists(fullFileName))
+            //{
+            //    string myUniqueFileName = string.Format(@"{0}{1}", Guid.NewGuid(), extension);
+            //    string fullFileName = Path.Combine(path, myUniqueFileName);
+
+            //}
+            using (var fileStream = new FileStream(fullFileName, FileMode.Create))
+            {
+                formFile.CopyToAsync(fileStream);
+            }
+
+            return fullFileName;
+
+        }
 
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
         public IActionResult Error()

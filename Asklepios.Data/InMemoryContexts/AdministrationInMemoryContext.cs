@@ -150,5 +150,12 @@ namespace Asklepios.Data.InMemoryContexts
         {
             return PatientMockDB.GetNFZUnitById(id);
         }
+
+        public void AddPatientObjects(User user, Person person, Patient patient)
+        {
+            PatientMockDB.AddUser(user);
+            PatientMockDB.AddPatient(patient);
+            PatientMockDB.AddPerson(person);
+        }
     }
 }
