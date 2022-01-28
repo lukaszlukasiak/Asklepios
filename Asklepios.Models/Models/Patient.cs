@@ -43,7 +43,7 @@ namespace Asklepios.Core.Models
             {
                 if (HistoricalVisits != null)
                 {
-                    List<MedicalTestResult> results = HistoricalVisits?.Where(c => c.MedicalResult != null).Select(c => c.MedicalResult).ToList();
+                    List<MedicalTestResult> results = HistoricalVisits.Where(c => c.MedicalResult != null).Select(c => c.MedicalResult).ToList();
                     return results;
                 }
                 else

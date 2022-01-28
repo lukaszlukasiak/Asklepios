@@ -52,20 +52,43 @@ namespace Asklepios.Core.Models
         public DateTimeOffset? BirthDate { get; set; }
         [Display(Name = "Domyślna aglomeracja")]
         public Aglomeration? DefaultAglomeration { get; set; }
+        [Display(Name = "Płeć")]
+        public Gender? Gender{ get; set; }
+
         //[NotMapped]
         [Display(Name = "Zdjęcie (300x500 pikseli)")]
         public IFormFile ImageFile { get; set; }
         public string ImageFilePath { get; set; }
 
+        public string ReturnProperImageFilePath(string defaultPathF, string defaultPathM)
+        {
+            if (string.IsNullOrWhiteSpace(ImageFilePath))
+            {
+                if (Gender==Enums.Gender.Female)
+                {
+                    return defaultPathF;
+                }
+                else
+                {
+                    return defaultPathM;
+                }               
+            }
+            else
+            {
+                return ImageFilePath;
+            }
+        }
+
         public Person()
         {
 
         }
-        public Person(string name, string surName, long id, string pesel, bool hasPolishCitizenship, string passportNumber, string passportCode, string email, Aglomeration aglomeration, DateTimeOffset birthDate)
+        public Person(string name, string surName, long id, string pesel, bool hasPolishCitizenship, string passportNumber, string passportCode, string email, Aglomeration aglomeration, DateTimeOffset birthDate, Gender gender)
         {
             Name = name;
             Surname = surName;
             Id = id;
+            Gender = gender;
             BirthDate = birthDate;
             if (hasPolishCitizenship)
             {

@@ -1,0 +1,40 @@
+﻿@model Asklepios.Web.Areas.AdministrativeArea.Models.PatientDetailsViewModel
+
+<div class="d-flex jumbotron flex-column" style=" padding:20px;">
+    <div class="d-flex mb-3 flex-wrap align-content-around align-items-center" style="text-align:center">
+        <div class="p-2  pt-3 align-content-center align-items-center align-self-center mx-auto" style="width:400px; text-align:center">
+            <div class="d-flex flex-fill  justify-content-center" style="text-align:center">
+                <img alt="@Model.CurrentPatient.Person.FullName" src="@Model.CurrentPatient.Person.ReturnProperImageFilePath(Common.FEMALE_IMAGE_PATH, Common.MALE_IMAGE_PATH)" class="img-fluid" style="display: block; max-height:300px;
+        border-radius: 6px; ">
+            </div>
+        </div>
+        <div class="p-2 d-flex pt-3 m-auto flex-grow-1 flex-column" style="width:400px;text-align:center">
+            <h3 style="font-weight:900;">
+                <a asp-action="PatientDetails" asp-controller="Administrative" asp-route-id="@Model.CurrentPatient.Id">
+
+                    @Model.CurrentPatient.Person.FullName
+                </a>
+            </h3>
+            <h5>Id: @Model.CurrentPatient.Id</h5>
+            <h5>Imię: @Model.CurrentPatient.Person.Name</h5>
+            <h5>Nazwisko: @Model.CurrentPatient.Person.Surname</h5>
+            <h5>Adres e-mail: @Model.CurrentPatient.Person.EmailAddress</h5>
+            @if (Model.CurrentPatient.Person.HasPolishCitizenship)
+            {
+                <h5>PESEL: @Model.CurrentPatient.Person.PESEL</h5>
+            }
+            else
+            {
+                <h5>Numer paszportu: @Model.CurrentPatient.Person.PassportNumber</h5>
+            }
+            <h5>Aglomeracja: @Model.CurrentPatient.Person.DefaultAglomeration</h5>
+            <h5>Data urodzenia: @Model.CurrentPatient.Person.BirthDate</h5>
+            @*<h5>Polskie obywatelstwo: @Model.CurrentPatient.Person.HasPolishCitizenship</h5>*@
+            <h5>Pakiet medyczny: @Model.CurrentPatient.MedicalPackage.Name</h5>
+            <h5>Oddział NFZ: @Model.CurrentPatient.NFZUnit.Description</h5>
+
+            <br>
+
+        </div>
+    </div>
+</div>

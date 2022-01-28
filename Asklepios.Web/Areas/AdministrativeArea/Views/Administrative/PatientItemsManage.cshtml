@@ -1,5 +1,82 @@
-﻿@*
-    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
-*@
+﻿@model Asklepios.Web.Areas.AdministrativeArea.Models.PatientsManageViewModel
 @{
+    SelectList medicalPackagesList = new SelectList(Model.MedicalPackages, "Id", "Name");
+    SelectList nfzUnits = new SelectList(Model.NFZUnits, "Id", "Description");
+    Model.Person.HasPolishCitizenship = true;
+
 }
+
+<div class="d-flex flex-column">
+
+    <form class="form my-2" asp-action="PatientsManage" method="post">
+        <div class="form-group d-flex flex-column">
+
+            <label asp-for="SelectedAglomeration" class="control-label"></label>
+            <select class="form-control  mb-2" asp-for="SelectedAglomeration" asp-items="Html.GetEnumSelectList<Asklepios.Core.Enums.Aglomeration>()">
+                <option value="">Wybierz aglomerację</option>
+            </select>
+            <span asp-validation-for="SelectedAglomeration" class="text-danger"></span>
+
+            <label asp-for="Patient.MedicalPackageId" class="control-label"></label>
+            <select class="form-control  mb-2" asp-for="Patient.MedicalPackageId" asp-items="medicalPackagesList">
+                <option value="">Wybierz pakiet</option>
+            </select>
+            <span asp-validation-for="Patient.MedicalPackageId" class="text-danger"></span>
+
+            <label asp-for="Patient.NFZUnitId" class="control-label"></label>
+            <select class="form-control  mb-2" asp-for="Patient.NFZUnitId" asp-items="nfzUnits">
+                <option value="">Wybierz oddział NFZ</option>
+            </select>
+            <span asp-validation-for="Patient.NFZUnitId" class="text-danger"></span>
+
+            <label asp-for="SelectedId" class="control-label"></label>
+            <input asp-for="SelectedId" class="form-control mb-2">
+            <span asp-validation-for="SelectedId" class="text-danger"></span>
+
+            <label asp-for="SelectedName" class="control-label"></label>
+            <input asp-for="SelectedName" class="form-control mb-2">
+            <span asp-validation-for="SelectedName" class="text-danger"></span>
+
+
+            <label asp-for="SelectedSurname" class="control-label"></label>
+            <input asp-for="SelectedSurname" class="form-control mb-2">
+            <span asp-validation-for="SelectedSurname" class="text-danger"></span>
+
+            @*<div class="d-flex flex-row">
+            <label asp-for="HasPolishCitizenship"></label>
+            <input type="checkbox" asp-for="HasPolishCitizenship" class="custom-control ml-2 " style="height:20px;width:20px" checked />
+            <span asp-validation-for="HasPolishCitizenship" class="text-danger"></span>
+        </div>*@
+
+
+            <label asp-for="SelectedPESEL" class="control-label"></label>
+            <input asp-for="SelectedPESEL" class="form-control mb-2">
+            <span asp-validation-for="SelectedPESEL" class="text-danger"></span>
+
+            <label asp-for="SelectedPassportNumber" class="control-label"></label>
+            <input asp-for="SelectedPassportNumber" class="form-control mb-2">
+            <span asp-validation-for="SelectedPassportNumber" class="text-danger"></span>
+
+
+
+
+            <button id="btnSubmit" type="submit" class="btn btn-primary w-100 mt-2">Wyszukaj</button>
+        </div>
+    </form>
+    @{
+        List<Patient> patients = Model.FilteredPatients;
+
+        for (int i = 0; i < patients.Count; i++)
+        {
+            Patient patient = patients[i];
+            Asklepios.Web.Areas.AdministrativeArea.Models.PatientDetailsViewModel model = new Asklepios.Web.Areas.AdministrativeArea.Models.PatientDetailsViewModel();
+            if (Model is Asklepios.Web.Areas.AdministrativeArea.Interfaces.ISearchPatient iSearch)
+            {
+                model.UpdateWithSearch(iSearch);
+            }
+            model.CurrentPatient = patient;
+            <partial name="_Patient" model="model" />
+        }
+
+    }
+</div>
