@@ -1,5 +1,6 @@
 ﻿using Asklepios.Core.Models;
 using Asklepios.Data.Interfaces;
+using Asklepios.Web.Areas.AdministrativeArea.Interfaces;
 using Asklepios.Web.Areas.AdministrativeArea.Models;
 using Asklepios.Web.Enums;
 using Asklepios.Web.Models;
@@ -447,7 +448,11 @@ namespace Asklepios.Web.Areas.AdministrativeArea.Controllers
         {
             if (_loggedUser != null)
             {
-                return View();
+                PatientsManageViewModel model = new PatientsManageViewModel();
+                model.NFZUnits = _context.GetNFZUnits();
+                model.MedicalPackages = _context.GetMedicalPackages();
+                model.AllPatients = _context.GetAllPatients();
+                return View(model);
             }
             else
             {

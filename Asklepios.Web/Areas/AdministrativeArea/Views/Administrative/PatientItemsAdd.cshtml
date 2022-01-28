@@ -43,9 +43,10 @@
             <span asp-validation-for="Person.Surname" class="text-danger"></span>
 
             <label asp-for="Person.DefaultAglomeration" class="control-label"></label>
-            <select asp-for="Person.DefaultAglomeration" asp-items="Html.GetEnumSelectList<Asklepios.Core.Enums.Aglomeration>()">
+            <select class="form-control  mb-2" asp-for="Person.DefaultAglomeration" asp-items="Html.GetEnumSelectList<Asklepios.Core.Enums.Aglomeration>()">
                 <option value="">Wybierz aglomerację</option>
             </select>
+            @*<datalist asp-for="Person.DefaultAglomeration" asp-items="Html.GetEnumSelectList<Asklepios.Core.Enums.Aglomeration>()" />*@
             <span asp-validation-for="Person.DefaultAglomeration" class="text-danger"></span>
 
             <label asp-for="Person.BirthDate" class="control-label"></label>
@@ -58,7 +59,6 @@
                 <span asp-validation-for="Person.HasPolishCitizenship" class="text-danger"></span>
 
             </div>
-
 
             <label asp-for="Person.PESEL" class="control-label"></label>
             <input asp-for="Person.PESEL" class="form-control mb-2">

@@ -6,6 +6,9 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="Areas\AdministrativeArea\Interfaces\ISearchVisit - Copy %284%29.cs" />
+    <Compile Remove="Areas\AdministrativeArea\Interfaces\ISearchVisit - Copy %285%29.cs" />
+    <Compile Remove="Areas\AdministrativeArea\Models\ISearchVisit.cs" />
     <Compile Remove="Areas\PatientArea\Models\ExaminationReferralViewModel.cs" />
     <Compile Remove="Areas\PatientArea\Models\ExaminationResultsViewModel.cs" />
     <Compile Remove="Areas\PatientArea\Models\PatientViewModel - Copy.cs" />

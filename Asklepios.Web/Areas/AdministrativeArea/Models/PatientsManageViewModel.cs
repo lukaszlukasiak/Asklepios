@@ -1,0 +1,185 @@
+﻿using Asklepios.Core.Enums;
+using Asklepios.Core.Models;
+using System;
+using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
+using System.Linq;
+using System.Threading.Tasks;
+
+namespace Asklepios.Web.Areas.AdministrativeArea.Models
+{
+    public class PatientsManageViewModel
+    {
+        public Person Person { get; set; } = new Person();
+        public Patient Patient { get; set; }
+        public List<MedicalPackage> MedicalPackages { get; set; }
+        public List<NFZUnit> NFZUnits { get; set; }
+        public List<Patient> AllPatients { get; set; }
+        public List<Patient> FilteredPatients
+        {
+            get
+            {
+                if (IsFilterOn)
+                {
+                    return GetFilteredPatientsList();
+                }
+                else
+                {
+                    return AllPatients;
+                }
+            }
+        }
+        [Display(Name = "Id pacjenta")]
+        public long SelectedId { get; set; }
+
+        [Display(Name = "Imię")]
+
+        public string SelectedName { get; set; }
+        [Display(Name = "Nazwisko")]
+
+        public string SelectedSurname { get; set; }
+        [Display(Name = "PESEL")]
+
+        public string SelectedPESEL { get; set; }
+        [Display(Name = "Numer paszportu")]
+
+        public string SelectedPassportNumber { get; set; }
+        [Display(Name = "Aglomeracja")]
+        public Aglomeration? SelectedAglomeration { get; set; }
+        [Display(Name = "Pakiet medyczny")]
+        public long SelectedMedicalPackageId { get; set; }
+        public MedicalPackage SelectedMedicalPackage { get; set; }
+        [Display(Name = "Oddział NFZ")]
+        public long SelectedNFZUnitId { get; set; }
+        public NFZUnit SelectedNFZUnit { get; set; }
+        [Display(Name = "Polskie obywatelstwo")]
+        public bool? HasPolishCitizenship { get; set; }
+
+        public bool IsFilterOn
+        {
+            get
+            {
+                if (!string.IsNullOrWhiteSpace(SelectedName))
+                {
+                    return true;
+                }
+                if (!string.IsNullOrWhiteSpace(SelectedSurname))
+                {
+                    return true;
+                }
+                if (!string.IsNullOrWhiteSpace(SelectedPESEL))
+                {
+                    return true;
+                }
+                if (!string.IsNullOrWhiteSpace(SelectedPassportNumber))
+                {
+                    return true;
+                }
+                if (SelectedMedicalPackageId > 0)
+                {
+                    return true;
+                }
+                if (SelectedAglomeration.HasValue == true)
+                {
+                    return true;
+                }
+                if (HasPolishCitizenship.HasValue == true)
+                {
+                    return true;
+                }
+                return false;
+            }
+        }
+        public int ItemsPerPage { get; private set; } = 100;
+        public int CurrentPageNum { get; private set; } = 1;
+
+
+        private List<Patient> GetFilteredPatientsList()
+        {
+            List<Patient> filteredPatients = AllPatients;
+            if (AllPatients== null)
+            {
+                return null;
+            }
+            else
+            {
+                if (!string.IsNullOrWhiteSpace(SelectedName))
+                {
+                    filteredPatients = filteredPatients.Where(c => c.Person.Name.Contains(SelectedName)).ToList();
+                    if (filteredPatients == null)
+                    {
+                        return null;
+                    }
+                }
+            }
+            if (!string.IsNullOrWhiteSpace(SelectedSurname))
+            {
+                filteredPatients = filteredPatients.Where(c => c.Person.Surname.Contains(SelectedSurname)).ToList();
+                if (filteredPatients == null)
+                {
+                    return null;
+                }
+            }
+            if (!string.IsNullOrWhiteSpace(SelectedPESEL))
+            {
+                filteredPatients = filteredPatients.Where(c => c.Person.PESEL.Contains(SelectedPESEL)).ToList();
+                if (filteredPatients == null)
+                {
+                    return null;
+                }
+            }
+            if (!string.IsNullOrWhiteSpace(SelectedPassportNumber))
+            {
+                filteredPatients = filteredPatients.Where(c => c.Person.Surname.Contains(SelectedPassportNumber)).ToList();
+                if (filteredPatients == null)
+                {
+                    return null;
+                }
+            }
+            if (SelectedMedicalPackageId >0)
+            {
+                //if (long.TryParse(SelectedVisitCategoryId, out long lid))
+                //{
+                //    if (lid > 0)
+                //    {
+                filteredPatients = filteredPatients.Where(c => c.MedicalPackage.Id == SelectedMedicalPackageId).ToList();
+                if (filteredPatients == null)
+                        {
+                            return null;
+                        }
+                //    }
+                //}
+            }
+            //if (VisitsDateFrom.HasValue)
+            //{
+            //    filteredPatients = filteredPatients.Where(c => c.DateTimeSince >= VisitsDateFrom).ToList();
+            //    if (filteredPatients == null)
+            //    {
+            //        return null;
+            //    }
+
+            //}
+            //if (VisitsDateTo.HasValue)
+            //{
+            //    filteredPatients = filteredPatients.Where(c => c.DateTimeSince <= VisitsDateTo.Value.AddDays(1)).ToList();
+            //    if (filteredPatients == null)
+            //    {
+            //        return null;
+            //    }
+
+            //}
+
+
+
+            filteredPatients = filteredPatients.OrderBy(c => c.Person.FullName).ToList();
+            if (filteredPatients.Count < ItemsPerPage)
+            {
+                return filteredPatients;
+            }
+            else
+            {
+                return filteredPatients.GetRange((CurrentPageNum - 1) * ItemsPerPage, ItemsPerPage);
+            }
+        }
+    }
+}
