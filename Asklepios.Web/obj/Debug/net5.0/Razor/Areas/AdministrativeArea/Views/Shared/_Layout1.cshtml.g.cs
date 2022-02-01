@@ -54,9 +54,16 @@ using Asklepios.Web.Areas.AdministrativeArea.Interfaces;
 #line default
 #line hidden
 #nullable disable
+#nullable restore
+#line 7 "C:\Users\lukas\source\repos\Asklepios8\Asklepios.Web\Areas\AdministrativeArea\Views\Shared\_ViewImports.cshtml"
+using Asklepios.Web.Extensions;
+
+#line default
+#line hidden
+#nullable disable
     [global::Microsoft.AspNetCore.Razor.Hosting.RazorSourceChecksumAttribute(@"SHA1", @"4e99dac2304ceaa452611cfe1e265cf9a4aa4f5d", @"/Areas/AdministrativeArea/Views/Shared/_Layout1.cshtml")]
     [global::Microsoft.AspNetCore.Razor.Hosting.RazorSourceChecksumAttribute(@"SHA1", @"8363068bd805e1ea8857622c67a9d36b577d03f7", @"/Areas/_ViewImports.cshtml")]
-    [global::Microsoft.AspNetCore.Razor.Hosting.RazorSourceChecksumAttribute(@"SHA1", @"04f4439d6c163aa365dc200e9fa3d614481c3af0", @"/Areas/AdministrativeArea/Views/Shared/_ViewImports.cshtml")]
+    [global::Microsoft.AspNetCore.Razor.Hosting.RazorSourceChecksumAttribute(@"SHA1", @"cb38cb19857286ef2393e97591cdc562825453aa", @"/Areas/AdministrativeArea/Views/Shared/_ViewImports.cshtml")]
     public class Areas_AdministrativeArea_Views_Shared__Layout1 : global::Microsoft.AspNetCore.Mvc.Razor.RazorPage<dynamic>
     {
         private static readonly global::Microsoft.AspNetCore.Razor.TagHelpers.TagHelperAttribute __tagHelperAttribute_0 = new global::Microsoft.AspNetCore.Razor.TagHelpers.TagHelperAttribute("href", new global::Microsoft.AspNetCore.Html.HtmlString("~/vendor/fontawesome-free/css/all.min.css"), global::Microsoft.AspNetCore.Razor.TagHelpers.HtmlAttributeValueStyle.DoubleQuotes);
@@ -121,7 +128,7 @@ using Asklepios.Web.Areas.AdministrativeArea.Interfaces;
         public async override global::System.Threading.Tasks.Task ExecuteAsync()
         {
             WriteLiteral("<!DOCTYPE html>\r\n<html lang=\"pl\">\r\n\r\n");
-            __tagHelperExecutionContext = __tagHelperScopeManager.Begin("head", global::Microsoft.AspNetCore.Razor.TagHelpers.TagMode.StartTagAndEndTag, "4e99dac2304ceaa452611cfe1e265cf9a4aa4f5d16316", async() => {
+            __tagHelperExecutionContext = __tagHelperScopeManager.Begin("head", global::Microsoft.AspNetCore.Razor.TagHelpers.TagMode.StartTagAndEndTag, "4e99dac2304ceaa452611cfe1e265cf9a4aa4f5d16540", async() => {
                 WriteLiteral("\r\n\r\n    <meta charset=\"utf-8\">\r\n    <meta http-equiv=\"X-UA-Compatible\" content=\"IE=edge\">\r\n    <meta name=\"viewport\" content=\"width=device-width, initial-scale=1, shrink-to-fit=no\">\r\n    <meta name=\"description\"");
                 BeginWriteAttribute("content", " content=\"", 254, "\"", 264, 0);
                 EndWriteAttribute();
@@ -129,7 +136,7 @@ using Asklepios.Web.Areas.AdministrativeArea.Interfaces;
                 BeginWriteAttribute("content", " content=\"", 291, "\"", 301, 0);
                 EndWriteAttribute();
                 WriteLiteral(">\r\n\r\n    <title>Asklepios - moduł administracyjny</title>\r\n\r\n    <!-- Custom fonts for this template-->\r\n    ");
-                __tagHelperExecutionContext = __tagHelperScopeManager.Begin("link", global::Microsoft.AspNetCore.Razor.TagHelpers.TagMode.StartTagOnly, "4e99dac2304ceaa452611cfe1e265cf9a4aa4f5d17265", async() => {
+                __tagHelperExecutionContext = __tagHelperScopeManager.Begin("link", global::Microsoft.AspNetCore.Razor.TagHelpers.TagMode.StartTagOnly, "4e99dac2304ceaa452611cfe1e265cf9a4aa4f5d17489", async() => {
                 }
                 );
                 __Microsoft_AspNetCore_Mvc_Razor_TagHelpers_UrlResolutionTagHelper = CreateTagHelper<global::Microsoft.AspNetCore.Mvc.Razor.TagHelpers.UrlResolutionTagHelper>();
@@ -145,7 +152,7 @@ using Asklepios.Web.Areas.AdministrativeArea.Interfaces;
                 Write(__tagHelperExecutionContext.Output);
                 __tagHelperExecutionContext = __tagHelperScopeManager.End();
                 WriteLiteral("\r\n    <link href=\"https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i\"\r\n          rel=\"stylesheet\">\r\n    ");
-                __tagHelperExecutionContext = __tagHelperScopeManager.Begin("link", global::Microsoft.AspNetCore.Razor.TagHelpers.TagMode.StartTagOnly, "4e99dac2304ceaa452611cfe1e265cf9a4aa4f5d18697", async() => {
+                __tagHelperExecutionContext = __tagHelperScopeManager.Begin("link", global::Microsoft.AspNetCore.Razor.TagHelpers.TagMode.StartTagOnly, "4e99dac2304ceaa452611cfe1e265cf9a4aa4f5d18921", async() => {
                 }
                 );
                 __Microsoft_AspNetCore_Mvc_Razor_TagHelpers_UrlResolutionTagHelper = CreateTagHelper<global::Microsoft.AspNetCore.Mvc.Razor.TagHelpers.UrlResolutionTagHelper>();
@@ -161,7 +168,7 @@ using Asklepios.Web.Areas.AdministrativeArea.Interfaces;
                 Write(__tagHelperExecutionContext.Output);
                 __tagHelperExecutionContext = __tagHelperScopeManager.End();
                 WriteLiteral("\r\n\r\n    <!-- Custom styles for this template-->\r\n    ");
-                __tagHelperExecutionContext = __tagHelperScopeManager.Begin("link", global::Microsoft.AspNetCore.Razor.TagHelpers.TagMode.StartTagOnly, "4e99dac2304ceaa452611cfe1e265cf9a4aa4f5d20015", async() => {
+                __tagHelperExecutionContext = __tagHelperScopeManager.Begin("link", global::Microsoft.AspNetCore.Razor.TagHelpers.TagMode.StartTagOnly, "4e99dac2304ceaa452611cfe1e265cf9a4aa4f5d20239", async() => {
                 }
                 );
                 __Microsoft_AspNetCore_Mvc_Razor_TagHelpers_UrlResolutionTagHelper = CreateTagHelper<global::Microsoft.AspNetCore.Mvc.Razor.TagHelpers.UrlResolutionTagHelper>();
@@ -176,7 +183,7 @@ using Asklepios.Web.Areas.AdministrativeArea.Interfaces;
                 Write(__tagHelperExecutionContext.Output);
                 __tagHelperExecutionContext = __tagHelperScopeManager.End();
                 WriteLiteral("\r\n    ");
-                __tagHelperExecutionContext = __tagHelperScopeManager.Begin("script", global::Microsoft.AspNetCore.Razor.TagHelpers.TagMode.StartTagAndEndTag, "4e99dac2304ceaa452611cfe1e265cf9a4aa4f5d21195", async() => {
+                __tagHelperExecutionContext = __tagHelperScopeManager.Begin("script", global::Microsoft.AspNetCore.Razor.TagHelpers.TagMode.StartTagAndEndTag, "4e99dac2304ceaa452611cfe1e265cf9a4aa4f5d21419", async() => {
                 }
                 );
                 __Microsoft_AspNetCore_Mvc_Razor_TagHelpers_UrlResolutionTagHelper = CreateTagHelper<global::Microsoft.AspNetCore.Mvc.Razor.TagHelpers.UrlResolutionTagHelper>();
@@ -202,7 +209,7 @@ using Asklepios.Web.Areas.AdministrativeArea.Interfaces;
             Write(__tagHelperExecutionContext.Output);
             __tagHelperExecutionContext = __tagHelperScopeManager.End();
             WriteLiteral("\r\n\r\n");
-            __tagHelperExecutionContext = __tagHelperScopeManager.Begin("body", global::Microsoft.AspNetCore.Razor.TagHelpers.TagMode.StartTagAndEndTag, "4e99dac2304ceaa452611cfe1e265cf9a4aa4f5d23007", async() => {
+            __tagHelperExecutionContext = __tagHelperScopeManager.Begin("body", global::Microsoft.AspNetCore.Razor.TagHelpers.TagMode.StartTagAndEndTag, "4e99dac2304ceaa452611cfe1e265cf9a4aa4f5d23231", async() => {
                 WriteLiteral(@"
 
     <!-- Page Wrapper -->
@@ -245,7 +252,7 @@ using Asklepios.Web.Areas.AdministrativeArea.Interfaces;
             <!-- Nav Item - Pages Collapse Menu -->
             <li class=""nav-item "">
                 ");
-                __tagHelperExecutionContext = __tagHelperScopeManager.Begin("a", global::Microsoft.AspNetCore.Razor.TagHelpers.TagMode.StartTagAndEndTag, "4e99dac2304ceaa452611cfe1e265cf9a4aa4f5d24694", async() => {
+                __tagHelperExecutionContext = __tagHelperScopeManager.Begin("a", global::Microsoft.AspNetCore.Razor.TagHelpers.TagMode.StartTagAndEndTag, "4e99dac2304ceaa452611cfe1e265cf9a4aa4f5d24918", async() => {
                     WriteLiteral("\r\n                    <i class=\"fas fa-fw fa-edit\"></i>\r\n                    <span>Dodaj</span>\r\n                ");
                 }
                 );
@@ -268,7 +275,7 @@ using Asklepios.Web.Areas.AdministrativeArea.Interfaces;
                 Write(__tagHelperExecutionContext.Output);
                 __tagHelperExecutionContext = __tagHelperScopeManager.End();
                 WriteLiteral("\r\n            </li>\r\n\r\n            <li class=\"nav-item \">\r\n                ");
-                __tagHelperExecutionContext = __tagHelperScopeManager.Begin("a", global::Microsoft.AspNetCore.Razor.TagHelpers.TagMode.StartTagAndEndTag, "4e99dac2304ceaa452611cfe1e265cf9a4aa4f5d26795", async() => {
+                __tagHelperExecutionContext = __tagHelperScopeManager.Begin("a", global::Microsoft.AspNetCore.Razor.TagHelpers.TagMode.StartTagAndEndTag, "4e99dac2304ceaa452611cfe1e265cf9a4aa4f5d27019", async() => {
                     WriteLiteral("\r\n                    <i class=\"fas fa-fw fa-cog \"></i>\r\n                    <span>Zarządzaj</span>\r\n                ");
                 }
                 );
@@ -290,7 +297,7 @@ using Asklepios.Web.Areas.AdministrativeArea.Interfaces;
                 __tagHelperExecutionContext = __tagHelperScopeManager.End();
                 WriteLiteral("\r\n            </li>\r\n\r\n            <!-- Nav Item - Utilities Collapse Menu -->\r\n");
                 WriteLiteral("\r\n\r\n\r\n            <hr class=\"sidebar-divider\">\r\n            <div class=\"sidebar-heading\">\r\n                Pacjenci\r\n            </div>\r\n            <li class=\"nav-item \">\r\n                ");
-                __tagHelperExecutionContext = __tagHelperScopeManager.Begin("a", global::Microsoft.AspNetCore.Razor.TagHelpers.TagMode.StartTagAndEndTag, "4e99dac2304ceaa452611cfe1e265cf9a4aa4f5d28976", async() => {
+                __tagHelperExecutionContext = __tagHelperScopeManager.Begin("a", global::Microsoft.AspNetCore.Razor.TagHelpers.TagMode.StartTagAndEndTag, "4e99dac2304ceaa452611cfe1e265cf9a4aa4f5d29200", async() => {
                     WriteLiteral("\r\n                    <i class=\"fas fa-fw fa-edit\"></i>\r\n                    <span>Dodaj</span>\r\n                ");
                 }
                 );
@@ -313,7 +320,7 @@ using Asklepios.Web.Areas.AdministrativeArea.Interfaces;
                 Write(__tagHelperExecutionContext.Output);
                 __tagHelperExecutionContext = __tagHelperScopeManager.End();
                 WriteLiteral("\r\n            </li>\r\n\r\n            <li class=\"nav-item \">\r\n                ");
-                __tagHelperExecutionContext = __tagHelperScopeManager.Begin("a", global::Microsoft.AspNetCore.Razor.TagHelpers.TagMode.StartTagAndEndTag, "4e99dac2304ceaa452611cfe1e265cf9a4aa4f5d31079", async() => {
+                __tagHelperExecutionContext = __tagHelperScopeManager.Begin("a", global::Microsoft.AspNetCore.Razor.TagHelpers.TagMode.StartTagAndEndTag, "4e99dac2304ceaa452611cfe1e265cf9a4aa4f5d31303", async() => {
                     WriteLiteral("\r\n                    <i class=\"fas fa-fw fa-cog \"></i>\r\n                    <span>Zarządzaj</span>\r\n                ");
                 }
                 );
@@ -334,7 +341,7 @@ using Asklepios.Web.Areas.AdministrativeArea.Interfaces;
                 Write(__tagHelperExecutionContext.Output);
                 __tagHelperExecutionContext = __tagHelperScopeManager.End();
                 WriteLiteral("\r\n            </li>\r\n            <hr class=\"sidebar-divider\">\r\n            <div class=\"sidebar-heading\">\r\n                Pracownicy medyczni\r\n            </div>\r\n\r\n            <li class=\"nav-item \">\r\n                ");
-                __tagHelperExecutionContext = __tagHelperScopeManager.Begin("a", global::Microsoft.AspNetCore.Razor.TagHelpers.TagMode.StartTagAndEndTag, "4e99dac2304ceaa452611cfe1e265cf9a4aa4f5d33165", async() => {
+                __tagHelperExecutionContext = __tagHelperScopeManager.Begin("a", global::Microsoft.AspNetCore.Razor.TagHelpers.TagMode.StartTagAndEndTag, "4e99dac2304ceaa452611cfe1e265cf9a4aa4f5d33389", async() => {
                     WriteLiteral("\r\n                    <i class=\"fas fa-fw fa-edit\"></i>\r\n                    <span>Dodaj</span>\r\n                ");
                 }
                 );
@@ -357,7 +364,7 @@ using Asklepios.Web.Areas.AdministrativeArea.Interfaces;
                 Write(__tagHelperExecutionContext.Output);
                 __tagHelperExecutionContext = __tagHelperScopeManager.End();
                 WriteLiteral("\r\n            </li>\r\n\r\n            <li class=\"nav-item \">\r\n                ");
-                __tagHelperExecutionContext = __tagHelperScopeManager.Begin("a", global::Microsoft.AspNetCore.Razor.TagHelpers.TagMode.StartTagAndEndTag, "4e99dac2304ceaa452611cfe1e265cf9a4aa4f5d35268", async() => {
+                __tagHelperExecutionContext = __tagHelperScopeManager.Begin("a", global::Microsoft.AspNetCore.Razor.TagHelpers.TagMode.StartTagAndEndTag, "4e99dac2304ceaa452611cfe1e265cf9a4aa4f5d35492", async() => {
                     WriteLiteral("\r\n                    <i class=\"fas fa-fw fa-cog \"></i>\r\n                    <span>Zarządzaj</span>\r\n                ");
                 }
                 );
@@ -378,7 +385,7 @@ using Asklepios.Web.Areas.AdministrativeArea.Interfaces;
                 Write(__tagHelperExecutionContext.Output);
                 __tagHelperExecutionContext = __tagHelperScopeManager.End();
                 WriteLiteral("\r\n            </li>\r\n            <hr class=\"sidebar-divider\">\r\n            <div class=\"sidebar-heading\">\r\n                Pracownicy niemedyczni\r\n            </div>\r\n\r\n            <li class=\"nav-item \">\r\n                ");
-                __tagHelperExecutionContext = __tagHelperScopeManager.Begin("a", global::Microsoft.AspNetCore.Razor.TagHelpers.TagMode.StartTagAndEndTag, "4e99dac2304ceaa452611cfe1e265cf9a4aa4f5d37357", async() => {
+                __tagHelperExecutionContext = __tagHelperScopeManager.Begin("a", global::Microsoft.AspNetCore.Razor.TagHelpers.TagMode.StartTagAndEndTag, "4e99dac2304ceaa452611cfe1e265cf9a4aa4f5d37581", async() => {
                     WriteLiteral("\r\n                    <i class=\"fas fa-fw fa-edit\"></i>\r\n                    <span>Dodaj</span>\r\n                ");
                 }
                 );
@@ -401,7 +408,7 @@ using Asklepios.Web.Areas.AdministrativeArea.Interfaces;
                 Write(__tagHelperExecutionContext.Output);
                 __tagHelperExecutionContext = __tagHelperScopeManager.End();
                 WriteLiteral("\r\n            </li>\r\n\r\n            <li class=\"nav-item \">\r\n                ");
-                __tagHelperExecutionContext = __tagHelperScopeManager.Begin("a", global::Microsoft.AspNetCore.Razor.TagHelpers.TagMode.StartTagAndEndTag, "4e99dac2304ceaa452611cfe1e265cf9a4aa4f5d39460", async() => {
+                __tagHelperExecutionContext = __tagHelperScopeManager.Begin("a", global::Microsoft.AspNetCore.Razor.TagHelpers.TagMode.StartTagAndEndTag, "4e99dac2304ceaa452611cfe1e265cf9a4aa4f5d39684", async() => {
                     WriteLiteral("\r\n                    <i class=\"fas fa-fw fa-cog \"></i>\r\n                    <span>Zarządzaj</span>\r\n                ");
                 }
                 );
@@ -433,7 +440,7 @@ using Asklepios.Web.Areas.AdministrativeArea.Interfaces;
 
             <li class=""nav-item "">
                 ");
-                __tagHelperExecutionContext = __tagHelperScopeManager.Begin("a", global::Microsoft.AspNetCore.Razor.TagHelpers.TagMode.StartTagAndEndTag, "4e99dac2304ceaa452611cfe1e265cf9a4aa4f5d41572", async() => {
+                __tagHelperExecutionContext = __tagHelperScopeManager.Begin("a", global::Microsoft.AspNetCore.Razor.TagHelpers.TagMode.StartTagAndEndTag, "4e99dac2304ceaa452611cfe1e265cf9a4aa4f5d41796", async() => {
                     WriteLiteral("\r\n                    <i class=\"fas fa-fw fa-edit\"></i>\r\n                    <span>Dodaj</span>\r\n                ");
                 }
                 );
@@ -456,7 +463,7 @@ using Asklepios.Web.Areas.AdministrativeArea.Interfaces;
                 Write(__tagHelperExecutionContext.Output);
                 __tagHelperExecutionContext = __tagHelperScopeManager.End();
                 WriteLiteral("\r\n            </li>\r\n\r\n            <li class=\"nav-item \">\r\n                ");
-                __tagHelperExecutionContext = __tagHelperScopeManager.Begin("a", global::Microsoft.AspNetCore.Razor.TagHelpers.TagMode.StartTagAndEndTag, "4e99dac2304ceaa452611cfe1e265cf9a4aa4f5d43675", async() => {
+                __tagHelperExecutionContext = __tagHelperScopeManager.Begin("a", global::Microsoft.AspNetCore.Razor.TagHelpers.TagMode.StartTagAndEndTag, "4e99dac2304ceaa452611cfe1e265cf9a4aa4f5d43899", async() => {
                     WriteLiteral("\r\n                    <i class=\"fas fa-fw fa-cog \"></i>\r\n                    <span>Zarządzaj</span>\r\n                ");
                 }
                 );
@@ -477,7 +484,7 @@ using Asklepios.Web.Areas.AdministrativeArea.Interfaces;
                 Write(__tagHelperExecutionContext.Output);
                 __tagHelperExecutionContext = __tagHelperScopeManager.End();
                 WriteLiteral("\r\n            </li>\r\n            <hr class=\"sidebar-divider d-none d-md-block\">\r\n\r\n            <div class=\"sidebar-heading\">\r\n                Gabinety\r\n            </div>\r\n            <li class=\"nav-item \">\r\n                ");
-                __tagHelperExecutionContext = __tagHelperScopeManager.Begin("a", global::Microsoft.AspNetCore.Razor.TagHelpers.TagMode.StartTagAndEndTag, "4e99dac2304ceaa452611cfe1e265cf9a4aa4f5d45768", async() => {
+                __tagHelperExecutionContext = __tagHelperScopeManager.Begin("a", global::Microsoft.AspNetCore.Razor.TagHelpers.TagMode.StartTagAndEndTag, "4e99dac2304ceaa452611cfe1e265cf9a4aa4f5d45992", async() => {
                     WriteLiteral("\r\n                    <i class=\"fas fa-fw fa-edit\"></i>\r\n                    <span>Dodaj</span>\r\n                ");
                 }
                 );
@@ -500,7 +507,7 @@ using Asklepios.Web.Areas.AdministrativeArea.Interfaces;
                 Write(__tagHelperExecutionContext.Output);
                 __tagHelperExecutionContext = __tagHelperScopeManager.End();
                 WriteLiteral("\r\n            </li>\r\n\r\n            <li class=\"nav-item \">\r\n                ");
-                __tagHelperExecutionContext = __tagHelperScopeManager.Begin("a", global::Microsoft.AspNetCore.Razor.TagHelpers.TagMode.StartTagAndEndTag, "4e99dac2304ceaa452611cfe1e265cf9a4aa4f5d47871", async() => {
+                __tagHelperExecutionContext = __tagHelperScopeManager.Begin("a", global::Microsoft.AspNetCore.Razor.TagHelpers.TagMode.StartTagAndEndTag, "4e99dac2304ceaa452611cfe1e265cf9a4aa4f5d48095", async() => {
                     WriteLiteral("\r\n                    <i class=\"fas fa-fw fa-cog \"></i>\r\n                    <span>Zarządzaj</span>\r\n                ");
                 }
                 );
@@ -522,7 +529,7 @@ using Asklepios.Web.Areas.AdministrativeArea.Interfaces;
                 __tagHelperExecutionContext = __tagHelperScopeManager.End();
                 WriteLiteral("\r\n            </li>\r\n\r\n            <!-- Heading -->\r\n            <!--<div class=\"sidebar-heading\">\r\n        Leczenie\r\n    </div>-->\r\n");
                 WriteLiteral("            <hr class=\"sidebar-divider\">\r\n\r\n            <div class=\"sidebar-heading\">\r\n                Pakiety medyczne\r\n            </div>\r\n            <li class=\"nav-item \">\r\n                ");
-                __tagHelperExecutionContext = __tagHelperScopeManager.Begin("a", global::Microsoft.AspNetCore.Razor.TagHelpers.TagMode.StartTagAndEndTag, "4e99dac2304ceaa452611cfe1e265cf9a4aa4f5d50113", async() => {
+                __tagHelperExecutionContext = __tagHelperScopeManager.Begin("a", global::Microsoft.AspNetCore.Razor.TagHelpers.TagMode.StartTagAndEndTag, "4e99dac2304ceaa452611cfe1e265cf9a4aa4f5d50337", async() => {
                     WriteLiteral("\r\n                    <i class=\"fas fa-fw fa-edit\"></i>\r\n                    <span>Dodaj</span>\r\n                ");
                 }
                 );
@@ -545,7 +552,7 @@ using Asklepios.Web.Areas.AdministrativeArea.Interfaces;
                 Write(__tagHelperExecutionContext.Output);
                 __tagHelperExecutionContext = __tagHelperScopeManager.End();
                 WriteLiteral("\r\n            </li>\r\n\r\n            <li class=\"nav-item \">\r\n                ");
-                __tagHelperExecutionContext = __tagHelperScopeManager.Begin("a", global::Microsoft.AspNetCore.Razor.TagHelpers.TagMode.StartTagAndEndTag, "4e99dac2304ceaa452611cfe1e265cf9a4aa4f5d52216", async() => {
+                __tagHelperExecutionContext = __tagHelperScopeManager.Begin("a", global::Microsoft.AspNetCore.Razor.TagHelpers.TagMode.StartTagAndEndTag, "4e99dac2304ceaa452611cfe1e265cf9a4aa4f5d52440", async() => {
                     WriteLiteral("\r\n                    <i class=\"fas fa-fw fa-cog \"></i>\r\n                    <span>Zarządzaj</span>\r\n                ");
                 }
                 );
@@ -566,7 +573,7 @@ using Asklepios.Web.Areas.AdministrativeArea.Interfaces;
                 Write(__tagHelperExecutionContext.Output);
                 __tagHelperExecutionContext = __tagHelperScopeManager.End();
                 WriteLiteral("\r\n            </li>\r\n            <hr class=\"sidebar-divider\">\r\n\r\n            <div class=\"sidebar-heading\">\r\n                Usługi\r\n            </div>\r\n\r\n            <li class=\"nav-item \">\r\n                ");
-                __tagHelperExecutionContext = __tagHelperScopeManager.Begin("a", global::Microsoft.AspNetCore.Razor.TagHelpers.TagMode.StartTagAndEndTag, "4e99dac2304ceaa452611cfe1e265cf9a4aa4f5d54293", async() => {
+                __tagHelperExecutionContext = __tagHelperScopeManager.Begin("a", global::Microsoft.AspNetCore.Razor.TagHelpers.TagMode.StartTagAndEndTag, "4e99dac2304ceaa452611cfe1e265cf9a4aa4f5d54517", async() => {
                     WriteLiteral("\r\n                    <i class=\"fas fa-fw fa-edit\"></i>\r\n                    <span>Dodaj</span>\r\n                ");
                 }
                 );
@@ -589,7 +596,7 @@ using Asklepios.Web.Areas.AdministrativeArea.Interfaces;
                 Write(__tagHelperExecutionContext.Output);
                 __tagHelperExecutionContext = __tagHelperScopeManager.End();
                 WriteLiteral("\r\n            </li>\r\n\r\n            <li class=\"nav-item \">\r\n                ");
-                __tagHelperExecutionContext = __tagHelperScopeManager.Begin("a", global::Microsoft.AspNetCore.Razor.TagHelpers.TagMode.StartTagAndEndTag, "4e99dac2304ceaa452611cfe1e265cf9a4aa4f5d56396", async() => {
+                __tagHelperExecutionContext = __tagHelperScopeManager.Begin("a", global::Microsoft.AspNetCore.Razor.TagHelpers.TagMode.StartTagAndEndTag, "4e99dac2304ceaa452611cfe1e265cf9a4aa4f5d56620", async() => {
                     WriteLiteral("\r\n                    <i class=\"fas fa-fw fa-cog \"></i>\r\n                    <span>Zarządzaj</span>\r\n                ");
                 }
                 );
@@ -610,7 +617,7 @@ using Asklepios.Web.Areas.AdministrativeArea.Interfaces;
                 Write(__tagHelperExecutionContext.Output);
                 __tagHelperExecutionContext = __tagHelperScopeManager.End();
                 WriteLiteral("\r\n            </li>\r\n            <hr class=\"sidebar-divider d-none d-md-block\">\r\n\r\n            <div class=\"sidebar-heading\">\r\n                Inne\r\n            </div>\r\n            <li class=\"nav-item\">\r\n                ");
-                __tagHelperExecutionContext = __tagHelperScopeManager.Begin("a", global::Microsoft.AspNetCore.Razor.TagHelpers.TagMode.StartTagAndEndTag, "4e99dac2304ceaa452611cfe1e265cf9a4aa4f5d58484", async() => {
+                __tagHelperExecutionContext = __tagHelperScopeManager.Begin("a", global::Microsoft.AspNetCore.Razor.TagHelpers.TagMode.StartTagAndEndTag, "4e99dac2304ceaa452611cfe1e265cf9a4aa4f5d58708", async() => {
                     WriteLiteral("\r\n                    <i class=\"fas fa-fw fa-table\"></i>\r\n                    <span>Kontakt</span>\r\n                ");
                 }
                 );
@@ -839,7 +846,7 @@ using Asklepios.Web.Areas.AdministrativeArea.Interfaces;
 
     <!-- Bootstrap core JavaScript-->
     ");
-                __tagHelperExecutionContext = __tagHelperScopeManager.Begin("script", global::Microsoft.AspNetCore.Razor.TagHelpers.TagMode.StartTagAndEndTag, "4e99dac2304ceaa452611cfe1e265cf9a4aa4f5d70938", async() => {
+                __tagHelperExecutionContext = __tagHelperScopeManager.Begin("script", global::Microsoft.AspNetCore.Razor.TagHelpers.TagMode.StartTagAndEndTag, "4e99dac2304ceaa452611cfe1e265cf9a4aa4f5d71162", async() => {
                 }
                 );
                 __Microsoft_AspNetCore_Mvc_Razor_TagHelpers_UrlResolutionTagHelper = CreateTagHelper<global::Microsoft.AspNetCore.Mvc.Razor.TagHelpers.UrlResolutionTagHelper>();
@@ -853,7 +860,7 @@ using Asklepios.Web.Areas.AdministrativeArea.Interfaces;
                 Write(__tagHelperExecutionContext.Output);
                 __tagHelperExecutionContext = __tagHelperScopeManager.End();
                 WriteLiteral("\r\n\r\n    <!-- Core plugin JavaScript-->\r\n    ");
-                __tagHelperExecutionContext = __tagHelperScopeManager.Begin("script", global::Microsoft.AspNetCore.Razor.TagHelpers.TagMode.StartTagAndEndTag, "4e99dac2304ceaa452611cfe1e265cf9a4aa4f5d72081", async() => {
+                __tagHelperExecutionContext = __tagHelperScopeManager.Begin("script", global::Microsoft.AspNetCore.Razor.TagHelpers.TagMode.StartTagAndEndTag, "4e99dac2304ceaa452611cfe1e265cf9a4aa4f5d72305", async() => {
                 }
                 );
                 __Microsoft_AspNetCore_Mvc_Razor_TagHelpers_UrlResolutionTagHelper = CreateTagHelper<global::Microsoft.AspNetCore.Mvc.Razor.TagHelpers.UrlResolutionTagHelper>();
@@ -867,7 +874,7 @@ using Asklepios.Web.Areas.AdministrativeArea.Interfaces;
                 Write(__tagHelperExecutionContext.Output);
                 __tagHelperExecutionContext = __tagHelperScopeManager.End();
                 WriteLiteral("\r\n\r\n    <!-- Custom scripts for all pages-->\r\n    ");
-                __tagHelperExecutionContext = __tagHelperScopeManager.Begin("script", global::Microsoft.AspNetCore.Razor.TagHelpers.TagMode.StartTagAndEndTag, "4e99dac2304ceaa452611cfe1e265cf9a4aa4f5d73230", async() => {
+                __tagHelperExecutionContext = __tagHelperScopeManager.Begin("script", global::Microsoft.AspNetCore.Razor.TagHelpers.TagMode.StartTagAndEndTag, "4e99dac2304ceaa452611cfe1e265cf9a4aa4f5d73454", async() => {
                 }
                 );
                 __Microsoft_AspNetCore_Mvc_Razor_TagHelpers_UrlResolutionTagHelper = CreateTagHelper<global::Microsoft.AspNetCore.Mvc.Razor.TagHelpers.UrlResolutionTagHelper>();

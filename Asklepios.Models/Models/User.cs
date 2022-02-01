@@ -15,7 +15,7 @@ namespace Asklepios.Core.Models
         [Required(ErrorMessage = "Proszę podać adres e-mail. Będzie on pełnił również funckję nazwy użytkownika.")]
         [DataType(DataType.EmailAddress)]
         [Display(Name = "Adres e-mail")]
-        public string UserName { get; set; }
+        public string EmailAddress { get; set; }
         [Required(ErrorMessage = "Proszę podać hasło")]
         [DataType(DataType.Password)]
         [Display(Name = "Haslo (minimum 8 znaków)")]
@@ -32,7 +32,7 @@ namespace Asklepios.Core.Models
         {
             get
             {
-                if (!string.IsNullOrWhiteSpace(UserName))
+                if (!string.IsNullOrWhiteSpace(EmailAddress))
                 {
                     if (!string.IsNullOrWhiteSpace(Password) && Password.Length >= 8)
                     {

@@ -128,6 +128,12 @@ namespace Asklepios.Data
             throw new NotImplementedException();
         }
 
+
+        public void RemovePatientById(long id)
+        {
+            throw new NotImplementedException();
+        }
+
         public void RemoveVisitById(long id)
         {
             throw new NotImplementedException();

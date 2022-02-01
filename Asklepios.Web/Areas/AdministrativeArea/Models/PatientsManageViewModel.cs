@@ -1,5 +1,6 @@
 ﻿using Asklepios.Core.Enums;
 using Asklepios.Core.Models;
+using Asklepios.Web.Areas.AdministrativeArea.Interfaces;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
@@ -8,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace Asklepios.Web.Areas.AdministrativeArea.Models
 {
-    public class PatientsManageViewModel
+    public class PatientsManageViewModel:IPatientSearch
     {
         public Person Person { get; set; } = new Person();
         public Patient Patient { get; set; }
@@ -25,12 +26,12 @@ namespace Asklepios.Web.Areas.AdministrativeArea.Models
                 }
                 else
                 {
-                    return AllPatients;
+                    return AllPatients?.OrderBy(c => c.Person.FullName).ToList(); ;
                 }
             }
         }
         [Display(Name = "Id pacjenta")]
-        public long SelectedId { get; set; }
+        public long? SelectedId { get; set; }
 
         [Display(Name = "Imię")]
 
@@ -54,6 +55,8 @@ namespace Asklepios.Web.Areas.AdministrativeArea.Models
         public NFZUnit SelectedNFZUnit { get; set; }
         [Display(Name = "Polskie obywatelstwo")]
         public bool? HasPolishCitizenship { get; set; }
+        [Display(Name = "Płeć")]
+        public Gender? SelectedGender { get; set; }
 
         public bool IsFilterOn
         {
@@ -84,6 +87,18 @@ namespace Asklepios.Web.Areas.AdministrativeArea.Models
                     return true;
                 }
                 if (HasPolishCitizenship.HasValue == true)
+                {
+                    return true;
+                }
+                if (SelectedNFZUnitId>0)
+                {
+                    return true;
+                }
+                if (SelectedId>0)
+                {
+                    return true;
+                }
+                if (SelectedGender.HasValue)
                 {
                     return true;
                 }
@@ -149,6 +164,36 @@ namespace Asklepios.Web.Areas.AdministrativeArea.Models
                         }
                 //    }
                 //}
+            }
+            if (SelectedNFZUnitId> 0)
+            {
+                //if (long.TryParse(SelectedVisitCategoryId, out long lid))
+                //{
+                //    if (lid > 0)
+                //    {
+                filteredPatients = filteredPatients.Where(c => c.NFZUnit.Id == SelectedNFZUnitId).ToList();
+                if (filteredPatients == null)
+                {
+                    return null;
+                }
+                //    }
+                //}
+            }
+            if (SelectedId> 0)
+            {
+                filteredPatients = filteredPatients.Where(c => c.Id == SelectedId).ToList();
+                if (filteredPatients == null)
+                {
+                    return null;
+                }
+            }
+            if (SelectedGender.HasValue)
+            {
+                filteredPatients = filteredPatients.Where(c => c.Person.Gender== SelectedGender).ToList();
+                if (filteredPatients == null)
+                {
+                    return null;
+                }
             }
             //if (VisitsDateFrom.HasValue)
             //{

@@ -54,9 +54,16 @@ using Asklepios.Web.Areas.AdministrativeArea.Interfaces;
 #line default
 #line hidden
 #nullable disable
+#nullable restore
+#line 7 "C:\Users\lukas\source\repos\Asklepios8\Asklepios.Web\Areas\AdministrativeArea\Views\Shared\_ViewImports.cshtml"
+using Asklepios.Web.Extensions;
+
+#line default
+#line hidden
+#nullable disable
     [global::Microsoft.AspNetCore.Razor.Hosting.RazorSourceChecksumAttribute(@"SHA1", @"d6a5625cc8fb4476f348b0fe9041c550465d8bf9", @"/Areas/AdministrativeArea/Views/Shared/Error.cshtml")]
     [global::Microsoft.AspNetCore.Razor.Hosting.RazorSourceChecksumAttribute(@"SHA1", @"8363068bd805e1ea8857622c67a9d36b577d03f7", @"/Areas/_ViewImports.cshtml")]
-    [global::Microsoft.AspNetCore.Razor.Hosting.RazorSourceChecksumAttribute(@"SHA1", @"04f4439d6c163aa365dc200e9fa3d614481c3af0", @"/Areas/AdministrativeArea/Views/Shared/_ViewImports.cshtml")]
+    [global::Microsoft.AspNetCore.Razor.Hosting.RazorSourceChecksumAttribute(@"SHA1", @"cb38cb19857286ef2393e97591cdc562825453aa", @"/Areas/AdministrativeArea/Views/Shared/_ViewImports.cshtml")]
     public class Areas_AdministrativeArea_Views_Shared_Error : global::Microsoft.AspNetCore.Mvc.Razor.RazorPage<ErrorViewModel>
     {
         #pragma warning disable 1998

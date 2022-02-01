@@ -76,10 +76,6 @@
         {
             Visit visit = visits[i];
             Asklepios.Web.Areas.AdministrativeArea.Models.VisitViewModel model = new Asklepios.Web.Areas.AdministrativeArea.Models.VisitViewModel();
-            //Asklepios.Web.Areas.AdministrativeArea.Models.ISearchVisit scheduleSearch = Model;
-
-            //model =scheduleSearch;
-            //model = (Asklepios.Web.Areas.AdministrativeArea.Models.VisitViewModel)scheduleSearch;
             (model as Asklepios.Web.Areas.AdministrativeArea.Interfaces.ISearchVisit).SetSearchOptions(Model);
             model.Visit = visit;
             <partial name="_ScheduleItem" model="model" />

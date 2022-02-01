@@ -386,29 +386,29 @@ namespace Asklepios.Web.Areas.AdministrativeArea.Controllers
             }
         }
         [HttpPost]
-        public IActionResult PatientItemsAdd(PatientAddViewModel model)
+        public IActionResult PatientItemsAdd(PatientDetailsViewModel model)
         {
             if (_loggedUser != null)
             {
-                model.User.Person = model.Person;
-                model.User.UserType = Core.Enums.UserType.Patient;
-                model.User.WorkerModuleType = null;
-                model.Person.EmailAddress = model.User.UserName;
-                model.Patient.Person = model.Person;
-                model.Patient.User = model.User;
+                //model.User.Person = model.Person;
+                //model.User.UserType = Core.Enums.UserType.Patient;
+                //model.User.WorkerModuleType = null;
+                //model.Person.EmailAddress = model.User.UserName;
+                //model.Patient.Person = model.Person;
+                //model.Patient.User = model.User;
                 
 
                 if (model.IsValid)
                 {
                     model.MedicalPackages = _context.GetMedicalPackages();
                     model.NFZUnits = _context.GetNFZUnits();
-                    if (model.Person.ImageFile!=null)
-                    {
-                        string imagePath = SaveImage(model.Person.ImageFile, ImageFolderType.Persons, _hostEnvironment.WebRootPath);
-                        model.Person.ImageFilePath = imagePath;
-                    }
+                    //if (model.Person.ImageFile!=null)
+                    //{
+                    //    string imagePath = SaveImage(model.Person.ImageFile, ImageFolderType.Persons, _hostEnvironment.WebRootPath);
+                    //    model.Person.ImageFilePath = imagePath;
+                    //}
 
-                    _context.AddPatientObjects(model.User,model.Person,model.Patient);
+                    //_context.AddPatientObjects(model.User,model.Person,model.Patient);
 
                     model.Message = "Pacjent został dodany!";
                     
@@ -433,7 +433,7 @@ namespace Asklepios.Web.Areas.AdministrativeArea.Controllers
         {
             if (_loggedUser != null)
             {
-                PatientAddViewModel model = new PatientAddViewModel();
+                PatientAddEditViewModel model = new PatientAddEditViewModel();
                 model.MedicalPackages = _context.GetMedicalPackages();
                 model.NFZUnits = _context.GetNFZUnits();
 
@@ -444,6 +444,93 @@ namespace Asklepios.Web.Areas.AdministrativeArea.Controllers
                 return NotFound();
             }
         }
+        [HttpPost]
+        public IActionResult PatientItemEdit(PatientDetailsViewModel model)
+        {
+            if (_loggedUser != null)
+            {
+                if (model.CurrentPatientId>0)
+                {
+                    Patient patient = _context.GetPatientById(model.CurrentPatientId);
+                    model.CurrentPatient = patient;
+                    model.NFZUnits = _context.GetNFZUnits();
+                    model.MedicalPackages = _context.GetMedicalPackages();
+
+                    return View(model);
+                }
+                else
+                {
+                    return NotFound();
+                }
+
+            }
+            else
+            {
+                return NotFound();
+            }
+        }
+
+        public IActionResult PatientItemEdit(string id)
+        {
+            if (_loggedUser != null)
+            {
+                if (long.TryParse(id, out long lid))
+                {
+                    Patient patient = _context.GetPatientById(lid);
+                    return View(patient);
+                }
+                else
+                {
+                    return NotFound();
+                }
+            }
+            else
+            {
+                return NotFound();
+            }
+        }
+        [HttpPost]
+        public IActionResult PatientItemRemove(PatientAddEditViewModel model)
+        {
+            if (_loggedUser != null)
+            {
+                Patient patient = _context.GetPatientById(model.Patient.Id);
+                if (patient!=null)
+                {
+                    _context.RemovePatientById(model.Patient.Id);
+                }
+                
+                return View(model);
+            }
+            else
+            {
+                return NotFound();
+            }
+        }
+
+        [HttpPost]
+        public IActionResult PatientItemsManage(PatientsManageViewModel model)//(PatientsManageViewModel model)
+        {
+
+            if (_loggedUser != null)
+            {
+                //PatientsManageViewModel model = new PatientsManageViewModel();
+                //model.
+                //IPatientSearch newSearch = model;
+                //newSearch.SetSearchOptions(searchPatient);
+                //model.sets= searchPatient.;
+
+                model.NFZUnits = _context.GetNFZUnits();
+                model.MedicalPackages = _context.GetMedicalPackages();
+                model.AllPatients = _context.GetAllPatients();
+                return View(model);
+            }
+            else
+            {
+                return NotFound();
+            }
+        }
+
         public IActionResult PatientItemsManage()
         {
             if (_loggedUser != null)

@@ -157,5 +157,10 @@ namespace Asklepios.Data.InMemoryContexts
             PatientMockDB.AddPatient(patient);
             PatientMockDB.AddPerson(person);
         }
+
+        public void RemovePatientById(long id)
+        {
+            PatientMockDB.RemovePatientById(id);
+        }
     }
 }

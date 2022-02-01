@@ -10,15 +10,14 @@
         </div>
         <div class="p-2 d-flex pt-3 m-auto flex-grow-1 flex-column" style="width:400px;text-align:center">
             <h3 style="font-weight:900;">
-                <a asp-action="PatientDetails" asp-controller="Administrative" asp-route-id="@Model.CurrentPatient.Id">
-
+                <a asp-action="PatientItemEdit" asp-controller="Administrative" asp-route-id="@Model.CurrentPatient.Id">
                     @Model.CurrentPatient.Person.FullName
                 </a>
             </h3>
             <h5>Id: @Model.CurrentPatient.Id</h5>
             <h5>Imię: @Model.CurrentPatient.Person.Name</h5>
             <h5>Nazwisko: @Model.CurrentPatient.Person.Surname</h5>
-            <h5>Adres e-mail: @Model.CurrentPatient.Person.EmailAddress</h5>
+            <h5>Adres e-mail: @Model.CurrentPatient.User.EmailAddress</h5>
             @if (Model.CurrentPatient.Person.HasPolishCitizenship)
             {
                 <h5>PESEL: @Model.CurrentPatient.Person.PESEL</h5>
@@ -27,14 +26,63 @@
             {
                 <h5>Numer paszportu: @Model.CurrentPatient.Person.PassportNumber</h5>
             }
-            <h5>Aglomeracja: @Model.CurrentPatient.Person.DefaultAglomeration</h5>
-            <h5>Data urodzenia: @Model.CurrentPatient.Person.BirthDate</h5>
+            <h5>Aglomeracja: @Model.CurrentPatient.Person.AglomerationDescription</h5>
+            <h5>Data urodzenia: @Model.CurrentPatient.Person.BirthDate.Value.ToString("dd-MM-yyyy")</h5>
             @*<h5>Polskie obywatelstwo: @Model.CurrentPatient.Person.HasPolishCitizenship</h5>*@
             <h5>Pakiet medyczny: @Model.CurrentPatient.MedicalPackage.Name</h5>
             <h5>Oddział NFZ: @Model.CurrentPatient.NFZUnit.Description</h5>
-
             <br>
+        </div>
+        <div class="p-2 d-flex pt-3 m-auto flex-grow-1 flex-column" style="width:400px;text-align:center">
+            <form class="form my-2" asp-action="PatientItemEdit" method="post">
+                @*<input hidden asp-for="@Model" />
+        <input hidden asp-for="ViewMode" value="ViewMode.Edit" />*@
+                <input asp-for="CurrentPatientId" hidden/>
+                <input asp-for="HasPolishCitizenship" hidden />
+                <input asp-for="SelectedAglomeration"  hidden/>
+                <input asp-for="SelectedGender"  hidden/>
+                <input asp-for="SelectedId"  hidden/>
+                <input asp-for="SelectedMedicalPackageId"  hidden/>
+                <input asp-for="SelectedName"  hidden/>
+                <input asp-for="SelectedNFZUnitId"  hidden/>
+                <input asp-for="SelectedPassportNumber"  hidden/>
+                <input asp-for="SelectedPESEL"  hidden/>
+                <input asp-for="SelectedSurname"  hidden/>
+                <input asp-for="ViewMode"  hidden/>
 
+                <div class="form-group d-flex flex-column">
+                    <button type="submit" class="btn btn-primary btn-icon-split d-flex">
+                        <span class="icon text-white-50 left" style="text-align:left;float:left">
+                            <i class="fas fa-address-book"></i>
+                        </span>
+                        <span class="text" style="float: left">Edytuj</span>
+                    </button>
+                </div>
+            </form>
+            <form class="form my-2" asp-action="PatientItemEdit" method="post">
+                @*<input hidden asp-for="@Model"/>
+        <input hidden asp-for="ViewMode" value="ViewMode.Remove"/>*@
+                <input asp-for="CurrentPatientId" hidden/>
+                <input asp-for="HasPolishCitizenship" hidden/>
+                <input asp-for="SelectedAglomeration" hidden/>
+                <input asp-for="SelectedGender" hidden/>
+                <input asp-for="SelectedId" hidden/>
+                <input asp-for="SelectedMedicalPackageId" hidden/>
+                <input asp-for="SelectedName" hidden/>
+                <input asp-for="SelectedNFZUnitId" hidden/>
+                <input asp-for="SelectedPassportNumber" hidden/>
+                <input asp-for="SelectedPESEL" hidden/>
+                <input asp-for="SelectedSurname" hidden/>
+                <input asp-for="ViewMode" hidden/>
+                <div class="form-group d-flex flex-column">
+                    <button type="submit" class="btn btn-primary btn-icon-split d-flex">
+                        <span class="icon text-white-50 left" style="text-align:left;float:left">
+                            <i class="fas fa-address-book"></i>
+                        </span>
+                        <span class="text" style="float: left">Usuń</span>
+                    </button>
+                </div>
+            </form>
         </div>
     </div>
 </div>

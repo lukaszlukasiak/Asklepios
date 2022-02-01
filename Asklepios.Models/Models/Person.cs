@@ -1,8 +1,10 @@
 ﻿using Asklepios.Core.Enums;
+using Asklepios.Core.Extensions;
 using Microsoft.AspNetCore.Http;
 using System;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using System.IO;
 
 namespace Asklepios.Core.Models
 {
@@ -24,7 +26,7 @@ namespace Asklepios.Core.Models
                 return Name + " " + Surname;
             }
         }
-        [StringLength(13,ErrorMessage ="Niepoprawny PESEL, długość musi wynosić 13 znaków",MinimumLength =13)]
+        [StringLength(11,ErrorMessage ="Niepoprawny PESEL, długość musi wynosić 11 znaków",MinimumLength =11)]
         [DataType(DataType.Text)]
         [Display(Name = "PESEL")]
 
@@ -41,10 +43,15 @@ namespace Asklepios.Core.Models
         [Display(Name = "Czy posiada polskie obywatelstwo?")]
 
         public bool HasPolishCitizenship { get; set; } = true;
-        [Required(ErrorMessage = "Proszę podać adres e-mail")]
-        [DataType(DataType.EmailAddress)]
-        [Display(Name = "Adres e-mail")]
-        public string EmailAddress { get; set; }
+        //[Required(ErrorMessage = "Proszę podać adres e-mail")]
+        //[DataType(DataType.EmailAddress)]
+        //[Display(Name = "Adres e-mail")]
+        //public string EmailAddress { get; set; }
+        [Required(ErrorMessage = "Proszę podać number telefonu")]
+        [DataType(DataType.PhoneNumber)]
+        [Display(Name = "Numer telefonu")]
+        public string PhoneNumber { get; set; }
+
         [Required(ErrorMessage = "Proszę podać datę urodzenia")]
         [DataType(DataType.Date)]
         [Display(Name = "Data urodzenia")]
@@ -52,6 +59,20 @@ namespace Asklepios.Core.Models
         public DateTimeOffset? BirthDate { get; set; }
         [Display(Name = "Domyślna aglomeracja")]
         public Aglomeration? DefaultAglomeration { get; set; }
+        public string AglomerationDescription
+        {
+            get
+            {
+                if (DefaultAglomeration.HasValue)
+                {
+                    return DefaultAglomeration.Value.GetDescription();
+                }
+                else
+                {
+                    return "";
+                }
+            }
+        }
         [Display(Name = "Płeć")]
         public Gender? Gender{ get; set; }
 
@@ -59,7 +80,31 @@ namespace Asklepios.Core.Models
         [Display(Name = "Zdjęcie (300x500 pikseli)")]
         public IFormFile ImageFile { get; set; }
         public string ImageFilePath { get; set; }
+        public string ImageSource
+        {
+            get
+            {
+                if (ImageFile!=null)
+                {
+                    if (ImageFile.Length > 0)
+                    {
+                        using (var ms = new MemoryStream())
+                        {
+                            ImageFile.CopyTo(ms);
+                            var fileBytes = ms.ToArray();
+                            string s = Convert.ToBase64String(fileBytes);
 
+
+                            return string.Format("data:image/jpg;base64,{0}", s);
+                            // act on the Base64 data
+                        }
+                    }
+
+                }
+                return ImageFilePath;
+
+            }
+        }
         public string ReturnProperImageFilePath(string defaultPathF, string defaultPathM)
         {
             if (string.IsNullOrWhiteSpace(ImageFilePath))
@@ -83,11 +128,12 @@ namespace Asklepios.Core.Models
         {
 
         }
-        public Person(string name, string surName, long id, string pesel, bool hasPolishCitizenship, string passportNumber, string passportCode, string email, Aglomeration aglomeration, DateTimeOffset birthDate, Gender gender)
+        public Person(string name, string surName, long id, string pesel, bool hasPolishCitizenship, string passportNumber, string passportCode, string email, Aglomeration aglomeration, DateTimeOffset birthDate, Gender gender, string phoneNumber)
         {
             Name = name;
             Surname = surName;
             Id = id;
+            PhoneNumber = phoneNumber;
             Gender = gender;
             BirthDate = birthDate;
             if (hasPolishCitizenship)
@@ -108,7 +154,7 @@ namespace Asklepios.Core.Models
             HasPolishCitizenship = hasPolishCitizenship;
             PassportNumber = passportNumber;
             PassportCode = passportCode;
-            EmailAddress = email;
+            //EmailAddress = email;
             DefaultAglomeration = aglomeration;
         }
         public string ValidationError { get; set; }
@@ -126,7 +172,7 @@ namespace Asklepios.Core.Models
                     }
                     else
                     {
-                        if (PESEL.Length!=13)
+                        if (PESEL.Length!=11)
                         {
                             return false;
                         }
@@ -145,8 +191,8 @@ namespace Asklepios.Core.Models
                 {
                     if (!string.IsNullOrWhiteSpace(Surname))
                     {
-                        if (!string.IsNullOrWhiteSpace(EmailAddress))
-                        {
+                        //if (!string.IsNullOrWhiteSpace(EmailAddress))
+                        //{
                             if (BirthDate.HasValue)
                             {
                                 if (DefaultAglomeration.HasValue)
@@ -154,7 +200,7 @@ namespace Asklepios.Core.Models
                                     return true;
                                 }
                             }
-                        }
+                        //}
                     }
                 }
                 return false;

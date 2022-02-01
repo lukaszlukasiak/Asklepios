@@ -1,4 +1,4 @@
-﻿@model Asklepios.Web.Areas.AdministrativeArea.Models.PatientAddViewModel
+﻿@model Asklepios.Web.Areas.AdministrativeArea.Models.PatientAddEditViewModel
 
 @{
     SelectList medicalPackagesList = new SelectList(Model.MedicalPackages, "Id", "Name");
@@ -26,9 +26,9 @@
         <div class="form-group d-flex flex-column">
             @*<span id="MessageSpan" asp-validation-for="User.UserName" class="text-danger"></span>*@
 
-            <label asp-for="User.UserName" class="control-label"></label>
-            <input asp-for="User.UserName" class="form-control mb-2">
-            <span asp-validation-for="User.UserName" class="text-danger"></span>
+            <label asp-for="User.EmailAddress" class="control-label"></label>
+            <input asp-for="User.EmailAddress" class="form-control mb-2">
+            <span asp-validation-for="User.EmailAddress" class="text-danger"></span>
 
             <label asp-for="User.Password" class="control-label"></label>
             <input asp-for="User.Password" class="form-control mb-2">
@@ -57,13 +57,11 @@
                 <label asp-for="Person.HasPolishCitizenship"></label>
                 <input type="checkbox" asp-for="Person.HasPolishCitizenship" class="custom-control ml-2 " style="height:20px;width:20px" checked />
                 <span asp-validation-for="Person.HasPolishCitizenship" class="text-danger"></span>
-
             </div>
 
             <label asp-for="Person.PESEL" class="control-label"></label>
             <input asp-for="Person.PESEL" class="form-control mb-2">
             <span asp-validation-for="Person.PESEL" class="text-danger"></span>
-
 
             <label asp-for="Person.PassportNumber" class="control-label"></label>
             <input asp-for="Person.PassportNumber" class="form-control mb-2">
@@ -72,8 +70,6 @@
             <label asp-for="Person.PassportCode" class="control-label"></label>
             <input asp-for="Person.PassportCode" class="form-control mb-2">
             <span asp-validation-for="Person.PassportCode" class="text-danger"></span>
-
-
 
             <label asp-for="Person.ImageFile" class="control-label"></label>
             <input asp-for="Person.ImageFile" accept="image/*" class="form-control-file btn btn-secondary" style="text-align:center" />

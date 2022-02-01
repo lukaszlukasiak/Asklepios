@@ -10,7 +10,7 @@
                     <label>Zaloguj się do modułu pacjenta</label>
                 </h2>
                 <form class="form" asp-action="LogInPatient" method="post">
-                    <input class="email" type="email" required placeholder="Twój adres e-mail" asp-for="User.UserName">
+                    <input class="email" type="email" required placeholder="Twój adres e-mail" asp-for="User.EmailAddress">
                     <input class="person-detail" required type="password" minlength="8" placeholder="Hasło" asp-for="User.Password">
                     @if (Model?.User?.UserType == Asklepios.Core.Enums.UserType.Patient && Model.LogInFailed)
                     {
@@ -34,7 +34,7 @@
                     <label>Zaloguj się do modułu pracownika</label>
                 </h2>
                 <form class="form  d-flex flex-column" asp-action="LogInEmployee" method="post">
-                    <input class="email" type="email" placeholder="Twój adres e-mail" asp-for="User.UserName">
+                    <input class="email" type="email" placeholder="Twój adres e-mail" asp-for="User.EmailAddress">
                     <input class="person-detail" type="password" minlength="8" placeholder="Hasło" asp-for="User.Password">
                     <p>
                         Wybierz moduł:

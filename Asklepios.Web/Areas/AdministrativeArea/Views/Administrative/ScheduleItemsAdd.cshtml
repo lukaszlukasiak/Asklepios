@@ -55,7 +55,6 @@
             @if (Model.SelectedMedicalWorker != null)
             {
                 <partial name="_MedicalWorker" model="Model.SelectedMedicalWorker" />
-
             }
 
             <label asp-for="VisitsDate" class="control-label"></label>
@@ -64,8 +63,6 @@
             <label asp-for="FirstVisitTime" class="control-label"></label>
             <input asp-for="FirstVisitTime" class="form-control mb-2">
             <span asp-validation-for="FirstVisitTime" class="text-danger"></span>
-
-
 
             <label asp-for="DurationOfVisit" class="control-label"></label>
             <input asp-for="DurationOfVisit" class="form-control mb-2" onchange="" />
