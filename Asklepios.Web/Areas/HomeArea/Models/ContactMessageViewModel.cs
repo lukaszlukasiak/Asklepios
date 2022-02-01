@@ -53,14 +53,14 @@ namespace Asklepios.Web.Areas.HomeArea.Models
         {
             UserType = Core.Enums.UserType.Patient;
             ContactName = patient.Person.FullName;
-            ContactEMailAddress = patient.Person.EmailAddress;
+            ContactEMailAddress = patient.User.EmailAddress;
             UserId = patient.Id;
         }
         public ContactMessageViewModel(Core.Models.MedicalWorker worker)
         {
             UserType = Core.Enums.UserType.Employee;
             ContactName = worker.Person.FullName;
-            ContactEMailAddress = worker.Person.EmailAddress;
+            ContactEMailAddress = worker.User.EmailAddress;
 
             UserId = worker.Id;
         }

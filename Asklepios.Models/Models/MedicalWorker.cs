@@ -23,6 +23,8 @@ namespace Asklepios.Core.Models
         public long Id { get; set; }
         public Person Person { get; set; }
         public long PersonId { get; set; }
+        public long UserId { get; set; }
+        public User User { get; set; }
         public string ProfessionalNumber {get;set;}
         public DateTime HiredSince { get; set; }
         //public DateTime HiredUntil { get; set; }

@@ -8,22 +8,39 @@ using System.Threading.Tasks;
 
 namespace Asklepios.Web.Areas.AdministrativeArea.Interfaces
 {
-    public interface ISearchPatient
+    public interface IPatientSearch
     {
+        [Display(Name = "Id pacjenta")]
+        public long? SelectedId { get; set; }
+
+        [Display(Name = "Imię")]
+
         public string SelectedName { get; set; }
+        [Display(Name = "Nazwisko")]
+
         public string SelectedSurname { get; set; }
+        [Display(Name = "PESEL")]
+
         public string SelectedPESEL { get; set; }
+        [Display(Name = "Numer paszportu")]
+
         public string SelectedPassportNumber { get; set; }
+        [Display(Name = "Aglomeracja")]
         public Aglomeration? SelectedAglomeration { get; set; }
+        [Display(Name = "Pakiet medyczny")]
         public long SelectedMedicalPackageId { get; set; }
         public MedicalPackage SelectedMedicalPackage { get; set; }
+        [Display(Name = "Oddział NFZ")]
         public long SelectedNFZUnitId { get; set; }
         public NFZUnit SelectedNFZUnit { get; set; }
+        [Display(Name = "Polskie obywatelstwo")]
         public bool? HasPolishCitizenship { get; set; }
+        [Display(Name = "Płeć")]
+        public Gender? SelectedGender { get; set; }
 
-        public void SetSearchOptions(ISearchPatient iSearch)
+        public void SetSearchOptions(IPatientSearch iSearch)
         {
-            ISearchPatient thisSearch = this;
+            IPatientSearch thisSearch = this;
             thisSearch.SelectedAglomeration = iSearch.SelectedAglomeration;
             thisSearch.SelectedMedicalPackageId = iSearch.SelectedMedicalPackageId;
             thisSearch.SelectedName= iSearch.SelectedName;

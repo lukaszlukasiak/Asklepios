@@ -1,0 +1,117 @@
+﻿@model Asklepios.Web.Areas.AdministrativeArea.Models.PatientDetailsViewModel
+
+@{
+    SelectList medicalPackagesList = new SelectList(Model.MedicalPackages, "Id", "Name");
+    SelectList nfzUnits = new SelectList(Model.NFZUnits, "Id", "Description");
+    Model.CurrentPatient.Person.HasPolishCitizenship = true;
+}
+<div class="d-flex flex-column">
+    @{
+
+        if (!string.IsNullOrWhiteSpace(Model.Message))
+        {
+            <div class="messages" id="MessageSpan" style="margin-top: 10px; text-align: center ">
+                <p class="alert alert-danger">
+                    @Model.Message
+                </p>
+            </div>
+            <a asp-controller="Administrative" asp-action="PatientItemsAdd"  class="btn btn-outline-secondary btn-icon-split ">
+                <span class="text" style="float: left">Resetuj dane</span>
+            </a>
+            }
+    }
+
+    <form class="form my-2" asp-action="PatientItemEdit" method="post" enctype="multipart/form-data">
+        <div class="form-group d-flex flex-column">
+            @*<span id="MessageSpan" asp-validation-for="User.UserName" class="text-danger"></span>*@
+
+            <label asp-for="CurrentPatient.User.EmailAddress" class="control-label"></label>
+            <input asp-for="CurrentPatient.User.EmailAddress" class="form-control mb-2">
+            <span asp-validation-for="CurrentPatient.User.EmailAddress" class="text-danger"></span>
+
+            <label asp-for="CurrentPatient.User.Password" class="control-label"></label>
+            <input asp-for="CurrentPatient.User.Password" class="form-control mb-2">
+            <span asp-validation-for="CurrentPatient.User.Password" class="text-danger"></span>
+
+            <label asp-for="CurrentPatient.Person.Name" class="control-label"></label>
+            <input asp-for="CurrentPatient.Person.Name" class="form-control mb-2">
+            <span asp-validation-for="CurrentPatient.Person.Name" class="text-danger"></span>
+
+            <label asp-for="CurrentPatient.Person.Surname" class="control-label"></label>
+            <input asp-for="CurrentPatient.Person.Surname" class="form-control mb-2">
+            <span asp-validation-for="CurrentPatient.Person.Surname" class="text-danger"></span>
+
+            <label asp-for="CurrentPatient.Person.DefaultAglomeration" class="control-label"></label>
+            <select class="form-control  mb-2" asp-for="CurrentPatient.Person.DefaultAglomeration" asp-items="Html.GetEnumSelectList<Asklepios.Core.Enums.Aglomeration>()">
+                <option value="">Wybierz aglomerację</option>
+            </select>
+            @*<datalist asp-for="Person.DefaultAglomeration" asp-items="Html.GetEnumSelectList<Asklepios.Core.Enums.Aglomeration>()" />*@
+            <span asp-validation-for="CurrentPatient.Person.DefaultAglomeration" class="text-danger"></span>
+
+            <label asp-for="CurrentPatient.Person.BirthDate" class="control-label"></label>
+            <input asp-for="CurrentPatient.Person.BirthDate" class="form-control mb-2">
+            <span asp-validation-for="CurrentPatient.Person.BirthDate" class="text-danger"></span>
+
+            <div class="d-flex flex-row">
+                <label asp-for="CurrentPatient.Person.HasPolishCitizenship"></label>
+                <input type="checkbox" asp-for="CurrentPatient.Person.HasPolishCitizenship" class="custom-control ml-2 " style="height:20px;width:20px" checked />
+                <span asp-validation-for="CurrentPatient.Person.HasPolishCitizenship" class="text-danger"></span>
+            </div>
+
+            <label asp-for="CurrentPatient.Person.PESEL" class="control-label"></label>
+            <input asp-for="CurrentPatient.Person.PESEL" class="form-control mb-2">
+            <span asp-validation-for="CurrentPatient.Person.PESEL" class="text-danger"></span>
+
+
+            <label asp-for="CurrentPatient.Person.PassportNumber" class="control-label"></label>
+            <input asp-for="CurrentPatient.Person.PassportNumber" class="form-control mb-2">
+            <span asp-validation-for="CurrentPatient.Person.PassportNumber" class="text-danger"></span>
+
+            <label asp-for="CurrentPatient.Person.PassportCode" class="control-label"></label>
+            <input asp-for="CurrentPatient.Person.PassportCode" class="form-control mb-2">
+            <span asp-validation-for="CurrentPatient.Person.PassportCode" class="text-danger"></span>
+
+
+
+            <label asp-for="CurrentPatient.Person.ImageFile" class="control-label"></label>
+            <input asp-for="CurrentPatient.Person.ImageFile" accept="image/*" class="form-control-file btn btn-secondary" style="text-align:center" />
+            <span asp-validation-for="CurrentPatient.Person.ImageFile" class="text-danger"></span>
+            <div class="d-flex flex-fill  justify-content-center mt-2" style="text-align:center">
+                <img src="@Model.CurrentPatient.Person.ImageSource" class="img-fluid" style="display: block; max-height:300px;
+        border-radius: 6px; ">
+            </div>
+
+            <label asp-for="CurrentPatient.MedicalPackageId" class="control-label"></label>
+            <select class="form-control  mb-2" asp-for="CurrentPatient.MedicalPackageId" asp-items="medicalPackagesList">
+                @*<option value="">Wybierz pakiet</option>*@
+            </select>
+            <span asp-validation-for="CurrentPatient.MedicalPackageId" class="text-danger"></span>
+            <input hidden asp-for="CurrentPatient.Id" class="form-control mb-2">
+
+            <!--<label asp-for="CurrentPatient.Person.PESEL" class="control-label"></label>
+    <select class="form-control  mb-2" asp-for="CurrentPatient.Person.PassportNumber" asp-items="nfzUnits">-->
+            @*<option value="">Wybierz oddział NFZ</option>*@
+            <!--</select>
+    <span asp-validation-for="CurrentPatient.Person.PassportNumber" class="text-danger"></span>
+
+    <label asp-for="CurrentPatient.Person.PassportNumber" class="control-label"></label>
+    <input asp-for="CurrentPatient.Person.PassportCode" class="form-control mb-2">
+    <span asp-validation-for="CurrentPatient.Person.PassportCode" class="text-danger"></span>
+
+    <label asp-for="CurrentPatient.Person.PassportCode" class="control-label"></label>
+    <input asp-for="CurrentPatient.Person.ImageFile" class="form-control mb-2">
+    <span asp-validation-for="CurrentPatient.Person.ImageFile" class="text-danger"></span>-->
+
+
+            <button id="btnSubmit" type="submit" class="btn btn-primary w-100 mt-2">Zaktualizuj dane</button>
+
+        </div>
+    </form>
+    <form action="PatientRemove" method="post">
+        <input hidden asp-for="CurrentPatient.Id" class="form-control mb-2">
+        <button id="btnSubmit" type="submit" class="btn btn-primary w-100 mt-2">Usuń</button>
+    </form>
+</div>
+<script>
+    $('#MessageSpan').delay(5000).fadeOut(300);
+</script>

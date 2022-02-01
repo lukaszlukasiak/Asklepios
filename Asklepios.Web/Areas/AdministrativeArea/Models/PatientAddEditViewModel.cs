@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace Asklepios.Web.Areas.AdministrativeArea.Models
 {
-    public class PatientAddViewModel
+    public class PatientAddEditViewModel
     {
         public User User { get; set; } = new User();
         public Person Person { get; set; } = new Person();

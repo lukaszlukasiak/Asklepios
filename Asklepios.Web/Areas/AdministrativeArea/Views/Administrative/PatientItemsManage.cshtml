@@ -8,7 +8,7 @@
 
 <div class="d-flex flex-column">
 
-    <form class="form my-2" asp-action="PatientsManage" method="post">
+    <form class="form my-2" asp-action="PatientItemsManage" method="post">
         <div class="form-group d-flex flex-column">
 
             <label asp-for="SelectedAglomeration" class="control-label"></label>
@@ -17,17 +17,24 @@
             </select>
             <span asp-validation-for="SelectedAglomeration" class="text-danger"></span>
 
-            <label asp-for="Patient.MedicalPackageId" class="control-label"></label>
-            <select class="form-control  mb-2" asp-for="Patient.MedicalPackageId" asp-items="medicalPackagesList">
-                <option value="">Wybierz pakiet</option>
+            <label asp-for="SelectedMedicalPackageId" class="control-label"></label>
+            <select class="form-control  mb-2" asp-for="SelectedMedicalPackageId" asp-items="medicalPackagesList">
+                <option value="-1">Wybierz pakiet</option>
             </select>
-            <span asp-validation-for="Patient.MedicalPackageId" class="text-danger"></span>
+            <span asp-validation-for="SelectedMedicalPackageId" class="text-danger"></span>
 
-            <label asp-for="Patient.NFZUnitId" class="control-label"></label>
-            <select class="form-control  mb-2" asp-for="Patient.NFZUnitId" asp-items="nfzUnits">
-                <option value="">Wybierz oddział NFZ</option>
+            <label asp-for="SelectedNFZUnitId" class="control-label"></label>
+            <select class="form-control  mb-2" asp-for="SelectedNFZUnitId" asp-items="nfzUnits">
+                <option value="-1">Wybierz oddział NFZ</option>
             </select>
-            <span asp-validation-for="Patient.NFZUnitId" class="text-danger"></span>
+            <span asp-validation-for="SelectedNFZUnitId" class="text-danger"></span>
+
+            <label asp-for="SelectedGender" class="control-label"></label>
+            <select class="form-control  mb-2" asp-for="SelectedGender" asp-items="Html.GetEnumSelectList<Asklepios.Core.Enums.Gender>()">
+                <option value="">Wybierz płeć</option>
+            </select>
+            <span asp-validation-for="SelectedGender" class="text-danger"></span>
+
 
             <label asp-for="SelectedId" class="control-label"></label>
             <input asp-for="SelectedId" class="form-control mb-2">
@@ -70,7 +77,7 @@
         {
             Patient patient = patients[i];
             Asklepios.Web.Areas.AdministrativeArea.Models.PatientDetailsViewModel model = new Asklepios.Web.Areas.AdministrativeArea.Models.PatientDetailsViewModel();
-            if (Model is Asklepios.Web.Areas.AdministrativeArea.Interfaces.ISearchPatient iSearch)
+            if (Model is Asklepios.Web.Areas.AdministrativeArea.Interfaces.IPatientSearch iSearch)
             {
                 model.UpdateWithSearch(iSearch);
             }

@@ -160,7 +160,7 @@ namespace Asklepios.Data.InMemoryContexts
         {
             List<User> users = PatientMockDB.Users;
             users = users.Where(c => c.UserType == user.UserType).ToList();
-            User user1 = users.Where(c => c.UserName == user.UserName).FirstOrDefault();
+            User user1 = users.Where(c => c.EmailAddress == user.EmailAddress).FirstOrDefault();
             if (user1==null)
             {
                 return null;
