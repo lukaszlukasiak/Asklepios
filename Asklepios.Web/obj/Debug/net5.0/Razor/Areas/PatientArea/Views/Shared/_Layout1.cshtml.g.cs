@@ -48,7 +48,7 @@ using Asklepios.Web.Areas.PatientArea.Models;
 #line hidden
 #nullable disable
 #nullable restore
-#line 6 "C:\Users\lukas\source\repos\Asklepios8\Asklepios.Web\Areas\PatientArea\Views\Shared\_ViewImports.cshtml"
+#line 7 "C:\Users\lukas\source\repos\Asklepios8\Asklepios.Web\Areas\PatientArea\Views\Shared\_ViewImports.cshtml"
 using Asklepios.Core.Extensions;
 
 #line default
@@ -56,7 +56,7 @@ using Asklepios.Core.Extensions;
 #nullable disable
     [global::Microsoft.AspNetCore.Razor.Hosting.RazorSourceChecksumAttribute(@"SHA1", @"2bfef944e10cbbc0f1f115e95e14f1683af5939c", @"/Areas/PatientArea/Views/Shared/_Layout1.cshtml")]
     [global::Microsoft.AspNetCore.Razor.Hosting.RazorSourceChecksumAttribute(@"SHA1", @"8363068bd805e1ea8857622c67a9d36b577d03f7", @"/Areas/_ViewImports.cshtml")]
-    [global::Microsoft.AspNetCore.Razor.Hosting.RazorSourceChecksumAttribute(@"SHA1", @"2dbdd0be5e67155a825d3e26b706aca6c98f7252", @"/Areas/PatientArea/Views/Shared/_ViewImports.cshtml")]
+    [global::Microsoft.AspNetCore.Razor.Hosting.RazorSourceChecksumAttribute(@"SHA1", @"52ab84309a8d3a831519dd26464f07de35b58564", @"/Areas/PatientArea/Views/Shared/_ViewImports.cshtml")]
     public class Areas_PatientArea_Views_Shared__Layout1 : global::Microsoft.AspNetCore.Mvc.Razor.RazorPage<dynamic>
     {
         private static readonly global::Microsoft.AspNetCore.Razor.TagHelpers.TagHelperAttribute __tagHelperAttribute_0 = new global::Microsoft.AspNetCore.Razor.TagHelpers.TagHelperAttribute("href", new global::Microsoft.AspNetCore.Html.HtmlString("~/vendor/fontawesome-free/css/all.min.css"), global::Microsoft.AspNetCore.Razor.TagHelpers.HtmlAttributeValueStyle.DoubleQuotes);

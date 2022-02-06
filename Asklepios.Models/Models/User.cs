@@ -19,7 +19,7 @@ namespace Asklepios.Core.Models
         [Required(ErrorMessage = "Proszę podać hasło")]
         [DataType(DataType.Password)]
         [Display(Name = "Haslo (minimum 8 znaków)")]
-        [StringLength(100, MinimumLength = 8,ErrorMessage = "Proszę podać hasło o długości  minimum 8 znaków (i maksymalnie 100)")]
+        [StringLength(100, MinimumLength = 8, ErrorMessage = "Proszę podać hasło o długości  minimum 8 znaków (i maksymalnie 100)")]
         public string Password { get; set; }
         [Display(Name = "Typ użytkownika")]
         public UserType? UserType { get; set; }
@@ -42,22 +42,18 @@ namespace Asklepios.Core.Models
                             {
                                 if (WorkerModuleType.HasValue)
                                 {
-                                        if (Person != null)
-                                        {
-                                            return true;
-                                        }
-                                    
-                                }
-
-                            }
-                            else
-                            {
                                     if (Person != null)
                                     {
                                         return true;
                                     }
-                                
-
+                                }
+                            }
+                            else
+                            {
+                                if (Person != null)
+                                {
+                                    return true;
+                                }
                             }
                         }
                     }

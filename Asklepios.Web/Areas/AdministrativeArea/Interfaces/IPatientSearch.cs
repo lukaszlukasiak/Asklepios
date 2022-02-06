@@ -25,6 +25,10 @@ namespace Asklepios.Web.Areas.AdministrativeArea.Interfaces
         [Display(Name = "Numer paszportu")]
 
         public string SelectedPassportNumber { get; set; }
+        [Display(Name = "Kod paszportu")]
+
+        public string SelectedPassportCode { get; set; }
+
         [Display(Name = "Aglomeracja")]
         public Aglomeration? SelectedAglomeration { get; set; }
         [Display(Name = "Pakiet medyczny")]
@@ -37,6 +41,8 @@ namespace Asklepios.Web.Areas.AdministrativeArea.Interfaces
         public bool? HasPolishCitizenship { get; set; }
         [Display(Name = "Płeć")]
         public Gender? SelectedGender { get; set; }
+        public string SuccessMessage { get; set; }
+        public string ErrorMessage { get; set; }
 
         public void SetSearchOptions(IPatientSearch iSearch)
         {
@@ -46,8 +52,13 @@ namespace Asklepios.Web.Areas.AdministrativeArea.Interfaces
             thisSearch.SelectedName= iSearch.SelectedName;
             thisSearch.SelectedNFZUnitId = iSearch.SelectedNFZUnitId;
             thisSearch.SelectedPassportNumber= iSearch.SelectedPassportNumber;
+            thisSearch.SelectedPassportCode = iSearch.SelectedPassportCode;
             thisSearch.SelectedPESEL= iSearch.SelectedPESEL;
             thisSearch.SelectedSurname= iSearch.SelectedSurname;
+            thisSearch.SelectedGender = iSearch.SelectedGender;
+            thisSearch.HasPolishCitizenship = iSearch.HasPolishCitizenship;
+            thisSearch.ErrorMessage = iSearch.ErrorMessage;
+            thisSearch.SuccessMessage = iSearch.SuccessMessage;
         }
 
     }

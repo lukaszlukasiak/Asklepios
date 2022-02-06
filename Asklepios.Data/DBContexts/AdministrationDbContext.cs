@@ -138,5 +138,10 @@ namespace Asklepios.Data
         {
             throw new NotImplementedException();
         }
+
+        public void UpdatePatient(Patient patient)
+        {
+            throw new NotImplementedException();
+        }
     }
 }

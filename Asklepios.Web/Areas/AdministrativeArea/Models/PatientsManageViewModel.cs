@@ -45,6 +45,10 @@ namespace Asklepios.Web.Areas.AdministrativeArea.Models
         [Display(Name = "Numer paszportu")]
 
         public string SelectedPassportNumber { get; set; }
+        [Display(Name = "Kod paszportu")]
+
+        public string SelectedPassportCode { get; set; }
+
         [Display(Name = "Aglomeracja")]
         public Aglomeration? SelectedAglomeration { get; set; }
         [Display(Name = "Pakiet medyczny")]
@@ -107,7 +111,8 @@ namespace Asklepios.Web.Areas.AdministrativeArea.Models
         }
         public int ItemsPerPage { get; private set; } = 100;
         public int CurrentPageNum { get; private set; } = 1;
-
+        public string SuccessMessage { get; set; }
+        public string ErrorMessage { get; set; }
 
         private List<Patient> GetFilteredPatientsList()
         {

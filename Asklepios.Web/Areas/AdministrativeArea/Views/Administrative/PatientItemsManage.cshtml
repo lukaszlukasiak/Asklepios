@@ -2,7 +2,7 @@
 @{
     SelectList medicalPackagesList = new SelectList(Model.MedicalPackages, "Id", "Name");
     SelectList nfzUnits = new SelectList(Model.NFZUnits, "Id", "Description");
-    Model.Person.HasPolishCitizenship = true;
+    //Model.Person.HasPolishCitizenship = true;
 
 }
 
@@ -50,10 +50,10 @@
             <span asp-validation-for="SelectedSurname" class="text-danger"></span>
 
             @*<div class="d-flex flex-row">
-            <label asp-for="HasPolishCitizenship"></label>
-            <input type="checkbox" asp-for="HasPolishCitizenship" class="custom-control ml-2 " style="height:20px;width:20px" checked />
-            <span asp-validation-for="HasPolishCitizenship" class="text-danger"></span>
-        </div>*@
+                    <label asp-for="HasPolishCitizenship"></label>
+                    <input type="checkbox" asp-for="HasPolishCitizenship" class="custom-control ml-2 " style="height:20px;width:20px" checked />
+                    <span asp-validation-for="HasPolishCitizenship" class="text-danger"></span>
+                </div>*@
 
 
             <label asp-for="SelectedPESEL" class="control-label"></label>
@@ -71,6 +71,26 @@
         </div>
     </form>
     @{
+        if (!string.IsNullOrWhiteSpace(Model.SuccessMessage))
+        {
+            <div class="messages" style="margin-top:10px;text-align:center">
+                <p class="alert alert-success">
+                    @Model.SuccessMessage
+                </p>
+            </div>
+        }
+        else if (!string.IsNullOrWhiteSpace(Model.ErrorMessage))
+        {
+            <div class="messages" style="margin-top: 10px; text-align: center ">
+                <p class="alert alert-danger">
+                    @Model.ErrorMessage
+                </p>
+            </div>
+
+        }
+
+
+
         List<Patient> patients = Model.FilteredPatients;
 
         for (int i = 0; i < patients.Count; i++)
@@ -84,6 +104,17 @@
             model.CurrentPatient = patient;
             <partial name="_Patient" model="model" />
         }
+        if (patients.Count == 0)
+        {
+            <div class="messages" style="margin-top: 10px; text-align: center ">
+                <p class="alert alert-danger">
+                    Brak pacjentów spełniających wymagania...
+                </p>
+            </div>
+
+        }
+
 
     }
+
 </div>

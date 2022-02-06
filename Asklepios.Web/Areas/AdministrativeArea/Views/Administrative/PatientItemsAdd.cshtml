@@ -8,18 +8,32 @@
 <div class="d-flex flex-column">
     @{
 
-        if (!string.IsNullOrWhiteSpace(Model.Message))
+        if (!string.IsNullOrWhiteSpace(Model.SuccessMessage))
         {
             <div class="messages" id="MessageSpan" style="margin-top: 10px; text-align: center ">
-                <p class="alert alert-danger">
-                    @Model.Message
+                <p class="alert alert-success">
+                    @Model.SuccessMessage
                 </p>
             </div>
-            <a asp-controller="Administrative" asp-action="PatientItemsAdd"  class="btn btn-outline-secondary btn-icon-split ">
+            <a asp-controller="Administrative" asp-action="PatientItemsAdd" class="btn btn-outline-secondary btn-icon-split ">
                 <span class="text" style="float: left">Resetuj dane</span>
             </a>
 
         }
+        if (!string.IsNullOrWhiteSpace(Model.ErrorMessage))
+        {
+            <div class="messages" id="MessageSpan" style="margin-top: 10px; text-align: center ">
+                <p class="alert alert-success">
+                    @Model.ErrorMessage
+                </p>
+            </div>
+            <a asp-controller="Administrative" asp-action="PatientItemsAdd" class="btn btn-outline-secondary btn-icon-split ">
+                <span class="text" style="float: left">Resetuj dane</span>
+            </a>
+
+        }
+
+
     }
 
     <form class="form my-2" asp-action="PatientItemsAdd" method="post" enctype="multipart/form-data">
@@ -41,6 +55,18 @@
             <label asp-for="Person.Surname" class="control-label"></label>
             <input asp-for="Person.Surname" class="form-control mb-2">
             <span asp-validation-for="Person.Surname" class="text-danger"></span>
+
+            <label asp-for="Person.Gender" class="control-label"></label>
+            <select class="form-control  mb-2" asp-for="Person.Gender" asp-items="Html.GetEnumSelectList<Asklepios.Core.Enums.Gender>()">
+                <option value="">Wybierz płeć</option>
+            </select>
+            <span asp-validation-for="Person.Gender" class="text-danger"></span>
+
+
+            <label asp-for="Person.PhoneNumber" class="control-label"></label>
+            <input asp-for="Person.PhoneNumber" class="form-control mb-2">
+            <span asp-validation-for="Person.PhoneNumber" class="text-danger"></span>
+
 
             <label asp-for="Person.DefaultAglomeration" class="control-label"></label>
             <select class="form-control  mb-2" asp-for="Person.DefaultAglomeration" asp-items="Html.GetEnumSelectList<Asklepios.Core.Enums.Aglomeration>()">

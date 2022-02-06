@@ -31,5 +31,6 @@ namespace Asklepios.Data.Interfaces
         NFZUnit GetNFZUnitById(long id);
         void AddPatientObjects(User user, Person person, Patient patient);
         void RemovePatientById(long id);
+        void UpdatePatient(Patient patient);
     }
 }

@@ -386,31 +386,31 @@ namespace Asklepios.Web.Areas.AdministrativeArea.Controllers
             }
         }
         [HttpPost]
-        public IActionResult PatientItemsAdd(PatientDetailsViewModel model)
+        public IActionResult PatientItemsAdd(PatientAddEditViewModel model)
         {
             if (_loggedUser != null)
             {
-                //model.User.Person = model.Person;
-                //model.User.UserType = Core.Enums.UserType.Patient;
-                //model.User.WorkerModuleType = null;
+                model.User.Person = model.Person;
+                model.User.UserType = Core.Enums.UserType.Patient;
+                model.User.WorkerModuleType = null;
                 //model.Person.EmailAddress = model.User.UserName;
-                //model.Patient.Person = model.Person;
-                //model.Patient.User = model.User;
-                
+                model.Patient.Person = model.Person;
+                model.Patient.User = model.User;
+                //model.User.  
 
                 if (model.IsValid)
                 {
                     model.MedicalPackages = _context.GetMedicalPackages();
                     model.NFZUnits = _context.GetNFZUnits();
-                    //if (model.Person.ImageFile!=null)
-                    //{
-                    //    string imagePath = SaveImage(model.Person.ImageFile, ImageFolderType.Persons, _hostEnvironment.WebRootPath);
-                    //    model.Person.ImageFilePath = imagePath;
-                    //}
+                    if (model.Person.ImageFile != null)
+                    {
+                        string imagePath = SaveImage(model.Person.ImageFile, ImageFolderType.Persons, _hostEnvironment.WebRootPath);
+                        model.Person.ImageFilePath = imagePath;
+                    }
 
-                    //_context.AddPatientObjects(model.User,model.Person,model.Patient);
+                    _context.AddPatientObjects(model.User, model.Person, model.Patient);
 
-                    model.Message = "Pacjent został dodany!";
+                    model.SuccessMessage = "Pacjent został dodany!";
                     
                     return View(model);
                 }
@@ -418,6 +418,7 @@ namespace Asklepios.Web.Areas.AdministrativeArea.Controllers
                 {
                     model.MedicalPackages = _context.GetMedicalPackages();
                     model.NFZUnits = _context.GetNFZUnits();
+                    model.ErrorMessage = "Nie udało się dodać pacjenta!";
 
                     return View(model);
                 }
@@ -452,9 +453,21 @@ namespace Asklepios.Web.Areas.AdministrativeArea.Controllers
                 if (model.CurrentPatientId>0)
                 {
                     Patient patient = _context.GetPatientById(model.CurrentPatientId);
-                    model.CurrentPatient = patient;
-                    model.NFZUnits = _context.GetNFZUnits();
-                    model.MedicalPackages = _context.GetMedicalPackages();
+                    if (model.ViewMode==ViewMode.Read)
+                    {
+                        model.CurrentPatient = patient;
+                        model.NFZUnits = _context.GetNFZUnits();
+                        model.MedicalPackages = _context.GetMedicalPackages();
+
+                    }
+                    else if (model.ViewMode==ViewMode.Edit)
+                    {
+                        UpdatePatientData(model, patient);
+
+                    }
+                    else if (model.ViewMode==ViewMode.Remove)
+                    {
+                    }
 
                     return View(model);
                 }
@@ -468,6 +481,49 @@ namespace Asklepios.Web.Areas.AdministrativeArea.Controllers
             {
                 return NotFound();
             }
+        }
+
+        private void UpdatePatientData(PatientDetailsViewModel model, Patient patient)
+        {
+            if (string.IsNullOrWhiteSpace(model.CurrentPatient.User.Password))
+            {
+
+                //model.CurrentPatient.User.Password = patient.User.Password;
+            }
+            else
+            {
+                patient.User.Password = model.CurrentPatient.User.Password;
+            }
+            if (string.IsNullOrWhiteSpace(model.CurrentPatient.User.EmailAddress))
+            {
+            }
+            else
+            {
+                patient.User.Password = model.CurrentPatient.User.EmailAddress;
+            }
+            model.CurrentPatient.User = patient.User;
+            model.CurrentPatient.User.Person = model.CurrentPatient.Person;
+
+            if (model.CurrentPatient.Person.ImageFile != null)
+            {
+                string imagePath = SaveImage(model.CurrentPatient.Person.ImageFile, ImageFolderType.Persons, _hostEnvironment.WebRootPath);
+                model.CurrentPatient.Person.ImageFilePath = imagePath;
+            }
+
+            if (model.IsValid)
+            {
+                _context.UpdatePatient(model.CurrentPatient);
+
+                model.SuccessMessage = "Dane pacjenta zostały zaktualizowane!";
+            }
+            else
+            {
+                model.ErrorMessage = "Nie udało się zaktualizować danych pacjenta!";
+
+            }
+            //model.CurrentPatient = patient;
+            model.NFZUnits = _context.GetNFZUnits();
+            model.MedicalPackages = _context.GetMedicalPackages();
         }
 
         public IActionResult PatientItemEdit(string id)
@@ -490,17 +546,24 @@ namespace Asklepios.Web.Areas.AdministrativeArea.Controllers
             }
         }
         [HttpPost]
-        public IActionResult PatientItemRemove(PatientAddEditViewModel model)
+        public IActionResult PatientItemRemove(PatientDetailsViewModel model)
         {
             if (_loggedUser != null)
             {
-                Patient patient = _context.GetPatientById(model.Patient.Id);
-                if (patient!=null)
+                if (model.CurrentPatientId>0)
                 {
-                    _context.RemovePatientById(model.Patient.Id);
+                    Patient patient = _context.GetPatientById(model.CurrentPatientId);
+                    if (patient != null)
+                    {
+                        _context.RemovePatientById(model.CurrentPatientId);
+                        model.SuccessMessage = "Pacjent został pomyślnie usunięty!";
+                        return View(model);
+                    }
+                    model.SuccessMessage = "Podczas próby usunięcia pacjenta nastąpił nieoczekiwany błąd!";
                 }
-                
-                return View(model);
+                //return RedirectToAction("VisitDetails", "Patient", new { area = "PatientArea", id = visit.Id });
+
+                return NotFound();
             }
             else
             {
@@ -689,10 +752,10 @@ namespace Asklepios.Web.Areas.AdministrativeArea.Controllers
             {
                 // _hostEnvironment
                 case ImageFolderType.Persons:
-                    path = Path.Combine(basePath ,"img", "Persons"); //Directory.GetCurrentDirectory() + "\\Persons";
+                    path = Path.Combine("img", "Persons"); //Directory.GetCurrentDirectory() + "\\Persons";
                     break;
                 case ImageFolderType.Locations:
-                    path = Path.Combine(basePath, "img", "Locations"); //Directory.GetCurrentDirectory() + "\\Locations";
+                    path = Path.Combine( "img", "Locations"); //Directory.GetCurrentDirectory() + "\\Locations";
                     break;
                 default:
                     break;
@@ -705,7 +768,7 @@ namespace Asklepios.Web.Areas.AdministrativeArea.Controllers
             do
             {
                 myUniqueFileName = string.Format(@"{0}{1}", Guid.NewGuid(), extension);
-                fullFileName = Path.Combine(path, myUniqueFileName);
+                fullFileName = Path.Combine(basePath,path, myUniqueFileName);
             } while (System.IO.File.Exists(fullFileName));
             //if (System.IO.File.Exists(fullFileName))
             //{
@@ -715,10 +778,12 @@ namespace Asklepios.Web.Areas.AdministrativeArea.Controllers
             //}
             using (var fileStream = new FileStream(fullFileName, FileMode.Create))
             {
-                formFile.CopyToAsync(fileStream);
-            }
 
-            return fullFileName;
+                formFile.CopyTo(fileStream);
+            }
+            string serverFileName = Path.Combine("\\", path, myUniqueFileName);
+
+            return serverFileName;
 
         }
 

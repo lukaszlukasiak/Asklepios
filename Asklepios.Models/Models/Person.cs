@@ -26,7 +26,7 @@ namespace Asklepios.Core.Models
                 return Name + " " + Surname;
             }
         }
-        [StringLength(11,ErrorMessage ="Niepoprawny PESEL, długość musi wynosić 11 znaków",MinimumLength =11)]
+        [StringLength(11, ErrorMessage = "Niepoprawny PESEL, długość musi wynosić 11 znaków", MinimumLength = 11)]
         [DataType(DataType.Text)]
         [Display(Name = "PESEL")]
 
@@ -38,7 +38,7 @@ namespace Asklepios.Core.Models
         [DataType(DataType.Text)]
         [Display(Name = "Kod kraju (w paszporcie)")]
 
-        [StringLength(3, ErrorMessage = "Niepoprawny kod, długość musi wynosić 3 znaki", MinimumLength =3)]
+        [StringLength(3, ErrorMessage = "Niepoprawny kod, długość musi wynosić 3 znaki", MinimumLength = 3)]
         public string PassportCode { get; set; }
         [Display(Name = "Czy posiada polskie obywatelstwo?")]
 
@@ -73,8 +73,9 @@ namespace Asklepios.Core.Models
                 }
             }
         }
+        [Required(ErrorMessage = "Proszę podać płeć")]
         [Display(Name = "Płeć")]
-        public Gender? Gender{ get; set; }
+        public Gender? Gender { get; set; }
 
         //[NotMapped]
         [Display(Name = "Zdjęcie (300x500 pikseli)")]
@@ -84,7 +85,7 @@ namespace Asklepios.Core.Models
         {
             get
             {
-                if (ImageFile!=null)
+                if (ImageFile != null)
                 {
                     if (ImageFile.Length > 0)
                     {
@@ -109,14 +110,14 @@ namespace Asklepios.Core.Models
         {
             if (string.IsNullOrWhiteSpace(ImageFilePath))
             {
-                if (Gender==Enums.Gender.Female)
+                if (Gender == Enums.Gender.Female)
                 {
                     return defaultPathF;
                 }
                 else
                 {
                     return defaultPathM;
-                }               
+                }
             }
             else
             {
@@ -172,7 +173,7 @@ namespace Asklepios.Core.Models
                     }
                     else
                     {
-                        if (PESEL.Length!=11)
+                        if (PESEL.Length != 11)
                         {
                             return false;
                         }
@@ -193,17 +194,25 @@ namespace Asklepios.Core.Models
                     {
                         //if (!string.IsNullOrWhiteSpace(EmailAddress))
                         //{
-                            if (BirthDate.HasValue)
+                        if (BirthDate.HasValue)
+                        {
+                            if (DefaultAglomeration.HasValue)
                             {
-                                if (DefaultAglomeration.HasValue)
+                                if (Gender.HasValue)
                                 {
-                                    return true;
+                                    if (!string.IsNullOrWhiteSpace(PhoneNumber))
+                                    {
+                                        return true;
+
+                                    }
                                 }
                             }
-                        //}
+                            //}
+                        }
                     }
                 }
                 return false;
+
             }
         }
     }
