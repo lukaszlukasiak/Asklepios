@@ -6,6 +6,10 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Asklepios.Web.Extensions;
+
+using Microsoft.AspNetCore.Mvc.Rendering;
+using Microsoft.AspNetCore.Mvc.ViewFeatures;
 
 namespace Asklepios.Web.Areas.AdministrativeArea.Models
 {
@@ -33,10 +37,50 @@ namespace Asklepios.Web.Areas.AdministrativeArea.Models
         public string SelectedSurname { get; set; }
         public string SelectedPESEL { get; set; }
         public string SelectedPassportNumber { get; set; }
+        public string SelectedPassportCode { get; set; }
+
         public Aglomeration? SelectedAglomeration { get; set; }
-        public long SelectedMedicalPackageId { get; set; }
+        private long _selectedMedicalPackageId;
+
+        public long SelectedMedicalPackageId 
+        {
+            get
+            {
+                if (_selectedMedicalPackageId<=0)
+                {
+                    if (SelectedMedicalPackage!=null)
+                    {
+                        return SelectedMedicalPackage.Id;
+                    }
+                }
+                return _selectedMedicalPackageId;
+            }
+            set
+            {
+                _selectedMedicalPackageId = value;
+            }
+        }
         public MedicalPackage SelectedMedicalPackage { get; set; }
-        public long SelectedNFZUnitId { get; set; }
+        private long _selectedNFZUnitId;
+
+        public long SelectedNFZUnitId 
+        { 
+            get
+            {
+                if (_selectedNFZUnitId<= 0)
+                {
+                    if (SelectedNFZUnit != null)
+                    {
+                        return SelectedNFZUnit.Id;
+                    }
+                }
+                return _selectedNFZUnitId;
+            }
+            set
+            {
+                _selectedNFZUnitId = value;
+            }
+        }
         public NFZUnit SelectedNFZUnit { get; set; }
         public bool? HasPolishCitizenship { get; set; }
         public ViewMode? ViewMode { get; set; }
@@ -46,7 +90,9 @@ namespace Asklepios.Web.Areas.AdministrativeArea.Models
         public List<MedicalPackage> MedicalPackages { get; set; }
         public List<NFZUnit> NFZUnits { get; set; }
         public IFormFile ImageFile { get; set; }
-        public string Message { get; set; }
+        public string SuccessMessage { get; set; }
+        public string ErrorMessage { get; set; }
+
         public bool IsValid
         {
             get
@@ -74,7 +120,19 @@ namespace Asklepios.Web.Areas.AdministrativeArea.Models
             SelectedPassportNumber = search.SelectedPassportNumber;
             SelectedPESEL = search.SelectedPESEL;
             SelectedSurname = search.SelectedSurname;
+            SuccessMessage = search.SuccessMessage;
+            ErrorMessage = search.ErrorMessage;
         }
 
+        //public SelectList GetEnumSelectListWithDefaultValue<TEnum>(TEnum defaultValue)
+        //{
+            
+        //    //SelectList selectListItems= 
+        //    //return new SelectList(MedicalPackages).Where(c=>c.Value==defaultValue).Selected;
+        //}
+
+
+
     }
+
 }

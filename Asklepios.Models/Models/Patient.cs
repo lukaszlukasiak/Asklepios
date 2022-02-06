@@ -17,9 +17,30 @@ namespace Asklepios.Core.Models
         public Person Person { get; set; }
         public long UserId { get; set; }
         public User User { get; set; }
-        [Required(ErrorMessage ="Wybierz pakiet medyczny")]
-        [Display(Name ="Pakiet medyczny")]
-        public long MedicalPackageId { get; set; }
+
+        private long _medicalPackageId;
+        [Required(ErrorMessage = "Wybierz pakiet medyczny")]
+        [Display(Name = "Pakiet medyczny")]
+
+        public long MedicalPackageId
+        {
+            get
+            {
+                if (_medicalPackageId <= 0)
+                {
+                    if (MedicalPackage != null)
+                    {
+                        return MedicalPackage.Id;
+                    }
+                }
+                return _medicalPackageId;
+            }
+            set
+            {
+                _medicalPackageId = value;
+            }
+        }
+
         [Required(ErrorMessage = "Wybierz pakiet medyczny")]
         [Display(Name = "Pakiet medyczny")]
 
@@ -28,7 +49,28 @@ namespace Asklepios.Core.Models
         [Display(Name = "Oddział NFZ")]
         public NFZUnit? NFZUnit { get; set; }
         [Display(Name = "Oddział NFZ")]
-        public long NFZUnitId { get; set; }
+        private long _NFZUnitId;
+        public long NFZUnitId
+        {
+            get
+            {
+                if (_NFZUnitId <= 0)
+                {
+                    if (NFZUnit != null)
+                    {
+                        if (NFZUnit!=null)
+                        {
+                            return NFZUnit.Id;
+                        }
+                    }
+                }
+                return _NFZUnitId;
+            }
+            set
+            {
+                _NFZUnitId = value;
+            }
+        }
 
 
         [Display(Name = "Nazwa pracodawcy")]

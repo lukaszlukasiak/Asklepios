@@ -153,6 +153,21 @@ namespace Asklepios.Data.InMemoryContexts
 
         public void AddPatientObjects(User user, Person person, Patient patient)
         {
+            if (patient.NFZUnitId>0)
+            {
+                if (patient.NFZUnit==null)
+                {
+                    patient.NFZUnit = GetNFZUnitById(patient.NFZUnitId);
+                }
+            }
+            if (patient.MedicalPackageId>0)
+            {
+                if (patient.MedicalPackage==null)
+                {
+                    patient.MedicalPackage = GetMedicalPackageById(patient.MedicalPackageId);
+                }
+            }
+            
             PatientMockDB.AddUser(user);
             PatientMockDB.AddPatient(patient);
             PatientMockDB.AddPerson(person);
@@ -161,6 +176,36 @@ namespace Asklepios.Data.InMemoryContexts
         public void RemovePatientById(long id)
         {
             PatientMockDB.RemovePatientById(id);
+        }
+
+        public void UpdatePatient(Patient patient)
+        {
+            Patient oldPatient = allPatients.Where(c => c.Id == patient.Id).FirstOrDefault();
+            if (patient.Person.ImageFile!=null)
+            {
+                
+            }
+            if (oldPatient!=null)
+            {
+                if (patient.MedicalPackage==null && patient.MedicalPackageId>0)
+                {
+                    MedicalPackage medicalPackage = GetMedicalPackageById(patient.MedicalPackageId);
+                    if (medicalPackage!=null)
+                    {
+                        patient.MedicalPackage = medicalPackage;
+                    }
+                }
+                if (patient.NFZUnit==null && patient.NFZUnitId>0)
+                {
+                    NFZUnit unit = GetNFZUnitById(patient.NFZUnitId);
+                    if (unit!=null)
+                    {
+                        patient.NFZUnit = unit;
+                    }
+                }
+                
+                PatientMockDB.UpdatePatient(oldPatient, patient);
+            }
         }
     }
 }

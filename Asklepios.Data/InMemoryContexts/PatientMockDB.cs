@@ -189,9 +189,22 @@ namespace Asklepios.Data.InMemoryContexts
             return users;
         }
 
+        internal static void UpdatePatient(Patient oldPatient, Patient patient)
+        {
+            int index     = AllPatients.IndexOf(oldPatient);
+
+            AllPatients[index]= patient;
+            
+
+        }
+
         internal static void RemovePatientById(long id)
         {
-            throw new NotImplementedException();
+            Patient patient = AllPatients.Where(c => c.Id == id).FirstOrDefault();
+            if (patient!=null)
+            {
+                AllPatients.Remove(patient);
+            }
         }
 
         internal static void AddPerson(Person person)
@@ -3032,7 +3045,8 @@ namespace Asklepios.Data.InMemoryContexts
 
         public static Visit GetAvailableVisitById(long id)
         {
-            throw new NotImplementedException();
+            Visit visit = AvailableVisits.Where(c => c.Id == id).FirstOrDefault();
+            return visit;
         }
 
         public static MedicalWorker GetMedicalWorkerById(long id)
@@ -3040,10 +3054,12 @@ namespace Asklepios.Data.InMemoryContexts
             return MedicalWorkers.Where(c => c.Id == id).FirstOrDefault();
         }
 
-        public static Visit GetHistoricalVisitById()
-        {
-            throw new NotImplementedException();
-        }
+        //public static Visit GetHistoricalVisitById(long id)
+        //{
+        //    //Visit visit = .Where(c => c.Id == id).FirstOrDefault();
+        //    //return visit;
+        //    return new Visit();
+        //}
 
         public static MedicalService GetMedicalServiceById(long id)
         {
@@ -3052,17 +3068,20 @@ namespace Asklepios.Data.InMemoryContexts
 
         public static MedicalPackage GetMedicalPackageById(long id)
         {
-            throw new NotImplementedException();
+            MedicalPackage medicalPackage = MedicalPackages.Where(c => c.Id == id).FirstOrDefault();
+            return medicalPackage;
         }
 
         public static NFZUnit GetNFZUnitById(long id)
         {
-            throw new NotImplementedException();
+            NFZUnit unit = NfzUnits.Where(c => c.Id == id).FirstOrDefault();
+            return unit;
         }
 
         public static VisitCategory GetVisitCategoryById(long id)
         {
-            throw new NotImplementedException();
+            VisitCategory category = VisitCategories.Where(c => c.Id == id).FirstOrDefault();
+            return category;
         }
 
         public static IEnumerable<MedicalRoom> GetMedicalRooms()

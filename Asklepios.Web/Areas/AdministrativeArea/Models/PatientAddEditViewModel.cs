@@ -18,7 +18,8 @@ namespace Asklepios.Web.Areas.AdministrativeArea.Models
         public List<MedicalPackage> MedicalPackages { get; set; }
         public List<NFZUnit> NFZUnits { get; set; }
         public IFormFile ImageFile { get; set; }
-        public string Message { get; set; }
+        public string ErrorMessage { get; set; }
+        public string SuccessMessage { get; set; }
 
         public bool IsValid
         {
