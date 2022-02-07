@@ -14,7 +14,7 @@ namespace Asklepios.Core.Models
         public ElectroradiologyTechnician(Person person, string profNumber ): base(person)
         {
             ProfessionalNumber = profNumber;
-            MedicalWorkerType = MedicalWorkerType.ElectroriadologyTechnician;
+            MedicalWorkerType = Enums.MedicalWorkerType.ElectroriadologyTechnician;
             PersonId = person.Id;
         }
         public override string ProfessionalTitle => "Technik elektroradiolog";

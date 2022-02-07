@@ -30,10 +30,9 @@ namespace Asklepios.Web.Areas.AdministrativeArea.Models
 
         [Display(Name = "Aglomeracja")]
         public Aglomeration? SelectedAglomeration { get; set; }
-        [Display(Name = "Pakiet medyczny")]
-        public long SelectedMedicalPackageId { get; set; }
         [Display(Name = "Płeć")]
         public Gender? SelectedGender { get; set; }
+        
 
         public bool IsFilterOn
         {

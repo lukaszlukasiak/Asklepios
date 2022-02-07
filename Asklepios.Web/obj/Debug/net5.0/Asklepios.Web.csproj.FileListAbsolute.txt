@@ -1024,3 +1024,11 @@ C:\Users\lukas\source\repos\Asklepios8\Asklepios.Web\obj\Debug\net5.0\Asklepios.
 C:\Users\lukas\source\repos\Asklepios8\Asklepios.Web\obj\Debug\net5.0\ref\Asklepios.Web.dll
 C:\Users\lukas\source\repos\Asklepios8\Asklepios.Web\obj\Debug\net5.0\Asklepios.Web.pdb
 C:\Users\lukas\source\repos\Asklepios8\Asklepios.Web\obj\Debug\net5.0\Asklepios.Web.genruntimeconfig.cache
+C:\Users\lukas\source\repos\Asklepios8\Asklepios.Web\obj\Debug\net5.0\Razor\Areas\AdministrativeArea\Views\Administrative\LocationItemsAdd - Copy (2).cshtml.g.cs
+C:\Users\lukas\source\repos\Asklepios8\Asklepios.Web\obj\Debug\net5.0\Razor\Areas\AdministrativeArea\Views\Administrative\LocationItemsAdd - Copy.cshtml.g.cs
+C:\Users\lukas\source\repos\Asklepios8\Asklepios.Web\obj\Debug\net5.0\Razor\Areas\AdministrativeArea\Views\Administrative\MedicalPackageItemsEdit.cshtml.g.cs
+C:\Users\lukas\source\repos\Asklepios8\Asklepios.Web\obj\Debug\net5.0\Razor\Areas\AdministrativeArea\Views\Administrative\MedicalPackageItemsRemove.cshtml.g.cs
+C:\Users\lukas\source\repos\Asklepios8\Asklepios.Web\obj\Debug\net5.0\Razor\Areas\AdministrativeArea\Views\Administrative\MedicalWorkerItemsEdit.cshtml.g.cs
+C:\Users\lukas\source\repos\Asklepios8\Asklepios.Web\obj\Debug\net5.0\Razor\Areas\AdministrativeArea\Views\Administrative\MedicalWorkerItemsRemove.cshtml.g.cs
+C:\Users\lukas\source\repos\Asklepios8\Asklepios.Web\obj\Debug\net5.0\Razor\Areas\AdministrativeArea\Views\Administrative\NonMedicalWorkerItemsEdit.cshtml.g.cs
+C:\Users\lukas\source\repos\Asklepios8\Asklepios.Web\obj\Debug\net5.0\Razor\Areas\AdministrativeArea\Views\Administrative\NonMedicalWorkerItemsRemove.cshtml.g.cs

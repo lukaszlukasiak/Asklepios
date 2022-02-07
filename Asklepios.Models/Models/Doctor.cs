@@ -10,7 +10,7 @@ namespace Asklepios.Core.Models
         public Doctor(Person person, string doctorNumber) :base(person)
         {
             ProfessionalNumber = doctorNumber;
-            MedicalWorkerType = MedicalWorkerType.Doctor;
+            MedicalWorkerType = Enums.MedicalWorkerType.Doctor;
             PersonId = person.Id;   
         }
         //public Doctor(string name, string surName, long id, string pesel, bool hasPolishCitizenship, string passportNumber, string passportCode, string email, Aglomeration aglomeration) : base(name, surName, id, pesel, hasPolishCitizenship, passportNumber, passportCode, email, aglomeration)

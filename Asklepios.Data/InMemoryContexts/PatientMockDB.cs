@@ -937,93 +937,93 @@ namespace Asklepios.Data.InMemoryContexts
             List<Person> people = new List<Person>()
             {
                 //medical workers
-                new Person(phoneNumber:"777777777", gender:Core.Enums.Gender.Male,id:1, name:"Mariusz",surName:"Puto",pesel:"77784512598",birthDate:new DateTimeOffset(new DateTime(1977,7,8)) ,hasPolishCitizenship: true,passportNumber: null,passportCode:"POL",email:"person1@gmail.com", aglomeration:Core.Enums.Aglomeration.Bialystok),
-                new Person(phoneNumber:"715777777",gender:Core.Enums.Gender.Male,id:2, name:"Witold",surName:"Głąbek",pesel:"65101046546",birthDate:new DateTimeOffset(new DateTime(1965,10,10)),hasPolishCitizenship: true,passportNumber: null,passportCode:"POL", email:"person2@gmail.com", aglomeration:Core.Enums.Aglomeration.Cracow),
-                new Person(phoneNumber:"715777777",gender:Core.Enums.Gender.Male,id:3, name:"Henryk",surName:"Bąbel",pesel:"87010256123",birthDate:new DateTimeOffset(new DateTime(1987,1,2)), hasPolishCitizenship: true,passportNumber: null,passportCode:"POL", email:"person3@gmail.com", aglomeration:Core.Enums.Aglomeration.Kielce),
-                new Person(phoneNumber:"715777777",gender:Core.Enums.Gender.Male,id:4, name:"Ferdynand",surName:"Małolepszy",pesel:"56050834534",birthDate:new DateTimeOffset(new DateTime(1956,05,08)),hasPolishCitizenship: true,passportNumber: null,passportCode:"POL", email:"person4@gmail.com", aglomeration:Core.Enums.Aglomeration.Rzeszów),
-                new Person(phoneNumber:"715777777",gender:Core.Enums.Gender.Male,id:5, name:"Zenon",surName:"Krzywy",pesel:"54020246454",birthDate:new DateTimeOffset(new DateTime(1954,2,2)),hasPolishCitizenship: true,passportNumber: null,passportCode:"POL", email:"person5@gmail.com", aglomeration:Core.Enums.Aglomeration.Cracow),
-                new Person(phoneNumber:"715777777",gender:Core.Enums.Gender.Male,id:6, name:"Tadeusz",surName:"Nowak",pesel:"65111176546",birthDate:new DateTimeOffset(new DateTime(1965,11,11)),hasPolishCitizenship: true,passportNumber: null,passportCode:"POL", email:"person6@gmail.com", aglomeration:Core.Enums.Aglomeration.Warsaw),
-                new Person(phoneNumber:"715777777",gender:Core.Enums.Gender.Male,id:7,birthDate:new DateTimeOffset(new DateTime(1978,7,8)) , name:"Tomasz",surName:"Woda",pesel:"78945646312",hasPolishCitizenship: true,passportNumber: null,passportCode:"POL", email:"person7@gmail.com", aglomeration:Core.Enums.Aglomeration.Warsaw),
-                new Person(phoneNumber:"715777777",gender:Core.Enums.Gender.Male,id:8,birthDate:new DateTimeOffset(new DateTime(1975,7,8)) , name:"Łukasz",surName:"Czekaj",pesel:"75654654646",hasPolishCitizenship: true,passportNumber: null,passportCode:"POL", email:"person8@gmail.com", aglomeration:Core.Enums.Aglomeration.Tricity),
-                new Person(phoneNumber:"715777777",gender:Core.Enums.Gender.Male,id:9,birthDate:new DateTimeOffset(new DateTime(1961,7,8)) , name:"Danuta",surName:"Werys",pesel:"61321234189",hasPolishCitizenship: true,passportNumber: null,passportCode:"POL", email:"person58@gmail.com", aglomeration:Core.Enums.Aglomeration.Cracow),
-                new Person(phoneNumber:"715777777",gender:Core.Enums.Gender.Male,id:10,birthDate:new DateTimeOffset(new DateTime(1984,7,8)) , name:"Mateusz",surName:"Chodzień",pesel:"84131321654",hasPolishCitizenship: true,passportNumber: null,passportCode:"POL", email:"person9@gmail.com", aglomeration:Core.Enums.Aglomeration.Cracow),
-                new Person(phoneNumber:"715777777",gender:Core.Enums.Gender.Male,id:11,birthDate:new DateTimeOffset(new DateTime(1944,7,8)) , name:"Leszek",surName:"Ancymon",pesel:"44445465456",hasPolishCitizenship: true,passportNumber: null,passportCode:"POL", email:"person10@gmail.com", aglomeration:Core.Enums.Aglomeration.Warsaw),
-                new Person(phoneNumber:"715777777",gender:Core.Enums.Gender.Male,id:12,birthDate:new DateTimeOffset(new DateTime(1975,7,8)) , name:"Karol",surName:"Szczęsny",pesel:"75321231654",hasPolishCitizenship: true,passportNumber: null,passportCode:"POL", email:"person11@gmail.com", aglomeration:Core.Enums.Aglomeration.Silesia),
-                new Person(phoneNumber:"715777777",gender:Core.Enums.Gender.Male,id:13,birthDate:new DateTimeOffset(new DateTime(1965,7,8)) , name:"Remigiusz",surName:"Czystka",pesel:"65421321564",hasPolishCitizenship: true,passportNumber: null,passportCode:"POL", email:"person12@gmail.com", aglomeration:Core.Enums.Aglomeration.Tricity),
-                new Person(phoneNumber:"715777777",gender:Core.Enums.Gender.Male,id:14,birthDate:new DateTimeOffset(new DateTime(1979,7,8)) , name:"Robert",surName:"Pawłowski",pesel:"79887987545",hasPolishCitizenship: true,passportNumber: null,passportCode:"POL", email:"person13@gmail.com", aglomeration:Core.Enums.Aglomeration.Cracow),
-                new Person(phoneNumber:"715777777",gender:Core.Enums.Gender.Male,id:15,birthDate:new DateTimeOffset(new DateTime(1971,7,8)) , name:"Szymon",surName:"Sosna",pesel:"71123156456",hasPolishCitizenship: true,passportNumber: null,passportCode:"POL", email:"person14@gmail.com", aglomeration:Core.Enums.Aglomeration.Warsaw),
-                new Person(phoneNumber:"715777777",gender:Core.Enums.Gender.Male,id:16,birthDate:new DateTimeOffset(new DateTime(1965,7,8)) , name:"Sergiusz",surName:"Ząbek",pesel:"65231546456",hasPolishCitizenship: true,passportNumber: null,passportCode:"POL", email:"person15@gmail.com", aglomeration:Core.Enums.Aglomeration.Tricity),
-                new Person(phoneNumber:"715777777",gender:Core.Enums.Gender.Male,id:17,birthDate:new DateTimeOffset(new DateTime(1964,7,8)) , name:"Tymoteusz",surName:"Zez",pesel:"64561231564",hasPolishCitizenship: true,passportNumber: null,passportCode:"POL", email:"person16@gmail.com", aglomeration:Core.Enums.Aglomeration.Warsaw),
-                new Person(phoneNumber:"715777777",gender:Core.Enums.Gender.Male,id:18,birthDate:new DateTimeOffset(new DateTime(1945,7,8)) , name:"Zbigniew",surName:"Korzeń",pesel:"45632132456",hasPolishCitizenship: true,passportNumber: null,passportCode:"POL", email:"person17@gmail.com", aglomeration:Core.Enums.Aglomeration.Bialystok),
-                new Person(phoneNumber:"715777777",gender:Core.Enums.Gender.Male,id:19,birthDate:new DateTimeOffset(new DateTime(1949,7,8)) , name:"Zbigniew",surName:"Osiński",pesel:"49987945646",hasPolishCitizenship: true,passportNumber: null,passportCode:"POL", email:"person18@gmail.com", aglomeration:Core.Enums.Aglomeration.Cracow),
-                new Person(phoneNumber:"715777777",gender:Core.Enums.Gender.Male,id:20,birthDate:new DateTimeOffset(new DateTime(1965,7,8)) , name:"Michał",surName:"Czosnek",pesel:"65432154656",hasPolishCitizenship: true,passportNumber: null,passportCode:"POL", email:"person19@gmail.com", aglomeration:Core.Enums.Aglomeration.Tricity),
-                new Person(phoneNumber:"715777777",gender:Core.Enums.Gender.Male,id:21,birthDate:new DateTimeOffset(new DateTime(1980,7,8)) , name:"Tomasz",surName:"Truteń",pesel:"80121316546",hasPolishCitizenship: true,passportNumber: null,passportCode:"POL", email:"person20@gmail.com", aglomeration:Core.Enums.Aglomeration.Cracow),
-                new Person(phoneNumber:"715777777",gender:Core.Enums.Gender.Male,id:22,birthDate:new DateTimeOffset(new DateTime(1955,7,8)) , name:"Bogusław",surName:"Śmiały",pesel:"55465456412",hasPolishCitizenship: true,passportNumber: null,passportCode:"POL", email:"person21@gmail.com", aglomeration:Core.Enums.Aglomeration.Warsaw),
-                new Person(phoneNumber:"715777777",gender:Core.Enums.Gender.Male,id:23,birthDate:new DateTimeOffset(new DateTime(1954,7,8)) , name:"Jan",surName:"Dutki",pesel:"54654321314",hasPolishCitizenship: true,passportNumber: null,passportCode:"POL", email:"person22@gmail.com", aglomeration:Core.Enums.Aglomeration.Warsaw),
-                new Person(phoneNumber:"715777777",gender:Core.Enums.Gender.Male,id:24,birthDate:new DateTimeOffset(new DateTime(1965,7,8)) , name:"Jarosław",surName:"Kurczak",pesel:"65461234564",hasPolishCitizenship: true,passportNumber: null,passportCode:"POL", email:"person23@gmail.com", aglomeration:Core.Enums.Aglomeration.Cracow),
-                new Person(phoneNumber:"715777777",gender:Core.Enums.Gender.Male,id:25,birthDate:new DateTimeOffset(new DateTime(1965,7,8)) , name:"Grzegorz",surName:"Grześkowiak",pesel:"65487456465",hasPolishCitizenship: true,passportNumber: null,passportCode:"POL", email:"person24@gmail.com", aglomeration:Core.Enums.Aglomeration.Cracow),
-                new Person(phoneNumber:"715777777",gender:Core.Enums.Gender.Male,id:26,birthDate:new DateTimeOffset(new DateTime(1945,7,8)) , name:"Gerwazy",surName:"Zasada",pesel:"45612315646",hasPolishCitizenship: true,passportNumber: null,passportCode:"POL", email:"person25@gmail.com", aglomeration:Core.Enums.Aglomeration.Silesia),
-                new Person(phoneNumber:"715777777",gender:Core.Enums.Gender.Male,id:27,birthDate:new DateTimeOffset(new DateTime(1954,7,8)) , name:"Czesław",surName:"Wilk",pesel:"54878975646",hasPolishCitizenship: true,passportNumber: null,passportCode:"POL", email:"person26@gmail.com", aglomeration:Core.Enums.Aglomeration.Cracow),
-                new Person(phoneNumber:"715777777",gender:Core.Enums.Gender.Male,id:28,birthDate:new DateTimeOffset(new DateTime(1964,7,8)) , name:"Tadeusz",surName:"Gąska",pesel:"64621321564",hasPolishCitizenship: true,passportNumber: null,passportCode:"POL", email:"person27@gmail.com", aglomeration:Core.Enums.Aglomeration.Bialystok),
-                new Person(phoneNumber:"715777777",gender:Core.Enums.Gender.Male,id:29,birthDate:new DateTimeOffset(new DateTime(1959,7,8)) , name:"Waldemar",surName:"Kucaj",pesel:"59456123156",hasPolishCitizenship: true,passportNumber: null,passportCode:"POL", email:"person28@gmail.com", aglomeration:Core.Enums.Aglomeration.Tricity),
-                new Person(phoneNumber:"715777777",gender:Core.Enums.Gender.Male,id:30,birthDate:new DateTimeOffset(new DateTime(1978,7,8)) , name:"Piotr",surName:"Kuropatwa",pesel:"78946513213",hasPolishCitizenship: true,passportNumber: null,passportCode:"POL", email:"person29@gmail.com", aglomeration:Core.Enums.Aglomeration.Bialystok),
-                new Person(phoneNumber:"715777777",gender:Core.Enums.Gender.Male,id:31,birthDate:new DateTimeOffset(new DateTime(1978,10,8)) , name:"Paweł",surName:"Łąkietka",pesel:"78946546549",hasPolishCitizenship: true,passportNumber: null,passportCode:"POL", email:"person30@gmail.com", aglomeration:Core.Enums.Aglomeration.Warsaw),
-                new Person(phoneNumber:"715777777",gender:Core.Enums.Gender.Male,id:32,birthDate:new DateTimeOffset(new DateTime(1945,7,8)) , name:"Rozmus",surName:"Remus",pesel:"45641341564",hasPolishCitizenship: true,passportNumber: null,passportCode:"POL", email:"person31@gmail.com", aglomeration:Core.Enums.Aglomeration.Cracow),
-                new Person(phoneNumber:"715777777",gender:Core.Enums.Gender.Male,id:33,birthDate:new DateTimeOffset(new DateTime(1948,7,8)) , name:"Miłosz",surName:"Ciapek",pesel:"48794564321",hasPolishCitizenship: true,passportNumber: null,passportCode:"POL", email:"person32@gmail.com", aglomeration:Core.Enums.Aglomeration.Silesia),
-                new Person(phoneNumber:"715777777",gender:Core.Enums.Gender.Female,id:34,birthDate:new DateTimeOffset(new DateTime(1965,7,8)) , name:"Czesława",surName:"Kret",pesel:"65461231564",hasPolishCitizenship: true,passportNumber: null,passportCode:"POL", email:"person33@gmail.com", aglomeration:Core.Enums.Aglomeration.Bialystok),
-                new Person(phoneNumber:"715777777",gender:Core.Enums.Gender.Female,id:35,birthDate:new DateTimeOffset(new DateTime(1989,7,8)) , name:"Marlena",surName:"Bajka",pesel:"89456113215", hasPolishCitizenship: true,passportNumber: null,passportCode:"POL", email:"person34@gmail.com", aglomeration:Core.Enums.Aglomeration.Tricity),
-                new Person(phoneNumber:"715777777",gender:Core.Enums.Gender.Female,id:36,birthDate:new DateTimeOffset(new DateTime(1954,7,8)) , name:"Bożena",surName:"Arbuz",pesel:"54564632165",hasPolishCitizenship: true,passportNumber: null,passportCode:"POL", email:"person35@gmail.com", aglomeration:Core.Enums.Aglomeration.Bialystok),
-                new Person(phoneNumber:"715777777",gender:Core.Enums.Gender.Female,id:37,birthDate:new DateTimeOffset(new DateTime(1980,7,8)) , name:"Klaudia",surName:"Kąkol",pesel:"80156465465",hasPolishCitizenship: true,passportNumber: null,passportCode:"POL", email:"person36@gmail.com", aglomeration:Core.Enums.Aglomeration.Warsaw),
-                new Person(phoneNumber:"715777777",gender:Core.Enums.Gender.Female,id:38,birthDate:new DateTimeOffset(new DateTime(1986,7,8)) , name:"Sandra",surName:"Sosna",pesel:"86465456464",hasPolishCitizenship: true,passportNumber: null,passportCode:"POL", email:"person37@gmail.com", aglomeration:Core.Enums.Aglomeration.Kielce),
-                new Person(phoneNumber:"715777777",gender:Core.Enums.Gender.Female,id:39,birthDate:new DateTimeOffset(new DateTime(1951,7,8)) , name:"Teodora",surName:"Wiśniowiecka",pesel:"51564894651",hasPolishCitizenship: true,passportNumber: null,passportCode:"POL", email:"person38@gmail.com", aglomeration:Core.Enums.Aglomeration.Rzeszów),
-                new Person(phoneNumber:"715777777",gender:Core.Enums.Gender.Female,id:40,birthDate:new DateTimeOffset(new DateTime(1966,7,8)) , name:"Kornelia",surName:"Krasicka",pesel:"66454564654",hasPolishCitizenship: true,passportNumber: null,passportCode:"POL", email:"person39@gmail.com", aglomeration:Core.Enums.Aglomeration.Warsaw),
-                new Person(phoneNumber:"715777777",gender:Core.Enums.Gender.Female,id:41,birthDate:new DateTimeOffset(new DateTime(1975,7,8)) , name:"Marzena",surName:"Rudnicka",pesel:"75164546546", hasPolishCitizenship: true,passportNumber: null,passportCode:"POL", email:"person40@gmail.com", aglomeration:Core.Enums.Aglomeration.Tricity),
-                new Person(phoneNumber:"715777777",gender:Core.Enums.Gender.Female,id:42,birthDate:new DateTimeOffset(new DateTime(1961,7,8)) , name:"Beata",surName:"Bomba",pesel:"61231546546",hasPolishCitizenship: true,passportNumber: null,passportCode:"POL", email:"person41@gmail.com", aglomeration:Core.Enums.Aglomeration.Silesia),
-                new Person(phoneNumber:"715777777",gender:Core.Enums.Gender.Female,id:43,birthDate:new DateTimeOffset(new DateTime(1971,7,8)) , name:"Katarzyna",surName:"Łasinkiewicz",pesel:"71123456476",hasPolishCitizenship: true,passportNumber: null,passportCode:"POL", email:"person42@gmail.com", aglomeration:Core.Enums.Aglomeration.Bialystok),
-                new Person(phoneNumber:"715777777",gender:Core.Enums.Gender.Female,id:44,birthDate:new DateTimeOffset(new DateTime(1981,7,8)) , name:"Weronika",surName:"Kurzydło",pesel:"81546546546",hasPolishCitizenship: true,passportNumber: null,passportCode:"POL", email:"person43@gmail.com", aglomeration:Core.Enums.Aglomeration.Warsaw),
-                new Person(phoneNumber:"715777777",gender:Core.Enums.Gender.Female,id:45,birthDate:new DateTimeOffset(new DateTime(1978,7,8)) , name:"Maria",surName:"Kurka",pesel:"78794654616",hasPolishCitizenship: true,passportNumber: null,passportCode:"POL", email:"person44@gmail.com", aglomeration:Core.Enums.Aglomeration.Cracow),
-                new Person(phoneNumber:"715777777",gender:Core.Enums.Gender.Female,id:46,birthDate:new DateTimeOffset(new DateTime(1949,7,8)) , name:"Bronisława",surName:"Czesiek",pesel:"49489646146",hasPolishCitizenship: true,passportNumber: null,passportCode:"POL", email:"person45@gmail.com", aglomeration:Core.Enums.Aglomeration.Warsaw),
-                new Person(phoneNumber:"715777777",gender:Core.Enums.Gender.Female,id:47,birthDate:new DateTimeOffset(new DateTime(1965,7,8)) , name:"Aleksandra",surName:"Ruda",pesel:"65487987446",hasPolishCitizenship: true,passportNumber: null,passportCode:"POL", email:"person46@gmail.com", aglomeration:Core.Enums.Aglomeration.Tricity),
-                new Person(phoneNumber:"715777777",gender:Core.Enums.Gender.Female,id:48,birthDate:new DateTimeOffset(new DateTime(1978,7,8)) , name:"Iga",surName:"Bodzio",pesel:"78484654654", hasPolishCitizenship: true,passportNumber: null,passportCode:"POL", email:"person47@gmail.com", aglomeration:Core.Enums.Aglomeration.Cracow),
-                new Person(phoneNumber:"715777777",gender:Core.Enums.Gender.Female,id:49,birthDate:new DateTimeOffset(new DateTime(1984,7,8)) , name:"Agnieszka",surName:"Pluto",pesel:"84879486546",hasPolishCitizenship: true,passportNumber: null,passportCode:"POL", email:"person48@gmail.com", aglomeration:Core.Enums.Aglomeration.Bialystok),
-                new Person(phoneNumber:"715777777",gender:Core.Enums.Gender.Female,id:50,birthDate:new DateTimeOffset(new DateTime(1985,7,8)) , name:"Karolina",surName:"Majak",pesel:"85641541321",hasPolishCitizenship: true,passportNumber: null,passportCode:"POL", email:"person49@gmail.com", aglomeration:Core.Enums.Aglomeration.Warsaw),
-                new Person(phoneNumber:"715777777",gender:Core.Enums.Gender.Female,id:51,birthDate:new DateTimeOffset(new DateTime(1989,7,8)) , name:"Karina",surName:"Wąsacz",pesel:"89456411324",hasPolishCitizenship: true,passportNumber: null,passportCode:"POL", email:"person50@gmail.com", aglomeration:Core.Enums.Aglomeration.Warsaw),
-                new Person(phoneNumber:"715777777",gender:Core.Enums.Gender.Female,id:52,birthDate:new DateTimeOffset(new DateTime(1956,7,8)) , name:"Grażyna",surName:"Rudniewska",pesel:"56413215649",hasPolishCitizenship: true,passportNumber: null,passportCode:"POL", email:"person51@gmail.com", aglomeration:Core.Enums.Aglomeration.Tricity),
-                new Person(phoneNumber:"715777777",gender:Core.Enums.Gender.Female,id:53,birthDate:new DateTimeOffset(new DateTime(1984,7,8)) , name:"Marta",surName:"Tracka",pesel:"84651654964",hasPolishCitizenship: true,passportNumber: null,passportCode:"POL", email:"person52@gmail.com", aglomeration:Core.Enums.Aglomeration.Warsaw),
-                new Person(phoneNumber:"715777777",gender:Core.Enums.Gender.Female,id:54,birthDate:new DateTimeOffset(new DateTime(1986,7,8)) , name:"Marta",surName:"Trąbicka",pesel:"86231165448", hasPolishCitizenship: true,passportNumber: null,passportCode:"POL", email:"person53@gmail.com", aglomeration:Core.Enums.Aglomeration.Bialystok),
-                new Person(phoneNumber:"715777777",gender:Core.Enums.Gender.Female,id:55,birthDate:new DateTimeOffset(new DateTime(1979,7,8)) , name:"Sylwia",surName:"Sarna",pesel:"79132131564",hasPolishCitizenship: true,passportNumber: null,passportCode:"POL", email:"person54@gmail.com", aglomeration:Core.Enums.Aglomeration.Rzeszów),
-                new Person(phoneNumber:"715777777",gender:Core.Enums.Gender.Female,id:56,birthDate:new DateTimeOffset(new DateTime(1975,7,8)) , name:"Kamila",surName:"Kozera",pesel:"75123165465", hasPolishCitizenship: true,passportNumber: null,passportCode:"POL", email:"person55@gmail.com", aglomeration:Core.Enums.Aglomeration.Warsaw),
-                new Person(phoneNumber:"715777777",gender:Core.Enums.Gender.Female,id:57,birthDate:new DateTimeOffset(new DateTime(1954,7,8)) , name:"Bogumiła",surName:"Braniewska",pesel:"54878946123",hasPolishCitizenship: true,passportNumber: null,passportCode:"POL", email:"person56@gmail.com", aglomeration:Core.Enums.Aglomeration.Cracow),
-                new Person(phoneNumber:"715777777",gender:Core.Enums.Gender.Female,id:58,birthDate:new DateTimeOffset(new DateTime(1962,7,8)) , name:"Teresa",surName:"Winniczek",pesel:"62348979521",hasPolishCitizenship: true,passportNumber: null,passportCode:"POL", email:"person57@gmail.com", aglomeration:Core.Enums.Aglomeration.Bialystok),
-                new Person(phoneNumber:"715777777",gender:Core.Enums.Gender.Female,id:59,birthDate:new DateTimeOffset(new DateTime(1974,7,8)) , name:"Daria",surName:"Jaszczur",pesel:"74561213898",hasPolishCitizenship: true,passportNumber: null,passportCode:"POL", email:"person59@gmail.com", aglomeration:Core.Enums.Aglomeration.Tricity),
-                new Person(phoneNumber:"715777777",gender:Core.Enums.Gender.Female,id:60,birthDate:new DateTimeOffset(new DateTime(1979,7,8)) , name:"Daria",surName:"Biernacka",pesel:"79123156494", hasPolishCitizenship: true,passportNumber: null,passportCode:"POL", email:"person60@gmail.com", aglomeration:Core.Enums.Aglomeration.Cracow),
-                new Person(phoneNumber:"715777777",gender:Core.Enums.Gender.Female,id:61,birthDate:new DateTimeOffset(new DateTime(1978,7,8)) , name:"Maria",surName:"Balon",pesel:"78532154645",hasPolishCitizenship: true,passportNumber: null,passportCode:"POL", email:"person61@gmail.com", aglomeration:Core.Enums.Aglomeration.Bialystok),
-                new Person(phoneNumber:"715777777",gender:Core.Enums.Gender.Female,id:62,birthDate:new DateTimeOffset(new DateTime(1984,7,8)) , name:"Anna",surName:"Poranna",pesel:"84561321499",hasPolishCitizenship: true, passportNumber: null,passportCode:"POL", email:"person62@gmail.com", aglomeration:Core.Enums.Aglomeration.Cracow),
-                new Person(phoneNumber:"715777777",gender:Core.Enums.Gender.Female,id:63,birthDate:new DateTimeOffset(new DateTime(1988,7,8)) , name:"Anna",surName:"Poletko",pesel:"88456413215",hasPolishCitizenship: true,passportNumber: null,passportCode:"POL", email:"person63@gmail.com", aglomeration:Core.Enums.Aglomeration.Tricity),
-                new Person(phoneNumber:"715777777",gender:Core.Enums.Gender.Female,id:64,birthDate:new DateTimeOffset(new DateTime(1989,7,8)) , name:"Agata",surName:"Bosko",pesel:"89561321564",hasPolishCitizenship: true,passportNumber: null,passportCode:"POL", email:"person64@gmail.com", aglomeration:Core.Enums.Aglomeration.Warsaw),
-                new Person(phoneNumber:"715777777",gender:Core.Enums.Gender.Female,id:65,birthDate:new DateTimeOffset(new DateTime(1978,7,8)) , name:"Agata",surName:"Mińska",pesel:"78465413131",hasPolishCitizenship: true,passportNumber: null,passportCode:"POL", email:"person65@gmail.com", aglomeration:Core.Enums.Aglomeration.Wroclaw),
-                new Person(phoneNumber:"715777777",gender:Core.Enums.Gender.Female,id:66,birthDate:new DateTimeOffset(new DateTime(1980,7,8)) , name:"Monika",surName:"Szajka",pesel:"80156467513", hasPolishCitizenship: true,passportNumber: null,passportCode:"POL", email:"person66@gmail.com", aglomeration:Core.Enums.Aglomeration.Bialystok),
-                new Person(phoneNumber:"715777777",gender:Core.Enums.Gender.Female,id:67,birthDate:new DateTimeOffset(new DateTime(1979,7,8)) , name:"Mariola",surName:"Kiepska",pesel:"79856461321",hasPolishCitizenship: true,passportNumber: null,passportCode:"POL", email:"person67@gmail.com", aglomeration:Core.Enums.Aglomeration.Kielce),
-                new Person(phoneNumber:"715777777",gender:Core.Enums.Gender.Female,id:68,birthDate:new DateTimeOffset(new DateTime(1974,7,8)) , name:"Dorota",surName:"Zawisza",pesel:"74413212649",hasPolishCitizenship: true,passportNumber: null,passportCode:"POL", email:"person68@gmail.com", aglomeration:Core.Enums.Aglomeration.Silesia),
-                new Person(phoneNumber:"715777777",gender:Core.Enums.Gender.Female,id:69,birthDate:new DateTimeOffset(new DateTime(1988,7,8)) , name:"Anastasia",surName:"Radczuk",pesel:"",hasPolishCitizenship: false,passportNumber: "AAAA87946121646",passportCode:"UKR", email:"person69@gmail.com", aglomeration:Core.Enums.Aglomeration.Tricity),
-                new Person(phoneNumber:"715777777",gender:Core.Enums.Gender.Female,id:70,birthDate:new DateTimeOffset(new DateTime(1979,7,8)) , name:"Karolina",surName:"Kulka",pesel:"79846513215", hasPolishCitizenship: true,passportNumber: null,passportCode:"POL", email:"person70@gmail.com", aglomeration:Core.Enums.Aglomeration.Rzeszów),
-                //patients
-                new Person(phoneNumber:"715777777",gender:Core.Enums.Gender.Male,id:71,birthDate:new DateTimeOffset(new DateTime(1987,7,8)) , name:"Łukasz", surName:"Łukasiak",pesel:"87101010105", hasPolishCitizenship: true, passportNumber:"484654asd4a5sd4", passportCode:"PL", email:"s11437@pjwstk.edu.pl", aglomeration: Core.Enums.Aglomeration.Warsaw),//główny pacjent
-                new Person(phoneNumber:"715777777",name: "Magdalena",surName: "Bomba",   id: 72,gender:Core.Enums.Gender.Female,    birthDate:new DateTimeOffset(new DateTime(1974,5,12)) ,    pesel: "74051256121",    hasPolishCitizenship: true,       passportCode: null,        passportNumber: null,     email: "patient2@live.com",     aglomeration: Core.Enums.Aglomeration.Cracow),
-                new Person(phoneNumber:"715777777",name: "Katarzyna",surName: "Jelitko", id: 73,gender:Core.Enums.Gender.Female,    birthDate:new DateTimeOffset(new DateTime(1966,4,8)) ,    pesel: "66040865456",    hasPolishCitizenship: true,      passportCode: null,        passportNumber: null,     email: "patient3@live.com",     aglomeration: Core.Enums.Aglomeration.Kielce),
-                new Person(phoneNumber:"715777777",name: "Krzysztof",surName: "Kitka",   id: 74,gender:Core.Enums.Gender.Male,      birthDate:new DateTimeOffset(new DateTime(1979,8,5)) ,    pesel: "79080546213",    hasPolishCitizenship: true,           passportCode: null,        passportNumber: null,     email: "patient4@live.com",     aglomeration: Core.Enums.Aglomeration.Kuyavia),
-                new Person(phoneNumber:"715777777",name: "Dariusz",  surName: "Czapa",   id: 75,gender:Core.Enums.Gender.Male,    birthDate:new DateTimeOffset(new DateTime(1982,1,24)) ,    pesel: "82012464695",    hasPolishCitizenship: true,         passportCode: null,        passportNumber: null,     email: "patient6@live.com",     aglomeration: Core.Enums.Aglomeration.Poznan),
-                new Person(phoneNumber:"715777777",name: "Tomasz",   surName: "Komar",   id: 76,gender:Core.Enums.Gender.Male,   birthDate:new DateTimeOffset(new DateTime(1981,6,7)) ,        pesel: "81060754612",    hasPolishCitizenship: true,           passportCode: null,        passportNumber: null,     email: "patient5@live.com",     aglomeration: Core.Enums.Aglomeration.Rzeszów),
-                new Person(phoneNumber:"715777777",name: "Arkadiusz",surName: "Patka",   id: 77,gender:Core.Enums.Gender.Male,      birthDate:new DateTimeOffset(new DateTime(1979,10,20)) ,    pesel: "79102013465",    hasPolishCitizenship: true,     passportCode: null,             passportNumber: null,     email: "patient6@live.com",     aglomeration: Core.Enums.Aglomeration.Silesia),
-                new Person(phoneNumber:"715777777",name: "Marta",    surName: "Rakieta", id: 78,gender:Core.Enums.Gender.Female, birthDate:new DateTimeOffset(new DateTime(1991,2,12)) ,    pesel: "91021245646",    hasPolishCitizenship: true,       passportCode: null,        passportNumber: null,     email: "patient7@live.com",     aglomeration: Core.Enums.Aglomeration.Tricity),
-                new Person(phoneNumber:"715777777",name: "Ada",      surName: "Ruda",    id: 79,gender:Core.Enums.Gender.Female, birthDate:new DateTimeOffset(new DateTime(1994,12,13)) ,    pesel: "94121321654",    hasPolishCitizenship: true,           passportCode: null,        passportNumber: null,     email: "patient8@live.com",     aglomeration: Core.Enums.Aglomeration.Warsaw),
-                new Person(phoneNumber:"715777777",name: "Genowefa", surName: "Pigwa",   id: 80,gender:Core.Enums.Gender.Female,   birthDate:new DateTimeOffset(new DateTime(1954,6,13)) ,    pesel: "54061324651",    hasPolishCitizenship: true,   passportCode: null,        passportNumber: null,     email: "patient9@live.com",     aglomeration: Core.Enums.Aglomeration.Wroclaw),
-                new Person(phoneNumber:"715777777",name: "Wacław",   surName: "Kopytko", id: 81,gender:Core.Enums.Gender.Male,   birthDate:new DateTimeOffset(new DateTime(1955,3,13)) ,    pesel: "55031365494",    hasPolishCitizenship: true,      passportCode: null,        passportNumber: null,     email: "patient11@live.com",     aglomeration: Core.Enums.Aglomeration.Warsaw),
-                new Person(phoneNumber:"715777777",name: "Bożena",   surName: "Raj",     id: 82,gender:Core.Enums.Gender.Female, birthDate:new DateTimeOffset(new DateTime(1949,11,18)) ,    pesel: "49111816546",    hasPolishCitizenship: true,      passportCode: null,        passportNumber: null,     email: "patient12@live.com",     aglomeration: Core.Enums.Aglomeration.Cracow),
-                new Person(phoneNumber:"715777777",name: "Fryderek", surName: "Czyż",    id: 83,gender:Core.Enums.Gender.Male,     birthDate:new DateTimeOffset(new DateTime(1956,12,18)) ,    pesel: "56121864984",    hasPolishCitizenship: true,     passportCode: null,        passportNumber: null,     email: "patient13@live.com",     aglomeration: Core.Enums.Aglomeration.Warsaw),
-                new Person(phoneNumber:"715777777",name: "Monika",   surName: "Zalewska",id: 84,gender:Core.Enums.Gender.Female, birthDate:new DateTimeOffset(new DateTime(1982,9,9)) ,    pesel: "82090913215",    hasPolishCitizenship: true,    passportCode: null,        passportNumber: null,     email: "patient14@live.com",     aglomeration: Core.Enums.Aglomeration.Warsaw),
-                new Person(phoneNumber:"715777777",name: "Daria",    surName: "Raszpan", id: 85,gender:Core.Enums.Gender.Female,   birthDate:new DateTimeOffset(new DateTime(1984,6,16)) ,    pesel: "84061632131",    hasPolishCitizenship: true, passportCode: null,        passportNumber: null,     email: "patient1@live.com",     aglomeration: Core.Enums.Aglomeration.Bialystok),
-                new Person(phoneNumber:"500365555",name:"Agnieszka", surName:"Pielak",id:86, gender:Core.Enums.Gender.Female, birthDate:new DateTimeOffset(new DateTime(1990,01,15)),pesel:"90011515676",hasPolishCitizenship:true, passportCode:null, passportNumber:null,email:"aga_lwica100@onet.eu",aglomeration:Core.Enums.Aglomeration.Rzeszów){ ImageFilePath="/img/persons/a.png",},
+                new Person(imagePath:"/img/MW/m/1.jpg", phoneNumber:"777777777", gender:Core.Enums.Gender.Male,id:1, name:"Mariusz",surName:"Puto",pesel:"77784512598",birthDate:new DateTimeOffset(new DateTime(1977,7,8)) ,hasPolishCitizenship: true,passportNumber: null,passportCode:"POL",email:"person1@gmail.com", aglomeration:Core.Enums.Aglomeration.Bialystok),
+                new Person(imagePath:"/img/MW/m/2.jpg", phoneNumber:"715777777",gender:Core.Enums.Gender.Male,id:2, name:"Witold",surName:"Głąbek",pesel:"65101046546",birthDate:new DateTimeOffset(new DateTime(1965,10,10)),hasPolishCitizenship: true,passportNumber: null,passportCode:"POL", email:"person2@gmail.com", aglomeration:Core.Enums.Aglomeration.Cracow),
+                new Person(imagePath:"/img/MW/m/3.jpg", phoneNumber:"715777777",gender:Core.Enums.Gender.Male,id:3, name:"Henryk",surName:"Bąbel",pesel:"87010256123",birthDate:new DateTimeOffset(new DateTime(1987,1,2)), hasPolishCitizenship: true,passportNumber: null,passportCode:"POL", email:"person3@gmail.com", aglomeration:Core.Enums.Aglomeration.Kielce),
+                new Person(imagePath:"/img/MW/m/4.jpg", phoneNumber:"715777777",gender:Core.Enums.Gender.Male,id:4, name:"Ferdynand",surName:"Małolepszy",pesel:"56050834534",birthDate:new DateTimeOffset(new DateTime(1956,05,08)),hasPolishCitizenship: true,passportNumber: null,passportCode:"POL", email:"person4@gmail.com", aglomeration:Core.Enums.Aglomeration.Rzeszów),
+                new Person(imagePath:"/img/MW/m/5.jpg", phoneNumber:"715777777",gender:Core.Enums.Gender.Male,id:5, name:"Zenon",surName:"Krzywy",pesel:"54020246454",birthDate:new DateTimeOffset(new DateTime(1954,2,2)),hasPolishCitizenship: true,passportNumber: null,passportCode:"POL", email:"person5@gmail.com", aglomeration:Core.Enums.Aglomeration.Cracow),
+                new Person(imagePath:"/img/MW/m/6.jpg", phoneNumber:"715777777",gender:Core.Enums.Gender.Male,id:6, name:"Tadeusz",surName:"Nowak",pesel:"65111176546",birthDate:new DateTimeOffset(new DateTime(1965,11,11)),hasPolishCitizenship: true,passportNumber: null,passportCode:"POL", email:"person6@gmail.com", aglomeration:Core.Enums.Aglomeration.Warsaw),
+                new Person(imagePath:"/img/MW/m/7.jpg", phoneNumber:"715777777",gender:Core.Enums.Gender.Male,id:7,birthDate:new DateTimeOffset(new DateTime(1978,7,8)) , name:"Tomasz",surName:"Woda",pesel:"78945646312",hasPolishCitizenship: true,passportNumber: null,passportCode:"POL", email:"person7@gmail.com", aglomeration:Core.Enums.Aglomeration.Warsaw),
+                new Person(imagePath:"/img/MW/m/8.jpg", phoneNumber:"715777777",gender:Core.Enums.Gender.Male,id:8,birthDate:new DateTimeOffset(new DateTime(1975,7,8)) , name:"Łukasz",surName:"Czekaj",pesel:"75654654646",hasPolishCitizenship: true,passportNumber: null,passportCode:"POL", email:"person8@gmail.com", aglomeration:Core.Enums.Aglomeration.Tricity),
+                new Person(imagePath:"/img/MW/m/9.jpg", phoneNumber:"715777777",gender:Core.Enums.Gender.Male,id:9,birthDate:new DateTimeOffset(new DateTime(1961,7,8)) , name:"Danuta",surName:"Werys",pesel:"61321234189",hasPolishCitizenship: true,passportNumber: null,passportCode:"POL", email:"person58@gmail.com", aglomeration:Core.Enums.Aglomeration.Cracow),
+                new Person(imagePath:"/img/MW/m/10.jpg", phoneNumber:"715777777",gender:Core.Enums.Gender.Male,id:10,birthDate:new DateTimeOffset(new DateTime(1984,7,8)) , name:"Mateusz",surName:"Chodzień",pesel:"84131321654",hasPolishCitizenship: true,passportNumber: null,passportCode:"POL", email:"person9@gmail.com", aglomeration:Core.Enums.Aglomeration.Cracow),
+                new Person(imagePath:"/img/MW/m/11.jpg", phoneNumber:"715777777",gender:Core.Enums.Gender.Male,id:11,birthDate:new DateTimeOffset(new DateTime(1944,7,8)) , name:"Leszek",surName:"Ancymon",pesel:"44445465456",hasPolishCitizenship: true,passportNumber: null,passportCode:"POL", email:"person10@gmail.com", aglomeration:Core.Enums.Aglomeration.Warsaw),
+                new Person(imagePath:"/img/MW/m/12.jpg", phoneNumber:"715777777",gender:Core.Enums.Gender.Male,id:12,birthDate:new DateTimeOffset(new DateTime(1975,7,8)) , name:"Karol",surName:"Szczęsny",pesel:"75321231654",hasPolishCitizenship: true,passportNumber: null,passportCode:"POL", email:"person11@gmail.com", aglomeration:Core.Enums.Aglomeration.Silesia),
+                new Person(imagePath:"/img/MW/m/13.jpg", phoneNumber:"715777777",gender:Core.Enums.Gender.Male,id:13,birthDate:new DateTimeOffset(new DateTime(1965,7,8)) , name:"Remigiusz",surName:"Czystka",pesel:"65421321564",hasPolishCitizenship: true,passportNumber: null,passportCode:"POL", email:"person12@gmail.com", aglomeration:Core.Enums.Aglomeration.Tricity),
+                new Person(imagePath:"/img/MW/m/14.jpg", phoneNumber:"715777777",gender:Core.Enums.Gender.Male,id:14,birthDate:new DateTimeOffset(new DateTime(1979,7,8)) , name:"Robert",surName:"Pawłowski",pesel:"79887987545",hasPolishCitizenship: true,passportNumber: null,passportCode:"POL", email:"person13@gmail.com", aglomeration:Core.Enums.Aglomeration.Cracow),
+                new Person(imagePath:"/img/MW/m/15.jpg", phoneNumber:"715777777",gender:Core.Enums.Gender.Male,id:15,birthDate:new DateTimeOffset(new DateTime(1971,7,8)) , name:"Szymon",surName:"Sosna",pesel:"71123156456",hasPolishCitizenship: true,passportNumber: null,passportCode:"POL", email:"person14@gmail.com", aglomeration:Core.Enums.Aglomeration.Warsaw),
+                new Person(imagePath:"/img/MW/m/16.jpg", phoneNumber:"715777777",gender:Core.Enums.Gender.Male,id:16,birthDate:new DateTimeOffset(new DateTime(1965,7,8)) , name:"Sergiusz",surName:"Ząbek",pesel:"65231546456",hasPolishCitizenship: true,passportNumber: null,passportCode:"POL", email:"person15@gmail.com", aglomeration:Core.Enums.Aglomeration.Tricity),
+                new Person(imagePath:"/img/MW/m/17.jpg", phoneNumber:"715777777",gender:Core.Enums.Gender.Male,id:17,birthDate:new DateTimeOffset(new DateTime(1964,7,8)) , name:"Tymoteusz",surName:"Zez",pesel:"64561231564",hasPolishCitizenship: true,passportNumber: null,passportCode:"POL", email:"person16@gmail.com", aglomeration:Core.Enums.Aglomeration.Warsaw),
+                new Person(imagePath:"/img/MW/m/18.jpg", phoneNumber:"715777777",gender:Core.Enums.Gender.Male,id:18,birthDate:new DateTimeOffset(new DateTime(1945,7,8)) , name:"Zbigniew",surName:"Korzeń",pesel:"45632132456",hasPolishCitizenship: true,passportNumber: null,passportCode:"POL", email:"person17@gmail.com", aglomeration:Core.Enums.Aglomeration.Bialystok),
+                new Person(imagePath:"/img/MW/m/19.jpg", phoneNumber:"715777777",gender:Core.Enums.Gender.Male,id:19,birthDate:new DateTimeOffset(new DateTime(1949,7,8)) , name:"Zbigniew",surName:"Osiński",pesel:"49987945646",hasPolishCitizenship: true,passportNumber: null,passportCode:"POL", email:"person18@gmail.com", aglomeration:Core.Enums.Aglomeration.Cracow),
+                new Person(imagePath:"/img/MW/m/20.jpg", phoneNumber:"715777777",gender:Core.Enums.Gender.Male,id:20,birthDate:new DateTimeOffset(new DateTime(1965,7,8)) , name:"Michał",surName:"Czosnek",pesel:"65432154656",hasPolishCitizenship: true,passportNumber: null,passportCode:"POL", email:"person19@gmail.com", aglomeration:Core.Enums.Aglomeration.Tricity),
+                new Person(imagePath:"/img/MW/m/21.jpg", phoneNumber:"715777777",gender:Core.Enums.Gender.Male,id:21,birthDate:new DateTimeOffset(new DateTime(1980,7,8)) , name:"Tomasz",surName:"Truteń",pesel:"80121316546",hasPolishCitizenship: true,passportNumber: null,passportCode:"POL", email:"person20@gmail.com", aglomeration:Core.Enums.Aglomeration.Cracow),
+                new Person(imagePath:"/img/MW/m/22.jpg", phoneNumber:"715777777",gender:Core.Enums.Gender.Male,id:22,birthDate:new DateTimeOffset(new DateTime(1955,7,8)) , name:"Bogusław",surName:"Śmiały",pesel:"55465456412",hasPolishCitizenship: true,passportNumber: null,passportCode:"POL", email:"person21@gmail.com", aglomeration:Core.Enums.Aglomeration.Warsaw),
+                new Person(imagePath:"/img/MW/m/23.jpg", phoneNumber:"715777777",gender:Core.Enums.Gender.Male,id:23,birthDate:new DateTimeOffset(new DateTime(1954,7,8)) , name:"Jan",surName:"Dutki",pesel:"54654321314",hasPolishCitizenship: true,passportNumber: null,passportCode:"POL", email:"person22@gmail.com", aglomeration:Core.Enums.Aglomeration.Warsaw),
+                new Person(imagePath:"/img/MW/m/24.jpg", phoneNumber:"715777777",gender:Core.Enums.Gender.Male,id:24,birthDate:new DateTimeOffset(new DateTime(1965,7,8)) , name:"Jarosław",surName:"Kurczak",pesel:"65461234564",hasPolishCitizenship: true,passportNumber: null,passportCode:"POL", email:"person23@gmail.com", aglomeration:Core.Enums.Aglomeration.Cracow),
+                new Person(imagePath:"/img/MW/m/25.jpg", phoneNumber:"715777777",gender:Core.Enums.Gender.Male,id:25,birthDate:new DateTimeOffset(new DateTime(1965,7,8)) , name:"Grzegorz",surName:"Grześkowiak",pesel:"65487456465",hasPolishCitizenship: true,passportNumber: null,passportCode:"POL", email:"person24@gmail.com", aglomeration:Core.Enums.Aglomeration.Cracow),
+                new Person(imagePath:"/img/MW/m/26.jpg", phoneNumber:"715777777",gender:Core.Enums.Gender.Male,id:26,birthDate:new DateTimeOffset(new DateTime(1945,7,8)) , name:"Gerwazy",surName:"Zasada",pesel:"45612315646",hasPolishCitizenship: true,passportNumber: null,passportCode:"POL", email:"person25@gmail.com", aglomeration:Core.Enums.Aglomeration.Silesia),
+                new Person(imagePath:"/img/MW/m/27.jpg", phoneNumber:"715777777",gender:Core.Enums.Gender.Male,id:27,birthDate:new DateTimeOffset(new DateTime(1954,7,8)) , name:"Czesław",surName:"Wilk",pesel:"54878975646",hasPolishCitizenship: true,passportNumber: null,passportCode:"POL", email:"person26@gmail.com", aglomeration:Core.Enums.Aglomeration.Cracow),
+                new Person(imagePath:"/img/MW/m/28.jpg", phoneNumber:"715777777",gender:Core.Enums.Gender.Male,id:28,birthDate:new DateTimeOffset(new DateTime(1964,7,8)) , name:"Tadeusz",surName:"Gąska",pesel:"64621321564",hasPolishCitizenship: true,passportNumber: null,passportCode:"POL", email:"person27@gmail.com", aglomeration:Core.Enums.Aglomeration.Bialystok),
+                new Person(imagePath:"/img/MW/m/29.jpg", phoneNumber:"715777777",gender:Core.Enums.Gender.Male,id:29,birthDate:new DateTimeOffset(new DateTime(1959,7,8)) , name:"Waldemar",surName:"Kucaj",pesel:"59456123156",hasPolishCitizenship: true,passportNumber: null,passportCode:"POL", email:"person28@gmail.com", aglomeration:Core.Enums.Aglomeration.Tricity),
+                new Person(imagePath:"/img/MW/m/30.jpg", phoneNumber:"715777777",gender:Core.Enums.Gender.Male,id:30,birthDate:new DateTimeOffset(new DateTime(1978,7,8)) , name:"Piotr",surName:"Kuropatwa",pesel:"78946513213",hasPolishCitizenship: true,passportNumber: null,passportCode:"POL", email:"person29@gmail.com", aglomeration:Core.Enums.Aglomeration.Bialystok),
+                new Person(imagePath:"/img/MW/m/31.jpg", phoneNumber:"715777777",gender:Core.Enums.Gender.Male,id:31,birthDate:new DateTimeOffset(new DateTime(1978,10,8)) , name:"Paweł",surName:"Łąkietka",pesel:"78946546549",hasPolishCitizenship: true,passportNumber: null,passportCode:"POL", email:"person30@gmail.com", aglomeration:Core.Enums.Aglomeration.Warsaw),
+                new Person(imagePath:"/img/MW/m/32.jpg", phoneNumber:"715777777",gender:Core.Enums.Gender.Male,id:32,birthDate:new DateTimeOffset(new DateTime(1945,7,8)) , name:"Rozmus",surName:"Remus",pesel:"45641341564",hasPolishCitizenship: true,passportNumber: null,passportCode:"POL", email:"person31@gmail.com", aglomeration:Core.Enums.Aglomeration.Cracow),
+                new Person(imagePath:"/img/MW/k/1.jpg", phoneNumber:"715777777",gender:Core.Enums.Gender.Male,id:33,birthDate:new DateTimeOffset(new DateTime(1948,7,8)) , name:"Miłosz",surName:"Ciapek",pesel:"48794564321",hasPolishCitizenship: true,passportNumber: null,passportCode:"POL", email:"person32@gmail.com", aglomeration:Core.Enums.Aglomeration.Silesia),
+                new Person(imagePath:"/img/MW/k/2.jpg", phoneNumber:"715777777",gender:Core.Enums.Gender.Female,id:34,birthDate:new DateTimeOffset(new DateTime(1965,7,8)) , name:"Czesława",surName:"Kret",pesel:"65461231564",hasPolishCitizenship: true,passportNumber: null,passportCode:"POL", email:"person33@gmail.com", aglomeration:Core.Enums.Aglomeration.Bialystok),
+                new Person(imagePath:"/img/MW/k/3.jpg", phoneNumber:"715777777",gender:Core.Enums.Gender.Female,id:35,birthDate:new DateTimeOffset(new DateTime(1989,7,8)) , name:"Marlena",surName:"Bajka",pesel:"89456113215", hasPolishCitizenship: true,passportNumber: null,passportCode:"POL", email:"person34@gmail.com", aglomeration:Core.Enums.Aglomeration.Tricity),
+                new Person(imagePath:"/img/MW/k/4.jpg", phoneNumber:"715777777",gender:Core.Enums.Gender.Female,id:36,birthDate:new DateTimeOffset(new DateTime(1954,7,8)) , name:"Bożena",surName:"Arbuz",pesel:"54564632165",hasPolishCitizenship: true,passportNumber: null,passportCode:"POL", email:"person35@gmail.com", aglomeration:Core.Enums.Aglomeration.Bialystok),
+                new Person(imagePath:"/img/MW/k/5.jpg", phoneNumber:"715777777",gender:Core.Enums.Gender.Female,id:37,birthDate:new DateTimeOffset(new DateTime(1980,7,8)) , name:"Klaudia",surName:"Kąkol",pesel:"80156465465",hasPolishCitizenship: true,passportNumber: null,passportCode:"POL", email:"person36@gmail.com", aglomeration:Core.Enums.Aglomeration.Warsaw),
+                new Person(imagePath:"/img/MW/k/6.jpg", phoneNumber:"715777777",gender:Core.Enums.Gender.Female,id:38,birthDate:new DateTimeOffset(new DateTime(1986,7,8)) , name:"Sandra",surName:"Sosna",pesel:"86465456464",hasPolishCitizenship: true,passportNumber: null,passportCode:"POL", email:"person37@gmail.com", aglomeration:Core.Enums.Aglomeration.Kielce),
+                new Person(imagePath:"/img/MW/k/7.jpg", phoneNumber:"715777777",gender:Core.Enums.Gender.Female,id:39,birthDate:new DateTimeOffset(new DateTime(1951,7,8)) , name:"Teodora",surName:"Wiśniowiecka",pesel:"51564894651",hasPolishCitizenship: true,passportNumber: null,passportCode:"POL", email:"person38@gmail.com", aglomeration:Core.Enums.Aglomeration.Rzeszów),
+                new Person(imagePath:"/img/MW/k/8.jpg", phoneNumber:"715777777",gender:Core.Enums.Gender.Female,id:40,birthDate:new DateTimeOffset(new DateTime(1966,7,8)) , name:"Kornelia",surName:"Krasicka",pesel:"66454564654",hasPolishCitizenship: true,passportNumber: null,passportCode:"POL", email:"person39@gmail.com", aglomeration:Core.Enums.Aglomeration.Warsaw),
+                new Person(imagePath:"/img/MW/k/9.jpg", phoneNumber:"715777777",gender:Core.Enums.Gender.Female,id:41,birthDate:new DateTimeOffset(new DateTime(1975,7,8)) , name:"Marzena",surName:"Rudnicka",pesel:"75164546546", hasPolishCitizenship: true,passportNumber: null,passportCode:"POL", email:"person40@gmail.com", aglomeration:Core.Enums.Aglomeration.Tricity),
+                new Person(imagePath:"/img/MW/k/10.jpg", phoneNumber:"715777777",gender:Core.Enums.Gender.Female,id:42,birthDate:new DateTimeOffset(new DateTime(1961,7,8)) , name:"Beata",surName:"Bomba",pesel:"61231546546",hasPolishCitizenship: true,passportNumber: null,passportCode:"POL", email:"person41@gmail.com", aglomeration:Core.Enums.Aglomeration.Silesia),
+                new Person(imagePath:"/img/MW/k/11.jpg", phoneNumber:"715777777",gender:Core.Enums.Gender.Female,id:43,birthDate:new DateTimeOffset(new DateTime(1971,7,8)) , name:"Katarzyna",surName:"Łasinkiewicz",pesel:"71123456476",hasPolishCitizenship: true,passportNumber: null,passportCode:"POL", email:"person42@gmail.com", aglomeration:Core.Enums.Aglomeration.Bialystok),
+                new Person(imagePath:"/img/MW/k/12.jpg", phoneNumber:"715777777",gender:Core.Enums.Gender.Female,id:44,birthDate:new DateTimeOffset(new DateTime(1981,7,8)) , name:"Weronika",surName:"Kurzydło",pesel:"81546546546",hasPolishCitizenship: true,passportNumber: null,passportCode:"POL", email:"person43@gmail.com", aglomeration:Core.Enums.Aglomeration.Warsaw),
+                new Person(imagePath:"/img/MW/k/13.jpg", phoneNumber:"715777777",gender:Core.Enums.Gender.Female,id:45,birthDate:new DateTimeOffset(new DateTime(1978,7,8)) , name:"Maria",surName:"Kurka",pesel:"78794654616",hasPolishCitizenship: true,passportNumber: null,passportCode:"POL", email:"person44@gmail.com", aglomeration:Core.Enums.Aglomeration.Cracow),
+                new Person(imagePath:"/img/MW/k/14.jpg", phoneNumber:"715777777",gender:Core.Enums.Gender.Female,id:46,birthDate:new DateTimeOffset(new DateTime(1949,7,8)) , name:"Bronisława",surName:"Czesiek",pesel:"49489646146",hasPolishCitizenship: true,passportNumber: null,passportCode:"POL", email:"person45@gmail.com", aglomeration:Core.Enums.Aglomeration.Warsaw),
+                new Person(imagePath:"/img/MW/k/15.jpg", phoneNumber:"715777777",gender:Core.Enums.Gender.Female,id:47,birthDate:new DateTimeOffset(new DateTime(1965,7,8)) , name:"Aleksandra",surName:"Ruda",pesel:"65487987446",hasPolishCitizenship: true,passportNumber: null,passportCode:"POL", email:"person46@gmail.com", aglomeration:Core.Enums.Aglomeration.Tricity),
+                new Person(imagePath:"/img/MW/k/16.jpg", phoneNumber:"715777777",gender:Core.Enums.Gender.Female,id:48,birthDate:new DateTimeOffset(new DateTime(1978,7,8)) , name:"Iga",surName:"Bodzio",pesel:"78484654654", hasPolishCitizenship: true,passportNumber: null,passportCode:"POL", email:"person47@gmail.com", aglomeration:Core.Enums.Aglomeration.Cracow),
+                new Person(imagePath:"/img/MW/k/17.jpg", phoneNumber:"715777777",gender:Core.Enums.Gender.Female,id:49,birthDate:new DateTimeOffset(new DateTime(1984,7,8)) , name:"Agnieszka",surName:"Pluto",pesel:"84879486546",hasPolishCitizenship: true,passportNumber: null,passportCode:"POL", email:"person48@gmail.com", aglomeration:Core.Enums.Aglomeration.Bialystok),
+                new Person(imagePath:"/img/MW/k/18.jpg", phoneNumber:"715777777",gender:Core.Enums.Gender.Female,id:50,birthDate:new DateTimeOffset(new DateTime(1985,7,8)) , name:"Karolina",surName:"Majak",pesel:"85641541321",hasPolishCitizenship: true,passportNumber: null,passportCode:"POL", email:"person49@gmail.com", aglomeration:Core.Enums.Aglomeration.Warsaw),
+                new Person(imagePath:"/img/MW/k/19.jpg", phoneNumber:"715777777",gender:Core.Enums.Gender.Female,id:51,birthDate:new DateTimeOffset(new DateTime(1989,7,8)) , name:"Karina",surName:"Wąsacz",pesel:"89456411324",hasPolishCitizenship: true,passportNumber: null,passportCode:"POL", email:"person50@gmail.com", aglomeration:Core.Enums.Aglomeration.Warsaw),
+                new Person(imagePath:"/img/MW/k/20.jpg", phoneNumber:"715777777",gender:Core.Enums.Gender.Female,id:52,birthDate:new DateTimeOffset(new DateTime(1956,7,8)) , name:"Grażyna",surName:"Rudniewska",pesel:"56413215649",hasPolishCitizenship: true,passportNumber: null,passportCode:"POL", email:"person51@gmail.com", aglomeration:Core.Enums.Aglomeration.Tricity),
+                new Person(imagePath:"/img/MW/k/21.jpg", phoneNumber:"715777777",gender:Core.Enums.Gender.Female,id:53,birthDate:new DateTimeOffset(new DateTime(1984,7,8)) , name:"Marta",surName:"Tracka",pesel:"84651654964",hasPolishCitizenship: true,passportNumber: null,passportCode:"POL", email:"person52@gmail.com", aglomeration:Core.Enums.Aglomeration.Warsaw),
+                new Person(imagePath:"/img/MW/k/22.jpg", phoneNumber:"715777777",gender:Core.Enums.Gender.Female,id:54,birthDate:new DateTimeOffset(new DateTime(1986,7,8)) , name:"Marta",surName:"Trąbicka",pesel:"86231165448", hasPolishCitizenship: true,passportNumber: null,passportCode:"POL", email:"person53@gmail.com", aglomeration:Core.Enums.Aglomeration.Bialystok),
+                new Person(imagePath:"/img/MW/k/23.jpg", phoneNumber:"715777777",gender:Core.Enums.Gender.Female,id:55,birthDate:new DateTimeOffset(new DateTime(1979,7,8)) , name:"Sylwia",surName:"Sarna",pesel:"79132131564",hasPolishCitizenship: true,passportNumber: null,passportCode:"POL", email:"person54@gmail.com", aglomeration:Core.Enums.Aglomeration.Rzeszów),
+                new Person(imagePath:"/img/MW/k/24.jpg", phoneNumber:"715777777",gender:Core.Enums.Gender.Female,id:56,birthDate:new DateTimeOffset(new DateTime(1975,7,8)) , name:"Kamila",surName:"Kozera",pesel:"75123165465", hasPolishCitizenship: true,passportNumber: null,passportCode:"POL", email:"person55@gmail.com", aglomeration:Core.Enums.Aglomeration.Warsaw),
+                new Person(imagePath:"/img/MW/k/25.jpg", phoneNumber:"715777777",gender:Core.Enums.Gender.Female,id:57,birthDate:new DateTimeOffset(new DateTime(1954,7,8)) , name:"Bogumiła",surName:"Braniewska",pesel:"54878946123",hasPolishCitizenship: true,passportNumber: null,passportCode:"POL", email:"person56@gmail.com", aglomeration:Core.Enums.Aglomeration.Cracow),
+                new Person(imagePath:"/img/MW/k/26.jpg", phoneNumber:"715777777",gender:Core.Enums.Gender.Female,id:58,birthDate:new DateTimeOffset(new DateTime(1962,7,8)) , name:"Teresa",surName:"Winniczek",pesel:"62348979521",hasPolishCitizenship: true,passportNumber: null,passportCode:"POL", email:"person57@gmail.com", aglomeration:Core.Enums.Aglomeration.Bialystok),
+                new Person(imagePath:"/img/MW/k/27.jpg", phoneNumber:"715777777",gender:Core.Enums.Gender.Female,id:59,birthDate:new DateTimeOffset(new DateTime(1974,7,8)) , name:"Daria",surName:"Jaszczur",pesel:"74561213898",hasPolishCitizenship: true,passportNumber: null,passportCode:"POL", email:"person59@gmail.com", aglomeration:Core.Enums.Aglomeration.Tricity),
+                new Person(imagePath:"/img/MW/k/28.jpg", phoneNumber:"715777777",gender:Core.Enums.Gender.Female,id:60,birthDate:new DateTimeOffset(new DateTime(1979,7,8)) , name:"Daria",surName:"Biernacka",pesel:"79123156494", hasPolishCitizenship: true,passportNumber: null,passportCode:"POL", email:"person60@gmail.com", aglomeration:Core.Enums.Aglomeration.Cracow),
+                new Person(imagePath:"/img/MW/k/29.jpg", phoneNumber:"715777777",gender:Core.Enums.Gender.Female,id:61,birthDate:new DateTimeOffset(new DateTime(1978,7,8)) , name:"Maria",surName:"Balon",pesel:"78532154645",hasPolishCitizenship: true,passportNumber: null,passportCode:"POL", email:"person61@gmail.com", aglomeration:Core.Enums.Aglomeration.Bialystok),
+                new Person(imagePath:"/img/MW/k/30.jpg", phoneNumber:"715777777",gender:Core.Enums.Gender.Female,id:62,birthDate:new DateTimeOffset(new DateTime(1984,7,8)) , name:"Anna",surName:"Poranna",pesel:"84561321499",hasPolishCitizenship: true, passportNumber: null,passportCode:"POL", email:"person62@gmail.com", aglomeration:Core.Enums.Aglomeration.Cracow),
+                new Person(imagePath:"/img/MW/k/31.jpg", phoneNumber:"715777777",gender:Core.Enums.Gender.Female,id:63,birthDate:new DateTimeOffset(new DateTime(1988,7,8)) , name:"Anna",surName:"Poletko",pesel:"88456413215",hasPolishCitizenship: true,passportNumber: null,passportCode:"POL", email:"person63@gmail.com", aglomeration:Core.Enums.Aglomeration.Tricity),
+                new Person(imagePath:"/img/MW/k/32.jpg", phoneNumber:"715777777",gender:Core.Enums.Gender.Female,id:64,birthDate:new DateTimeOffset(new DateTime(1989,7,8)) , name:"Agata",surName:"Bosko",pesel:"89561321564",hasPolishCitizenship: true,passportNumber: null,passportCode:"POL", email:"person64@gmail.com", aglomeration:Core.Enums.Aglomeration.Warsaw),
+                new Person(imagePath:"/img/MW/k/33.jpg", phoneNumber:"715777777",gender:Core.Enums.Gender.Female,id:65,birthDate:new DateTimeOffset(new DateTime(1978,7,8)) , name:"Agata",surName:"Mińska",pesel:"78465413131",hasPolishCitizenship: true,passportNumber: null,passportCode:"POL", email:"person65@gmail.com", aglomeration:Core.Enums.Aglomeration.Wroclaw),
+                new Person(imagePath:"/img/MW/k/34.jpg", phoneNumber:"715777777",gender:Core.Enums.Gender.Female,id:66,birthDate:new DateTimeOffset(new DateTime(1980,7,8)) , name:"Monika",surName:"Szajka",pesel:"80156467513", hasPolishCitizenship: true,passportNumber: null,passportCode:"POL", email:"person66@gmail.com", aglomeration:Core.Enums.Aglomeration.Bialystok),
+                new Person(imagePath:"/img/MW/k/35.jpg", phoneNumber:"715777777",gender:Core.Enums.Gender.Female,id:67,birthDate:new DateTimeOffset(new DateTime(1979,7,8)) , name:"Mariola",surName:"Kiepska",pesel:"79856461321",hasPolishCitizenship: true,passportNumber: null,passportCode:"POL", email:"person67@gmail.com", aglomeration:Core.Enums.Aglomeration.Kielce),
+                new Person(imagePath:"/img/MW/k/36.jpg", phoneNumber:"715777777",gender:Core.Enums.Gender.Female,id:68,birthDate:new DateTimeOffset(new DateTime(1974,7,8)) , name:"Dorota",surName:"Zawisza",pesel:"74413212649",hasPolishCitizenship: true,passportNumber: null,passportCode:"POL", email:"person68@gmail.com", aglomeration:Core.Enums.Aglomeration.Silesia),
+                new Person(imagePath:"/img/MW/k/37.jpg", phoneNumber:"715777777",gender:Core.Enums.Gender.Female,id:69,birthDate:new DateTimeOffset(new DateTime(1988,7,8)) , name:"Anastasia",surName:"Radczuk",pesel:"",hasPolishCitizenship: false,passportNumber: "AAAA87946121646",passportCode:"UKR", email:"person69@gmail.com", aglomeration:Core.Enums.Aglomeration.Tricity),
+                new Person(imagePath:"/img/MW/k/38.jpg", phoneNumber:"715777777",gender:Core.Enums.Gender.Female,id:70,birthDate:new DateTimeOffset(new DateTime(1979,7,8)) , name:"Karolina",surName:"Kulka",pesel:"79846513215", hasPolishCitizenship: true,passportNumber: null,passportCode:"POL", email:"person70@gmail.com", aglomeration:Core.Enums.Aglomeration.Rzeszów),
+                //patients imagePath:"/img/MW/m/1.jpg", 
+                new Person(imagePath:"/img/MW/m/1.jpg", phoneNumber:"715777777",gender:Core.Enums.Gender.Male,id:71,birthDate:new DateTimeOffset(new DateTime(1987,7,8)) , name:"Łukasz", surName:"Łukasiak",pesel:"87101010105", hasPolishCitizenship: true, passportNumber:"484654asd4a5sd4", passportCode:"PL", email:"s11437@pjwstk.edu.pl", aglomeration: Core.Enums.Aglomeration.Warsaw),//główny pacjent
+                new Person(imagePath:"/img/MW/m/1.jpg", phoneNumber:"715777777",name: "Magdalena",surName: "Bomba",   id: 72,gender:Core.Enums.Gender.Female,    birthDate:new DateTimeOffset(new DateTime(1974,5,12)) ,    pesel: "74051256121",    hasPolishCitizenship: true,       passportCode: null,        passportNumber: null,     email: "patient2@live.com",     aglomeration: Core.Enums.Aglomeration.Cracow),
+                new Person(imagePath:"/img/MW/m/.jpg", phoneNumber:"715777777",name: "Katarzyna",surName: "Jelitko", id: 73,gender:Core.Enums.Gender.Female,    birthDate:new DateTimeOffset(new DateTime(1966,4,8)) ,    pesel: "66040865456",    hasPolishCitizenship: true,      passportCode: null,        passportNumber: null,     email: "patient3@live.com",     aglomeration: Core.Enums.Aglomeration.Kielce),
+                new Person(imagePath:"/img/MW/m/1.jpg", phoneNumber:"715777777",name: "Krzysztof",surName: "Kitka",   id: 74,gender:Core.Enums.Gender.Male,      birthDate:new DateTimeOffset(new DateTime(1979,8,5)) ,    pesel: "79080546213",    hasPolishCitizenship: true,           passportCode: null,        passportNumber: null,     email: "patient4@live.com",     aglomeration: Core.Enums.Aglomeration.Kuyavia),
+                new Person(imagePath:"/img/MW/m/1.jpg", phoneNumber:"715777777",name: "Dariusz",  surName: "Czapa",   id: 75,gender:Core.Enums.Gender.Male,    birthDate:new DateTimeOffset(new DateTime(1982,1,24)) ,    pesel: "82012464695",    hasPolishCitizenship: true,         passportCode: null,        passportNumber: null,     email: "patient6@live.com",     aglomeration: Core.Enums.Aglomeration.Poznan),
+                new Person(imagePath:"/img/MW/m/1.jpg", phoneNumber:"715777777",name: "Tomasz",   surName: "Komar",   id: 76,gender:Core.Enums.Gender.Male,   birthDate:new DateTimeOffset(new DateTime(1981,6,7)) ,        pesel: "81060754612",    hasPolishCitizenship: true,           passportCode: null,        passportNumber: null,     email: "patient5@live.com",     aglomeration: Core.Enums.Aglomeration.Rzeszów),
+                new Person(imagePath:"/img/MW/m/1.jpg", phoneNumber:"715777777",name: "Arkadiusz",surName: "Patka",   id: 77,gender:Core.Enums.Gender.Male,      birthDate:new DateTimeOffset(new DateTime(1979,10,20)) ,    pesel: "79102013465",    hasPolishCitizenship: true,     passportCode: null,             passportNumber: null,     email: "patient6@live.com",     aglomeration: Core.Enums.Aglomeration.Silesia),
+                new Person(imagePath:"/img/MW/m/1.jpg", phoneNumber:"715777777",name: "Marta",    surName: "Rakieta", id: 78,gender:Core.Enums.Gender.Female, birthDate:new DateTimeOffset(new DateTime(1991,2,12)) ,    pesel: "91021245646",    hasPolishCitizenship: true,       passportCode: null,        passportNumber: null,     email: "patient7@live.com",     aglomeration: Core.Enums.Aglomeration.Tricity),
+                new Person(imagePath:"/img/MW/m/1.jpg", phoneNumber:"715777777",name: "Ada",      surName: "Ruda",    id: 79,gender:Core.Enums.Gender.Female, birthDate:new DateTimeOffset(new DateTime(1994,12,13)) ,    pesel: "94121321654",    hasPolishCitizenship: true,           passportCode: null,        passportNumber: null,     email: "patient8@live.com",     aglomeration: Core.Enums.Aglomeration.Warsaw),
+                new Person(imagePath:"/img/MW/m/1.jpg", phoneNumber:"715777777",name: "Genowefa", surName: "Pigwa",   id: 80,gender:Core.Enums.Gender.Female,   birthDate:new DateTimeOffset(new DateTime(1954,6,13)) ,    pesel: "54061324651",    hasPolishCitizenship: true,   passportCode: null,        passportNumber: null,     email: "patient9@live.com",     aglomeration: Core.Enums.Aglomeration.Wroclaw),
+                new Person(imagePath:"/img/MW/m/1.jpg", phoneNumber:"715777777",name: "Wacław",   surName: "Kopytko", id: 81,gender:Core.Enums.Gender.Male,   birthDate:new DateTimeOffset(new DateTime(1955,3,13)) ,    pesel: "55031365494",    hasPolishCitizenship: true,      passportCode: null,        passportNumber: null,     email: "patient11@live.com",     aglomeration: Core.Enums.Aglomeration.Warsaw),
+                new Person(imagePath:"/img/MW/m/1.jpg", phoneNumber:"715777777",name: "Bożena",   surName: "Raj",     id: 82,gender:Core.Enums.Gender.Female, birthDate:new DateTimeOffset(new DateTime(1949,11,18)) ,    pesel: "49111816546",    hasPolishCitizenship: true,      passportCode: null,        passportNumber: null,     email: "patient12@live.com",     aglomeration: Core.Enums.Aglomeration.Cracow),
+                new Person(imagePath:"/img/MW/m/1.jpg", phoneNumber:"715777777",name: "Fryderek", surName: "Czyż",    id: 83,gender:Core.Enums.Gender.Male,     birthDate:new DateTimeOffset(new DateTime(1956,12,18)) ,    pesel: "56121864984",    hasPolishCitizenship: true,     passportCode: null,        passportNumber: null,     email: "patient13@live.com",     aglomeration: Core.Enums.Aglomeration.Warsaw),
+                new Person(imagePath:"/img/MW/m/1.jpg", phoneNumber:"715777777",name: "Monika",   surName: "Zalewska",id: 84,gender:Core.Enums.Gender.Female, birthDate:new DateTimeOffset(new DateTime(1982,9,9)) ,    pesel: "82090913215",    hasPolishCitizenship: true,    passportCode: null,        passportNumber: null,     email: "patient14@live.com",     aglomeration: Core.Enums.Aglomeration.Warsaw),
+                new Person(imagePath:"/img/MW/m/1.jpg", phoneNumber:"715777777",name: "Daria",    surName: "Raszpan", id: 85,gender:Core.Enums.Gender.Female,   birthDate:new DateTimeOffset(new DateTime(1984,6,16)) ,    pesel: "84061632131",    hasPolishCitizenship: true, passportCode: null,        passportNumber: null,     email: "patient1@live.com",     aglomeration: Core.Enums.Aglomeration.Bialystok),
+                new Person(imagePath:"", phoneNumber:"500365555",name:"Agnieszka", surName:"Pielak",id:86, gender:Core.Enums.Gender.Female, birthDate:new DateTimeOffset(new DateTime(1990,01,15)),pesel:"90011515676",hasPolishCitizenship:true, passportCode:null, passportNumber:null,email:"aga_lwica100@onet.eu",aglomeration:Core.Enums.Aglomeration.Rzeszów){ ImageFilePath="/img/persons/a.png",},
                 //administrative workers
 
                 //customer service workers
@@ -1112,9 +1112,9 @@ namespace Asklepios.Data.InMemoryContexts
                 new Doctor(Persons[0],"IUHIDUASHDI545613216")
                 {
                     Id=++id,
-                    Education=new List<string>() {UM_1,UM_2},
+                    Education=UM_1,//new List<string>() {UM_1,UM_2},
                     Experience="W latach 2005-2020 praca w szpitalu Bródnowskim",
-                    ImagePath="/img/MW/m/1.jpg",
+                    //ImagePath="/img/MW/m/1.jpg",
                     HiredSince=new DateTime(2015,1,1),
                     IsCurrentlyHired=true,VisitReviews=visitRatings1,
                     MedicalServices=new List<MedicalService>()
@@ -1126,9 +1126,9 @@ namespace Asklepios.Data.InMemoryContexts
                 new Doctor(Persons[1], "ASGER51541213")
                 {
                     Id=++id,
-                    Education=new List<string>() {UM_3,UM_2},
+                    Education=UM_3,// new List<string>() {UM_3,UM_2},
                     Experience="W latach 2005-2020 praca w szpitalu praskim",
-                    ImagePath="/img/MW/m/2.jpg",
+                    //ImagePath="/img/MW/m/2.jpg",
                     HiredSince=new DateTime(2017,1,1),
                     IsCurrentlyHired=true,VisitReviews=visitRatings2,
                     MedicalServices=new List<MedicalService>()
@@ -1140,9 +1140,9 @@ namespace Asklepios.Data.InMemoryContexts
                 new Physiotherapist(Persons[2], "GVCXDS56151321")
                 {
                     Id=++id,
-                    Education=new List<string>() {UM_2},
+                    Education=UM_2,// new List<string>() {UM_2},
                     Experience="W latach 2005-2020 praca w szpitalu MSWiA",
-                    ImagePath="/img/MW/m/3.jpg",
+                    //ImagePath="/img/MW/m/3.jpg",
                     HiredSince=new DateTime(2015,1,1),
                     IsCurrentlyHired=true,VisitReviews=visitRatings3,
                     MedicalServices=new List<MedicalService>()
@@ -1153,9 +1153,9 @@ namespace Asklepios.Data.InMemoryContexts
                 },
                 new Physiotherapist   (Persons[3],"IUJNKJN54321165")
                 {Id=++id,
-                    Education=new List<string>() {UM_1,UM_2},
+                    Education=UM_2,// new List<string>() {UM_1,UM_2},
                     Experience="W latach 2005-2020 praca w szpitalu UMK",
-                    ImagePath="/img/MW/m/4.jpg",
+                    //ImagePath="/img/MW/m/4.jpg",
                     HiredSince=new DateTime(2020,4,1),
                     IsCurrentlyHired=true,VisitReviews=visitRatings1,
                     MedicalServices=new List<MedicalService>()
@@ -1166,9 +1166,9 @@ namespace Asklepios.Data.InMemoryContexts
                 },
                 new Doctor(Persons[4],"IUJKHJK546121646")
                 {Id=++id,
-                    Education=new List<string>() {UM_1,UM_2},
+                    Education=UM_1,// new List<string>() {UM_1,UM_2},
                     Experience="W latach 2005-2020 praca w szpitalu Bródnowskim",
-                    ImagePath="/img/MW/m/5.jpg",
+                    //ImagePath="/img/MW/m/5.jpg",
                     HiredSince=new DateTime(2015,1,1),
                     IsCurrentlyHired=true,VisitReviews=visitRatings1,
                     MedicalServices=new List<MedicalService>()
@@ -1178,9 +1178,9 @@ namespace Asklepios.Data.InMemoryContexts
                 },
                 new Doctor(Persons[5],"OPASDASP54156142313")
                 {Id=++id,
-                    Education=new List<string>() {UM_1,UM_2},
+                    Education=UM_1,// new List<string>() {UM_1,UM_2},
                     Experience="W latach 2005-2020 praca w szpitalu Bródnowskim",
-                    ImagePath="/img/MW/m/6.jpg",
+                    //ImagePath="/img/MW/m/6.jpg",
                     HiredSince=new DateTime(2015,1,1),
                     IsCurrentlyHired=true,VisitReviews=visitRatings2,
                     MedicalServices=new List<MedicalService>()
@@ -1190,9 +1190,9 @@ namespace Asklepios.Data.InMemoryContexts
                 },
                 new Doctor(Persons[6], "IAOSD5161231564")
                 {Id=++id,
-                    Education=new List<string>() {UM_1,UM_2},
+                    Education=UM_7,// new List<string>() {UM_1,UM_2},
                     Experience="W latach 2005-2020 praca w szpitalu wrocławskim",
-                    ImagePath="/img/MW/m/7.jpg",
+                    //ImagePath="/img/MW/m/7.jpg",
                     HiredSince=new DateTime(2015,1,1),
                     IsCurrentlyHired=true,VisitReviews=visitRatings3,
                     MedicalServices=new List<MedicalService>()
@@ -1202,9 +1202,9 @@ namespace Asklepios.Data.InMemoryContexts
                 },
                 new Doctor(Persons[7], "UNCAJSDS51651323")
                 {Id=++id,
-                    Education=new List<string>() {UM_1,UM_2},
+                    Education=UM_3,// new List<string>() {UM_1,UM_2},
                     Experience="W latach 2005-2020 praca w szpitalu podlaskim",
-                    ImagePath="/img/MW/m/8.jpg",
+                    //ImagePath="/img/MW/m/8.jpg",
                     HiredSince=new DateTime(2015,1,1),
                     IsCurrentlyHired=true,VisitReviews=visitRatings2,
                     MedicalServices=new List<MedicalService>()
@@ -1215,9 +1215,9 @@ namespace Asklepios.Data.InMemoryContexts
                 },
                 new Doctor(Persons[8], "DFSDFD4654213")
                 {Id=++id,
-                    Education=new List<string>() {UM_1,UM_2},
+                    Education=UM_4,// new List<string>() {UM_1,UM_2},
                     Experience="W latach 2005-2020 praca w szpitalu Bródnowskim",
-                    ImagePath="/img/MW/m/9.jpg",
+                    //ImagePath="/img/MW/m/9.jpg",
                     HiredSince=new DateTime(2012,1,1),
                     IsCurrentlyHired=true,VisitReviews=visitRatings1,
                     MedicalServices=new List<MedicalService>()
@@ -1227,9 +1227,9 @@ namespace Asklepios.Data.InMemoryContexts
                 },
                 new Doctor(Persons[9],"IOWNCAS5613245")
                 {Id=++id,
-                    Education=new List<string>() {UM_1,UM_2},
+                    Education=UM_5,// new List<string>() {UM_1,UM_2},
                     Experience="W latach 2005-2020 praca w szpitalu suwalskim",
-                    ImagePath="/img/MW/m/10.jpg",
+                    //ImagePath="/img/MW/m/10.jpg",
                     HiredSince=new DateTime(2018,1,1),
                     IsCurrentlyHired=true,VisitReviews=visitRatings1,
                     MedicalServices=new List<MedicalService>()
@@ -1239,9 +1239,9 @@ namespace Asklepios.Data.InMemoryContexts
                 },
                 new Doctor(Persons[10],"MNMCXISA561235")
                 {Id=++id,
-                    Education=new List<string>() {UM_9},
+                    Education=UM_9,// new List<string>() {UM_9},
                     Experience="W latach 2008-2019 praca w szpitalu podkarpackim",
-                    ImagePath="/img/MW/m/11.jpg",
+                    //ImagePath="/img/MW/m/11.jpg",
                     HiredSince=new DateTime(2017,5,5),
                     IsCurrentlyHired=true,VisitReviews=visitRatings1,
                     MedicalServices=new List<MedicalService>()
@@ -1252,9 +1252,9 @@ namespace Asklepios.Data.InMemoryContexts
                 },
                 new Doctor(Persons[11],"ASIUDAS5123463")
                 {Id=++id,
-                    Education=new List<string>() {UM_8},
+                    Education=UM_8,// new List<string>() {UM_8},
                     Experience="W latach 2005-2020 praca w szpitalu Bródnowskim",
-                    ImagePath="/img/MW/m/12.jpg",
+                    //ImagePath="/img/MW/m/12.jpg",
                     HiredSince=new DateTime(2017,1,1),
                     IsCurrentlyHired=true,VisitReviews=visitRatings1,
                     MedicalServices=new List<MedicalService>()
@@ -1265,9 +1265,9 @@ namespace Asklepios.Data.InMemoryContexts
                 },
                 new ElectroradiologyTechnician (Persons[12],"QPSCS5346448")
                 {Id=++id,
-                    Education=new List<string>() {UM_7},
+                    Education=UM_7,// new List<string>() {UM_7},
                     Experience="W latach 2005-2020 praca w szpitalu wojskowym",
-                    ImagePath="/img/MW/m/13.jpg",
+                    //ImagePath="/img/MW/m/13.jpg",
                     HiredSince=new DateTime(2012,12,12),
                     IsCurrentlyHired=true,VisitReviews=visitRatings1,
                     MedicalServices=new List<MedicalService>()
@@ -1279,9 +1279,9 @@ namespace Asklepios.Data.InMemoryContexts
                 },
                 new Doctor(Persons[13], "CXCXZS6543215")
                 {Id=++id,
-                    Education=new List<string>() {UM_6},
+                    Education=UM_6,// new List<string>() {UM_6},
                     Experience="W latach 2010-2019 praca w szpitalu matki i dziecka",
-                    ImagePath="/img/MW/m/14.jpg",
+                    //ImagePath="/img/MW/m/14.jpg",
                     HiredSince=new DateTime(2019,4,4),
                     IsCurrentlyHired=true,VisitReviews=visitRatings1,
                     MedicalServices=new List<MedicalService>()
@@ -1291,9 +1291,9 @@ namespace Asklepios.Data.InMemoryContexts
                 },
                 new Doctor(Persons[14], "PASXCA516164")
                 {Id=++id,
-                    Education=new List<string>() {UM_5},
+                    Education=UM_5,// new List<string>() {UM_5},
                     Experience="W latach 2011-2021 praca w szpitalu zakaźnym",
-                    ImagePath="/img/MW/m/15.jpg",
+                    //ImagePath="/img/MW/m/15.jpg",
                     HiredSince=new DateTime(2015,1,1),
                     IsCurrentlyHired=true,VisitReviews=visitRatings1,
                     MedicalServices=new List<MedicalService>()
@@ -1304,9 +1304,9 @@ namespace Asklepios.Data.InMemoryContexts
                 },
                 new Doctor(Persons[15], "PSADNASJ1564613")
                 {Id=++id,
-                    Education=new List<string>() {UM_1,UM_2},
+                    Education=UM_4,// new List<string>() {UM_1,UM_2},
                     Experience="W latach 2007-2021 praca w szpitalu kujawskim",
-                    ImagePath="/img/MW/m/16.jpg",
+                    //ImagePath="/img/MW/m/16.jpg",
                     HiredSince=new DateTime(2015,1,1),
                     IsCurrentlyHired=true,VisitReviews=visitRatings1,
                     MedicalServices=new List<MedicalService>()
@@ -1316,9 +1316,9 @@ namespace Asklepios.Data.InMemoryContexts
                 },
                 new Doctor(Persons[16], "AHUHIFDSD18564513")
                 {Id=++id,
-                    Education=new List<string>() {UM_4},
+                    Education=UM_4,// new List<string>() {UM_4},
                     Experience="W latach 2005-2020 praca w szpitalu łódzkim",
-                    ImagePath="/img/MW/m/17.jpg",
+                    //ImagePath="/img/MW/m/17.jpg",
                     HiredSince=new DateTime(2013,3,3),
                     IsCurrentlyHired=true,VisitReviews=visitRatings3,
                     MedicalServices=new List<MedicalService>()
@@ -1329,9 +1329,9 @@ namespace Asklepios.Data.InMemoryContexts
                 },
                 new Doctor(Persons[17],"UYGSDAS541321")
                 {Id=++id,
-                    Education=new List<string>() {UM_1,UM_2},
+                    Education=UM_2,// new List<string>() {UM_1,UM_2},
                     Experience="W latach 2005-2020 praca w szpitalu Bródnowskim",
-                    ImagePath="/img/MW/m/2.jpg",
+                    //ImagePath="/img/MW/m/2.jpg",
                     HiredSince=new DateTime(2015,1,1),
                     IsCurrentlyHired=true,VisitReviews=visitRatings2,
                     MedicalServices=new List<MedicalService>()
@@ -1342,9 +1342,9 @@ namespace Asklepios.Data.InMemoryContexts
                 },
                 new Doctor(Persons[18],"JHGDAJSH516145")
                 {Id=++id,
-                    Education=new List<string>() {UM_3},
+                    Education=UM_3,// new List<string>() {UM_3},
                     Experience="W latach 2009-2020 praca w POZ Węgrów.",
-                    ImagePath="/img/MW/m/19.jpg",
+                    //ImagePath="/img/MW/m/19.jpg",
                     HiredSince=new DateTime(2018,7,6),
                     IsCurrentlyHired=true,VisitReviews=visitRatings1,
                     MedicalServices=new List<MedicalService>()
@@ -1355,9 +1355,9 @@ namespace Asklepios.Data.InMemoryContexts
                 },
                 new Doctor(Persons[19], "GSFEQWDXA515646")
                 {Id=++id,
-                    Education=new List<string>() {UM_1},
+                    Education=UM_1,// new List<string>() {UM_1},
                     Experience="W latach 2005-2020 praca w szpitalu miejskim w Krośnie",
-                    ImagePath="/img/MW/m/20.jpg",
+                    //ImagePath="/img/MW/m/20.jpg",
                     HiredSince=new DateTime(2020,2,1),
                     IsCurrentlyHired=true,VisitReviews=visitRatings1,
                     MedicalServices=new List<MedicalService>()
@@ -1368,9 +1368,9 @@ namespace Asklepios.Data.InMemoryContexts
                 },
                 new Doctor(Persons[20], "ISJAD4465132")
                 {Id=++id,
-                    Education=new List<string>() {UM_1,UM_2},
+                    Education=UM_2,// new List<string>() {UM_1,UM_2},
                     Experience="W latach 2005-2020 praca w szpitalu tarnowskim",
-                    ImagePath="/img/MW/m/21.jpg",
+                    //ImagePath="/img/MW/m/21.jpg",
                     HiredSince=new DateTime(2017,1,1),
                     IsCurrentlyHired=true,VisitReviews=visitRatings1,
                     MedicalServices=new List<MedicalService>()
@@ -1381,9 +1381,9 @@ namespace Asklepios.Data.InMemoryContexts
                 },
                 new Doctor(Persons[21], "UISDR216443")
                 {Id=++id,
-                    Education=new List<string>() {UM_1,UM_2},
+                    Education=UM_3,// new List<string>() {UM_1,UM_2},
                     Experience="W latach 2005-2020 praca w szpitalu miejskim w Zakopanem",
-                    ImagePath="/img/MW/m/22.jpg",
+                    //ImagePath="/img/MW/m/22.jpg",
                     HiredSince=new DateTime(2015,1,1),
                     IsCurrentlyHired=true,VisitReviews=visitRatings2,
                     MedicalServices=new List<MedicalService>()
@@ -1394,9 +1394,9 @@ namespace Asklepios.Data.InMemoryContexts
                 },
                 new Doctor(Persons[22], "VASDK5421324")
                 {Id=++id,
-                    Education=new List<string>() {UM_7},
+                    Education=UM_4,// new List<string>() {UM_7},
                     Experience="W latach 2005-2020 praca w szpitalu Bródnowskim",
-                    ImagePath="/img/MW/m/23.jpg",
+                    //ImagePath="/img/MW/m/23.jpg",
                     HiredSince=new DateTime(2015,1,1),
                     IsCurrentlyHired=true,VisitReviews=visitRatings1,
                     MedicalServices=new List<MedicalService>()
@@ -1406,9 +1406,9 @@ namespace Asklepios.Data.InMemoryContexts
                 },
                 new Doctor(Persons[23], "ASPDUI56321587")
                 {Id=++id,
-                    Education=new List<string>() {UM_5},
+                    Education=UM_5,// new List<string>() {UM_5},
                     Experience="W latach 2008-2014 praca w szpitalu kardiologicznym",
-                    ImagePath="/img/MW/m/2.jpg",
+                    //ImagePath="/img/MW/m/2.jpg",
                     HiredSince=new DateTime(2015,1,1),
                     IsCurrentlyHired=true,VisitReviews=visitRatings1,
                     MedicalServices=new List<MedicalService>()
@@ -1418,10 +1418,10 @@ namespace Asklepios.Data.InMemoryContexts
                 },
                 new Doctor(Persons[24], "BVNMXCA4623148")
                 {Id=++id,
-                    Education=new List<string>() {UM_5},
+                    Education=UM_6,// new List<string>() {UM_5},
                     Experience="W latach 2005-2020 praca w szpitalu w Dębicy",
-                    ImagePath="/img/MW/m/25.jpg",
-                    HiredSince=new DateTime(2015,1,1),
+                    //ImagePath="/img/MW/m/25.jpg",
+                    //HiredSince=new DateTime(2015,1,1),
                     IsCurrentlyHired=true,VisitReviews=visitRatings1,
                     MedicalServices=new List<MedicalService>()
                     {
@@ -1431,10 +1431,10 @@ namespace Asklepios.Data.InMemoryContexts
                 },
                 new Physiotherapist(Persons[25],"FAHDJ665413215")
                 {Id=++id,
-                    Education=new List<string>() {UM_4},
+                    Education=UM_7,// new List<string>() {UM_4},
                     Experience="W latach 2005-2020 praca w szpitalu powiatowym w Zamościu",
-                    ImagePath="/img/MW/m/26.jpg",
-                    HiredSince=new DateTime(2019,1,1),
+                    //ImagePath="/img/MW/m/26.jpg",
+                    //HiredSince=new DateTime(2019,1,1),
                     IsCurrentlyHired=true,VisitReviews=visitRatings1,
                     MedicalServices=new List<MedicalService>()
                     {
@@ -1444,10 +1444,10 @@ namespace Asklepios.Data.InMemoryContexts
                 },
                 new Doctor(Persons[26],"ALKJSD5461321")
                 {Id=++id,
-                    Education=new List<string>() {UM_2},
+                    Education=UM_8,// new List<string>() {UM_2},
                     Experience="W latach 2005-2020 praca w szpitalu zakaźnym na Woli",
-                    ImagePath="/img/MW/m/27.jpg",
-                    HiredSince=new DateTime(2011,10,11),
+                    //ImagePath="/img/MW/m/27.jpg",
+                    //HiredSince=new DateTime(2011,10,11),
                     IsCurrentlyHired=true,VisitReviews=visitRatings1,
                     MedicalServices=new List<MedicalService>()
                     {
@@ -1457,10 +1457,10 @@ namespace Asklepios.Data.InMemoryContexts
                 },
                 new ElectroradiologyTechnician(Persons[27], "HGSDAS545641231")
                 {Id=++id,
-                    Education=new List<string>() {UM_6},
+                    Education=UM_9,// new List<string>() {UM_6},
                     Experience="W latach 2006-2019 praca w szpitalu świętokrzyskim",
-                    ImagePath="/img/MW/m/28.jpg",
-                    HiredSince=new DateTime(2020,8,8),
+                    //ImagePath="/img/MW/m/28.jpg",
+                    //HiredSince=new DateTime(2020,8,8),
                     IsCurrentlyHired=true,VisitReviews=visitRatings1,
                     MedicalServices=new List<MedicalService>()
                     {
@@ -1471,10 +1471,10 @@ namespace Asklepios.Data.InMemoryContexts
                 new Doctor(Persons[28],"BHJASGDJAS54613254")
                 {
                     Id=++id,
-                    Education=new List<string>() {UM_8},
+                    Education=UM_9,////new List<string>() {UM_8},
                     Experience="W latach 2005-2020 praca w szpitalu akademickim w Białymstoku",
-                    ImagePath="/img/MW/m/29.jpg",
-                    HiredSince=new DateTime(2018,1,1),
+                    //ImagePath="/img/MW/m/29.jpg",
+                    //HiredSince=new DateTime(2018,1,1),
                     IsCurrentlyHired=true,VisitReviews=visitRatings1,
                     MedicalServices=new List<MedicalService>()
                     {
@@ -1484,10 +1484,10 @@ namespace Asklepios.Data.InMemoryContexts
                 new Doctor(Persons[29],"OJIHJDAS543156")
                 {
                 Id=++id,
-                    Education=new List<string>() {UM_6},
+                    Education=UM_8,// new List<string>() {UM_6},
                     Experience="W latach 2005-2020 praca w szpitalu miejskim w Słupsku",
-                    ImagePath="/img/MW/m/30.jpg",
-                    HiredSince=new DateTime(2016,4,4),
+                    //ImagePath="/img/MW/m/30.jpg",
+                    //HiredSince=new DateTime(2016,4,4),
                     IsCurrentlyHired=true,VisitReviews=visitRatings1,
                     MedicalServices=new List<MedicalService>()
                     {
@@ -1498,10 +1498,10 @@ namespace Asklepios.Data.InMemoryContexts
                 new Doctor(Persons[30],"JHASKDAS65461321")
                 {
                     Id = ++id,
-                    Education =new List<string>() {UM_3},
+                    Education =UM_7,// new List<string>() {UM_3},
                     Experience="W latach 2005-2012 praca w szpitalu klinicznym w Gnieźnie. Wcześniej pracował w Zielonej górze.",
-                    ImagePath="/img/MW/m/31.jpg",
-                    HiredSince=new DateTime(2011,1,1),
+                    //ImagePath="/img/MW/m/31.jpg",
+                    //HiredSince=new DateTime(2011,1,1),
                     IsCurrentlyHired=true,VisitReviews=visitRatings1,
                     MedicalServices=new List<MedicalService>()
                     {
@@ -1511,10 +1511,10 @@ namespace Asklepios.Data.InMemoryContexts
                 new Doctor(Persons[31],"JHKSDASD546123")
                 {
                     Id = ++id,
-                    Education =new List<string>() {UM_4},
+                    Education =UM_6,// new List<string>() {UM_4},
                     Experience="W latach 2005-2020 praca w szpitalu akademickim w Krakowie",
-                    ImagePath="/img/MW/m/32.jpg",
-                    HiredSince=new DateTime(2019,8,1),
+                    //ImagePath="/img/MW/m/32.jpg",
+                    //HiredSince=new DateTime(2019,8,1),
                     IsCurrentlyHired=true,VisitReviews=visitRatings1,
                     MedicalServices=new List<MedicalService>()
                     {
@@ -1525,9 +1525,9 @@ namespace Asklepios.Data.InMemoryContexts
                 new Doctor(Persons[32],"JHASHJDGJA4516354")
                 {
                     Id = ++id,
-                    Education =new List<string>() {UM_6},
+                    Education = UM_6,//new List<string>() {UM_6},
                     Experience="W latach 2009-2019 praca w szpitalu w Węgrowie",
-                    ImagePath="/img/MW/k/1.jpg",
+                    //ImagePath="/img/MW/k/1.jpg",
                     HiredSince=new DateTime(2015,5,5),
                     IsCurrentlyHired=true,VisitReviews=visitRatings1,
                     MedicalServices=new List<MedicalService>()
@@ -1539,9 +1539,9 @@ namespace Asklepios.Data.InMemoryContexts
                 new DentalHygienist(Persons[33],"HASDUQ561613")
                 {
                     Id = ++id,
-                    Education =new List<string>() {UM_1,UM_2},
+                    Education =UM_1,// new List<string>() {UM_1,UM_2},
                     Experience="W latach 2015-2021 praca w szpitalu uniwersyteckim w Poznaniu",
-                    ImagePath="/img/MW/k/2.jpg",
+                    //ImagePath="/img/MW/k/2.jpg",
                     HiredSince=new DateTime(2015,10,1),
                     IsCurrentlyHired=true,VisitReviews=visitRatings1,
                     MedicalServices=new List<MedicalService>()
@@ -1553,9 +1553,9 @@ namespace Asklepios.Data.InMemoryContexts
                 new Doctor(Persons[34],"JHSAD6564513")
                 {
                     Id = ++id,
-                    Education =new List<string>() {UM_3},
+                    Education =UM_3,// new List<string>() {UM_3},
                     Experience="W latach 2011-2021 praca w szpitalu miejskim w Łowiczu",
-                    ImagePath="/img/MW/k/3.jpg",
+                    //ImagePath="/img/MW/k/3.jpg",
                     HiredSince=new DateTime(2015,1,1),
                     IsCurrentlyHired=true,VisitReviews=visitRatings1,
                     MedicalServices=new List<MedicalService>()
@@ -1567,9 +1567,9 @@ namespace Asklepios.Data.InMemoryContexts
                 new Doctor(Persons[35],"GASHJD56441231")
                 {
                     Id = ++id,
-                    Education =new List<string>() {UM_1,UM_2},
+                    Education =UM_2,// new List<string>() {UM_1,UM_2},
                     Experience="W latach 2008-2020 praca w szpitalu zakaźnym w Krakowie",
-                    ImagePath="/img/mw/k/4.jpg",
+                    //ImagePath="/img/mw/k/4.jpg",
                     HiredSince=new DateTime(2018,8,11),
                     IsCurrentlyHired=true,VisitReviews=visitRatings1,
                     MedicalServices=new List<MedicalService>()
@@ -1581,9 +1581,9 @@ namespace Asklepios.Data.InMemoryContexts
                 new Doctor(Persons[36],"HBJASD546132")
                 {
                     Id = ++id,
-                    Education =new List<string>() {UM_4},
+                    Education =UM_4,// new List<string>() {UM_4},
                     Experience="W latach 2007-2020 praca w szpitalu Bródnowskim",
-                    ImagePath="/img/mw/k/5.jpg",
+                    //ImagePath="/img/mw/k/5.jpg",
                     HiredSince=new DateTime(2017,7,7),
                     IsCurrentlyHired=true,VisitReviews=visitRatings1,
                     MedicalServices=new List<MedicalService>()
@@ -1595,9 +1595,9 @@ namespace Asklepios.Data.InMemoryContexts
                 new Doctor(Persons[37],"BIKDAS5416132")
                 {
                     Id = ++id,
-                    Education =new List<string>() {UM_1,UM_2},
+                    Education =UM_4,//  new List<string>() {UM_1,UM_2},
                     Experience="W latach 2005-2020 praca w szpitalu Bródnowskim",
-                    ImagePath="/img/mw/k/6.jpg",
+                    //ImagePath="/img/mw/k/6.jpg",
                     HiredSince=new DateTime(2017,4,4),
                     IsCurrentlyHired=true,VisitReviews=visitRatings1,
                     MedicalServices=new List<MedicalService>()
@@ -1609,9 +1609,9 @@ namespace Asklepios.Data.InMemoryContexts
                 new Doctor(Persons[38],"HJGASW4654613")
                 {
                     Id = ++id,
-                    Education =new List<string>() {UM_1,UM_2},
+                    Education =UM_5,// new List<string>() {UM_1,UM_2},
                     Experience="W latach 2012-2020 praca w szpitalu południowym w Warszawie",
-                    ImagePath="/img/mw/k/7.jpg",
+                    //ImagePath="/img/mw/k/7.jpg",
                     HiredSince=new DateTime(2015,1,11),
                     IsCurrentlyHired=true,VisitReviews=visitRatings1,
                     MedicalServices=new List<MedicalService>()
@@ -1623,9 +1623,9 @@ namespace Asklepios.Data.InMemoryContexts
                 new Nurse(Persons[39],"IOSHJD4613245")
                 {
                     Id = ++id,
-                    Education =new List<string>() {UM_1,UM_2},
+                    Education =UM_2,// new List<string>() {UM_1,UM_2},
                     Experience="W latach 2005-2020 praca w szpitalu chorób serca w Gdańsku",
-                    ImagePath="/img/mw/k/8.jpg",
+                    //ImagePath="/img/mw/k/8.jpg",
                     HiredSince=new DateTime(2018,8,8),
                     IsCurrentlyHired=true,VisitReviews=visitRatings1,
                     MedicalServices=new List<MedicalService>()
@@ -1637,9 +1637,9 @@ namespace Asklepios.Data.InMemoryContexts
                 new Nurse(Persons[40],"UGHSDS56134564")
                 {
                     Id = ++id,
-                    Education =new List<string>() {UM_6},
+                    Education =UM_6,// new List<string>() {UM_6},
                     Experience="W latach 2007-2018 praca w szpitalu praskim w Warszawie",
-                    ImagePath="/img/mw/k/9.jpg",
+                    //ImagePath="/img/mw/k/9.jpg",
                     HiredSince=new DateTime(2021,11,1),
                     IsCurrentlyHired=true,VisitReviews=visitRatings1,
                     MedicalServices=new List<MedicalService>()
@@ -1651,9 +1651,9 @@ namespace Asklepios.Data.InMemoryContexts
                 new Doctor(Persons[41],"USHDKAS744561513")
                 {
                     Id = ++id,
-                    Education =new List<string>() {UM_8},
+                    Education =UM_8,// new List<string>() {UM_8},
                     Experience="W latach 2009-2019 praca w szpitalu praskim w Warszawie",
-                    ImagePath="/img/mw/k/10.jpg",
+                    //ImagePath="/img/mw/k/10.jpg",
                     HiredSince=new DateTime(2012,11,11),
                     IsCurrentlyHired=true,VisitReviews=visitRatings1,
                     MedicalServices=new List<MedicalService>()
@@ -1665,9 +1665,9 @@ namespace Asklepios.Data.InMemoryContexts
                 new Doctor(Persons[42],"NMBVDSDA546123")
                 {
                     Id = ++id,
-                    Education =new List<string>() {UM_5},
+                    Education =UM_5,// new List<string>() {UM_5},
                     Experience="W latach 2005-2020 praca w szpitalu Bródnowskim",
-                    ImagePath="/img/mw/k/11.jpg",
+                    //ImagePath="/img/mw/k/11.jpg",
                     HiredSince=new DateTime(2017,7,9),
                     IsCurrentlyHired=true,VisitReviews=visitRatings1,
                     MedicalServices=new List<MedicalService>()
@@ -1678,9 +1678,9 @@ namespace Asklepios.Data.InMemoryContexts
                 new Doctor(Persons[43],"LKASJD465315")
                 {
                     Id = ++id,
-                    Education =new List<string>() {UM_1,UM_2},
+                    Education =UM_2,// new List<string>() {UM_1,UM_2},
                     Experience="W latach 2012-2019 praca w szpitalu MSWIA w Warszawie",
-                    ImagePath="/img/mw/k/12.jpg",
+                    //ImagePath="/img/mw/k/12.jpg",
                     HiredSince=new DateTime(2019,4,8),
                     IsCurrentlyHired=true,VisitReviews=visitRatings1,
                     MedicalServices=new List<MedicalService>()
@@ -1692,9 +1692,9 @@ namespace Asklepios.Data.InMemoryContexts
                 new Doctor(Persons[44],"IOHDSFDS46132456")
                 {
                     Id = ++id,
-                    Education =new List<string>() {UM_7},
+                    Education =UM_7,// new List<string>() {UM_7},
                     Experience="W latach 2005-2020 praca w szpitalu centralnym w Krakowie",
-                    ImagePath="/img/mw/k/13.jpg",
+                    //ImagePath="/img/mw/k/13.jpg",
                     HiredSince=new DateTime(2016,6,6),
                     IsCurrentlyHired=true,VisitReviews=visitRatings1,
                     MedicalServices=new List<MedicalService>()
@@ -1706,9 +1706,9 @@ namespace Asklepios.Data.InMemoryContexts
                 new Doctor(Persons[45],"UHJDSF5645132")
                 {
                     Id = ++id,
-                    Education =new List<string>() {UM_1,UM_2},
+                    Education =UM_1,// new List<string>() {UM_1,UM_2},
                     Experience="W latach 2019-2021 praca w szpitalu u Koziołka Matołka w Poznaniu",
-                    ImagePath="/img/mw/k/14.jpg",
+                    //ImagePath="/img/mw/k/14.jpg",
                     HiredSince=new DateTime(2015,7,1),
                     IsCurrentlyHired=true,VisitReviews=visitRatings1,
                     MedicalServices=new List<MedicalService>()
@@ -1720,9 +1720,9 @@ namespace Asklepios.Data.InMemoryContexts
                 new DentalHygienist(Persons[46],"SDFJL4654131")
                 {
                     Id = ++id,
-                    Education =new List<string>() {UM_1,UM_2},
+                    Education =UM_2 ,// new List<string>() {UM_1,UM_2},
                     Experience="W latach 2005-2020 praca w szpitalu klinicznym we Wrocławiu",
-                    ImagePath="/img/mw/k/15.jpg",
+                    //ImagePath="/img/mw/k/15.jpg",
                     HiredSince=new DateTime(2017,2,11),
                     IsCurrentlyHired=true,VisitReviews=visitRatings1,
                     MedicalServices=new List<MedicalService>()
@@ -1734,9 +1734,9 @@ namespace Asklepios.Data.InMemoryContexts
                 new Doctor(Persons[47],"JBNBJHSD45642131")
                 {
                     Id = ++id,
-                    Education =new List<string>() {UM_1,UM_2},
+                    Education =UM_3,// new List<string>() {UM_1,UM_2},
                     Experience="W latach 2018-2021 praca w szpitalu klinicznym we Wrocławiu",
-                    ImagePath="/img/mw/k/16.jpg",
+                    //ImagePath="/img/mw/k/16.jpg",
                     HiredSince=new DateTime(2021,2,1),
                     IsCurrentlyHired=true,VisitReviews=visitRatings1,
                     MedicalServices=new List<MedicalService>()
@@ -1747,9 +1747,9 @@ namespace Asklepios.Data.InMemoryContexts
                 new Doctor(Persons[48],"JHGFJDS564165412")
                 {
                     Id = ++id,
-                    Education =new List<string>() {UM_8},
+                    Education =UM_8,// new List<string>() {UM_8},
                     Experience="W latach 2019-2020 praca w szpitalu Bródnowskim",
-                    ImagePath="/img/mw/k/17.jpg",
+                    //ImagePath="/img/mw/k/17.jpg",
                     HiredSince=new DateTime(2021,1,9),
                     IsCurrentlyHired=true,VisitReviews=visitRatings1,
                     MedicalServices=new List<MedicalService>()
@@ -1761,9 +1761,9 @@ namespace Asklepios.Data.InMemoryContexts
                 new Doctor(Persons[49],"JHFDSF4561231")
                 {
                     Id = ++id,
-                    Education =new List<string>() {UM_4},
+                    Education =UM_4,// new List<string>() {UM_4},
                     Experience="W latach 2005-2020 praca w szpitalu Bródnowskim",
-                    ImagePath="/img/mw/k/18.jpg",
+                    //ImagePath="/img/mw/k/18.jpg",
                     HiredSince=new DateTime(2015,1,1),
                     IsCurrentlyHired=true,VisitReviews=visitRatings1,
                     MedicalServices=new List<MedicalService>()
@@ -1775,9 +1775,9 @@ namespace Asklepios.Data.InMemoryContexts
                 new Doctor(Persons[50],"UIFSDF4561321")
                 {
                     Id = ++id,
-                    Education =new List<string>() {UM_5,UM_7},
+                    Education =UM_7,// new List<string>() {UM_5,UM_7},
                     Experience="W latach 2005-2020 praca w szpitalu Bródnowskim",
-                    ImagePath="/img/mw/k/19.jpg",
+                    //ImagePath="/img/mw/k/19.jpg",
                     HiredSince=new DateTime(2019,4,4),
                     IsCurrentlyHired=true,VisitReviews=visitRatings1,
                     MedicalServices=new List<MedicalService>()
@@ -1789,9 +1789,9 @@ namespace Asklepios.Data.InMemoryContexts
                 new ElectroradiologyTechnician(Persons[51],"DHJKFSD4564132")
                 {
                     Id = ++id,
-                    Education =new List<string>() {UM_7,UM_9},
+                    Education =UM_9,// new List<string>() {UM_7,UM_9},
                     Experience="Staż odbyła w szpitalu Bródnowskim w Warszawie. Od 2016 roku pracuje w szpitalu Praskim w Warszawie.",
-                    ImagePath="/img/mw/k/20.jpg",
+                    //ImagePath="/img/mw/k/20.jpg",
                     HiredSince=new DateTime(2018,9,11),
                     IsCurrentlyHired=true,VisitReviews=visitRatings1,
                     MedicalServices=new List<MedicalService>()
@@ -1803,9 +1803,9 @@ namespace Asklepios.Data.InMemoryContexts
                 new Nurse(Persons[52],"HBJKSDF56413215")
                 {
                     Id = ++id,
-                    Education =new List<string>() {UM_6,UM_2},
+                    Education =UM_6,// new List<string>() {UM_6,UM_2},
                     Experience="Staż odbyty w szpitalu akademickim w Białymstoku. Od 2018 roku praca w szpitalu powiatowym w Węgrowie",
-                    ImagePath="/img/mw/k/21.jpg",
+                    //ImagePath="/img/mw/k/21.jpg",
                     HiredSince=new DateTime(2018,8,8),
                     IsCurrentlyHired=true,VisitReviews=visitRatings1,
                     MedicalServices=new List<MedicalService>()
@@ -1817,9 +1817,9 @@ namespace Asklepios.Data.InMemoryContexts
                 new Doctor(Persons[53], "RERDSDF2134969")
                 {
                     Id = ++id,
-                    Education =new List<string>() {UM_4,UM_2},
+                    Education = UM_4,// new List<string>() {UM_4,UM_2},
                     Experience="W latach 2005-2020 praca w szpitalu Bródnowskim",
-                    ImagePath="/img/mw/k/22.jpg",
+                    //ImagePath="/img/mw/k/22.jpg",
                     HiredSince=new DateTime(2018,4,6),
                     IsCurrentlyHired=true,VisitReviews=visitRatings1,
                     MedicalServices=new List<MedicalService>()
@@ -1831,9 +1831,9 @@ namespace Asklepios.Data.InMemoryContexts
                 new Nurse(Persons[54],"BNMDSF546123")
                 {
                     Id = ++id,
-                    Education =new List<string>() {UM_5},
+                    Education =UM_1,// new List<string>() {UM_5},
                     Experience="W latach 2005-2020 praca w szpitalu Bródnowskim",
-                    ImagePath="/img/mw/k/23.jpg",
+                    //ImagePath="/img/mw/k/23.jpg",
                     HiredSince=new DateTime(2015,1,1),
                     IsCurrentlyHired=true,VisitReviews=visitRatings1,
                     MedicalServices=new List<MedicalService>()
@@ -1845,9 +1845,9 @@ namespace Asklepios.Data.InMemoryContexts
                 new ElectroradiologyTechnician(Persons[55],"PODBASHJ4454321")
                 {
                     Id = ++id,
-                    Education =new List<string>() {UM_1,UM_2},
+                    Education =UM_3,// new List<string>() {UM_1,UM_2},
                     Experience="W latach 2005-2020 praca w szpitalu Bródnowskim",
-                    ImagePath="/img/mw/k/24.jpg",
+                    //ImagePath="/img/mw/k/24.jpg",
                     HiredSince=new DateTime(2019,1,1),
                     IsCurrentlyHired=true,VisitReviews=visitRatings1,
                     MedicalServices=new List<MedicalService>()
@@ -1859,9 +1859,9 @@ namespace Asklepios.Data.InMemoryContexts
                 new Doctor(Persons[56],"YHBKASD5465123")
                 {
                     Id = ++id,
-                    Education =new List<string>() {UM_3},
+                    Education =UM_1,// new List<string>() {UM_3},
                     Experience="W latach 2014-2021 praca w szpitalu zielonogórskim",
-                    ImagePath="/img/mw/k/25.jpg",
+                    //ImagePath="/img/mw/k/25.jpg",
                     HiredSince=new DateTime(2013,3,3),
                     IsCurrentlyHired=true,VisitReviews=visitRatings1,
                     MedicalServices=new List<MedicalService>()
@@ -1873,9 +1873,9 @@ namespace Asklepios.Data.InMemoryContexts
                 new Doctor(Persons[57],"OPQEW6546132")
                 {
                     Id = ++id,
-                    Education =new List<string>() {UM_5},
+                    Education =UM_4,// new List<string>() {UM_5},
                     Experience="W latach 2005-2020 praca w szpitalu wojewódzkim w Olsztynie",
-                    ImagePath="/img/mw/k/26.jpg",
+                    //ImagePath="/img/mw/k/26.jpg",
                     HiredSince=new DateTime(2018,4,3),
                     IsCurrentlyHired=true,VisitReviews=visitRatings1,
                     MedicalServices=new List<MedicalService>()
@@ -1887,9 +1887,9 @@ namespace Asklepios.Data.InMemoryContexts
                 new Doctor(Persons[58],"OPNKWEJR546132")
                 {
                     Id = ++id,
-                    Education =new List<string>() {UM_8},
+                    Education =UM_6,// new List<string>() {UM_8},
                     Experience="Od 2010 roku pracuje jako ordynator w szpitalu Matki i Dziecka w Warszawie",
-                    ImagePath="/img/mw/k/27.jpg",
+                    //ImagePath="/img/mw/k/27.jpg",
                     HiredSince=new DateTime(2018,6,7),
                     IsCurrentlyHired=true,VisitReviews=visitRatings1,
                         MedicalServices=new List<MedicalService>()
@@ -1901,9 +1901,9 @@ namespace Asklepios.Data.InMemoryContexts
                 new Physiotherapist(Persons[59],"GVJDAS54645")
                 {
                     Id = ++id,
-                    Education =new List<string>() {UM_9},
+                    Education =UM_7,// new List<string>() {UM_9},
                     Experience="W latach 2016-2020 praca w szpitalu miejskim w Grudziądzu",
-                    ImagePath="/img/mw/k/28.jpg",
+                    //ImagePath="/img/mw/k/28.jpg",
                     HiredSince=new DateTime(2019,8,11),
                     IsCurrentlyHired=true,VisitReviews=visitRatings1,
                         MedicalServices=new List<MedicalService>()
@@ -1915,9 +1915,9 @@ namespace Asklepios.Data.InMemoryContexts
                 new Doctor(Persons[60],"UIHDAS546516")
                 {
                     Id = ++id,
-                    Education =new List<string>() {UM_1,UM_9},
+                    Education =UM_9,    // new List<string>() {UM_1,UM_9},
                     Experience="W latach 2009-2020 praca w szpitalu miejskim w Suwałkach",
-                    ImagePath="/img/mw/k/29.jpg",
+                    //ImagePath="/img/mw/k/29.jpg",
                     HiredSince=new DateTime(2015,1,1),
                     IsCurrentlyHired=true,VisitReviews=visitRatings1,
                     MedicalServices=new List<MedicalService>()
@@ -1929,9 +1929,9 @@ namespace Asklepios.Data.InMemoryContexts
                 new Nurse(Persons[61],"ADASD46123")
                 {
                     Id = ++id,
-                    Education =new List<string>() {UM_7,UM_2},
+                    Education =UM_7,// new List<string>() {UM_7,UM_2},
                     Experience="W latach 2009-2020 praca w szpitalu wojewódzkim w Toruniu",
-                    ImagePath="/img/mw/k/30.jpg",
+                    //ImagePath="/img/mw/k/30.jpg",
                     HiredSince=new DateTime(2019,5,4),
                     IsCurrentlyHired=true,VisitReviews=visitRatings1,
                     MedicalServices=new List<MedicalService>()
@@ -1943,9 +1943,9 @@ namespace Asklepios.Data.InMemoryContexts
                 new ElectroradiologyTechnician(Persons[62],"YUGDSD56131")
                 {
                     Id = ++id,
-                    Education =new List<string>() {UM_2,UM_4},
+                    Education =UM_2,// new List<string>() {UM_2,UM_4},
                     Experience="Od 2016 pracuje w szpitalu Bródnowskim",
-                    ImagePath="/img/mw/k/31.jpg",
+                    //ImagePath="/img/mw/k/31.jpg",
                     HiredSince=new DateTime(2015,5,1),
                     IsCurrentlyHired=true,VisitReviews=visitRatings1,
                     MedicalServices=new List<MedicalService>()
@@ -1957,9 +1957,9 @@ namespace Asklepios.Data.InMemoryContexts
                 new Doctor(Persons[63],"YAJHD5461321")
                 {
                     Id = ++id,
-                    Education =new List<string>() {UM_5},
+                    Education =UM_5,// new List<string>() {UM_5},
                     Experience="W latach 2009-2021 praca w szpitalu w Przemyślu",
-                    ImagePath="/img/mw/k/32.jpg",
+                    //ImagePath="/img/mw/k/32.jpg",
                     HiredSince=new DateTime(2019,9,8),
                     IsCurrentlyHired=true,VisitReviews=visitRatings1,
                     MedicalServices=new List<MedicalService>()
@@ -1971,9 +1971,9 @@ namespace Asklepios.Data.InMemoryContexts
                 new Doctor(Persons[64],"OOXCZX6541546")
                 {
                     Id = ++id,
-                    Education =new List<string>() {UM_3},
+                    Education =UM_3,// new List<string>() {UM_3},
                     Experience="W latach 2008-2020 praca w szpitalu w Lublinie",
-                    ImagePath="/img/mw/k/33.jpg",
+                    //ImagePath="/img/mw/k/33.jpg",
                     HiredSince=new DateTime(2019,4,7),
                     IsCurrentlyHired=true,VisitReviews=visitRatings1,
                     MedicalServices=new List<MedicalService>()
@@ -1985,9 +1985,9 @@ namespace Asklepios.Data.InMemoryContexts
                 new Physiotherapist(Persons[65],"FSDRGD54543")
                 {
                     Id = ++id,
-                    Education =new List<string>() {UM_1,UM_2},
+                    Education =UM_2,// new List<string>() {UM_1,UM_2},
                     Experience="W latach 2005-2020 praca w szpitalu Bródnowskim",
-                    ImagePath="/img/mw/k/34.jpg",
+                    //ImagePath="/img/mw/k/34.jpg",
                     HiredSince=new DateTime(2015,9,1),
                     IsCurrentlyHired=true,VisitReviews=visitRatings1,
                     MedicalServices=new List<MedicalService>()
@@ -1999,9 +1999,9 @@ namespace Asklepios.Data.InMemoryContexts
                 new Doctor(Persons[66],"UHJKSAD51321")
                 {
                     Id = ++id,
-                    Education =new List<string>() {UM_1,UM_2},
+                    Education =UM_3,// new List<string>() {UM_1,UM_2},
                     Experience="W latach 2005-2020 praca w szpitalu Bródnowskim",
-                    ImagePath="/img/mw/k/35.jpg",
+                    //ImagePath="/img/mw/k/35.jpg",
                     HiredSince=new DateTime(2019,4,3),
                     IsCurrentlyHired=true,VisitReviews=visitRatings1,
                     MedicalServices=new List<MedicalService>()
@@ -2013,9 +2013,9 @@ namespace Asklepios.Data.InMemoryContexts
                 new Doctor(Persons[67],"BNSDSA546123")
                 {
                     Id = ++id,
-                    Education =new List<string>() {UM_5,UM_2},
+                    Education =UM_5,// new List<string>() {UM_5,UM_2},
                     Experience="W latach 2005-2020 praca w szpitalu Bródnowskim",
-                    ImagePath="/img/mw/k/36.jpg",
+                    //ImagePath="/img/mw/k/36.jpg",
                     HiredSince=new DateTime(2018,8,1),
                     IsCurrentlyHired=true,VisitReviews=visitRatings1,                    MedicalServices=new List<MedicalService>()
                     {
@@ -2026,9 +2026,9 @@ namespace Asklepios.Data.InMemoryContexts
                 new ElectroradiologyTechnician(Persons[68],"KLSAD546123")
                 {
                     Id = ++id,
-                    Education =new List<string>() {UM_1,UM_2},
+                    Education =UM_1,// new List<string>() {UM_1,UM_2},
                     Experience="W latach 2016-2020 praca w szpitalu lwowskim na Ukrainie",
-                    ImagePath="/img/mw/k/37.jpg",
+                    //ImagePath="/img/mw/k/37.jpg",
                     HiredSince=new DateTime(2020,8,1),
                     IsCurrentlyHired=true,VisitReviews=visitRatings1,
                     MedicalServices=new List<MedicalService>()
@@ -2040,9 +2040,9 @@ namespace Asklepios.Data.InMemoryContexts
                 new DentalHygienist(Persons[69],"JHDAS4564231")
                 {
                     Id = ++id,
-                    Education =new List<string>() {UM_1,UM_2},
+                    Education =UM_3,// new List<string>() {UM_1,UM_2},
                     Experience="W latach 2005-2020 praca w szpitalu Bródnowskim",
-                    ImagePath="/img/MW/k/38.jpg",
+                    ////ImagePath="/img/MW/k/38.jpg",
                     HiredSince=new DateTime(2015,1,1),
                     IsCurrentlyHired=true,VisitReviews=visitRatings1,
                     MedicalServices=new List<MedicalService>()
