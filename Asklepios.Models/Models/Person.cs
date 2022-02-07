@@ -129,13 +129,14 @@ namespace Asklepios.Core.Models
         {
 
         }
-        public Person(string name, string surName, long id, string pesel, bool hasPolishCitizenship, string passportNumber, string passportCode, string email, Aglomeration aglomeration, DateTimeOffset birthDate, Gender gender, string phoneNumber)
+        public Person(string name, string surName, long id, string pesel, bool hasPolishCitizenship, string passportNumber, string passportCode, string email, Aglomeration aglomeration, DateTimeOffset birthDate, Gender gender, string phoneNumber, string imagePath)
         {
             Name = name;
             Surname = surName;
             Id = id;
             PhoneNumber = phoneNumber;
             Gender = gender;
+            ImageFilePath = imagePath;
             BirthDate = birthDate;
             if (hasPolishCitizenship)
             {

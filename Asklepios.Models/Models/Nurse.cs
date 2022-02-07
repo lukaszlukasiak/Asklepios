@@ -14,7 +14,7 @@ namespace Asklepios.Core.Models
         public Nurse(Person person , string profNumber) :base(person)
         {
             ProfessionalNumber = profNumber;
-            MedicalWorkerType = MedicalWorkerType.Nurse;
+            MedicalWorkerType = Enums.MedicalWorkerType.Nurse;
             PersonId = person.Id;
         }
         public override string ProfessionalTitle => "Pielęgniarka";

@@ -1,6 +1,7 @@
 ﻿using Asklepios.Core.Enums;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Text;
 
@@ -25,9 +26,15 @@ namespace Asklepios.Core.Models
         public long PersonId { get; set; }
         public long UserId { get; set; }
         public User User { get; set; }
+        [Required(ErrorMessage = "Wprowadź numer zawodowy!")]
+        [Display(Name = "Numer zawodowy")]
+
         public string ProfessionalNumber {get;set;}
         public DateTime HiredSince { get; set; }
         //public DateTime HiredUntil { get; set; }
+        
+        [Display(Name = "Czy zatrudniony obecnie")]
+
         public bool IsCurrentlyHired { get; set; }
         public abstract string ProfessionalTitle { get; }
         //public abstract string FullProffesionalName { get; }
@@ -50,10 +57,23 @@ namespace Asklepios.Core.Models
                 return -1;
             }
         }
-        public MedicalWorkerType MedicalWorkerType { get; set; }
-        public List<string> Education { get; set; }
+        [Required(ErrorMessage = "Wprowadź typ pracownika medycznego!")]
+        [Display(Name = "Typ pracownika medycznego")]
+
+        public MedicalWorkerType? MedicalWorkerType { get; set; }
+        //public List<string> Education { get; set; }
+        [Required(ErrorMessage = "Wprowadź streszczenie odnośnie zdobytego wykształcenia, przebytych kursów itp.!")]
+        [Display(Name = "Edukacja/wykształcenie")]
+
+        public string Education { get; set; }
+        [Required(ErrorMessage = "Wprowadź streszczenie odnośnie zdobytego doświadczenia!")]
+        [Display(Name = "Doświadczenie")]
+
         public string Experience { get; set; }
-        public string ImagePath { get; set; }
+        //public string ImagePath { get; set; }
+        [Required(ErrorMessage = "Specjalizacja/świadczone usługi")]
+        [Display(Name = "Usługi")]
+
         public List<MedicalService> MedicalServices { get; set; }
         public string RatingDescription
         {
@@ -80,6 +100,23 @@ namespace Asklepios.Core.Models
                 {
                     return "";
                 }
+            }
+        }
+        public bool IsValid
+        {
+            get
+            {
+                if (MedicalWorkerType.HasValue)
+                {
+                    if (MedicalServices!=null)
+                    {
+                        if (!string.IsNullOrWhiteSpace( Experience))
+                        {
+                            return true;
+                        }
+                    }
+                }
+                return false;
             }
         }
     }

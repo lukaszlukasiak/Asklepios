@@ -386,6 +386,45 @@ namespace Asklepios.Web.Areas.AdministrativeArea.Controllers
             }
         }
         [HttpPost]
+        public IActionResult MedicalWorkerItemsAdd(MedicalWorkerAddViewModel model)
+        {
+            if (_loggedUser != null)
+            {
+                if (model.IsValid)
+                {
+
+                }
+                //List<>
+                //MedicalWorkerAddViewModel model = new MedicalWorkerAddViewModel();
+
+
+                return View(model);
+            }
+            else
+            {
+                return NotFound();
+            }
+
+        }
+
+        public IActionResult MedicalWorkerItemsAdd()
+        {
+            if (_loggedUser != null)
+            {
+                //List<>
+                MedicalWorkerAddViewModel model = new MedicalWorkerAddViewModel();
+                model.PrimaryServices = _context.GetMedicalServices().Where(c => c.IsPrimaryService == true).ToList();
+
+                return View(model);
+            }
+            else
+            {
+                return NotFound();
+            }
+
+        }
+
+        [HttpPost]
         public IActionResult PatientItemsAdd(PatientAddEditViewModel model)
         {
             if (_loggedUser != null)
@@ -610,17 +649,17 @@ namespace Asklepios.Web.Areas.AdministrativeArea.Controllers
             }
         }
 
-        public IActionResult MedicalWorkerItemsAdd()
-        {
-            if (_loggedUser != null)
-            {
-                return View();
-            }
-            else
-            {
-                return NotFound();
-            }
-        }
+        //public IActionResult MedicalWorkerItemsAdd()
+        //{
+        //    if (_loggedUser != null)
+        //    {
+        //        return View();
+        //    }
+        //    else
+        //    {
+        //        return NotFound();
+        //    }
+        //}
         public IActionResult MedicalWorkerItemsManage()
         {
             if (_loggedUser != null)
