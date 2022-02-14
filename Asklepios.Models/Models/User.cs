@@ -61,5 +61,28 @@ namespace Asklepios.Core.Models
                 return false;
             }
         }
+        public void UpdateWith(User user)
+        {
+            if (!string.IsNullOrWhiteSpace(user.EmailAddress))
+            {
+                this.EmailAddress = user.EmailAddress;
+            }
+            if (!string.IsNullOrWhiteSpace(user.Password))
+            {
+                this.Password = user.Password;
+            }
+            if (user.Person!=null)
+            {
+                this.Person = user.Person;
+            }
+            if (user.UserType.HasValue)
+            {
+                this.UserType = user.UserType;
+            }
+            if (user.WorkerModuleType.HasValue)
+            {
+                this.WorkerModuleType = user.WorkerModuleType;
+            }
+        }
     }
 }

@@ -1,5 +1,43 @@
-﻿@*
-    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
-*@
+﻿@model Asklepios.Web.Areas.AdministrativeArea.Models.LocationsManageViewModel
+
 @{
+    ViewData["Title"] = "View";
+
 }
+
+<h2 style="text-align:center">Placówki</h2>
+@{
+
+    if (TempData.ContainsKey("successMessage"))
+
+    {
+        <div class="messages" id="MessageSpan" style="margin-top: 10px; text-align: center ">
+            <p class="alert alert-success">
+                @*@Model.SuccessMessage*@
+                @TempData["successMessage"].ToString()
+            </p>
+        </div>
+
+    }
+    //if (!string.IsNullOrWhiteSpace(Model.ErrorMessage))
+    if (TempData.ContainsKey("errorMessage"))
+    {
+        <div class="messages" id="MessageSpan" style="margin-top: 10px; text-align: center ">
+            <p class="alert alert-success">
+                @*@Model.ErrorMessage*@
+                @TempData["errorMessage"].ToString()
+
+            </p>
+        </div>
+
+    }
+
+}
+@foreach (var loc in Model.AllLocations)
+{
+    Model.SelectedLocation = loc;
+    <partial name="_Location" model="Model" />
+}
+<script>
+    $('#MessageSpan').delay(5000).fadeOut(300);
+</script>

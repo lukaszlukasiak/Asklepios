@@ -75,6 +75,51 @@ namespace Asklepios.Core.Models
         [Display(Name = "Usługi")]
 
         public List<MedicalService> MedicalServices { get; set; }
+        [Required(ErrorMessage = "Specjalizacja/świadczone usługi")]
+        [Display(Name = "Usługi")]
+
+        public List<long> MedicalServiceIds { get; set; }
+
+        public void UpdateWith(MedicalWorker worker)
+        {
+            if (!string.IsNullOrWhiteSpace( worker.Education))
+            {
+                this.Education = worker.Education;
+            }
+            if (!string.IsNullOrWhiteSpace(worker.Experience))
+            {
+                this.Experience = worker.Experience;
+            }
+            //if (worker.IsCurrentlyHired.HasValue)
+            //{
+                this.IsCurrentlyHired = worker.IsCurrentlyHired;
+            //}
+            if (worker.MedicalServiceIds!=null)
+            {
+                this.MedicalServiceIds = worker.MedicalServiceIds;
+            }
+            if (worker.MedicalServices!=null)
+            {
+                this.MedicalServices = worker.MedicalServices;
+            }
+            if (worker.MedicalWorkerType.HasValue)
+            {
+                this.MedicalWorkerType = worker.MedicalWorkerType;
+            }
+            if (worker.Person!=null)
+            {
+                this.Person = worker.Person;
+            }
+            if (!string.IsNullOrWhiteSpace( worker.ProfessionalNumber))
+            {
+                this.ProfessionalNumber = worker.ProfessionalNumber;
+            }
+            if (worker.User!=null)
+            {
+                this.User = worker.User;
+            }
+        }
+
         public string RatingDescription
         {
             get

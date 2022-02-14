@@ -1,0 +1,30 @@
+﻿@model Asklepios.Web.Areas.AdministrativeArea.Models.LocationsManageViewModel
+@{ 
+    IEnumerable<SelectListItem>
+removeMode = Html.GetEnumSelectListWithOneValue(Asklepios.Web.Areas.AdministrativeArea.Models.ViewMode.Remove).ToList();
+    IEnumerable<SelectListItem>
+        readMode = Html.GetEnumSelectListWithOneValue(Asklepios.Web.Areas.AdministrativeArea.Models.ViewMode.Read).ToList();
+    IEnumerable<SelectListItem>
+editMode = Html.GetEnumSelectListWithOneValue(Asklepios.Web.Areas.AdministrativeArea.Models.ViewMode.Edit).ToList();
+
+}
+<div style="height:0px">
+    <form class="form my-2" asp-action="LocationItemEdit" asp-fragment="@Model.SelectedLocationId" method="post">
+        <div class="form-group d-flex flex-column">
+            <input asp-for="ErrorMessage" type="hidden" />
+            <input asp-for="SuccessMessage" type="hidden" />
+            <input asp-for="SelectedLocationId" type="hidden"/>
+            <select asp-for="ViewMode" asp-items="readMode" hidden></select>
+            <button id="btnSubmit" type="submit" class="btn btn-primary w-100 mt-2"></button>
+        </div>
+    </form>
+    @*<input asp-for="SelectedLocationId"/>*@
+</div>
+
+<script>
+        document.getElementById('btnSubmit').click();
+</script>
+
+@*@{
+        Model.SelectedLocationId = "10";
+    }*@

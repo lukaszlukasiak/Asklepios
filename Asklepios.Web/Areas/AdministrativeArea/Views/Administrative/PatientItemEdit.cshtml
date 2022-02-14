@@ -6,13 +6,6 @@
 
     Asklepios.Web.Areas.AdministrativeArea.Models.ViewMode editViewMode = Asklepios.Web.Areas.AdministrativeArea.Models.ViewMode.Edit;
     Asklepios.Web.Areas.AdministrativeArea.Models.ViewMode removeViewMode = Asklepios.Web.Areas.AdministrativeArea.Models.ViewMode.Remove;
-    //SelectList itemEdit = editViewMode.ToSelectList(editViewMode);
-    //SelectList itemRemove = removeViewMode.ToSelectList(removeViewMode);
-    //IEnumerable<SelectListItem> selectListItems = Html.GetEnumSelectList(typeof(Asklepios.Web.Areas.AdministrativeArea.Models.ViewMode)).Where(c => c.Value == ((int)Asklepios.Web.Areas.AdministrativeArea.Models.ViewMode.Edit).ToString());
-    //selectListItems.ElementAt(0).Selected=true;
-    //SelectList modesList = view.ToSelectList();
-    // Html.GetEnumSelectListWithDefaultValue(editViewMode);
-
 }
 <div class="d-flex flex-column">
     @{
@@ -94,7 +87,7 @@
 
 
             <label asp-for="CurrentPatient.Person.ImageFile" class="control-label"></label>
-            <input asp-for="CurrentPatient.Person.ImageFile" accept="image/*" class="form-control-file btn btn-secondary" style="text-align:center" />
+            <input asp-for="CurrentPatient.Person.ImageFile" accept="image/*" class="form-control-file btn btn-secondary" style="text-align:center" onchange="" />
             <span asp-validation-for="CurrentPatient.Person.ImageFile" class="text-danger"></span>
             <div class="d-flex flex-fill  justify-content-center mt-2" style="text-align:center">
                 <img src="@Model.CurrentPatient.Person.ImageSource" class="img-fluid" style="display: block; max-height:300px;
@@ -116,21 +109,6 @@
             @*<input hidden asp-for="ViewMode" />*@
             <select hidden asp-for="ViewMode" asp-items="Html.GetEnumSelectListWithOneValue(editViewMode)">
             </select>
-
-            <!--<label asp-for="CurrentPatient.Person.PESEL" class="control-label"></label>
-    <select class="form-control  mb-2" asp-for="CurrentPatient.Person.PassportNumber" asp-items="nfzUnits">-->
-            @*<option value="">Wybierz oddział NFZ</option>*@
-            <!--</select>
-    <span asp-validation-for="CurrentPatient.Person.PassportNumber" class="text-danger"></span>
-
-    <label asp-for="CurrentPatient.Person.PassportNumber" class="control-label"></label>
-    <input asp-for="CurrentPatient.Person.PassportCode" class="form-control mb-2">
-    <span asp-validation-for="CurrentPatient.Person.PassportCode" class="text-danger"></span>
-
-    <label asp-for="CurrentPatient.Person.PassportCode" class="control-label"></label>
-    <input asp-for="CurrentPatient.Person.ImageFile" class="form-control mb-2">
-    <span asp-validation-for="CurrentPatient.Person.ImageFile" class="text-danger"></span>-->
-
 
             <button id="btnSubmit" type="submit" class="btn btn-primary w-100 mt-2">Zaktualizuj dane</button>
 

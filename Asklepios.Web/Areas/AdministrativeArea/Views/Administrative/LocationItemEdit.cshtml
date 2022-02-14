@@ -1,0 +1,174 @@
+﻿@model Asklepios.Web.Areas.AdministrativeArea.Models.LocationsManageViewModel
+@{
+    Model.MedicalRoomIdsCurrent = new List<long>();  //new long[] { }; ;//List<long>();
+
+    foreach (MedicalRoom item in Model.SelectedLocation.MedicalRooms)
+    {
+        //item.Selected = true;
+        Model.MedicalRoomIdsCurrent.Add(item.Id);
+        //selectedValues.Add(item.Id.ToString());
+
+    }
+    //Model.MedicalRoomIdsCurrent.ToArray()
+    SelectList servicesList = new SelectList(Model.PrimaryServices, "Id", "Name");
+    SelectList unasignedRoomsList = new SelectList(Model.UnasignedRooms, "Id", "LongDescription");
+    SelectList locationRoomsList = new SelectList(Model.SelectedLocation.MedicalRooms, "Id", "LongDescription", Model.MedicalRoomIdsCurrent);
+    MultiSelectList multiSelect = new SelectList(Model.SelectedLocation.MedicalRooms, "Id", "LongDescription", Model.MedicalRoomIdsCurrent);
+    List<string> serviceIds = Model.SelectedLocation.Services.Select(c => c.Id.ToString()).ToList();
+    //List<long>      , Model.SelectedLocation.MedicalRooms.Select(c => c.Id.ToString()).ToArray()
+    //locationRoomsList
+    foreach (SelectListItem item in servicesList)
+    {
+        if (serviceIds.Contains(item.Value))
+        {
+            item.Selected = true;
+        }
+    }
+
+    IEnumerable<SelectListItem>
+removeMode = Html.GetEnumSelectListWithOneValue(Asklepios.Web.Areas.AdministrativeArea.Models.ViewMode.Remove).ToList();
+    IEnumerable<SelectListItem>
+        readMode = Html.GetEnumSelectListWithOneValue(Asklepios.Web.Areas.AdministrativeArea.Models.ViewMode.Read).ToList();
+    IEnumerable<SelectListItem>
+editMode = Html.GetEnumSelectListWithOneValue(Asklepios.Web.Areas.AdministrativeArea.Models.ViewMode.Edit).ToList();
+
+}
+
+@{
+    if (TempData.ContainsKey("successMessage"))
+    {
+        <div class="messages" id="MessageSpan" style="margin-top: 10px; text-align: center ">
+            <p class="alert alert-success">
+                @TempData["successMessage"].ToString()
+            </p>
+        </div>
+    }
+    if (TempData.ContainsKey("errorMessage"))
+    {
+        <div class="messages" id="MessageSpan" style="margin-top: 10px; text-align: center ">
+            <p class="alert alert-success">
+                @TempData["errorMessage"].ToString()
+            </p>
+        </div>
+    }
+}
+
+<div>
+    <form class="form mt-2" asp-action="LocationItemEdit" method="post" enctype="multipart/form-data">
+        <div class="form-group d-flex flex-column">
+            @*<span id="MessageSpan" asp-validation-for="User.UserName" class="text-danger"></span>*@
+
+            <label asp-for="SelectedLocation.Description" class="control-label"></label>
+            <input asp-for="SelectedLocation.Description" class="form-control mb-2">
+            <span asp-validation-for="SelectedLocation.Description" class="text-danger"></span>
+
+            <label asp-for="SelectedLocation.City" class="control-label"></label>
+            <input asp-for="SelectedLocation.City" class="form-control mb-2">
+            <span asp-validation-for="SelectedLocation.City" class="text-danger"></span>
+
+            <label asp-for="SelectedLocation.Name" class="control-label"></label>
+            <input asp-for="SelectedLocation.Name" class="form-control mb-2">
+            <span asp-validation-for="SelectedLocation.Name" class="text-danger"></span>
+
+            <label asp-for="SelectedLocation.Aglomeration" class="control-label"></label>
+            <select class="form-control  mb-2" asp-for="SelectedLocation.Aglomeration" asp-items="Html.GetEnumSelectList<Asklepios.Core.Enums.Aglomeration>()">
+                <option value="">Wybierz domyślną aglomerację</option>
+            </select>
+            <span asp-validation-for="SelectedLocation.Aglomeration" class="text-danger"></span>
+
+            <label asp-for="SelectedLocation.PhoneNumber" class="control-label"></label>
+            <input asp-for="SelectedLocation.PhoneNumber" class="form-control mb-2">
+            <span asp-validation-for="SelectedLocation.PhoneNumber" class="text-danger"></span>
+
+
+
+            <label asp-for="SelectedLocation.PostalCode" class="control-label"></label>
+            <input asp-for="SelectedLocation.PostalCode" class="form-control mb-2">
+            <span asp-validation-for="SelectedLocation.PostalCode" class="text-danger"></span>
+
+            <label asp-for="SelectedLocation.StreetAndNumber" class="control-label"></label>
+            <input asp-for="SelectedLocation.StreetAndNumber" class="form-control mb-2">
+            <span asp-validation-for="SelectedLocation.StreetAndNumber" class="text-danger"></span>
+
+            <label asp-for="MedicalServiceIds" class="control-label"></label>
+            <select id="selectList" class="form-control  mb-2" asp-for="MedicalServiceIds" style="height:200px;" asp-items="servicesList" multiple>
+                @*<option value="">Wybierz usługi</option>*@
+            </select>
+            <span asp-validation-for="MedicalServiceIds" class="text-danger"></span>
+
+            <label asp-for="MedicalRoomIdsCurrent" class="control-label"></label>
+            <select class="form-control  mb-2" asp-for="MedicalRoomIdsCurrent" style="height:100px;" asp-items="locationRoomsList" multiple>
+                @*<option value="">Wybierz usługi</option>*@
+            </select>
+            <span asp-validation-for="MedicalRoomIdsCurrent" class="text-danger"></span>
+
+            @*<label asp-for="MedicalRoomIdsCurrent" class="control-label"></label>
+                <multiselect class="form-control  mb-2" asp-for="MedicalRoomIdsCurrent" style="height:100px;" asp-items="multiSelect" multiple>*@
+            @*<option value="">Wybierz usługi</option>*@
+            @*</multiselect>
+                <span asp-validation-for="MedicalRoomIdsCurrent" class="text-danger"></span>*@
+
+
+            <label asp-for="MedicalRoomIdsToAdd" class="control-label"></label>
+            <select class="form-control  mb-2" asp-for="MedicalRoomIdsToAdd" style="height:100px;" asp-items="unasignedRoomsList" multiple>
+                @*<option value="">Wybierz usługi</option>*@
+            </select>
+            <span asp-validation-for="MedicalRoomIdsToAdd" class="text-danger"></span>
+            @*<select class="form-control  mb-2" asp-for="MedicalRoomIdsCurrent" style="height:100px;" asp-items="locationRoomsList" multiple><</select>>*@
+
+            @*@Html.ListBoxFor(Model => Model.MedicalRoomIdsCurrent, locationRoomsList);*@
+
+            <label asp-for="SelectedLocation.ImageFile" class="control-label"></label>
+            <input asp-for="SelectedLocation.ImageFile" accept="image/*" class="form-control-file btn btn-secondary" style="text-align:center" />
+            @*<input asp-for="ImageFile" type="file" class="form-control-file" >*@
+
+            <span asp-validation-for="SelectedLocation.ImageFile" class="text-danger mb-2"></span>
+
+            <div class="d-flex flex-fill  justify-content-center mt-2" style="text-align:center">
+                <img src="@Model.SelectedLocation.ImageSource" class="img-fluid" style="display: block; max-height:300px;
+        border-radius: 6px; ">
+            </div>
+
+
+            <div class="form-group d-flex flex-column mt-5">
+                <button id="btnSubmit" type="submit" class="btn btn-primary btn-icon-split d-flex">
+                    <span class="icon text-white-50 left" style="text-align:left;float:left">
+                        <i class="fas fa-edit"></i>
+                    </span>
+                    <span class="text" style="float: left">Zaktualizuj</span>
+                </button>
+            </div>
+            <select asp-for="ViewMode" asp-items="editMode" hidden></select>
+            <input asp-for="SelectedLocationId" hidden />
+            <input asp-for="SelectedLocation.MedicalRoomIds" hidden></input>
+
+
+        </div>
+    </form>
+    <form class="form my-0" asp-action="LocationItemRemove" method="post">
+
+        <input asp-for="SelectedLocationId" hidden />
+
+        <div class="form-group d-flex flex-column mt-1">
+            <button id="btnSubmit" type="submit" class="btn btn-primary btn-icon-split d-flex">
+                <span class="icon text-white-50 left" style="text-align:left;float:left">
+                    <i class="fas fa-remove"></i>
+                </span>
+                <span class="text" style="float: left">Usuń</span>
+            </button>
+        </div>
+
+    </form>
+    @*<script>
+            $('#selectList').each(function () {
+                    $(this).prop("selected", true);
+            });
+            $('#selectList')
+                .attr('selected', true);
+
+
+        </script>*@
+</div>
+<script>
+    $('#MessageSpan').delay(5000).fadeOut(300);
+</script>

@@ -22,16 +22,16 @@ namespace Asklepios.Data.InMemoryContexts
         public static ICollection<Visit> AvailableVisits;
         //readonly IEnumerable<Visit> historicalVisits;
 
-        public static IEnumerable<Location> Locations;
+        public static List<Location> Locations;
         //public  Patient Patient { get; set; }
-        public static IEnumerable<MedicalWorker> MedicalWorkers;
+        public static List<MedicalWorker> MedicalWorkers;
         public static List<MedicalService> MedicalServices { get; set; }
         public static List<MedicalService> PrimaryMedicalServices { get; set; }
         public static List<VisitCategory> VisitCategories { get; set; }
         public static List<MedicalPackage> MedicalPackages { get; set; }
         public static List<NFZUnit> NfzUnits { get; set; }
         public static List<Patient> AllPatients { get; set; }
-        public static List<List<MedicalRoom>> MedicalRooms { get; set; }
+        public static List<MedicalRoom> MedicalRooms { get; set; }
         private static List<User> _users;
         public static List<User> Users
         {
@@ -69,15 +69,25 @@ namespace Asklepios.Data.InMemoryContexts
             AllPatients = GetAllPatients().ToList();
             PrimaryMedicalServices = MedicalServices.Where(c => c.IsPrimaryService == true).ToList();
             VisitCategories = GetVisitCategories().ToList();
-            //medicalRooms = GetMedicalRooms().ToList();
-            Locations = GetAllLocations();
-            MedicalWorkers = GetMedicalWorkers();
+            MedicalRooms = GetMedicalRooms().ToList();
+            Locations = GetAllLocations().ToList();
+            MedicalWorkers = GetMedicalWorkers().ToList();
             AvailableVisits = GetAvailableVisits().ToList();
             //AllPatients = GetAllPatients().ToList();
             //List<Visit> HistoricalVisits GetHistoricalVisits();
             CurrentPatient = GetPatientData(AllPatients[0]);
 
         }
+        //public static void SetHomeData()
+        //{
+        //    IsCreated = true;
+        //    MedicalServices = GetMedicalServices().ToList();
+        //    PrimaryMedicalServices = MedicalServices.Where(c => c.IsPrimaryService == true).ToList();
+        //    Locations = GetAllLocations();
+        //    //CurrentPatient = GetPatientData(AllPatients[0]);
+
+        //}
+
         public static Person GetPersonById(long id)
         {
             return Persons.Where(c => c.Id == id).FirstOrDefault();
@@ -189,19 +199,47 @@ namespace Asklepios.Data.InMemoryContexts
             return users;
         }
 
+
+        internal static void AddMedicalWorker(MedicalWorker medicalWorker)
+        {
+            if (medicalWorker.Id == 0)
+            {
+                medicalWorker.Id = Persons.Max(c => c.Id) + 1;
+            }
+            MedicalWorkers.Append(medicalWorker);
+        }
+        internal static void UpdateMedicalWorker(MedicalWorker oldMedicalWorker, MedicalWorker medicalWorker)
+        {
+            int index = MedicalWorkers.IndexOf(oldMedicalWorker);
+
+            MedicalWorkers[index] = medicalWorker;
+        }
+        internal static void RemoveMedicalWorkerById(long id)
+        {
+            MedicalWorker medicalWorker = MedicalWorkers.Where(c => c.Id == id).FirstOrDefault();
+            if (medicalWorker != null)
+            {
+                MedicalWorkers.Remove(medicalWorker);
+            }
+        }
+        internal static void UpdateLocation(Location selectedLocation, Location oldLocation)
+        {
+            int index = Locations.IndexOf(oldLocation);
+
+            Locations[index] = selectedLocation;
+        }
+
+
         internal static void UpdatePatient(Patient oldPatient, Patient patient)
         {
-            int index     = AllPatients.IndexOf(oldPatient);
-
-            AllPatients[index]= patient;
-            
-
+            int index = AllPatients.IndexOf(oldPatient);
+            AllPatients[index] = patient;
         }
 
         internal static void RemovePatientById(long id)
         {
             Patient patient = AllPatients.Where(c => c.Id == id).FirstOrDefault();
-            if (patient!=null)
+            if (patient != null)
             {
                 AllPatients.Remove(patient);
             }
@@ -717,7 +755,8 @@ namespace Asklepios.Data.InMemoryContexts
                         Facilities=new List<string>(){"15 gabinetów ogólno-konsultacyjnych", "Gabinet zabiegowy", "2 gabinety stomatologiczne", "Gabinet higieny jamy ustnej", "Gabinet diagnostyki obrazowej"},
                         Id=1,
                         Name="Ośrodek Warszawa Jerozolimskie",
-                        Services=new List<string>(){"Interna", "Ginekologia", "Pediatria", "Diagnostyka obrazowa", "Stomatologia", "Higiena jamy ustnej", "Dermatologia", "Ortopedia", "Neurochirurgia"},
+                        Services=new List<MedicalService>(){ PrimaryMedicalServices[0],PrimaryMedicalServices[1],PrimaryMedicalServices[2],PrimaryMedicalServices[3],PrimaryMedicalServices[4],PrimaryMedicalServices[5],PrimaryMedicalServices[6],PrimaryMedicalServices[7],PrimaryMedicalServices[8] ,PrimaryMedicalServices[9],PrimaryMedicalServices[10]}, 
+                        //new List<string>(){"Interna", "Ginekologia", "Pediatria", "Diagnostyka obrazowa", "Stomatologia", "Higiena jamy ustnej", "Dermatologia", "Ortopedia", "Neurochirurgia"},
                         //VoivodeshipType=Core.Enums.VoivodeshipType.mazowieckie,
                          Aglomeration=Core.Enums.Aglomeration.Warsaw,
 
@@ -734,7 +773,8 @@ namespace Asklepios.Data.InMemoryContexts
                         Facilities=new List<string>(){"12 gabinetów ogólno-konsultacyjnych", "Gabinet zabiegowy", "Gabinet diagnostyki obrazowej", "Gabinek okulistyczny"},
                         Id=2,
                         Name="Ośrodek Warszawa Ochota",
-                        Services=new List<string>(){"Interna", "Ginekologia", "Pediatria", "Diagnostyka obrazowa", "Stomatologia", "Higiena jamy ustnej", "Dermatologia", "Ortopedia", "Neurochirurgia"},
+                        Services=new List<MedicalService>(){ PrimaryMedicalServices[10],PrimaryMedicalServices[11],PrimaryMedicalServices[12],PrimaryMedicalServices[13],PrimaryMedicalServices[14],PrimaryMedicalServices[15],PrimaryMedicalServices[16],PrimaryMedicalServices[17],PrimaryMedicalServices[18] ,PrimaryMedicalServices[19],PrimaryMedicalServices[20] },
+                        //Services=new List<string>(){"Interna", "Ginekologia", "Pediatria", "Diagnostyka obrazowa", "Stomatologia", "Higiena jamy ustnej", "Dermatologia", "Ortopedia", "Neurochirurgia"},
                         //VoivodeshipType=Core.Enums.VoivodeshipType.mazowieckie,
                                                 Aglomeration=Core.Enums.Aglomeration.Warsaw,
 
@@ -750,7 +790,8 @@ namespace Asklepios.Data.InMemoryContexts
                         Facilities=new List<string>(){"11 gabinetów ogólno-konsultacyjnych", "2 Gabinety zabiegowe", "2 Gabinety ginekologiczne", "2 gabinety stomatologiczne", "Gabinet diagnostyki obrazowej"},
                         Id=3,
                         Name="Ośrodek Warszawa Ursynów",
-                        Services=new List<string>(){"Interna", "Ginekologia", "Pediatria", "Diagnostyka obrazowa", "Stomatologia", "Higiena jamy ustnej", "Dermatologia", "Ortopedia", "Neurochirurgia"},
+                        Services=new List<MedicalService>(){ PrimaryMedicalServices[20],PrimaryMedicalServices[21],PrimaryMedicalServices[22],PrimaryMedicalServices[23],PrimaryMedicalServices[24],PrimaryMedicalServices[25],PrimaryMedicalServices[26],PrimaryMedicalServices[27],PrimaryMedicalServices[28] ,PrimaryMedicalServices[29],PrimaryMedicalServices[30] },
+                        //Services=new List<string>(){"Interna", "Ginekologia", "Pediatria", "Diagnostyka obrazowa", "Stomatologia", "Higiena jamy ustnej", "Dermatologia", "Ortopedia", "Neurochirurgia"},
                         //VoivodeshipType=Core.Enums.VoivodeshipType.mazowieckie,
                                                 Aglomeration=Core.Enums.Aglomeration.Warsaw,
 
@@ -767,7 +808,9 @@ namespace Asklepios.Data.InMemoryContexts
                         Facilities=new List<string>(){"15 gabinetów ogólno-konsultacyjnych", "Gabinet zabiegowy", "2 gabinety stomatologiczne", "Gabinet higieny jamy ustnej", "Gabinet diagnostyki obrazowej"},
                         Id=4,
                         Name="Ośrodek Warszawa Targówek",
-                        Services=new List<string>(){"Interna", "Ginekologia", "Pediatria", "Diagnostyka obrazowa", "Stomatologia", "Higiena jamy ustnej", "Dermatologia", "Ortopedia", "Neurochirurgia"},
+                        Services=new List<MedicalService>(){ PrimaryMedicalServices[30],PrimaryMedicalServices[31],PrimaryMedicalServices[32],PrimaryMedicalServices[33],PrimaryMedicalServices[34],PrimaryMedicalServices[5],PrimaryMedicalServices[6],PrimaryMedicalServices[7],PrimaryMedicalServices[8] ,PrimaryMedicalServices[9],PrimaryMedicalServices[0] },
+
+                        //Services=new List<string>(){"Interna", "Ginekologia", "Pediatria", "Diagnostyka obrazowa", "Stomatologia", "Higiena jamy ustnej", "Dermatologia", "Ortopedia", "Neurochirurgia"},
                         //VoivodeshipType=Core.Enums.VoivodeshipType.mazowieckie,
                                                 Aglomeration=Core.Enums.Aglomeration.Warsaw,
 
@@ -784,7 +827,9 @@ namespace Asklepios.Data.InMemoryContexts
                         Facilities=new List<string>(){"15 gabinetów ogólno-konsultacyjnych", "Gabinet zabiegowy", "2 gabinety stomatologiczne", "Gabinet higieny jamy ustnej", "Gabinet diagnostyki obrazowej"},
                         Id=5,
                         Name="Ośrodek Kraków Pogórze",
-                        Services=new List<string>(){"Interna", "Ginekologia", "Pediatria", "Diagnostyka obrazowa", "Stomatologia", "Higiena jamy ustnej", "Dermatologia", "Ortopedia", "Neurochirurgia"},
+                        Services=new List<MedicalService>(){ PrimaryMedicalServices[15],PrimaryMedicalServices[31],PrimaryMedicalServices[32],PrimaryMedicalServices[33],PrimaryMedicalServices[14],PrimaryMedicalServices[25],PrimaryMedicalServices[26],PrimaryMedicalServices[27],PrimaryMedicalServices[28] ,PrimaryMedicalServices[29],PrimaryMedicalServices[11] },
+
+                        //Services=new List<string>(){"Interna", "Ginekologia", "Pediatria", "Diagnostyka obrazowa", "Stomatologia", "Higiena jamy ustnej", "Dermatologia", "Ortopedia", "Neurochirurgia"},
                         //VoivodeshipType=Core.Enums.VoivodeshipType.malopolskie,
                                                 Aglomeration=Core.Enums.Aglomeration.Cracow,
 
@@ -801,7 +846,9 @@ namespace Asklepios.Data.InMemoryContexts
                         Facilities=new List<string>(){"22 gabinety ogólno-konsultacyjne", "Gabinet zabiegowy", "2 gabinety stomatologiczne", "Gabinet higieny jamy ustnej", "Gabinet diagnostyki obrazowej"},
                         Id=6,
                         Name="Ośrodek Gdańsk Wyspa Spichrzów",
-                        Services=new List<string>(){"Interna", "Ginekologia", "Pediatria", "Diagnostyka obrazowa", "Stomatologia", "Higiena jamy ustnej", "Dermatologia", "Ortopedia", "Neurochirurgia"},
+                        Services=new List<MedicalService>(){ PrimaryMedicalServices[18],PrimaryMedicalServices[19],PrimaryMedicalServices[20],PrimaryMedicalServices[21],PrimaryMedicalServices[22],PrimaryMedicalServices[25],PrimaryMedicalServices[26],PrimaryMedicalServices[27],PrimaryMedicalServices[28] ,PrimaryMedicalServices[29],PrimaryMedicalServices[11] },
+
+                        //Services=new List<string>(){"Interna", "Ginekologia", "Pediatria", "Diagnostyka obrazowa", "Stomatologia", "Higiena jamy ustnej", "Dermatologia", "Ortopedia", "Neurochirurgia"},
                         //VoivodeshipType=Core.Enums.VoivodeshipType.pomorskie,
                                                 Aglomeration=Core.Enums.Aglomeration.Tricity,
 
@@ -816,9 +863,11 @@ namespace Asklepios.Data.InMemoryContexts
                         StreetAndNumber="Maltańska 1",
                         Description="Ośrodek położony na terenie Galerie Malta Poznań",
                         Facilities=new List<string>(){"20 gabinetów ogólno-konsultacyjnych", "Gabinet zabiegowy", "2 gabinety stomatologiczne", "Gabinet higieny jamy ustnej", "Gabinet diagnostyki obrazowej"},
-                        Id=1,
+                        Id=7,
                         Name="Ośrodek Poznań Malta",
-                        Services=new List<string>(){"Interna", "Ginekologia", "Pediatria", "Diagnostyka obrazowa", "Stomatologia", "Higiena jamy ustnej", "Dermatologia", "Ortopedia", "Neurochirurgia", "Okulistyka"},
+                                                Services=new List<MedicalService>(){ PrimaryMedicalServices[21],PrimaryMedicalServices[22],PrimaryMedicalServices[23],PrimaryMedicalServices[24],PrimaryMedicalServices[25],PrimaryMedicalServices[32],PrimaryMedicalServices[26],PrimaryMedicalServices[27],PrimaryMedicalServices[28] ,PrimaryMedicalServices[29],PrimaryMedicalServices[1] },
+
+                        //Services=new List<string>(){"Interna", "Ginekologia", "Pediatria", "Diagnostyka obrazowa", "Stomatologia", "Higiena jamy ustnej", "Dermatologia", "Ortopedia", "Neurochirurgia", "Okulistyka"},
                         //VoivodeshipType=Core.Enums.VoivodeshipType.pomorskie,
                         Aglomeration=Core.Enums.Aglomeration.Poznan,
                         ImagePath="/img/locations/loc7.jpg",
@@ -832,9 +881,11 @@ namespace Asklepios.Data.InMemoryContexts
                         StreetAndNumber="Szczytnicka 11",
                         Description="Placówka położona nieco na wschód od ścisłego centrum. Łatwo do niej trafić, idąc prosto od strony placu Grunwaldzkiego.",
                         Facilities=new List<string>(){"15 gabinetów ogólno-konsultacyjnych", "Gabinet zabiegowy", "2 gabinety stomatologiczne", "Gabinet higieny jamy ustnej", "Gabinet diagnostyki obrazowej"},
-                        Id=1,
+                        Id=8,
                         Name="Ośrodek Wrocław Szczytnicka",
-                        Services=new List<string>(){"Interna", "Ginekologia", "Pediatria", "Diagnostyka obrazowa", "Stomatologia", "Higiena jamy ustnej", "Dermatologia", "Ortopedia"},
+                                                Services=new List<MedicalService>(){ PrimaryMedicalServices[15],PrimaryMedicalServices[31],PrimaryMedicalServices[32],PrimaryMedicalServices[33],PrimaryMedicalServices[34],PrimaryMedicalServices[0],PrimaryMedicalServices[1],PrimaryMedicalServices[2],PrimaryMedicalServices[3] ,PrimaryMedicalServices[4],PrimaryMedicalServices[5] },
+
+                        //Services=new List<string>(){"Interna", "Ginekologia", "Pediatria", "Diagnostyka obrazowa", "Stomatologia", "Higiena jamy ustnej", "Dermatologia", "Ortopedia"},
                         //VoivodeshipType=Core.Enums.VoivodeshipType.pomorskie,
                         Aglomeration=Core.Enums.Aglomeration.Wroclaw,
                         ImagePath="/img/locations/loc8.jpg",
@@ -849,9 +900,11 @@ namespace Asklepios.Data.InMemoryContexts
                         StreetAndNumber="Młyńska 23",
                         Description="Ośrodek położonyw  bliskiej okolicy dworca PKP oraz Placu Wolności",
                         Facilities=new List<string>(){"21 gabinetów ogólno-konsultacyjnych", "Gabinet zabiegowy", "2 gabinety stomatologiczne", "Gabinet higieny jamy ustnej", "Gabinet diagnostyki obrazowej"},
-                        Id=1,
+                        Id=9,
                         Name="Ośrodek Gdańsk Wyspa Spichrzów",
-                        Services=new List<string>(){"Interna", "Ginekologia", "Pediatria", "Diagnostyka obrazowa", "Stomatologia", "Higiena jamy ustnej", "Dermatologia", "Ortopedia", "Neurochirurgia", "Gastrologia"},
+                        Services=new List<MedicalService>(){ PrimaryMedicalServices[15],PrimaryMedicalServices[16],PrimaryMedicalServices[17],PrimaryMedicalServices[18],PrimaryMedicalServices[14],PrimaryMedicalServices[25],PrimaryMedicalServices[6],PrimaryMedicalServices[7],PrimaryMedicalServices[8] ,PrimaryMedicalServices[9],PrimaryMedicalServices[11] },
+
+                        //Services=new List<string>(){"Interna", "Ginekologia", "Pediatria", "Diagnostyka obrazowa", "Stomatologia", "Higiena jamy ustnej", "Dermatologia", "Ortopedia", "Neurochirurgia", "Gastrologia"},
                         //VoivodeshipType=Core.Enums.VoivodeshipType.pomorskie,
                         Aglomeration=Core.Enums.Aglomeration.Silesia,
                         ImagePath="/img/locations/loc9.jpg",
@@ -969,7 +1022,7 @@ namespace Asklepios.Data.InMemoryContexts
                 new Person(imagePath:"/img/MW/m/30.jpg", phoneNumber:"715777777",gender:Core.Enums.Gender.Male,id:30,birthDate:new DateTimeOffset(new DateTime(1978,7,8)) , name:"Piotr",surName:"Kuropatwa",pesel:"78946513213",hasPolishCitizenship: true,passportNumber: null,passportCode:"POL", email:"person29@gmail.com", aglomeration:Core.Enums.Aglomeration.Bialystok),
                 new Person(imagePath:"/img/MW/m/31.jpg", phoneNumber:"715777777",gender:Core.Enums.Gender.Male,id:31,birthDate:new DateTimeOffset(new DateTime(1978,10,8)) , name:"Paweł",surName:"Łąkietka",pesel:"78946546549",hasPolishCitizenship: true,passportNumber: null,passportCode:"POL", email:"person30@gmail.com", aglomeration:Core.Enums.Aglomeration.Warsaw),
                 new Person(imagePath:"/img/MW/m/32.jpg", phoneNumber:"715777777",gender:Core.Enums.Gender.Male,id:32,birthDate:new DateTimeOffset(new DateTime(1945,7,8)) , name:"Rozmus",surName:"Remus",pesel:"45641341564",hasPolishCitizenship: true,passportNumber: null,passportCode:"POL", email:"person31@gmail.com", aglomeration:Core.Enums.Aglomeration.Cracow),
-                new Person(imagePath:"/img/MW/k/1.jpg", phoneNumber:"715777777",gender:Core.Enums.Gender.Male,id:33,birthDate:new DateTimeOffset(new DateTime(1948,7,8)) , name:"Miłosz",surName:"Ciapek",pesel:"48794564321",hasPolishCitizenship: true,passportNumber: null,passportCode:"POL", email:"person32@gmail.com", aglomeration:Core.Enums.Aglomeration.Silesia),
+                new Person(imagePath:"/img/MW/m/33.jpg", phoneNumber:"715777777",gender:Core.Enums.Gender.Male,id:33,birthDate:new DateTimeOffset(new DateTime(1948,7,8)) , name:"Miłosz",surName:"Ciapek",pesel:"48794564321",hasPolishCitizenship: true,passportNumber: null,passportCode:"POL", email:"person32@gmail.com", aglomeration:Core.Enums.Aglomeration.Silesia),
                 new Person(imagePath:"/img/MW/k/2.jpg", phoneNumber:"715777777",gender:Core.Enums.Gender.Female,id:34,birthDate:new DateTimeOffset(new DateTime(1965,7,8)) , name:"Czesława",surName:"Kret",pesel:"65461231564",hasPolishCitizenship: true,passportNumber: null,passportCode:"POL", email:"person33@gmail.com", aglomeration:Core.Enums.Aglomeration.Bialystok),
                 new Person(imagePath:"/img/MW/k/3.jpg", phoneNumber:"715777777",gender:Core.Enums.Gender.Female,id:35,birthDate:new DateTimeOffset(new DateTime(1989,7,8)) , name:"Marlena",surName:"Bajka",pesel:"89456113215", hasPolishCitizenship: true,passportNumber: null,passportCode:"POL", email:"person34@gmail.com", aglomeration:Core.Enums.Aglomeration.Tricity),
                 new Person(imagePath:"/img/MW/k/4.jpg", phoneNumber:"715777777",gender:Core.Enums.Gender.Female,id:36,birthDate:new DateTimeOffset(new DateTime(1954,7,8)) , name:"Bożena",surName:"Arbuz",pesel:"54564632165",hasPolishCitizenship: true,passportNumber: null,passportCode:"POL", email:"person35@gmail.com", aglomeration:Core.Enums.Aglomeration.Bialystok),
@@ -1107,6 +1160,7 @@ namespace Asklepios.Data.InMemoryContexts
 
             //Person person = new Person(name: "Mariusz", surName: "Puto", id: 1, pesel: "77784512598", hasPolishCitizenship: true, passportNumber: null, passportCode: "POL", email: "person1@gmail.com", aglomeration: Core.Enums.Aglomeration.Bialystok);
             long id = 0;
+            int userId = 0;
             List<MedicalWorker> MedicalWorkers = new List<MedicalWorker>()
             {
                 new Doctor(Persons[0],"IUHIDUASHDI545613216")
@@ -1117,15 +1171,18 @@ namespace Asklepios.Data.InMemoryContexts
                     //ImagePath="/img/MW/m/1.jpg",
                     HiredSince=new DateTime(2015,1,1),
                     IsCurrentlyHired=true,VisitReviews=visitRatings1,
+                    User=Users[userId++],
                     MedicalServices=new List<MedicalService>()
                     {
                         PrimaryMedicalServices[0],PrimaryMedicalServices[1]
                     }
+
                 },
 
                 new Doctor(Persons[1], "ASGER51541213")
                 {
                     Id=++id,
+                    User=Users[userId++],
                     Education=UM_3,// new List<string>() {UM_3,UM_2},
                     Experience="W latach 2005-2020 praca w szpitalu praskim",
                     //ImagePath="/img/MW/m/2.jpg",
@@ -1140,6 +1197,7 @@ namespace Asklepios.Data.InMemoryContexts
                 new Physiotherapist(Persons[2], "GVCXDS56151321")
                 {
                     Id=++id,
+                    User=Users[userId++],
                     Education=UM_2,// new List<string>() {UM_2},
                     Experience="W latach 2005-2020 praca w szpitalu MSWiA",
                     //ImagePath="/img/MW/m/3.jpg",
@@ -1153,6 +1211,7 @@ namespace Asklepios.Data.InMemoryContexts
                 },
                 new Physiotherapist   (Persons[3],"IUJNKJN54321165")
                 {Id=++id,
+                    User=Users[userId++],
                     Education=UM_2,// new List<string>() {UM_1,UM_2},
                     Experience="W latach 2005-2020 praca w szpitalu UMK",
                     //ImagePath="/img/MW/m/4.jpg",
@@ -1166,6 +1225,7 @@ namespace Asklepios.Data.InMemoryContexts
                 },
                 new Doctor(Persons[4],"IUJKHJK546121646")
                 {Id=++id,
+                    User=Users[userId++],
                     Education=UM_1,// new List<string>() {UM_1,UM_2},
                     Experience="W latach 2005-2020 praca w szpitalu Bródnowskim",
                     //ImagePath="/img/MW/m/5.jpg",
@@ -1178,6 +1238,7 @@ namespace Asklepios.Data.InMemoryContexts
                 },
                 new Doctor(Persons[5],"OPASDASP54156142313")
                 {Id=++id,
+                    User=Users[userId++],
                     Education=UM_1,// new List<string>() {UM_1,UM_2},
                     Experience="W latach 2005-2020 praca w szpitalu Bródnowskim",
                     //ImagePath="/img/MW/m/6.jpg",
@@ -1190,6 +1251,7 @@ namespace Asklepios.Data.InMemoryContexts
                 },
                 new Doctor(Persons[6], "IAOSD5161231564")
                 {Id=++id,
+                    User=Users[userId++],
                     Education=UM_7,// new List<string>() {UM_1,UM_2},
                     Experience="W latach 2005-2020 praca w szpitalu wrocławskim",
                     //ImagePath="/img/MW/m/7.jpg",
@@ -1202,6 +1264,8 @@ namespace Asklepios.Data.InMemoryContexts
                 },
                 new Doctor(Persons[7], "UNCAJSDS51651323")
                 {Id=++id,
+                    User=Users[userId++],
+
                     Education=UM_3,// new List<string>() {UM_1,UM_2},
                     Experience="W latach 2005-2020 praca w szpitalu podlaskim",
                     //ImagePath="/img/MW/m/8.jpg",
@@ -1215,6 +1279,8 @@ namespace Asklepios.Data.InMemoryContexts
                 },
                 new Doctor(Persons[8], "DFSDFD4654213")
                 {Id=++id,
+                    User=Users[userId++],
+
                     Education=UM_4,// new List<string>() {UM_1,UM_2},
                     Experience="W latach 2005-2020 praca w szpitalu Bródnowskim",
                     //ImagePath="/img/MW/m/9.jpg",
@@ -1227,6 +1293,8 @@ namespace Asklepios.Data.InMemoryContexts
                 },
                 new Doctor(Persons[9],"IOWNCAS5613245")
                 {Id=++id,
+                                    User=Users[userId++],
+
                     Education=UM_5,// new List<string>() {UM_1,UM_2},
                     Experience="W latach 2005-2020 praca w szpitalu suwalskim",
                     //ImagePath="/img/MW/m/10.jpg",
@@ -1239,6 +1307,8 @@ namespace Asklepios.Data.InMemoryContexts
                 },
                 new Doctor(Persons[10],"MNMCXISA561235")
                 {Id=++id,
+                                    User=Users[userId++],
+
                     Education=UM_9,// new List<string>() {UM_9},
                     Experience="W latach 2008-2019 praca w szpitalu podkarpackim",
                     //ImagePath="/img/MW/m/11.jpg",
@@ -1252,6 +1322,8 @@ namespace Asklepios.Data.InMemoryContexts
                 },
                 new Doctor(Persons[11],"ASIUDAS5123463")
                 {Id=++id,
+                                    User=Users[userId++],
+
                     Education=UM_8,// new List<string>() {UM_8},
                     Experience="W latach 2005-2020 praca w szpitalu Bródnowskim",
                     //ImagePath="/img/MW/m/12.jpg",
@@ -1265,6 +1337,8 @@ namespace Asklepios.Data.InMemoryContexts
                 },
                 new ElectroradiologyTechnician (Persons[12],"QPSCS5346448")
                 {Id=++id,
+                                    User=Users[userId++],
+
                     Education=UM_7,// new List<string>() {UM_7},
                     Experience="W latach 2005-2020 praca w szpitalu wojskowym",
                     //ImagePath="/img/MW/m/13.jpg",
@@ -1279,6 +1353,8 @@ namespace Asklepios.Data.InMemoryContexts
                 },
                 new Doctor(Persons[13], "CXCXZS6543215")
                 {Id=++id,
+                                    User=Users[userId++],
+
                     Education=UM_6,// new List<string>() {UM_6},
                     Experience="W latach 2010-2019 praca w szpitalu matki i dziecka",
                     //ImagePath="/img/MW/m/14.jpg",
@@ -1291,6 +1367,8 @@ namespace Asklepios.Data.InMemoryContexts
                 },
                 new Doctor(Persons[14], "PASXCA516164")
                 {Id=++id,
+                                    User=Users[userId++],
+
                     Education=UM_5,// new List<string>() {UM_5},
                     Experience="W latach 2011-2021 praca w szpitalu zakaźnym",
                     //ImagePath="/img/MW/m/15.jpg",
@@ -1304,6 +1382,8 @@ namespace Asklepios.Data.InMemoryContexts
                 },
                 new Doctor(Persons[15], "PSADNASJ1564613")
                 {Id=++id,
+                                    User=Users[userId++],
+
                     Education=UM_4,// new List<string>() {UM_1,UM_2},
                     Experience="W latach 2007-2021 praca w szpitalu kujawskim",
                     //ImagePath="/img/MW/m/16.jpg",
@@ -1316,6 +1396,8 @@ namespace Asklepios.Data.InMemoryContexts
                 },
                 new Doctor(Persons[16], "AHUHIFDSD18564513")
                 {Id=++id,
+                                    User=Users[userId++],
+
                     Education=UM_4,// new List<string>() {UM_4},
                     Experience="W latach 2005-2020 praca w szpitalu łódzkim",
                     //ImagePath="/img/MW/m/17.jpg",
@@ -1329,6 +1411,7 @@ namespace Asklepios.Data.InMemoryContexts
                 },
                 new Doctor(Persons[17],"UYGSDAS541321")
                 {Id=++id,
+                                    User=Users[userId++],
                     Education=UM_2,// new List<string>() {UM_1,UM_2},
                     Experience="W latach 2005-2020 praca w szpitalu Bródnowskim",
                     //ImagePath="/img/MW/m/2.jpg",
@@ -1342,6 +1425,8 @@ namespace Asklepios.Data.InMemoryContexts
                 },
                 new Doctor(Persons[18],"JHGDAJSH516145")
                 {Id=++id,
+                                    User=Users[userId++],
+
                     Education=UM_3,// new List<string>() {UM_3},
                     Experience="W latach 2009-2020 praca w POZ Węgrów.",
                     //ImagePath="/img/MW/m/19.jpg",
@@ -1355,6 +1440,8 @@ namespace Asklepios.Data.InMemoryContexts
                 },
                 new Doctor(Persons[19], "GSFEQWDXA515646")
                 {Id=++id,
+                                    User=Users[userId++],
+
                     Education=UM_1,// new List<string>() {UM_1},
                     Experience="W latach 2005-2020 praca w szpitalu miejskim w Krośnie",
                     //ImagePath="/img/MW/m/20.jpg",
@@ -1368,6 +1455,8 @@ namespace Asklepios.Data.InMemoryContexts
                 },
                 new Doctor(Persons[20], "ISJAD4465132")
                 {Id=++id,
+                                    User=Users[userId++],
+
                     Education=UM_2,// new List<string>() {UM_1,UM_2},
                     Experience="W latach 2005-2020 praca w szpitalu tarnowskim",
                     //ImagePath="/img/MW/m/21.jpg",
@@ -1381,6 +1470,8 @@ namespace Asklepios.Data.InMemoryContexts
                 },
                 new Doctor(Persons[21], "UISDR216443")
                 {Id=++id,
+                                    User=Users[userId++],
+
                     Education=UM_3,// new List<string>() {UM_1,UM_2},
                     Experience="W latach 2005-2020 praca w szpitalu miejskim w Zakopanem",
                     //ImagePath="/img/MW/m/22.jpg",
@@ -1394,6 +1485,8 @@ namespace Asklepios.Data.InMemoryContexts
                 },
                 new Doctor(Persons[22], "VASDK5421324")
                 {Id=++id,
+                                    User=Users[userId++],
+
                     Education=UM_4,// new List<string>() {UM_7},
                     Experience="W latach 2005-2020 praca w szpitalu Bródnowskim",
                     //ImagePath="/img/MW/m/23.jpg",
@@ -1406,6 +1499,8 @@ namespace Asklepios.Data.InMemoryContexts
                 },
                 new Doctor(Persons[23], "ASPDUI56321587")
                 {Id=++id,
+                                    User=Users[userId++],
+
                     Education=UM_5,// new List<string>() {UM_5},
                     Experience="W latach 2008-2014 praca w szpitalu kardiologicznym",
                     //ImagePath="/img/MW/m/2.jpg",
@@ -1418,6 +1513,8 @@ namespace Asklepios.Data.InMemoryContexts
                 },
                 new Doctor(Persons[24], "BVNMXCA4623148")
                 {Id=++id,
+                                    User=Users[userId++],
+
                     Education=UM_6,// new List<string>() {UM_5},
                     Experience="W latach 2005-2020 praca w szpitalu w Dębicy",
                     //ImagePath="/img/MW/m/25.jpg",
@@ -1431,6 +1528,8 @@ namespace Asklepios.Data.InMemoryContexts
                 },
                 new Physiotherapist(Persons[25],"FAHDJ665413215")
                 {Id=++id,
+                                    User=Users[userId++],
+
                     Education=UM_7,// new List<string>() {UM_4},
                     Experience="W latach 2005-2020 praca w szpitalu powiatowym w Zamościu",
                     //ImagePath="/img/MW/m/26.jpg",
@@ -1444,6 +1543,7 @@ namespace Asklepios.Data.InMemoryContexts
                 },
                 new Doctor(Persons[26],"ALKJSD5461321")
                 {Id=++id,
+                                    User=Users[userId++],
                     Education=UM_8,// new List<string>() {UM_2},
                     Experience="W latach 2005-2020 praca w szpitalu zakaźnym na Woli",
                     //ImagePath="/img/MW/m/27.jpg",
@@ -1457,6 +1557,8 @@ namespace Asklepios.Data.InMemoryContexts
                 },
                 new ElectroradiologyTechnician(Persons[27], "HGSDAS545641231")
                 {Id=++id,
+                                                    User=Users[userId++],
+
                     Education=UM_9,// new List<string>() {UM_6},
                     Experience="W latach 2006-2019 praca w szpitalu świętokrzyskim",
                     //ImagePath="/img/MW/m/28.jpg",
@@ -1471,6 +1573,8 @@ namespace Asklepios.Data.InMemoryContexts
                 new Doctor(Persons[28],"BHJASGDJAS54613254")
                 {
                     Id=++id,
+                                                        User=Users[userId++],
+
                     Education=UM_9,////new List<string>() {UM_8},
                     Experience="W latach 2005-2020 praca w szpitalu akademickim w Białymstoku",
                     //ImagePath="/img/MW/m/29.jpg",
@@ -1484,6 +1588,8 @@ namespace Asklepios.Data.InMemoryContexts
                 new Doctor(Persons[29],"OJIHJDAS543156")
                 {
                 Id=++id,
+                                                    User=Users[userId++],
+
                     Education=UM_8,// new List<string>() {UM_6},
                     Experience="W latach 2005-2020 praca w szpitalu miejskim w Słupsku",
                     //ImagePath="/img/MW/m/30.jpg",
@@ -1498,6 +1604,8 @@ namespace Asklepios.Data.InMemoryContexts
                 new Doctor(Persons[30],"JHASKDAS65461321")
                 {
                     Id = ++id,
+                                                        User=Users[userId++],
+
                     Education =UM_7,// new List<string>() {UM_3},
                     Experience="W latach 2005-2012 praca w szpitalu klinicznym w Gnieźnie. Wcześniej pracował w Zielonej górze.",
                     //ImagePath="/img/MW/m/31.jpg",
@@ -1511,6 +1619,8 @@ namespace Asklepios.Data.InMemoryContexts
                 new Doctor(Persons[31],"JHKSDASD546123")
                 {
                     Id = ++id,
+                                                        User=Users[userId++],
+
                     Education =UM_6,// new List<string>() {UM_4},
                     Experience="W latach 2005-2020 praca w szpitalu akademickim w Krakowie",
                     //ImagePath="/img/MW/m/32.jpg",
@@ -1525,6 +1635,8 @@ namespace Asklepios.Data.InMemoryContexts
                 new Doctor(Persons[32],"JHASHJDGJA4516354")
                 {
                     Id = ++id,
+                                                        User=Users[userId++],
+
                     Education = UM_6,//new List<string>() {UM_6},
                     Experience="W latach 2009-2019 praca w szpitalu w Węgrowie",
                     //ImagePath="/img/MW/k/1.jpg",
@@ -1539,6 +1651,8 @@ namespace Asklepios.Data.InMemoryContexts
                 new DentalHygienist(Persons[33],"HASDUQ561613")
                 {
                     Id = ++id,
+                                                        User=Users[userId++],
+
                     Education =UM_1,// new List<string>() {UM_1,UM_2},
                     Experience="W latach 2015-2021 praca w szpitalu uniwersyteckim w Poznaniu",
                     //ImagePath="/img/MW/k/2.jpg",
@@ -1553,6 +1667,8 @@ namespace Asklepios.Data.InMemoryContexts
                 new Doctor(Persons[34],"JHSAD6564513")
                 {
                     Id = ++id,
+                                                        User=Users[userId++],
+
                     Education =UM_3,// new List<string>() {UM_3},
                     Experience="W latach 2011-2021 praca w szpitalu miejskim w Łowiczu",
                     //ImagePath="/img/MW/k/3.jpg",
@@ -1567,6 +1683,8 @@ namespace Asklepios.Data.InMemoryContexts
                 new Doctor(Persons[35],"GASHJD56441231")
                 {
                     Id = ++id,
+                                                        User=Users[userId++],
+
                     Education =UM_2,// new List<string>() {UM_1,UM_2},
                     Experience="W latach 2008-2020 praca w szpitalu zakaźnym w Krakowie",
                     //ImagePath="/img/mw/k/4.jpg",
@@ -1581,6 +1699,8 @@ namespace Asklepios.Data.InMemoryContexts
                 new Doctor(Persons[36],"HBJASD546132")
                 {
                     Id = ++id,
+                                                        User=Users[userId++],
+
                     Education =UM_4,// new List<string>() {UM_4},
                     Experience="W latach 2007-2020 praca w szpitalu Bródnowskim",
                     //ImagePath="/img/mw/k/5.jpg",
@@ -1595,6 +1715,8 @@ namespace Asklepios.Data.InMemoryContexts
                 new Doctor(Persons[37],"BIKDAS5416132")
                 {
                     Id = ++id,
+                                                        User=Users[userId++],
+
                     Education =UM_4,//  new List<string>() {UM_1,UM_2},
                     Experience="W latach 2005-2020 praca w szpitalu Bródnowskim",
                     //ImagePath="/img/mw/k/6.jpg",
@@ -1609,6 +1731,8 @@ namespace Asklepios.Data.InMemoryContexts
                 new Doctor(Persons[38],"HJGASW4654613")
                 {
                     Id = ++id,
+                                                        User=Users[userId++],
+
                     Education =UM_5,// new List<string>() {UM_1,UM_2},
                     Experience="W latach 2012-2020 praca w szpitalu południowym w Warszawie",
                     //ImagePath="/img/mw/k/7.jpg",
@@ -1623,6 +1747,8 @@ namespace Asklepios.Data.InMemoryContexts
                 new Nurse(Persons[39],"IOSHJD4613245")
                 {
                     Id = ++id,
+                                                        User=Users[userId++],
+
                     Education =UM_2,// new List<string>() {UM_1,UM_2},
                     Experience="W latach 2005-2020 praca w szpitalu chorób serca w Gdańsku",
                     //ImagePath="/img/mw/k/8.jpg",
@@ -1637,6 +1763,8 @@ namespace Asklepios.Data.InMemoryContexts
                 new Nurse(Persons[40],"UGHSDS56134564")
                 {
                     Id = ++id,
+                                                        User=Users[userId++],
+
                     Education =UM_6,// new List<string>() {UM_6},
                     Experience="W latach 2007-2018 praca w szpitalu praskim w Warszawie",
                     //ImagePath="/img/mw/k/9.jpg",
@@ -1651,6 +1779,8 @@ namespace Asklepios.Data.InMemoryContexts
                 new Doctor(Persons[41],"USHDKAS744561513")
                 {
                     Id = ++id,
+                                                        User=Users[userId++],
+
                     Education =UM_8,// new List<string>() {UM_8},
                     Experience="W latach 2009-2019 praca w szpitalu praskim w Warszawie",
                     //ImagePath="/img/mw/k/10.jpg",
@@ -1665,6 +1795,8 @@ namespace Asklepios.Data.InMemoryContexts
                 new Doctor(Persons[42],"NMBVDSDA546123")
                 {
                     Id = ++id,
+                                                        User=Users[userId++],
+
                     Education =UM_5,// new List<string>() {UM_5},
                     Experience="W latach 2005-2020 praca w szpitalu Bródnowskim",
                     //ImagePath="/img/mw/k/11.jpg",
@@ -1678,6 +1810,8 @@ namespace Asklepios.Data.InMemoryContexts
                 new Doctor(Persons[43],"LKASJD465315")
                 {
                     Id = ++id,
+                                                        User=Users[userId++],
+
                     Education =UM_2,// new List<string>() {UM_1,UM_2},
                     Experience="W latach 2012-2019 praca w szpitalu MSWIA w Warszawie",
                     //ImagePath="/img/mw/k/12.jpg",
@@ -1692,6 +1826,8 @@ namespace Asklepios.Data.InMemoryContexts
                 new Doctor(Persons[44],"IOHDSFDS46132456")
                 {
                     Id = ++id,
+                                                        User=Users[userId++],
+
                     Education =UM_7,// new List<string>() {UM_7},
                     Experience="W latach 2005-2020 praca w szpitalu centralnym w Krakowie",
                     //ImagePath="/img/mw/k/13.jpg",
@@ -1706,6 +1842,8 @@ namespace Asklepios.Data.InMemoryContexts
                 new Doctor(Persons[45],"UHJDSF5645132")
                 {
                     Id = ++id,
+                                                        User=Users[userId++],
+
                     Education =UM_1,// new List<string>() {UM_1,UM_2},
                     Experience="W latach 2019-2021 praca w szpitalu u Koziołka Matołka w Poznaniu",
                     //ImagePath="/img/mw/k/14.jpg",
@@ -1720,6 +1858,8 @@ namespace Asklepios.Data.InMemoryContexts
                 new DentalHygienist(Persons[46],"SDFJL4654131")
                 {
                     Id = ++id,
+                                                        User=Users[userId++],
+
                     Education =UM_2 ,// new List<string>() {UM_1,UM_2},
                     Experience="W latach 2005-2020 praca w szpitalu klinicznym we Wrocławiu",
                     //ImagePath="/img/mw/k/15.jpg",
@@ -1734,6 +1874,8 @@ namespace Asklepios.Data.InMemoryContexts
                 new Doctor(Persons[47],"JBNBJHSD45642131")
                 {
                     Id = ++id,
+                                                        User=Users[userId++],
+
                     Education =UM_3,// new List<string>() {UM_1,UM_2},
                     Experience="W latach 2018-2021 praca w szpitalu klinicznym we Wrocławiu",
                     //ImagePath="/img/mw/k/16.jpg",
@@ -1747,6 +1889,8 @@ namespace Asklepios.Data.InMemoryContexts
                 new Doctor(Persons[48],"JHGFJDS564165412")
                 {
                     Id = ++id,
+                                                        User=Users[userId++],
+
                     Education =UM_8,// new List<string>() {UM_8},
                     Experience="W latach 2019-2020 praca w szpitalu Bródnowskim",
                     //ImagePath="/img/mw/k/17.jpg",
@@ -1761,6 +1905,8 @@ namespace Asklepios.Data.InMemoryContexts
                 new Doctor(Persons[49],"JHFDSF4561231")
                 {
                     Id = ++id,
+                                                        User=Users[userId++],
+
                     Education =UM_4,// new List<string>() {UM_4},
                     Experience="W latach 2005-2020 praca w szpitalu Bródnowskim",
                     //ImagePath="/img/mw/k/18.jpg",
@@ -1775,6 +1921,8 @@ namespace Asklepios.Data.InMemoryContexts
                 new Doctor(Persons[50],"UIFSDF4561321")
                 {
                     Id = ++id,
+                                                        User=Users[userId++],
+
                     Education =UM_7,// new List<string>() {UM_5,UM_7},
                     Experience="W latach 2005-2020 praca w szpitalu Bródnowskim",
                     //ImagePath="/img/mw/k/19.jpg",
@@ -1789,6 +1937,8 @@ namespace Asklepios.Data.InMemoryContexts
                 new ElectroradiologyTechnician(Persons[51],"DHJKFSD4564132")
                 {
                     Id = ++id,
+                                                        User=Users[userId++],
+
                     Education =UM_9,// new List<string>() {UM_7,UM_9},
                     Experience="Staż odbyła w szpitalu Bródnowskim w Warszawie. Od 2016 roku pracuje w szpitalu Praskim w Warszawie.",
                     //ImagePath="/img/mw/k/20.jpg",
@@ -1803,6 +1953,8 @@ namespace Asklepios.Data.InMemoryContexts
                 new Nurse(Persons[52],"HBJKSDF56413215")
                 {
                     Id = ++id,
+                                                        User=Users[userId++],
+
                     Education =UM_6,// new List<string>() {UM_6,UM_2},
                     Experience="Staż odbyty w szpitalu akademickim w Białymstoku. Od 2018 roku praca w szpitalu powiatowym w Węgrowie",
                     //ImagePath="/img/mw/k/21.jpg",
@@ -1817,6 +1969,8 @@ namespace Asklepios.Data.InMemoryContexts
                 new Doctor(Persons[53], "RERDSDF2134969")
                 {
                     Id = ++id,
+                                                        User=Users[userId++],
+
                     Education = UM_4,// new List<string>() {UM_4,UM_2},
                     Experience="W latach 2005-2020 praca w szpitalu Bródnowskim",
                     //ImagePath="/img/mw/k/22.jpg",
@@ -1831,6 +1985,8 @@ namespace Asklepios.Data.InMemoryContexts
                 new Nurse(Persons[54],"BNMDSF546123")
                 {
                     Id = ++id,
+                                                        User=Users[userId++],
+
                     Education =UM_1,// new List<string>() {UM_5},
                     Experience="W latach 2005-2020 praca w szpitalu Bródnowskim",
                     //ImagePath="/img/mw/k/23.jpg",
@@ -1845,6 +2001,8 @@ namespace Asklepios.Data.InMemoryContexts
                 new ElectroradiologyTechnician(Persons[55],"PODBASHJ4454321")
                 {
                     Id = ++id,
+                                                        User=Users[userId++],
+
                     Education =UM_3,// new List<string>() {UM_1,UM_2},
                     Experience="W latach 2005-2020 praca w szpitalu Bródnowskim",
                     //ImagePath="/img/mw/k/24.jpg",
@@ -1859,6 +2017,8 @@ namespace Asklepios.Data.InMemoryContexts
                 new Doctor(Persons[56],"YHBKASD5465123")
                 {
                     Id = ++id,
+                                                        User=Users[userId++],
+
                     Education =UM_1,// new List<string>() {UM_3},
                     Experience="W latach 2014-2021 praca w szpitalu zielonogórskim",
                     //ImagePath="/img/mw/k/25.jpg",
@@ -1873,6 +2033,8 @@ namespace Asklepios.Data.InMemoryContexts
                 new Doctor(Persons[57],"OPQEW6546132")
                 {
                     Id = ++id,
+                                                        User=Users[userId++],
+
                     Education =UM_4,// new List<string>() {UM_5},
                     Experience="W latach 2005-2020 praca w szpitalu wojewódzkim w Olsztynie",
                     //ImagePath="/img/mw/k/26.jpg",
@@ -1887,6 +2049,8 @@ namespace Asklepios.Data.InMemoryContexts
                 new Doctor(Persons[58],"OPNKWEJR546132")
                 {
                     Id = ++id,
+                                                        User=Users[userId++],
+
                     Education =UM_6,// new List<string>() {UM_8},
                     Experience="Od 2010 roku pracuje jako ordynator w szpitalu Matki i Dziecka w Warszawie",
                     //ImagePath="/img/mw/k/27.jpg",
@@ -1901,6 +2065,8 @@ namespace Asklepios.Data.InMemoryContexts
                 new Physiotherapist(Persons[59],"GVJDAS54645")
                 {
                     Id = ++id,
+                                                        User=Users[userId++],
+
                     Education =UM_7,// new List<string>() {UM_9},
                     Experience="W latach 2016-2020 praca w szpitalu miejskim w Grudziądzu",
                     //ImagePath="/img/mw/k/28.jpg",
@@ -1915,6 +2081,8 @@ namespace Asklepios.Data.InMemoryContexts
                 new Doctor(Persons[60],"UIHDAS546516")
                 {
                     Id = ++id,
+                                                        User=Users[userId++],
+
                     Education =UM_9,    // new List<string>() {UM_1,UM_9},
                     Experience="W latach 2009-2020 praca w szpitalu miejskim w Suwałkach",
                     //ImagePath="/img/mw/k/29.jpg",
@@ -1929,6 +2097,8 @@ namespace Asklepios.Data.InMemoryContexts
                 new Nurse(Persons[61],"ADASD46123")
                 {
                     Id = ++id,
+                                                        User=Users[userId++],
+
                     Education =UM_7,// new List<string>() {UM_7,UM_2},
                     Experience="W latach 2009-2020 praca w szpitalu wojewódzkim w Toruniu",
                     //ImagePath="/img/mw/k/30.jpg",
@@ -1943,6 +2113,8 @@ namespace Asklepios.Data.InMemoryContexts
                 new ElectroradiologyTechnician(Persons[62],"YUGDSD56131")
                 {
                     Id = ++id,
+                                                        User=Users[userId++],
+
                     Education =UM_2,// new List<string>() {UM_2,UM_4},
                     Experience="Od 2016 pracuje w szpitalu Bródnowskim",
                     //ImagePath="/img/mw/k/31.jpg",
@@ -1956,6 +2128,8 @@ namespace Asklepios.Data.InMemoryContexts
                 },
                 new Doctor(Persons[63],"YAJHD5461321")
                 {
+                                                        User=Users[userId++],
+
                     Id = ++id,
                     Education =UM_5,// new List<string>() {UM_5},
                     Experience="W latach 2009-2021 praca w szpitalu w Przemyślu",
@@ -1971,6 +2145,8 @@ namespace Asklepios.Data.InMemoryContexts
                 new Doctor(Persons[64],"OOXCZX6541546")
                 {
                     Id = ++id,
+                                                        User=Users[userId++],
+
                     Education =UM_3,// new List<string>() {UM_3},
                     Experience="W latach 2008-2020 praca w szpitalu w Lublinie",
                     //ImagePath="/img/mw/k/33.jpg",
@@ -1985,6 +2161,8 @@ namespace Asklepios.Data.InMemoryContexts
                 new Physiotherapist(Persons[65],"FSDRGD54543")
                 {
                     Id = ++id,
+                                                        User=Users[userId++],
+
                     Education =UM_2,// new List<string>() {UM_1,UM_2},
                     Experience="W latach 2005-2020 praca w szpitalu Bródnowskim",
                     //ImagePath="/img/mw/k/34.jpg",
@@ -1999,6 +2177,8 @@ namespace Asklepios.Data.InMemoryContexts
                 new Doctor(Persons[66],"UHJKSAD51321")
                 {
                     Id = ++id,
+                                                        User=Users[userId++],
+
                     Education =UM_3,// new List<string>() {UM_1,UM_2},
                     Experience="W latach 2005-2020 praca w szpitalu Bródnowskim",
                     //ImagePath="/img/mw/k/35.jpg",
@@ -2013,6 +2193,8 @@ namespace Asklepios.Data.InMemoryContexts
                 new Doctor(Persons[67],"BNSDSA546123")
                 {
                     Id = ++id,
+                                                        User=Users[userId++],
+
                     Education =UM_5,// new List<string>() {UM_5,UM_2},
                     Experience="W latach 2005-2020 praca w szpitalu Bródnowskim",
                     //ImagePath="/img/mw/k/36.jpg",
@@ -2026,6 +2208,8 @@ namespace Asklepios.Data.InMemoryContexts
                 new ElectroradiologyTechnician(Persons[68],"KLSAD546123")
                 {
                     Id = ++id,
+                                                        User=Users[userId++],
+
                     Education =UM_1,// new List<string>() {UM_1,UM_2},
                     Experience="W latach 2016-2020 praca w szpitalu lwowskim na Ukrainie",
                     //ImagePath="/img/mw/k/37.jpg",
@@ -2040,6 +2224,7 @@ namespace Asklepios.Data.InMemoryContexts
                 new DentalHygienist(Persons[69],"JHDAS4564231")
                 {
                     Id = ++id,
+                                                        User=Users[userId++],
                     Education =UM_3,// new List<string>() {UM_1,UM_2},
                     Experience="W latach 2005-2020 praca w szpitalu Bródnowskim",
                     ////ImagePath="/img/MW/k/38.jpg",
@@ -2049,11 +2234,8 @@ namespace Asklepios.Data.InMemoryContexts
                     {
                         PrimaryMedicalServices[25]
                     }
-
                 },
-
             };
-
             return MedicalWorkers;
         }
 
@@ -3030,7 +3212,7 @@ namespace Asklepios.Data.InMemoryContexts
                 },
 
             };
-            patients.ForEach(c=>c.User=Users.Where(d=>d.Id==c.UserId).FirstOrDefault());
+            patients.ForEach(c => c.User = Users.Where(d => d.Id == c.UserId).FirstOrDefault());
             return patients;
 
 
@@ -3669,6 +3851,34 @@ namespace Asklepios.Data.InMemoryContexts
                     FloorNumber = 0,
                     MedicalRoomType = Core.Enums.MedicalRoomType.General,
                     Name = "16"
+                },
+                new MedicalRoom()
+                {
+                    Id = 81,
+                    FloorNumber = 1,
+                    MedicalRoomType = Core.Enums.MedicalRoomType.General,
+                    Name = "11"
+                },
+                new MedicalRoom()
+                {
+                    Id = 82,
+                    FloorNumber = 2,
+                    MedicalRoomType = Core.Enums.MedicalRoomType.General,
+                    Name = "23"
+                },
+                new MedicalRoom()
+                {
+                    Id = 83,
+                    FloorNumber = 2,
+                    MedicalRoomType = Core.Enums.MedicalRoomType.General,
+                    Name = "24"
+                },
+                new MedicalRoom()
+                {
+                    Id = 84,
+                    FloorNumber = 2,
+                    MedicalRoomType = Core.Enums.MedicalRoomType.General,
+                    Name = "25"
                 },
 
             //},

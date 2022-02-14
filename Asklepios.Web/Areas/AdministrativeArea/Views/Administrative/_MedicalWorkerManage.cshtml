@@ -1,0 +1,90 @@
+﻿@model Asklepios.Web.Areas.AdministrativeArea.Models.MedicalWorkersManageViewModel
+
+@{
+    IEnumerable<SelectListItem>
+            removeMode = Html.GetEnumSelectListWithOneValue(Asklepios.Web.Areas.AdministrativeArea.Models.ViewMode.Remove).ToList();
+    IEnumerable<SelectListItem>
+        readMode = Html.GetEnumSelectListWithOneValue(Asklepios.Web.Areas.AdministrativeArea.Models.ViewMode.Read).ToList();
+    Model.SelectedWorkerId = Model.SelectedWorker.Id;
+}
+<div class="d-flex jumbotron flex-column" style=" padding:20px;">
+    <div class="d-flex mb-3 flex-wrap align-content-around align-items-center" style="text-align:center">
+        <div class="p-2  pt-3 align-content-center align-items-center align-self-center mx-auto" style="width:400px; text-align:center">
+            <div class="d-flex flex-fill  justify-content-center" style="text-align:center">
+                <img alt="@Model.SelectedWorker.FullProffesionalName" src="@Model.SelectedWorker.Person.ImageSource" class="img-fluid" style="display: block; max-height:300px;
+        border-radius: 6px; ">
+            </div>
+        </div>
+        <div class="p-2 d-flex pt-3 m-auto flex-grow-1 flex-column" style="width:400px;text-align:center">
+            <h3 style="font-weight:900;">
+                <a asp-action="MedicalWorkerDetails" asp-controller="Administrative" asp-route-id="@Model.SelectedWorker.Id">
+
+                    @Model.SelectedWorker.FullProffesionalName
+                </a>
+            </h3>
+            <br>
+
+            <h4>Zakres specjalizacji:</h4>
+            <h5>
+                @for (int i = 0; i < Model.SelectedWorker.MedicalServices.Count; i++)
+                {
+                    MedicalService service = Model.SelectedWorker.MedicalServices[i];
+                    <br>
+                    @service.Name
+                }
+
+            </h5>
+            <h5>Region - @Model.SelectedWorker.Person.DefaultAglomeration.Value.GetDescription()</h5>
+
+        </div>
+        <div class="p-2 d-flex pt-3 m-auto flex-grow-1 flex-column" style="width:400px;text-align:center">
+            <div class=" d-flex flex-column">
+                <form class="form my-2" asp-action="MedicalWorkerItemEdit" method="post">
+                    <div>
+                        <input asp-for="SearchOptions.SelectedAglomeration" hidden />
+                        <input asp-for="SearchOptions.SelectedGender" hidden />
+                        <input asp-for="SearchOptions.SelectedId" hidden />
+                        <input asp-for="SearchOptions.SelectedName" hidden />
+                        <input asp-for="SearchOptions.SelectedPassportNumber" hidden />
+                        <input asp-for="SearchOptions.SelectedPESEL" hidden />
+                        <input asp-for="SearchOptions.SelectedServiceId" hidden />
+                        <input asp-for="SearchOptions.SelectedSurname" hidden />
+                        <input asp-for="SearchOptions.SelectedWorkerType" hidden />
+                        <input asp-for="SelectedWorker" hidden />
+                        <input asp-for="SelectedWorkerId" hidden />
+
+                        <select asp-for="ViewMode" asp-items="readMode" hidden></select>
+                    </div>
+                    <div class="form-group d-flex flex-column">
+                        <button type="submit" class="btn btn-primary btn-icon-split d-flex">
+                            <span class="icon text-white-50 left" style="text-align:left;float:left">
+                                <i class="fas fa-address-book"></i>
+                            </span>
+                            <span class="text" style="float: left">Edytuj</span>
+                        </button>
+                    </div>
+
+                </form>
+                <form class="form my-2" asp-action="MedicalWorkerItemRemove" method="post">
+                    <div class="form-group d-flex flex-column">
+
+                        <input asp-for="SelectedWorker" hidden />
+                        <input asp-for="SelectedWorkerId" hidden />
+                        <input asp-for="ViewMode" hidden />
+                        <select asp-for="ViewMode" asp-items="removeMode" hidden></select>
+                    </div>
+
+                    <div class="form-group d-flex flex-column">
+                        <button type="submit" class="btn btn-primary btn-icon-split d-flex">
+                            <span class="icon text-white-50 left" style="text-align:left;float:left">
+                                <i class="fas fa-address-book"></i>
+                            </span>
+                            <span class="text" style="float: left">Usuń</span>
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+
+    </div>
+</div>

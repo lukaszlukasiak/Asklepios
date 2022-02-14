@@ -2,7 +2,9 @@
 using Microsoft.AspNetCore.Mvc.ViewFeatures;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Linq;
+using System.Reflection;
 using System.Threading.Tasks;
 
 namespace Asklepios.Web.ServiceClasses
@@ -56,6 +58,14 @@ where TEnum : struct
             //selectList.Single(x => x.Value == $"{(int)(object)defaultValue}").Selected = true;
             selectList.ElementAt(0).Selected = true;
             return selectList;
+        }
+        public static string GetDescription(this Enum enumValue)
+        {
+            return enumValue.GetType()
+                       .GetMember(enumValue.ToString())
+                       .First()
+                       .GetCustomAttribute<DescriptionAttribute>()?
+                       .Description ?? string.Empty;
         }
 
 

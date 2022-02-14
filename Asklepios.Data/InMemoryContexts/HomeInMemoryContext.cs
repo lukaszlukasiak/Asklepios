@@ -13,6 +13,10 @@ namespace Asklepios.Data.InMemoryContexts
         private IEnumerable<Location> _locations;
         public HomeInMemoryContext()
         {
+            if (!PatientMockDB.IsCreated)
+            {
+                PatientMockDB.SetData();
+            }
             _locations = PatientMockDB.GetAllLocations();
 
             //_locations = new List<Location>()

@@ -8,8 +8,15 @@ namespace Asklepios.Web.Areas.AdministrativeArea.Models
 {
     public class MedicalWorkersManageViewModel
     {
-        public MedicalWorkerSearchOptions SearchOptions {get;set;}
-        public MedicalWorker Worker { get; set; }
+        public MedicalWorker SelectedWorker { get; set; }
+        public MedicalWorkerSearchOptions SearchOptions { get; set; } = new MedicalWorkerSearchOptions();
+        //public MedicalWorker Worker { get; set; }
+        public long SelectedWorkerId { get; set; }
+        //public MedicalWorkertData MedicalWorkertData { get; set; }
+        public MedicalWorkertData MedicalWorkertData { get; set; }
+        public User User { get; set; }
+        public Person Person { get; set; }
+
         public List<MedicalWorker> AllMedicalWorkers { get; set; }
         public List<MedicalWorker> FilteredWorkers
         {
@@ -27,11 +34,12 @@ namespace Asklepios.Web.Areas.AdministrativeArea.Models
         }
 
 
-
+        public List<MedicalService> PrimaryServices { get; set; }
         public int ItemsPerPage { get; private set; } = 100;
         public int CurrentPageNum { get; private set; } = 1;
         public string SuccessMessage { get; set; }
         public string ErrorMessage { get; set; }
+        public ViewMode ViewMode { get; set; }
 
         private List<MedicalWorker> GetFilteredWorkersList()
         {
@@ -42,7 +50,7 @@ namespace Asklepios.Web.Areas.AdministrativeArea.Models
             }
             else
             {
-                if (!string.IsNullOrWhiteSpace( SearchOptions.SelectedName))
+                if (!string.IsNullOrWhiteSpace(SearchOptions.SelectedName))
                 {
                     filteredWorkers = filteredWorkers.Where(c => c.Person.Name.Contains(SearchOptions.SelectedName)).ToList();
                     if (filteredWorkers == null)
@@ -86,6 +94,14 @@ namespace Asklepios.Web.Areas.AdministrativeArea.Models
             if (SearchOptions.SelectedGender.HasValue)
             {
                 filteredWorkers = filteredWorkers.Where(c => c.Person.Gender == SearchOptions.SelectedGender).ToList();
+                if (filteredWorkers == null)
+                {
+                    return null;
+                }
+            }
+            if (SearchOptions.SelectedWorkerType.HasValue)
+            {
+                filteredWorkers = filteredWorkers.Where(c => c.MedicalWorkerType == SearchOptions.SelectedWorkerType).ToList();
                 if (filteredWorkers == null)
                 {
                     return null;
