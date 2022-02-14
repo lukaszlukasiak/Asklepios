@@ -1,0 +1,103 @@
+﻿@model Asklepios.Web.Areas.AdministrativeArea.Models.LocationsManageViewModel
+@{
+    SelectList servicesList = new SelectList(Model.PrimaryServices, "Id", "Name");
+    SelectList roomsList = new SelectList(Model.UnasignedRooms, "Id", "LongDescription");
+}
+
+
+@{
+    //if (!string.IsNullOrWhiteSpace(Model.SuccessMessage))
+    if (TempData.ContainsKey("successMessage"))
+
+    {
+        <div class="messages" id="MessageSpan" style="margin-top: 10px; text-align: center ">
+            <p class="alert alert-success">
+                @*@Model.SuccessMessage*@
+                @TempData["successMessage"].ToString()
+            </p>
+        </div>
+        <a asp-controller="Administrative" asp-action="LocationItemAdd" class="btn btn-outline-secondary btn-icon-split ">
+            <span class="text" style="float: left">Resetuj dane</span>
+        </a>
+
+    }
+    //if (!string.IsNullOrWhiteSpace(Model.ErrorMessage))
+    if (TempData.ContainsKey("errorMessage"))
+    {
+        <div class="messages" id="MessageSpan" style="margin-top: 10px; text-align: center ">
+            <p class="alert alert-success">
+                @*@Model.ErrorMessage*@
+                @TempData["errorMessage"].ToString()
+
+            </p>
+        </div>
+        <a asp-controller="Administrative" asp-action="LocationItemAdd" class="btn btn-outline-secondary btn-icon-split ">
+            <span class="text" style="float: left">Resetuj dane</span>
+        </a>
+
+    }
+}
+<form class="form my-2" asp-action="LocationItemAdd" method="post" enctype="multipart/form-data">
+    <div class="form-group d-flex flex-column">
+        @*<span id="MessageSpan" asp-validation-for="User.UserName" class="text-danger"></span>*@
+
+        <label asp-for="SelectedLocation.Description" class="control-label"></label>
+        <input asp-for="SelectedLocation.Description" class="form-control mb-2">
+        <span asp-validation-for="SelectedLocation.Description" class="text-danger"></span>
+
+        <label asp-for="SelectedLocation.City" class="control-label"></label>
+        <input asp-for="SelectedLocation.City" class="form-control mb-2">
+        <span asp-validation-for="SelectedLocation.City" class="text-danger"></span>
+
+        <label asp-for="SelectedLocation.Name" class="control-label"></label>
+        <input asp-for="SelectedLocation.Name" class="form-control mb-2">
+        <span asp-validation-for="SelectedLocation.Name" class="text-danger"></span>
+
+        <label asp-for="SelectedLocation.Aglomeration" class="control-label"></label>
+        <select class="form-control  mb-2" asp-for="SelectedLocation.Aglomeration" asp-items="Html.GetEnumSelectList<Asklepios.Core.Enums.Aglomeration>()">
+            <option value="">Wybierz domyślną aglomerację</option>
+        </select>
+        <span asp-validation-for="SelectedLocation.Aglomeration" class="text-danger"></span>
+
+        <label asp-for="SelectedLocation.PhoneNumber" class="control-label"></label>
+        <input asp-for="SelectedLocation.PhoneNumber" class="form-control mb-2">
+        <span asp-validation-for="SelectedLocation.PhoneNumber" class="text-danger"></span>
+
+        <label asp-for="SelectedLocation.PostalCode" class="control-label"></label>
+        <input asp-for="SelectedLocation.PostalCode" class="form-control mb-2">
+        <span asp-validation-for="SelectedLocation.PostalCode" class="text-danger"></span>
+
+        <label asp-for="SelectedLocation.StreetAndNumber" class="control-label"></label>
+        <input asp-for="SelectedLocation.StreetAndNumber" class="form-control mb-2">
+        <span asp-validation-for="SelectedLocation.StreetAndNumber" class="text-danger"></span>
+
+        <label asp-for="SelectedLocation.MedicalServiceIds" class="control-label"></label>
+        <select class="form-control  mb-2" asp-for="SelectedLocation.MedicalServiceIds" asp-items="servicesList" multiple>
+            @*<option value="">Wybierz usługi</option>*@
+        </select>
+        <span asp-validation-for="SelectedLocation.MedicalServiceIds" class="text-danger"></span>
+
+        <label asp-for="SelectedLocation.MedicalRoomIds" class="control-label"></label>
+        <select class="form-control  mb-2" asp-for="SelectedLocation.MedicalRoomIds" asp-items="roomsList" multiple>
+            @*<option value="">Wybierz usługi</option>*@
+        </select>
+        <span asp-validation-for="SelectedLocation.MedicalRoomIds" class="text-danger"></span>
+
+        <label asp-for="SelectedLocation.ImageFile" class="control-label"></label>
+        <input asp-for="SelectedLocation.ImageFile" accept="image/*" class="form-control-file btn btn-secondary" style="text-align:center" />
+        <span asp-validation-for="SelectedLocation.ImageFile" class="text-danger mb-2"></span>
+
+        <div class="form-group d-flex flex-column mt-2">
+            <button id="btnSubmit" type="submit" class="btn btn-primary btn-icon-split d-flex">
+                <span class="icon text-white-50 left" style="text-align:left;float:left">
+                    <i class="fas fa-plus"></i>
+                </span>
+                <span class="text" style="float: left">Dodaj</span>
+            </button>
+        </div>
+
+    </div>
+</form>
+<script>
+    $('#MessageSpan').delay(5000).fadeOut(300);
+</script>

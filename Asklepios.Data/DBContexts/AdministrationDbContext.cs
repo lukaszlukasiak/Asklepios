@@ -3,11 +3,27 @@ using Asklepios.Core.Models;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
+using Microsoft.AspNetCore.Http;
 
 namespace Asklepios.Data
 {
     public class AdministrationDbContext : DbContext, IAdministrationModuleRepository
     {
+        public void AddLocation(Location location)
+        {
+            throw new NotImplementedException();
+        }
+
+        public void AddMedicalRoom(MedicalRoom room)
+        {
+            throw new NotImplementedException();
+        }
+
+        public void AddMedicalWorkerObjects(User user, Person person, MedicalWorker medicalWorker)
+        {
+            throw new NotImplementedException();
+        }
+
         public void AddPatientObjects(User user, Person person, Patient patient)
         {
             throw new NotImplementedException();
@@ -108,7 +124,17 @@ namespace Asklepios.Data
             throw new NotImplementedException();
         }
 
+        public MedicalRoom GetRoomById(long id)
+        {
+            throw new NotImplementedException();
+        }
+
         public List<MedicalRoom> GetRoomsByLocationId()
+        {
+            throw new NotImplementedException();
+        }
+
+        public List<MedicalRoom> GetUnasignedRooms()
         {
             throw new NotImplementedException();
         }
@@ -128,6 +154,15 @@ namespace Asklepios.Data
             throw new NotImplementedException();
         }
 
+        public void RemoveLocationById(long selectedLocationId)
+        {
+            throw new NotImplementedException();
+        }
+
+        public void RemoveMedicalWorkerById(long selectedWorkerId)
+        {
+            throw new NotImplementedException();
+        }
 
         public void RemovePatientById(long id)
         {
@@ -139,7 +174,32 @@ namespace Asklepios.Data
             throw new NotImplementedException();
         }
 
+        public void UpdateLocation(Location selectedLocation, long selectedLocationId)
+        {
+            throw new NotImplementedException();
+        }
+
+        public void UpdateLocationImage(IFormFile imageFile, Location location, string webRootPath)
+        {
+            throw new NotImplementedException();
+        }
+
+        public void UpdateMedicalWorker(MedicalWorker selectedWorker, long selectedWorkerId)
+        {
+            throw new NotImplementedException();
+        }
+
         public void UpdatePatient(Patient patient)
+        {
+            throw new NotImplementedException();
+        }
+
+        public void UpdatePersonImage(IFormFile imageFile, Person person)
+        {
+            throw new NotImplementedException();
+        }
+
+        public void UpdatePersonImage(IFormFile imageFile, Person person, string hostEnvironmentPath)
         {
             throw new NotImplementedException();
         }

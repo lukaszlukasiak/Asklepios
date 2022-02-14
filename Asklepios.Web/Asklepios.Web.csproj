@@ -17,6 +17,10 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Content Remove="Areas\AdministrativeArea\Views\Administrative\NonMedicalWorkerItemsAdd.cshtml" />
+    <Content Remove="Areas\AdministrativeArea\Views\Administrative\NonMedicalWorkerItemsEdit.cshtml" />
+    <Content Remove="Areas\AdministrativeArea\Views\Administrative\NonMedicalWorkerItemsManage.cshtml" />
+    <Content Remove="Areas\AdministrativeArea\Views\Administrative\NonMedicalWorkerItemsRemove.cshtml" />
     <Content Remove="Areas\CustomerServiceArea\Views\CustomerService\RateVisit.cshtml" />
     <Content Remove="Areas\HomeArea\Views\Home\_Location_deop.cshtml" />
     <Content Remove="Areas\HomeArea\Views\Shared\_Layout.cshtml" />

@@ -103,7 +103,6 @@ namespace Asklepios.Core.Models
 
                 }
                 return ImageFilePath;
-
             }
         }
         public string ReturnProperImageFilePath(string defaultPathF, string defaultPathM)
@@ -158,6 +157,55 @@ namespace Asklepios.Core.Models
             PassportCode = passportCode;
             //EmailAddress = email;
             DefaultAglomeration = aglomeration;
+        }
+
+        public void UpdateWith(Person person)
+        {
+            if (person.BirthDate.HasValue)
+            {
+                this.BirthDate = person.BirthDate;
+            }
+            if (person.DefaultAglomeration.HasValue)
+            {
+                this.DefaultAglomeration = person.DefaultAglomeration;
+            }
+            if (person.Gender.HasValue)
+            {
+                this.Gender = person.Gender;
+            }
+            //if (person.HasPolishCitizenship)
+            //{
+                this.HasPolishCitizenship = person.HasPolishCitizenship;
+            //}
+            if (!string.IsNullOrWhiteSpace(person.ImageFilePath))
+            {
+                this.ImageFilePath = person.ImageFilePath;
+            }
+            if (!string.IsNullOrWhiteSpace( person.Name))
+            {
+                this.Name = person.Name;
+            }
+            if (!string.IsNullOrWhiteSpace(person.PassportCode))
+            {
+                this.PassportCode = person.PassportCode;
+            }
+            if (!string.IsNullOrWhiteSpace(person.PassportNumber))
+            {
+                this.PassportNumber = person.PassportNumber;
+            }
+            if (!string.IsNullOrWhiteSpace(person.PESEL))
+            {
+                this.PESEL = person.PESEL;
+            }
+            if (!string.IsNullOrWhiteSpace(person.PhoneNumber))
+            {
+                this.PhoneNumber = person.PhoneNumber;
+            }
+            if (!string.IsNullOrWhiteSpace(person.Surname))
+            {
+                this.Surname = person.Surname;
+            }
+            
         }
         public string ValidationError { get; set; }
         public bool IsValid

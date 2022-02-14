@@ -1,5 +1,119 @@
-﻿@*
-    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
-*@
+﻿@model Asklepios.Web.Areas.AdministrativeArea.Models.MedicalWorkersManageViewModel 
 @{
+    SelectList services = new SelectList(Model.PrimaryServices, "Id", "Name");
+
 }
+
+<div class="d-flex flex-column">
+
+    <form class="form my-2" asp-action="MedicalWorkerItemsManage" method="post">
+        <div class="form-group d-flex flex-column">
+
+            <label asp-for="SearchOptions.SelectedId" class="control-label"></label>
+            <input asp-for="SearchOptions.SelectedId" class="form-control mb-2">
+            <span asp-validation-for="SearchOptions.SelectedId" class="text-danger"></span>
+
+            <label asp-for="SearchOptions.SelectedAglomeration" class="control-label"></label>
+            <select class="form-control  mb-2" asp-for="SearchOptions.SelectedAglomeration" asp-items="Html.GetEnumSelectList<Asklepios.Core.Enums.Aglomeration>()">
+                <option value="">Wybierz aglomerację</option>
+            </select>
+            <span asp-validation-for="SearchOptions.SelectedAglomeration" class="text-danger"></span>
+
+            <label asp-for="SearchOptions.SelectedServiceId" class="control-label"></label>
+            <select class="form-control  mb-2" asp-for="SearchOptions.SelectedServiceId" asp-items="services">
+                <option value="-1">Wybierz pakiet</option>
+            </select>
+            <span asp-validation-for="SearchOptions.SelectedServiceId" class="text-danger"></span>
+
+
+            <label asp-for="SearchOptions.SelectedGender" class="control-label"></label>
+            <select class="form-control  mb-2" asp-for="SearchOptions.SelectedGender" asp-items="Html.GetEnumSelectList<Asklepios.Core.Enums.Gender>()">
+                <option value="">Wybierz płeć</option>
+            </select>
+            <span asp-validation-for="SearchOptions.SelectedGender" class="text-danger"></span>
+
+            <label asp-for="SearchOptions.SelectedWorkerType" class="control-label"></label>
+            <select class="form-control  mb-2" asp-for="SearchOptions.SelectedWorkerType" asp-items="Html.GetEnumSelectList<Asklepios.Core.Enums.MedicalWorkerType>()">
+                <option value="">Wybierz kategorię</option>
+            </select>
+            <span asp-validation-for="SearchOptions.SelectedGender" class="text-danger"></span>
+
+
+            <label asp-for="SearchOptions.SelectedName" class="control-label"></label>
+            <input asp-for="SearchOptions.SelectedName" class="form-control mb-2">
+            <span asp-validation-for="SearchOptions.SelectedName" class="text-danger"></span>
+
+
+            <label asp-for="SearchOptions.SelectedSurname" class="control-label"></label>
+            <input asp-for="SearchOptions.SelectedSurname" class="form-control mb-2">
+            <span asp-validation-for="SearchOptions.SelectedSurname" class="text-danger"></span>
+
+            @*<div class="d-flex flex-row">
+            <label asp-for="HasPolishCitizenship"></label>
+            <input type="checkbox" asp-for="HasPolishCitizenship" class="custom-control ml-2 " style="height:20px;width:20px" checked />
+            <span asp-validation-for="HasPolishCitizenship" class="text-danger"></span>
+        </div>*@
+
+
+            <label asp-for="SearchOptions.SelectedPESEL" class="control-label"></label>
+            <input asp-for="SearchOptions.SelectedPESEL" class="form-control mb-2">
+            <span asp-validation-for="SearchOptions.SelectedPESEL" class="text-danger"></span>
+
+            <label asp-for="SearchOptions.SelectedPassportNumber" class="control-label"></label>
+            <input asp-for="SearchOptions.SelectedPassportNumber" class="form-control mb-2">
+            <span asp-validation-for="SearchOptions.SelectedPassportNumber" class="text-danger"></span>
+
+
+
+
+            <button id="btnSubmit" type="submit" class="btn btn-primary w-100 mt-2">Wyszukaj</button>
+        </div>
+    </form>
+    @{
+        if (!string.IsNullOrWhiteSpace(Model.SuccessMessage))
+        {
+            <div class="messages" style="margin-top:10px;text-align:center">
+                <p class="alert alert-success">
+                    @Model.SuccessMessage
+                </p>
+            </div>
+        }
+        else if (!string.IsNullOrWhiteSpace(Model.ErrorMessage))
+        {
+            <div class="messages" style="margin-top: 10px; text-align: center ">
+                <p class="alert alert-danger">
+                    @Model.ErrorMessage
+                </p>
+            </div>
+
+        }
+
+
+
+        List<MedicalWorker> medicalWorkers = Model.FilteredWorkers;
+
+        for (int i = 0; i < medicalWorkers.Count; i++)
+        {
+            MedicalWorker worker = medicalWorkers[i];
+            //Asklepios.Web.Areas.AdministrativeArea.Models.MedicalWorkersManageViewModel model = new Asklepios.Web.Areas.AdministrativeArea.Models.MedicalWorkersManageViewModel();
+            //if (Model is Asklepios.Web.Areas.AdministrativeArea.Interfaces.IPatientSearch iSearch)
+            //{
+            //    model.UpdateWithSearch(iSearch);
+            //}
+            Model.SelectedWorker = worker;
+            <partial name="_MedicalWorkerManage" model="Model" />
+        }
+        if (medicalWorkers.Count == 0)
+        {
+            <div class="messages" style="margin-top: 10px; text-align: center ">
+                <p class="alert alert-danger">
+                    Brak pacjentów spełniających wymagania...
+                </p>
+            </div>
+
+        }
+
+
+    }
+
+</div>

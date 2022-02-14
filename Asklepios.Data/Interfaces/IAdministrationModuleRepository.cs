@@ -1,4 +1,5 @@
 ﻿using Asklepios.Core.Models;
+using Microsoft.AspNetCore.Http;
 using System.Collections.Generic;
 
 namespace Asklepios.Data.Interfaces
@@ -6,7 +7,6 @@ namespace Asklepios.Data.Interfaces
     public interface IAdministrationModuleRepository
     {
         List<MedicalService> GetMedicalServices();
-
         List<MedicalPackage> GetMedicalPackages();
         List<Patient> GetAllPatients();
         List<VisitCategory> GetVisitCategories();
@@ -15,10 +15,12 @@ namespace Asklepios.Data.Interfaces
         List<MedicalWorker>  GetMedicalWorkers();
         List<Visit> GetAvailableVisits();
         Patient GetCurrentPatient();
+        List<MedicalRoom> GetUnasignedRooms();
         MedicalWorker GetMedicalWorkerById(long id);
         MedicalPackage GetMedicalPackageById(long id);
         Visit GetAvailableVisitById(long id);
         Location GetLocationById(long id);
+        //Location GetLocations(long id);
         VisitCategory GetVisitCategoryById(long id);
         Patient GetPatientById(long id);
         User GetUser(int parsedId);
@@ -32,5 +34,15 @@ namespace Asklepios.Data.Interfaces
         void AddPatientObjects(User user, Person person, Patient patient);
         void RemovePatientById(long id);
         void UpdatePatient(Patient patient);
+        void AddMedicalWorkerObjects(User user, Person person, MedicalWorker medicalWorker);
+        void RemoveMedicalWorkerById(long selectedWorkerId);
+        void UpdateMedicalWorker(MedicalWorker selectedWorker, long selectedWorkerId);
+        void UpdatePersonImage(IFormFile imageFile, Person person, string hostEnvironmentPath);
+        void UpdateLocationImage(IFormFile imageFile, Location location, string webRootPath);
+        void AddLocation(Location location);
+        void UpdateLocation(Location selectedLocation, long selectedLocationId);
+        void RemoveLocationById(long selectedLocationId);
+        MedicalRoom GetRoomById(long id);
+        void AddMedicalRoom(MedicalRoom room);
     }
 }

@@ -14,7 +14,6 @@ namespace Asklepios.Web.Areas.AdministrativeArea.Models
         public Person Person { get; set; } = new Person();
         public Patient Patient { get; set; }
 
-
         public List<MedicalPackage> MedicalPackages { get; set; }
         public List<NFZUnit> NFZUnits { get; set; }
         public IFormFile ImageFile { get; set; }

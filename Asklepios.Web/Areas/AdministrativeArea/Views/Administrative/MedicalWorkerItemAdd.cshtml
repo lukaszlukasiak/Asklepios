@@ -1,0 +1,144 @@
+﻿@model Asklepios.Web.Areas.AdministrativeArea.Models.MedicalWorkerAddViewModel
+    
+
+<div class="d-flex flex-column">
+    @{
+        SelectList services = new SelectList(Model.PrimaryServices, "Id", "Name");
+
+
+        if (!string.IsNullOrWhiteSpace(Model.SuccessMessage))
+        {
+            <div class="messages" id="MessageSpan" style="margin-top: 10px; text-align: center ">
+                <p class="alert alert-success">
+                    @Model.SuccessMessage
+                </p>
+            </div>
+            <a asp-controller="Administrative" asp-action="MedicalWorkerItemsAdd" class="btn btn-outline-secondary btn-icon-split ">
+                <span class="text" style="float: left">Resetuj dane</span>
+            </a>
+
+        }
+        if (!string.IsNullOrWhiteSpace(Model.ErrorMessage))
+        {
+            <div class="messages" id="MessageSpan" style="margin-top: 10px; text-align: center ">
+                <p class="alert alert-success">
+                    @Model.ErrorMessage
+                </p>
+            </div>
+            <a asp-controller="Administrative" asp-action="MedicalWorkerItemsAdd" class="btn btn-outline-secondary btn-icon-split ">
+                <span class="text" style="float: left">Resetuj dane</span>
+            </a>
+
+        }
+        //Model.MedicalWorker = new Doctor();
+        //Model.MedicalWorker.Education = new List<string>();
+
+    }
+
+    <form class="form my-2" asp-action="MedicalWorkerItemsAdd" method="post" enctype="multipart/form-data">
+        <div class="form-group d-flex flex-column">
+            @*<span id="MessageSpan" asp-validation-for="User.UserName" class="text-danger"></span>*@
+
+            <label asp-for="User.EmailAddress" class="control-label"></label>
+            <input asp-for="User.EmailAddress" class="form-control mb-2">
+            <span asp-validation-for="User.EmailAddress" class="text-danger"></span>
+
+            <label asp-for="User.Password" class="control-label"></label>
+            <input asp-for="User.Password" class="form-control mb-2">
+            <span asp-validation-for="User.Password" class="text-danger"></span>
+
+            <label asp-for="Person.Name" class="control-label"></label>
+            <input asp-for="Person.Name" class="form-control mb-2">
+            <span asp-validation-for="Person.Name" class="text-danger"></span>
+
+            <label asp-for="Person.Surname" class="control-label"></label>
+            <input asp-for="Person.Surname" class="form-control mb-2">
+            <span asp-validation-for="Person.Surname" class="text-danger"></span>
+
+            <label asp-for="Person.Gender" class="control-label"></label>
+            <select class="form-control  mb-2" asp-for="Person.Gender" asp-items="Html.GetEnumSelectList<Asklepios.Core.Enums.Gender>()">
+                <option value="">Wybierz płeć</option>
+            </select>
+            <span asp-validation-for="Person.Gender" class="text-danger"></span>
+
+
+            <label asp-for="Person.PhoneNumber" class="control-label"></label>
+            <input asp-for="Person.PhoneNumber" class="form-control mb-2">
+            <span asp-validation-for="Person.PhoneNumber" class="text-danger"></span>
+
+
+            <label asp-for="Person.DefaultAglomeration" class="control-label"></label>
+            <select class="form-control  mb-2" asp-for="Person.DefaultAglomeration" asp-items="Html.GetEnumSelectList<Asklepios.Core.Enums.Aglomeration>()">
+                <option value="">Wybierz aglomerację</option>
+            </select>
+            @*<datalist asp-for="Person.DefaultAglomeration" asp-items="Html.GetEnumSelectList<Asklepios.Core.Enums.Aglomeration>()" />*@
+            <span asp-validation-for="Person.DefaultAglomeration" class="text-danger"></span>
+
+            <label asp-for="Person.BirthDate" class="control-label"></label>
+            <input asp-for="Person.BirthDate" class="form-control mb-2">
+            <span asp-validation-for="Person.BirthDate" class="text-danger"></span>
+
+            <div class="d-flex flex-row">
+                <label asp-for="Person.HasPolishCitizenship"></label>
+                <input type="checkbox" asp-for="Person.HasPolishCitizenship" class="custom-control ml-2 " style="height:20px;width:20px" checked />
+                <span asp-validation-for="Person.HasPolishCitizenship" class="text-danger"></span>
+            </div>
+
+            <label asp-for="Person.PESEL" class="control-label"></label>
+            <input asp-for="Person.PESEL" class="form-control mb-2">
+            <span asp-validation-for="Person.PESEL" class="text-danger"></span>
+
+            <label asp-for="Person.PassportNumber" class="control-label"></label>
+            <input asp-for="Person.PassportNumber" class="form-control mb-2">
+            <span asp-validation-for="Person.PassportNumber" class="text-danger"></span>
+
+            <label asp-for="Person.PassportCode" class="control-label"></label>
+            <input asp-for="Person.PassportCode" class="form-control mb-2">
+            <span asp-validation-for="Person.PassportCode" class="text-danger"></span>
+
+            <label asp-for="Person.ImageFile" class="control-label"></label>
+            <input asp-for="Person.ImageFile" accept="image/*" class="form-control-file btn btn-secondary" style="text-align:center" />
+            @*<input asp-for="ImageFile" type="file" class="form-control-file" >*@
+
+            <span asp-validation-for="Person.ImageFile" class="text-danger mb-2"></span>
+
+            <label asp-for="MedicalWorkertData.Education" class="control-label"></label>
+            <input asp-for="MedicalWorkertData.Education" class="form-control mb-2">
+            <span asp-validation-for="MedicalWorkertData.Education" class="text-danger"></span>
+
+            <label asp-for="MedicalWorkertData.Experience" class="control-label"></label>
+            <input asp-for="MedicalWorkertData.Experience" class="form-control mb-2">
+            <span asp-validation-for="MedicalWorkertData.Experience" class="text-danger"></span>
+
+            <label asp-for="MedicalWorkertData.MedicalServiceIds" class="control-label"></label>
+            <select class="form-control  mb-2" asp-for="MedicalWorkertData.MedicalServiceIds" asp-items="services" multiple>
+                @*<option value="">Wybierz usługi</option>*@
+            </select>
+            <span asp-validation-for="MedicalWorkertData.MedicalServiceIds" class="text-danger"></span>
+
+            <label asp-for="MedicalWorkertData.MedicalWorkerType" class="control-label"></label>
+            <select class="form-control  mb-2" asp-for="MedicalWorkertData.MedicalWorkerType" asp-items="Html.GetEnumSelectList<Asklepios.Core.Enums.MedicalWorkerType>()">
+                <option value="">Wybierz typ pracownika medycznego</option>
+            </select>
+            <span asp-validation-for="MedicalWorker.MedicalWorkerType" class="text-danger"></span>
+
+            <label asp-for="MedicalWorkertData.ProfessionalNumber" class="control-label"></label>
+            <input asp-for="MedicalWorkertData.ProfessionalNumber" class="form-control mb-2">
+            <span asp-validation-for="MedicalWorkertData.ProfessionalNumber" class="text-danger"></span>
+
+            <div class="d-flex flex-row">
+                <label asp-for="MedicalWorkertData.IsCurrentlyHired"></label>
+                <input type="checkbox" asp-for="MedicalWorkertData.IsCurrentlyHired" class="custom-control ml-2 " style="height:20px;width:20px" checked />
+                <span asp-validation-for="MedicalWorkertData.IsCurrentlyHired" class="text-danger"></span>
+            </div>
+
+            @*@Html.EditorFor(model => model.MedicalWorker.Education, new { @class = "form-control mb-2" })*@
+
+            <button id="btnSubmit" type="submit" class="btn btn-primary w-100 mt-2">Dodaj</button>
+
+        </div>
+    </form>
+</div>
+<script>
+    $('#MessageSpan').delay(5000).fadeOut(300);
+</script>

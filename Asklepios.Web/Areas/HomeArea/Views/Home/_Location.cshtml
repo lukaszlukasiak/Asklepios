@@ -22,7 +22,7 @@
 
                 </div>*@
             <div class="row" style="margin:0px;">
-                <div class="col-sm-4" style="padding: 0px;margin-top:20px;">
+                <div class="col-sm-4" style="padding: 0px;margin-top:0px;">
                     <h3>Adres</h3>
                     <p style="margin:0px; padding:0px">
                         @Model.City, @Model.PostalCode </p>
@@ -55,11 +55,11 @@
                                     if (i + 1 < count)
                                     {
 
-                                        val = Model.Services.ElementAt(i) + ", ";
+                                        val = Model.Services.ElementAt(i).Name + ", ";
                                     }
                                     else
                                     {
-                                        val = @Model.Services.ElementAt(i);
+                                        val = @Model.Services.ElementAt(i).Name;
                                     }
 
                                     @val

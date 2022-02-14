@@ -2,6 +2,7 @@ using Asklepios.Data.InMemoryContexts;
 using Asklepios.Data.Interfaces;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
@@ -21,7 +22,21 @@ namespace Asklepios.Web
         public void ConfigureServices(IServiceCollection services)
         {
             //services.
-            services.AddControllersWithViews();
+            services.AddControllersWithViews(options =>
+            {
+                options.CacheProfiles.Add("Caching", new CacheProfile()
+                {
+                    Duration = 120,
+                    Location = ResponseCacheLocation.Any,
+                    VaryByHeader = "cookie"
+                });
+                options.CacheProfiles.Add("NoCaching", new CacheProfile()
+                {
+                    NoStore = true,
+                    Location = ResponseCacheLocation.None
+                });
+
+            });
             services.AddScoped<IHomeModuleRepository, HomeInMemoryContext>();
             services.AddScoped<IPatientModuleRepository, PatientInMemoryContext>();
             services.AddScoped<IMedicalWorkerModuleRepository, MedicalWorkerInMemoryContext>();

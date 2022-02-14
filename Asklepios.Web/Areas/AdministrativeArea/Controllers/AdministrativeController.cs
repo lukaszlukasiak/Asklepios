@@ -45,19 +45,21 @@ namespace Asklepios.Web.Areas.AdministrativeArea.Controllers
             _selectedPatient = null;
         }
 
-        public IActionResult Index( string id)
+        public IActionResult Index(string id)
         {
             if (int.TryParse(id, out int parsedId))
             {
                 _loggedUser = _context.GetUser(parsedId);
                 //_person = _context.GetPerson(_loggedUser.PersonId);
-                return View();
+                //return View();
+                return RedirectToAction("ScheduleItemsManage");
+
             }
             else
             {
                 if (_loggedUser != null)
                 {
-                    return View();
+                    return RedirectToAction("ScheduleItemsManage");
                 }
                 else
                 {
@@ -182,12 +184,12 @@ namespace Asklepios.Web.Areas.AdministrativeArea.Controllers
                 if (long.TryParse(model.SelectedPrimaryServiceId, out long lid3))
                 {
                     //MedicalService medicalService = model.PrimaryMedicalServices.Where(c => c.Id == lid3).FirstOrDefault();
-                    model.MedicalWorkers = model.MedicalWorkers.Where(c=>c.MedicalServices.Find(d=>d.Id==lid3)!=null).ToList();
+                    model.MedicalWorkers = model.MedicalWorkers.Where(c => c.MedicalServices.Find(d => d.Id == lid3) != null).ToList();
                 }
                 else if (long.TryParse(model.SelectedVisitCategoryId, out long lid4))
                 {
-                    List<MedicalService> categoryServices= model.VisitCategories.Where(c => c.Id == lid2).FirstOrDefault().PrimaryMedicalServices;
-                    model.MedicalWorkers = model.MedicalWorkers.Where(c => c.MedicalServices.Intersect(categoryServices).Count()>1 ).ToList();
+                    List<MedicalService> categoryServices = model.VisitCategories.Where(c => c.Id == lid2).FirstOrDefault().PrimaryMedicalServices;
+                    model.MedicalWorkers = model.MedicalWorkers.Where(c => c.MedicalServices.Intersect(categoryServices).Count() > 1).ToList();
                 }
                 return View(model);
             }
@@ -217,13 +219,13 @@ namespace Asklepios.Web.Areas.AdministrativeArea.Controllers
         {
             if (_loggedUser != null)
             {
-                if (model.IsValid() && !model.IsDuplicated(_context.GetAvailableVisits()) &&  string.IsNullOrWhiteSpace(model.Guard))
+                if (model.IsValid() && !model.IsDuplicated(_context.GetAvailableVisits()) && string.IsNullOrWhiteSpace(model.Guard))
                 {
                     List<Visit> visits = CreateNewVisits(model);
-                    if (visits!=null)
+                    if (visits != null)
                     {
                         _context.AddVisitsToSchedule(visits);
-                        
+
                         model.SuccessMessage = "Wizyty zostały dodane";
                         model.ErrorMessage = null;
 
@@ -274,7 +276,7 @@ namespace Asklepios.Web.Areas.AdministrativeArea.Controllers
                 DateTimeOffset start = new DateTimeOffset(model.VisitsDate.DateTime, model.FirstVisitTime.Add(new TimeSpan(0, model.DurationOfVisit * i, 0)));
                 DateTimeOffset end = new DateTimeOffset(model.VisitsDate.DateTime, model.FirstVisitTime.Add(new TimeSpan(0, model.DurationOfVisit * (i + 1), 0)));
 
-                Visit visit= new Visit(location, medicalRoom, medicalWorker, visitCategory, medicalService, start, end);
+                Visit visit = new Visit(location, medicalRoom, medicalWorker, visitCategory, medicalService, start, end);
                 visitsToAdd.Add(visit);
             }
             return visitsToAdd;
@@ -347,12 +349,12 @@ namespace Asklepios.Web.Areas.AdministrativeArea.Controllers
         [HttpPost]
         public IActionResult RemoveSpecifiedVisit(VisitViewModel model)
         {
-            if (_loggedUser!=null)
+            if (_loggedUser != null)
             {
                 if (model.Visit != null)
                 {
                     Visit visit1 = _context.GetAvailableVisitById(model.Visit.Id);
-                    if (visit1!=null)
+                    if (visit1 != null)
                     {
                         _context.RemoveVisitById(visit1.Id);
                         ISearchVisit searchOptions = model;
@@ -386,17 +388,126 @@ namespace Asklepios.Web.Areas.AdministrativeArea.Controllers
             }
         }
         [HttpPost]
-        public IActionResult MedicalWorkerItemsAdd(MedicalWorkerAddViewModel model)
+        public IActionResult MedicalWorkerItemEdit(MedicalWorkersManageViewModel model)
         {
             if (_loggedUser != null)
             {
-                if (model.IsValid)
+                model.PrimaryServices = _context.GetMedicalServices().Where(c => c.IsPrimaryService == true).ToList();
+
+                //MedicalWorker medicalWorker = _context.GetMedicalWorkerById(model.SelectedWorkerId);
+                if (model.ViewMode == ViewMode.Read)
                 {
+                    if (model.SelectedWorkerId > 0)
+                    {
+                        MedicalWorker medicalWorker = _context.GetMedicalWorkerById(model.SelectedWorkerId);
+                        model.SelectedWorker = medicalWorker;
+                        model.SelectedWorkerId = model.SelectedWorker.Id;
+                        model.User = model.SelectedWorker.User;
+                        model.Person = model.SelectedWorker.Person;
+                        model.MedicalWorkertData = new MedicalWorkertData(model.SelectedWorker);
+                        return View(model);
+                    }
+                }
+                else if (model.ViewMode == ViewMode.Edit)
+                {
+                    if (model.SelectedWorkerId > 0)
+                    {
+                        MedicalWorker medicalWorker = _context.GetMedicalWorkerById(model.SelectedWorkerId);
+                        model.SelectedWorker = medicalWorker;
+                        model.MedicalWorkertData.UpdateWorkerWithData(model.SelectedWorker, model.PrimaryServices);
+                        model.SelectedWorker.User.UpdateWith(model.User);
+                        model.SelectedWorker.Person.UpdateWith(model.Person);
+                        model.SelectedWorker.User.Person = model.SelectedWorker.Person;
+                        if (model.Person.IsValid)
+                        {
+                            if (model.SelectedWorker.User.IsValid)
+                            {
+                                if (model.SelectedWorker.IsValid)
+                                {
+                                    //model.SelectedWorker.Person = model.Person;
+                                    //model.SelectedWorker.User = model.User;
+                                    if (model.Person.ImageFile != null)
+                                    {
+                                        _context.UpdatePersonImage(model.Person.ImageFile, model.SelectedWorker.Person, _hostEnvironment.WebRootPath);
+                                    }
+                                    _context.UpdateMedicalWorker(model.SelectedWorker, model.SelectedWorkerId);
+
+                                }
+
+                            }
+                        }
+
+                    }
+
+                    return View(model);
+                }
+
+                return NotFound();
+
+            }
+            else
+            {
+                return NotFound();
+            }
+
+        }
+        [HttpPost]
+        public IActionResult MedicalWorkerItemRemove(MedicalWorkersManageViewModel model)
+        {
+            if (_loggedUser != null)
+            {
+                if (model.SelectedWorkerId > 0)
+                {
+                    MedicalWorker medicalWorker = _context.GetMedicalWorkerById(model.SelectedWorkerId);
+                    if (medicalWorker != null)
+                    {
+                        _context.RemoveMedicalWorkerById(model.SelectedWorkerId);
+                        model.SuccessMessage = "Pracownik medyczny został usunięty!";
+                        return View(model);
+                    }
+                }
+            }
+            return NotFound();
+        }
+        [HttpPost]
+        public IActionResult MedicalWorkerItemAdd(MedicalWorkerAddViewModel model)
+        {
+            if (_loggedUser != null)
+            {
+                model.PrimaryServices = _context.GetMedicalServices().Where(c => c.IsPrimaryService == true).ToList();
+
+                if (model.MedicalWorkertData.IsValid)
+                {
+                    if (model.Person.IsValid)
+                    {
+                        model.User.UserType = Core.Enums.UserType.Employee;
+                        model.User.WorkerModuleType = Core.Enums.WorkerModuleType.MedicalWorkerModule;
+                        model.User.Person = model.Person;
+
+                        if (model.User.IsValid)
+                        {
+                            model.CreateMedicalWorker();
+                            if (model.IsValid)
+                            {
+                                if (model.Person.ImageFile != null)
+                                {
+                                    _context.UpdatePersonImage(model.Person.ImageFile, model.Person, _hostEnvironment.WebRootPath);
+                                }
+
+                                _context.AddMedicalWorkerObjects(model.User, model.Person, model.MedicalWorker);
+
+                                model.SuccessMessage = "Pracownik medyczny został dodany!";
+
+                                return View(model);
+
+                            }
+
+                        }
+                    }
 
                 }
                 //List<>
                 //MedicalWorkerAddViewModel model = new MedicalWorkerAddViewModel();
-
 
                 return View(model);
             }
@@ -407,7 +518,8 @@ namespace Asklepios.Web.Areas.AdministrativeArea.Controllers
 
         }
 
-        public IActionResult MedicalWorkerItemsAdd()
+
+        public IActionResult MedicalWorkerItemAdd()
         {
             if (_loggedUser != null)
             {
@@ -443,14 +555,15 @@ namespace Asklepios.Web.Areas.AdministrativeArea.Controllers
                     model.NFZUnits = _context.GetNFZUnits();
                     if (model.Person.ImageFile != null)
                     {
-                        string imagePath = SaveImage(model.Person.ImageFile, ImageFolderType.Persons, _hostEnvironment.WebRootPath);
-                        model.Person.ImageFilePath = imagePath;
+                        _context.UpdatePersonImage(model.Person.ImageFile, model.Person, _hostEnvironment.WebRootPath);
+                        //string imagePath = SaveImage(model.Person.ImageFile, ImageFolderType.Persons, _hostEnvironment.WebRootPath);
+                        //model.Person.ImageFilePath = imagePath;
                     }
 
                     _context.AddPatientObjects(model.User, model.Person, model.Patient);
 
                     model.SuccessMessage = "Pacjent został dodany!";
-                    
+
                     return View(model);
                 }
                 else
@@ -489,22 +602,22 @@ namespace Asklepios.Web.Areas.AdministrativeArea.Controllers
         {
             if (_loggedUser != null)
             {
-                if (model.CurrentPatientId>0)
+                if (model.CurrentPatientId > 0)
                 {
                     Patient patient = _context.GetPatientById(model.CurrentPatientId);
-                    if (model.ViewMode==ViewMode.Read)
+                    if (model.ViewMode == ViewMode.Read)
                     {
                         model.CurrentPatient = patient;
                         model.NFZUnits = _context.GetNFZUnits();
                         model.MedicalPackages = _context.GetMedicalPackages();
 
                     }
-                    else if (model.ViewMode==ViewMode.Edit)
+                    else if (model.ViewMode == ViewMode.Edit)
                     {
                         UpdatePatientData(model, patient);
 
                     }
-                    else if (model.ViewMode==ViewMode.Remove)
+                    else if (model.ViewMode == ViewMode.Remove)
                     {
                     }
 
@@ -545,8 +658,10 @@ namespace Asklepios.Web.Areas.AdministrativeArea.Controllers
 
             if (model.CurrentPatient.Person.ImageFile != null)
             {
-                string imagePath = SaveImage(model.CurrentPatient.Person.ImageFile, ImageFolderType.Persons, _hostEnvironment.WebRootPath);
-                model.CurrentPatient.Person.ImageFilePath = imagePath;
+                _context.UpdatePersonImage(model.CurrentPatient.Person.ImageFile, model.CurrentPatient.Person, _hostEnvironment.WebRootPath);
+
+                //string imagePath = SaveImage(model.CurrentPatient.Person.ImageFile, ImageFolderType.Persons, _hostEnvironment.WebRootPath);
+                //model.CurrentPatient.Person.ImageFilePath = imagePath;
             }
 
             if (model.IsValid)
@@ -589,7 +704,7 @@ namespace Asklepios.Web.Areas.AdministrativeArea.Controllers
         {
             if (_loggedUser != null)
             {
-                if (model.CurrentPatientId>0)
+                if (model.CurrentPatientId > 0)
                 {
                     Patient patient = _context.GetPatientById(model.CurrentPatientId);
                     if (patient != null)
@@ -660,44 +775,199 @@ namespace Asklepios.Web.Areas.AdministrativeArea.Controllers
         //        return NotFound();
         //    }
         //}
+        [HttpPost]
+        public IActionResult MedicalWorkerItemsManage(MedicalWorkersManageViewModel model)
+        {
+            if (_loggedUser != null)
+            {
+                model.AllMedicalWorkers = _context.GetMedicalWorkers();
+                model.PrimaryServices = _context.GetMedicalServices().Where(c => c.IsPrimaryService == true).ToList();
+                return View(model);
+            }
+            else
+            {
+                return NotFound();
+            }
+        }
+
         public IActionResult MedicalWorkerItemsManage()
         {
             if (_loggedUser != null)
             {
-                return View();
+                MedicalWorkersManageViewModel model = new MedicalWorkersManageViewModel();
+                model.AllMedicalWorkers = _context.GetMedicalWorkers();
+                model.PrimaryServices = _context.GetMedicalServices().Where(c => c.IsPrimaryService == true).ToList();
+                return View(model);
             }
             else
             {
                 return NotFound();
             }
         }
-        public IActionResult NonMedicalWorkerItemsAdd()
+        public IActionResult Temp(long id)
         {
             if (_loggedUser != null)
             {
-                return View();
+                LocationsManageViewModel model = new LocationsManageViewModel();
+                model.SelectedLocationId = id;
+                return View(model);
             }
             else
             {
                 return NotFound();
             }
         }
-        public IActionResult NonMedicalWorkerItemsManage()
+        public IActionResult LocationItemEdit(long id)
         {
             if (_loggedUser != null)
             {
-                return View();
+                LocationsManageViewModel model = new LocationsManageViewModel();
+                Location loc = _context.GetLocationById(model.SelectedLocationId);
+                model.SelectedLocation = loc;// _context.GetLocationById(model.SelectedLocationId);
+                model.UnasignedRooms = _context.GetUnasignedRooms();
+                model.PrimaryServices = _context.GetMedicalServices().Where(c => c.IsPrimaryService == true).ToList();
+
+                return View(model);
+
             }
             else
             {
                 return NotFound();
             }
         }
-        public IActionResult LocationItemsAdd()
+        [HttpPost]
+        [ResponseCache(CacheProfileName = "NoCaching")]
+        public IActionResult LocationItemEdit(LocationsManageViewModel model)
+        {
+            //Response.Cache.SetCacheability(HttpCacheability.NoCache);
+            if (_loggedUser != null)
+            {
+                model.PrimaryServices = _context.GetMedicalServices().Where(c => c.IsPrimaryService == true).ToList();
+                //model.SelectedLocation = _context.GetLocationById(model.SelectedLocationId);
+                Location loc = _context.GetLocationById(model.SelectedLocationId);
+
+                if (model.ViewMode == ViewMode.Read)
+                {
+                    if (model.SelectedLocationId > 0)
+                    {
+
+                        model.SelectedLocation = loc;// _context.GetLocationById(model.SelectedLocationId);
+                        model.UnasignedRooms = _context.GetUnasignedRooms();
+                        return View(model);
+                    }
+                }
+                else if (model.ViewMode == ViewMode.Edit)
+                {
+                    model.SelectedLocation.MedicalRooms = loc.MedicalRooms;
+                    model.SelectedLocation.Id = loc.Id;
+                    model.UnasignedRooms = _context.GetUnasignedRooms();
+
+                    model.UpdateSelectionOfRooms();
+                    model.UpdateSelectionOfServices();
+
+                    if (model.SelectedLocation.IsValid)
+                    {
+                        if (model.SelectedLocation.ImageFile != null)
+                        {
+                            _context.UpdateLocationImage(model.SelectedLocation.ImageFile, model.SelectedLocation, _hostEnvironment.WebRootPath);
+                            //_context.UpdatePersonImage()
+                        }
+                        else
+                        {
+                            model.SelectedLocation.ImageFile = loc.ImageFile;
+                            model.SelectedLocation.ImagePath = loc.ImagePath;
+                        }
+                        //_context.AddLocation(model.SelectedLocation);
+                        _context.UpdateLocation(model.SelectedLocation, model.SelectedLocationId);
+                        model.UnasignedRooms = _context.GetUnasignedRooms();
+                        //model.SuccessMessage = "Dane placówki zostały zaktualizowane";
+                        TempData["successMessage"]= "Dane placówki zostały zaktualizowane";
+                        return RedirectToAction("Temp", new { id = model.SelectedLocationId });
+                        //return View(model);
+
+                    }
+                    else
+                    {
+                        return View(model);
+                    }
+                }
+                return NotFound();
+            }
+            else
+            {
+                return NotFound();
+            }
+        }
+
+        [HttpPost]
+        public IActionResult LocationItemRemove(LocationsManageViewModel model)
         {
             if (_loggedUser != null)
             {
-                return View();
+                if (model.SelectedLocationId > 0)
+                {
+
+                    Location location = _context.GetLocationById(model.SelectedLocationId);
+                    model.SuccessMessage = "Placówka została pomyślnie usunięta!";
+                    TempData["successMessage"]= "Placówka została pomyślnie usunięta!";
+                    _context.RemoveLocationById(model.SelectedLocationId);
+                    //return RedirectToAction("LocationItemsManage", model);
+                    return View();
+                }
+
+                return NotFound();
+            }
+            else
+            {
+                return NotFound();
+            }
+        }
+        [HttpPost]
+        public IActionResult LocationItemAdd(LocationsManageViewModel model)
+        {
+            if (_loggedUser != null)
+            {
+
+                model.GetRooms(_context, model.SelectedLocation);
+                model.GetServices(_context, model.SelectedLocation);
+
+                if (model.SelectedLocation.IsValid)
+                {
+
+                    if (model.SelectedLocation.ImageFile != null)
+                    {
+                        _context.UpdateLocationImage(model.SelectedLocation.ImageFile, model.SelectedLocation, _hostEnvironment.WebRootPath);
+                    }
+                    //_context.UpdateLocation(model.SelectedLocation, model.SelectedLocationId);
+                    //model.SuccessMessage = "Placówka została dodana";
+                    TempData["successMessage"] = "Placówka została dodana";
+                    _context.AddLocation(model.SelectedLocation);
+                    //model.UnasignedRooms = _context.GetUnasignedRooms();
+                    //model.PrimaryServices = _context.GetMedicalServices().Where(c => c.IsPrimaryService == true).ToList();
+                    return RedirectToAction("LocationItemAdd");
+                    //return View(model);
+
+                }
+                model.UnasignedRooms = _context.GetUnasignedRooms();
+                model.PrimaryServices = _context.GetMedicalServices().Where(c => c.IsPrimaryService == true).ToList();
+
+                return View(model);
+            }
+            else
+            {
+                return NotFound();
+            }
+        }
+
+        public IActionResult LocationItemAdd()
+        {
+            if (_loggedUser != null)
+            {
+                LocationsManageViewModel model = new LocationsManageViewModel();
+                model.SelectedLocation = new Location();
+                model.UnasignedRooms = _context.GetUnasignedRooms();
+                model.PrimaryServices = _context.GetMedicalServices().Where(c => c.IsPrimaryService == true).ToList();
+                return View(model);
             }
             else
             {
@@ -708,7 +978,9 @@ namespace Asklepios.Web.Areas.AdministrativeArea.Controllers
         {
             if (_loggedUser != null)
             {
-                return View();
+                LocationsManageViewModel model = new LocationsManageViewModel();
+                model.AllLocations = _context.GetAllLocations();
+                return View(model);
             }
             else
             {
@@ -741,7 +1013,7 @@ namespace Asklepios.Web.Areas.AdministrativeArea.Controllers
         {
             if (_loggedUser != null)
             {
-                
+
                 return View();
             }
             else
@@ -784,53 +1056,79 @@ namespace Asklepios.Web.Areas.AdministrativeArea.Controllers
                 return NotFound();
             }
         }
-        private string SaveImage(IFormFile formFile, ImageFolderType type, string basePath)
-        {
-            string path = null;
-            switch (type)
-            {
-                // _hostEnvironment
-                case ImageFolderType.Persons:
-                    path = Path.Combine("img", "Persons"); //Directory.GetCurrentDirectory() + "\\Persons";
-                    break;
-                case ImageFolderType.Locations:
-                    path = Path.Combine( "img", "Locations"); //Directory.GetCurrentDirectory() + "\\Locations";
-                    break;
-                default:
-                    break;
-            }
-            string extension = Path.GetExtension(formFile.FileName);
-            //string resourcePath=Path.Combine(basePath,)
-            string myUniqueFileName = null;//string.Format(@"{0}{1}" , Guid.NewGuid(), extension);
-            string fullFileName = null;// Path.Combine(path, myUniqueFileName);
 
-            do
-            {
-                myUniqueFileName = string.Format(@"{0}{1}", Guid.NewGuid(), extension);
-                fullFileName = Path.Combine(basePath,path, myUniqueFileName);
-            } while (System.IO.File.Exists(fullFileName));
-            //if (System.IO.File.Exists(fullFileName))
-            //{
-            //    string myUniqueFileName = string.Format(@"{0}{1}", Guid.NewGuid(), extension);
-            //    string fullFileName = Path.Combine(path, myUniqueFileName);
-
-            //}
-            using (var fileStream = new FileStream(fullFileName, FileMode.Create))
-            {
-
-                formFile.CopyTo(fileStream);
-            }
-            string serverFileName = Path.Combine("\\", path, myUniqueFileName);
-
-            return serverFileName;
-
-        }
 
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
         public IActionResult Error()
         {
             return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
         }
+        //public IActionResult NonMedicalWorkerItemsAdd()
+        //{
+        //    if (_loggedUser != null)
+        //    {
+        //        return View();
+        //    }
+        //    else
+        //    {
+        //        return NotFound();
+        //    }
+        //}
+        //[HttpPost]
+        //public IActionResult NonMedicalWorkerItemsAdd(MedicalWorkersManageViewModel model )
+        //{
+        //    if (_loggedUser != null)
+        //    {
+        //        if (model.ViewMode==ViewMode.Read)
+        //        {
 
+        //        }
+        //        else if(model.ViewMode==ViewMode.Edit)
+        //        {
+
+        //        }
+        //        return View();
+        //    }
+        //    else
+        //    {
+        //        return NotFound();
+        //    }
+        //}
+        //[HttpPost]
+        //public IActionResult NonMedicalWorkerItemsRemove(MedicalWorkersManageViewModel model)
+        //{
+        //    if (_loggedUser != null)
+        //    {
+        //        if (model.ViewMode == ViewMode.Remove)
+        //        {
+        //            MedicalWorker worker = _context.GetMedicalWorkerById(model.SelectedWorkerId);
+        //            if (worker!=null)
+        //            {
+        //                _context.RemoveMedicalWorkerById(model.SelectedWorkerId);
+        //            }
+        //            else
+        //            {
+        //                return NotFound();
+        //            }
+        //        }
+        //        return View();
+        //    }
+        //    else
+        //    {
+        //        return NotFound();
+        //    }
+        //}
+
+        //public IActionResult NonMedicalWorkerItemsManage()
+        //{
+        //    if (_loggedUser != null)
+        //    {
+        //        return View();
+        //    }
+        //    else
+        //    {
+        //        return NotFound();
+        //    }
+        //}
     }
 }

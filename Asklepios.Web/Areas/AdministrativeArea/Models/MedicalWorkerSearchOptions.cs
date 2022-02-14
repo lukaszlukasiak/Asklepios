@@ -9,7 +9,7 @@ namespace Asklepios.Web.Areas.AdministrativeArea.Models
 {
     public class MedicalWorkerSearchOptions
     {
-        [Display(Name = "Id pacjenta")]
+        [Display(Name = "Id pracownika medycznego")]
         public long? SelectedId { get; set; }
 
         [Display(Name = "Imię")]
@@ -27,12 +27,16 @@ namespace Asklepios.Web.Areas.AdministrativeArea.Models
         [Display(Name = "Kod paszportu")]
 
         public string SelectedPassportCode { get; set; }
+        [Display(Name = "Świadczy usługę")]
+        public long SelectedServiceId { get; set; }
+
 
         [Display(Name = "Aglomeracja")]
         public Aglomeration? SelectedAglomeration { get; set; }
         [Display(Name = "Płeć")]
         public Gender? SelectedGender { get; set; }
-        
+        [Display(Name = "Kategoria")]
+        public MedicalWorkerType? SelectedWorkerType { get; set; }
 
         public bool IsFilterOn
         {
@@ -75,6 +79,14 @@ namespace Asklepios.Web.Areas.AdministrativeArea.Models
                     return true;
                 }
                 if (SelectedGender.HasValue)
+                {
+                    return true;
+                }
+                if (SelectedServiceId>0)
+                {
+                    return true;
+                }
+                if (SelectedWorkerType.HasValue)
                 {
                     return true;
                 }

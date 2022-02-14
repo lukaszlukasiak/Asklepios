@@ -1,9 +1,23 @@
-﻿@model Asklepios.Web.Areas.AdministrativeArea.Models.MedicalWorkerAddViewModel
-    
+﻿@model Asklepios.Web.Areas.AdministrativeArea.Models.MedicalWorkersManageViewModel
+
 
 <div class="d-flex flex-column">
     @{
         SelectList services = new SelectList(Model.PrimaryServices, "Id", "Name");
+
+        foreach (SelectListItem item in services)
+        {
+            if (Model.PrimaryServices.Where(c => c.Id.ToString() == item.Value).Count() > 0)
+            {
+                item.Selected = true;
+            }
+        }
+        IEnumerable<SelectListItem>
+        removeMode = Html.GetEnumSelectListWithOneValue(Asklepios.Web.Areas.AdministrativeArea.Models.ViewMode.Remove).ToList();
+        IEnumerable<SelectListItem>
+            readMode = Html.GetEnumSelectListWithOneValue(Asklepios.Web.Areas.AdministrativeArea.Models.ViewMode.Read).ToList();
+        IEnumerable<SelectListItem>
+    editMode = Html.GetEnumSelectListWithOneValue(Asklepios.Web.Areas.AdministrativeArea.Models.ViewMode.Edit).ToList();
 
 
         if (!string.IsNullOrWhiteSpace(Model.SuccessMessage))
@@ -13,7 +27,7 @@
                     @Model.SuccessMessage
                 </p>
             </div>
-            <a asp-controller="Administrative" asp-action="PatientItemsAdd" class="btn btn-outline-secondary btn-icon-split ">
+            <a asp-controller="Administrative" asp-action="MedicalWorkerItemsAdd" class="btn btn-outline-secondary btn-icon-split ">
                 <span class="text" style="float: left">Resetuj dane</span>
             </a>
 
@@ -25,7 +39,7 @@
                     @Model.ErrorMessage
                 </p>
             </div>
-            <a asp-controller="Administrative" asp-action="PatientItemsAdd" class="btn btn-outline-secondary btn-icon-split ">
+            <a asp-controller="Administrative" asp-action="MedicalWorkerItemsAdd" class="btn btn-outline-secondary btn-icon-split ">
                 <span class="text" style="float: left">Resetuj dane</span>
             </a>
 
@@ -35,7 +49,7 @@
 
     }
 
-    <form class="form my-2" asp-action="PatientItemsAdd" method="post" enctype="multipart/form-data">
+    <form class="form mt-4" asp-action="MedicalWorkerItemEdit" method="post" enctype="multipart/form-data">
         <div class="form-group d-flex flex-column">
             @*<span id="MessageSpan" asp-validation-for="User.UserName" class="text-danger"></span>*@
 
@@ -99,46 +113,86 @@
             <label asp-for="Person.ImageFile" class="control-label"></label>
             <input asp-for="Person.ImageFile" accept="image/*" class="form-control-file btn btn-secondary" style="text-align:center" />
             @*<input asp-for="ImageFile" type="file" class="form-control-file" >*@
+            <div class="d-flex flex-fill  justify-content-center mt-2" style="text-align:center">
+                <img src="@Model.Person.ImageSource" class="img-fluid" style="display: block; max-height:300px;
+        border-radius: 6px; ">
+            </div>
 
             <span asp-validation-for="Person.ImageFile" class="text-danger mb-2"></span>
 
-            <label asp-for="MedicalWorker.Education" class="control-label"></label>
-            <input asp-for="MedicalWorker.Education" class="form-control mb-2">
-            <span asp-validation-for="MedicalWorker.Education" class="text-danger"></span>
+            <label asp-for="MedicalWorkertData.Education" class="control-label"></label>
+            <input asp-for="MedicalWorkertData.Education" class="form-control mb-2">
+            <span asp-validation-for="MedicalWorkertData.Education" class="text-danger"></span>
 
-            <label asp-for="MedicalWorker.Experience" class="control-label"></label>
-            <input asp-for="MedicalWorker.Experience" class="form-control mb-2">
-            <span asp-validation-for="MedicalWorker.Experience" class="text-danger"></span>
+            <label asp-for="MedicalWorkertData.Experience" class="control-label"></label>
+            <input asp-for="MedicalWorkertData.Experience" class="form-control mb-2">
+            <span asp-validation-for="MedicalWorkertData.Experience" class="text-danger"></span>
 
-            <label asp-for="MedicalWorker.MedicalServices" class="control-label"></label>
+            <label asp-for="MedicalWorkertData.MedicalServiceIds" class="control-label"></label>
 
-            <select class="form-control  mb-2" asp-for="MedicalWorker.MedicalServices" asp-items="services" multiple>
+            <select class="form-control  mb-2" style="height:300px" asp-for="MedicalWorkertData.MedicalServiceIds" asp-items="services" multiple>
                 @*<option value="">Wybierz usługi</option>*@
             </select>
-            <span asp-validation-for="MedicalWorker.MedicalServices" class="text-danger"></span>
+            <span asp-validation-for="MedicalWorkertData.MedicalServiceIds" class="text-danger"></span>
 
-            <label asp-for="MedicalWorker.MedicalWorkerType" class="control-label"></label>
-            <select class="form-control  mb-2" asp-for="MedicalWorker.MedicalWorkerType" asp-items="Html.GetEnumSelectList<Asklepios.Core.Enums.MedicalWorkerType>()">
-                <option value="">Wybierz typ pracownika medycznego</option>
-            </select>
-            <span asp-validation-for="MedicalWorker.MedicalWorkerType" class="text-danger"></span>
+            @*<label asp-for="MedicalWorkerType" class="control-label"></label>
+        <select class="form-control  mb-2" asp-for="MedicalWorkerType" asp-items="Html.GetEnumSelectList<Asklepios.Core.Enums.MedicalWorkerType>()">
+            <option value="">Wybierz typ pracownika medycznego</option>
+        </select>
+        <span asp-validation-for="MedicalWorkerType" class="text-danger"></span>*@
 
-            <label asp-for="MedicalWorker.ProfessionalNumber" class="control-label"></label>
-            <input asp-for="MedicalWorker.ProfessionalNumber" class="form-control mb-2">
-            <span asp-validation-for="MedicalWorker.ProfessionalNumber" class="text-danger"></span>
+            <label asp-for="MedicalWorkertData.ProfessionalNumber" class="control-label"></label>
+            <input asp-for="MedicalWorkertData.ProfessionalNumber" class="form-control mb-2">
+            <span asp-validation-for="MedicalWorkertData.ProfessionalNumber" class="text-danger"></span>
 
             <div class="d-flex flex-row">
-                <label asp-for="MedicalWorker.IsCurrentlyHired"></label>
-                <input type="checkbox" asp-for="MedicalWorker.IsCurrentlyHired" class="custom-control ml-2 " style="height:20px;width:20px" checked />
-                <span asp-validation-for="MedicalWorker.IsCurrentlyHired" class="text-danger"></span>
+                <label asp-for="MedicalWorkertData.IsCurrentlyHired"></label>
+                <input type="checkbox" asp-for="MedicalWorkertData.IsCurrentlyHired" class="custom-control ml-2 " style="height:20px;width:20px" checked />
+                <span asp-validation-for="MedicalWorkertData.IsCurrentlyHired" class="text-danger"></span>
             </div>
+
+            <select asp-for="ViewMode" asp-items="editMode" hidden></select>
+            <input asp-for="SelectedWorkerId" hidden ></input>
+
 
             @*@Html.EditorFor(model => model.MedicalWorker.Education, new { @class = "form-control mb-2" })*@
 
-            <button id="btnSubmit" type="submit" class="btn btn-primary w-100 mt-2">Dodaj</button>
+            @*<button id="btnSubmit" type="submit" class="btn btn-primary w-100 mt-2">Zaktualizuj</button>*@
+            <div class="form-group d-flex flex-column">
+                <button id="btnSubmit" type="submit" class="btn btn-primary btn-icon-split d-flex">
+                    <span class="icon text-white-50 left" style="text-align:left;float:left">
+                        <i class="fas fa-edit"></i>
+                    </span>
+                    <span class="text" style="float: left">Zaktualizuj</span>
+                </button>
+            </div>
 
         </div>
     </form>
+
+    <form class="form my-0" asp-action="MedicalWorkerItemsManage" method="post">
+        <div>
+            <input asp-for="SearchOptions.SelectedAglomeration" hidden />
+            <input asp-for="SearchOptions.SelectedGender" hidden />
+            <input asp-for="SearchOptions.SelectedId" hidden />
+            <input asp-for="SearchOptions.SelectedName" hidden />
+            <input asp-for="SearchOptions.SelectedPassportNumber" hidden />
+            <input asp-for="SearchOptions.SelectedPESEL" hidden />
+            <input asp-for="SearchOptions.SelectedServiceId" hidden />
+            <input asp-for="SearchOptions.SelectedSurname" hidden />
+            <input asp-for="SearchOptions.SelectedWorkerType" hidden />
+        </div>
+        <div class="form-group d-flex flex-column">
+            <button type="submit" class="btn btn-primary btn-icon-split d-flex">
+                <span class="icon text-white-50 left" style="text-align:left;float:left">
+                    <i class="fas fa-backward"></i>
+                </span>
+                <span class="text" style="float: left">Wróć...</span>
+            </button>
+        </div>
+
+    </form>
+
 </div>
 <script>
     $('#MessageSpan').delay(5000).fadeOut(300);
