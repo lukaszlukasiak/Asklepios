@@ -1,0 +1,14 @@
+﻿@model Asklepios.Web.Areas.AdministrativeArea.Models.RoomItemsManageViewModel
+
+<div style="height:0px">
+    <form class="form my-2" asp-action="RoomItemsManage"  method="post">
+        <div class="form-group d-flex flex-column">
+            <input asp-for="SelectedRoomId" type="hidden" />
+            <button id="btnSubmit" type="submit" class="btn btn-primary w-100 mt-2"></button>
+        </div>
+    </form>
+</div>
+<script>
+    document.getElementById('btnSubmit').click();
+
+</script>

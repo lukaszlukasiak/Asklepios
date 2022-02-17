@@ -1,6 +1,7 @@
 ﻿using Asklepios.Core.Enums;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 
 namespace Asklepios.Core.Models
@@ -118,9 +119,10 @@ namespace Asklepios.Core.Models
         {
             MedicalPackage package = Patient.MedicalPackage;
             decimal price = decimal.MinusOne;
-            if (package.ServicesDiscounts.ContainsKey(service))
+            MedicalServiceDiscount discount = package.MedicalServiceDiscounts.First(c => c.MedicalService == service);
+            if (discount!=null)
             {
-                price = service.StandardPrice * package.ServicesDiscounts[service];
+                price = service.StandardPrice * discount.Discount;//package.ServicesDiscounts[service];
                 return price;
             }
             else
@@ -133,19 +135,26 @@ namespace Asklepios.Core.Models
             MedicalPackage package = Patient.MedicalPackage;
             decimal totalPrice = decimal.MinusOne;
 
-            if (package.ServicesDiscounts.ContainsKey(PrimaryService))
+            MedicalServiceDiscount discount = package.MedicalServiceDiscounts.First(c => c.MedicalService == PrimaryService);
+
+            //if (package.ServicesDiscounts.ContainsKey(PrimaryService))
+            if (discount != null)
+
             {
-                decimal price = PrimaryService.StandardPrice * package.ServicesDiscounts[PrimaryService];
+                decimal price = PrimaryService.StandardPrice * discount.Discount; //package.ServicesDiscounts[PrimaryService];
                 totalPrice += price;
             }
 
             for (int i = 0; i < MinorMedicalServices?.Count; i++)
             {
                 MedicalService service = MinorMedicalServices[i];
-                if (package.ServicesDiscounts.ContainsKey(service))
+                MedicalServiceDiscount discount2 = package.MedicalServiceDiscounts.First(c => c.MedicalService == service);
+
+                //if (package.ServicesDiscounts.ContainsKey(PrimaryService))
+                if (discount2 != null)
                 {
-                    decimal price = service.StandardPrice * package.ServicesDiscounts[service];
-                    totalPrice+= price;
+                    decimal price = service.StandardPrice * discount2.Discount;//package.ServicesDiscounts[service];
+                    totalPrice += price;
                 }
             }
             return totalPrice;

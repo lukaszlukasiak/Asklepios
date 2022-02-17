@@ -73,7 +73,29 @@ namespace Asklepios.Core.Models
         [Display(Name = "Lista pokoi")]
         [Required(ErrorMessage = "Wybierz pokoje")]
         public List<long> MedicalRoomIds { get; set; }
-        public List<MedicalRoom> MedicalRooms { get; set; }
+        private List<MedicalRoom> _medicalRooms;
+        public List<MedicalRoom> MedicalRooms 
+        {
+            get
+            {
+                return _medicalRooms;
+            }
+            set
+            {
+                _medicalRooms = value;
+                if (value!=null)
+                {
+                    SetRoomsBackReferences();
+                }
+            }
+        }
+        public void SetRoomsBackReferences()
+        {
+            foreach (MedicalRoom item in MedicalRooms)
+            {
+                item.Location = this;
+            }
+        }
         public bool IsValid 
         { 
             get

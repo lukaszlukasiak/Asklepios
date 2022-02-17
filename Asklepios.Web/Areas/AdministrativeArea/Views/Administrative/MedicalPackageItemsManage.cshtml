@@ -1,5 +1,54 @@
-﻿@*
-    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
-*@
+﻿@model Asklepios.Web.Areas.AdministrativeArea.Models.PackageItemsManageViewModel
+
 @{
+    ViewData["Title"] = "View";
 }
+
+<h2 style="text-align:center">Pakiety medyczne</h2>
+@{
+    IEnumerable<SelectListItem>
+    removeMode = Html.GetEnumSelectListWithOneValue(Asklepios.Web.Areas.AdministrativeArea.Models.ViewMode.Remove).ToList();
+    IEnumerable<SelectListItem>
+        readMode = Html.GetEnumSelectListWithOneValue(Asklepios.Web.Areas.AdministrativeArea.Models.ViewMode.Read).ToList();
+    IEnumerable<SelectListItem>
+editMode = Html.GetEnumSelectListWithOneValue(Asklepios.Web.Areas.AdministrativeArea.Models.ViewMode.Edit).ToList();
+
+    if (TempData.ContainsKey("successMessage"))
+
+    {
+        <div class="messages" id="MessageSpan" style="margin-top: 10px; text-align: center ">
+            <p class="alert alert-success">
+                @*@Model.SuccessMessage*@
+                @TempData["successMessage"].ToString()
+            </p>
+        </div>
+
+    }
+    //if (!string.IsNullOrWhiteSpace(Model.ErrorMessage))
+    if (TempData.ContainsKey("errorMessage"))
+    {
+        <div class="messages" id="MessageSpan" style="margin-top: 10px; text-align: center ">
+            <p class="alert alert-success">
+                @*@Model.ErrorMessage*@
+                @TempData["errorMessage"].ToString()
+
+            </p>
+        </div>
+
+    }
+
+}
+
+
+@foreach (MedicalPackage pack in Model.MedicalPackages)
+{
+    Model.SelectedPackage = pack;
+    <partial name="_MedicalPackage" model="Model" />
+}
+<script>
+    $('#MessageSpan').delay(5000).fadeOut(300);
+    function Refresh() {
+        document.getElementById('btnSubmit').click();
+    }
+
+</script>

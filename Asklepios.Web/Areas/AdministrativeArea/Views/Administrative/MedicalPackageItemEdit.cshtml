@@ -1,0 +1,99 @@
+﻿@model Asklepios.Web.Areas.AdministrativeArea.Models.PackageItemsManageViewModel
+@{
+    IEnumerable<SelectListItem>
+        removeMode = Html.GetEnumSelectListWithOneValue(Asklepios.Web.Areas.AdministrativeArea.Models.ViewMode.Remove).ToList();
+    IEnumerable<SelectListItem>
+        readMode = Html.GetEnumSelectListWithOneValue(Asklepios.Web.Areas.AdministrativeArea.Models.ViewMode.Read).ToList();
+    IEnumerable<SelectListItem>
+        editMode = Html.GetEnumSelectListWithOneValue(Asklepios.Web.Areas.AdministrativeArea.Models.ViewMode.Edit).ToList();
+    IEnumerable<SelectListItem>
+    addMode = Html.GetEnumSelectListWithOneValue(Asklepios.Web.Areas.AdministrativeArea.Models.ViewMode.Add).ToList();
+
+    if (Model.SelectedPackage != null)
+    {
+        Model.SelectedPackageId = Model.SelectedPackage.Id;
+    }
+
+    if (TempData.ContainsKey("successMessage"))
+
+    {
+        <div class="messages" id="MessageSpan" style="margin-top: 10px; text-align: center ">
+            <p class="alert alert-success">
+                @TempData["successMessage"].ToString()
+            </p>
+        </div>
+
+    }
+    //if (!string.IsNullOrWhiteSpace(Model.ErrorMessage))
+    if (TempData.ContainsKey("errorMessage"))
+    {
+        <div class="messages" id="MessageSpan" style="margin-top: 10px; text-align: center ">
+            <p class="alert alert-success">
+                @*@Model.ErrorMessage*@
+                @TempData["errorMessage"].ToString()
+
+            </p>
+        </div>
+
+    }
+}
+
+<div class="d-flex jumbotron w-100 mx-auto" style="padding:20px;">
+    <form class="d-flex form  flex-column" asp-action="PackageItemEdit" method="post">
+        <div class="d-flex jumbotron w-100 mx-auto" style="padding:20px;align-content:center;">
+            <div class="d-flex flex-column w-100 justify-content-between">
+
+
+                <label asp-for="SelectedPackage.Name" class="control-label"></label>
+                <input asp-for="SelectedPackageId" disabled />
+
+
+                <label asp-for="SelectedPackage.Name" class="control-label"></label>
+                <input asp-for="SelectedPackage.Name" class="form-control mb-2">
+                <span asp-validation-for="SelectedPackage.Name" class="text-danger"></span>
+
+                <label asp-for="SelectedPackage.Description" class="control-label"></label>
+                <input asp-for="SelectedPackage.Description" class="form-control mb-2">
+                <span asp-validation-for="SelectedPackage.Description" class="text-danger"></span>
+
+                @for (int i = 0; i < Model.MedicalServiceDiscounts.Count; i++)
+                {
+                    <div class="d-flex flex-column w-100 align-content-around">
+                        <label class="control-label" >@Model.MedicalServiceDiscounts[i].MedicalService.Name</label>
+                        <input asp-for="MedicalServiceDiscounts[i].Discount" class="form-control mb-2"/>
+                    </div>
+                }
+                <div class="form-group d-flex flex-column">
+                    <button type="submit" class="btn btn-primary btn-icon-split d-flex">
+                        <span class="icon text-white-50 left" style="text-align:left;float:left">
+                            <i class="fas fa-address-book"></i>
+                        </span>
+                        <span class="text" style="float: left">Aktualizuj</span>
+                    </button>
+                </div>
+                </div>
+            </div>
+    </form>
+</div>
+
+<form class="form my-0" asp-action="PackageItemRemove" method="post">
+
+    <input asp-for="SelectedPackageId" hidden />
+
+    <div class="form-group d-flex flex-column mt-1">
+        <button id="btnSubmit" type="submit" class="btn btn-primary btn-icon-split d-flex">
+            <span class="icon text-white-50 left" style="text-align:left;float:left">
+                <i class="fas fa-remove"></i>
+            </span>
+            <span class="text" style="float: left">Usuń</span>
+        </button>
+    </div>
+
+</form>
+<script>
+    $('#MessageSpan').delay(5000).fadeOut(300);
+    function Refresh() {
+        document.getElementById('btnSubmit').click();
+    }
+
+</script>

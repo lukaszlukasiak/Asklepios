@@ -27,6 +27,8 @@ namespace Asklepios.Data.Interfaces
         Person GetPerson(long personId);
         List<MedicalRoom> GetRoomsByLocationId();
         MedicalService GetMedicalServiceById(long v);
+        List<MedicalRoom> GetAllRooms();
+        List<MedicalServiceDiscount> GetMedicalServiceDiscounts();
         void AddVisitsToSchedule(List<Visit> visitsToAdd);
         void RemoveVisitById(long id);
         List<NFZUnit> GetNFZUnits();
@@ -44,5 +46,11 @@ namespace Asklepios.Data.Interfaces
         void RemoveLocationById(long selectedLocationId);
         MedicalRoom GetRoomById(long id);
         void AddMedicalRoom(MedicalRoom room);
+        //void RemoveRoomById(long id);
+        void RemoveMedicalRoomById(long selectedRoomId);
+        void UpdateRoom(MedicalRoom newRoom);
+        void AddMedicalPackage(MedicalPackage newPackage);
+        void RemoveMedicalPackageById(long selectedPackageId);
+        void UpdateMedicalPackage(MedicalPackage newPackage);
     }
 }

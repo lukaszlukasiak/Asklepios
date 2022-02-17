@@ -14,6 +14,11 @@ namespace Asklepios.Data
             throw new NotImplementedException();
         }
 
+        public void AddMedicalPackage(MedicalPackage newPackage)
+        {
+            throw new NotImplementedException();
+        }
+
         public void AddMedicalRoom(MedicalRoom room)
         {
             throw new NotImplementedException();
@@ -40,6 +45,11 @@ namespace Asklepios.Data
         }
 
         public List<Patient> GetAllPatients()
+        {
+            throw new NotImplementedException();
+        }
+
+        public List<MedicalRoom> GetAllRooms()
         {
             throw new NotImplementedException();
         }
@@ -80,6 +90,11 @@ namespace Asklepios.Data
         }
 
         public MedicalService GetMedicalServiceById(long v)
+        {
+            throw new NotImplementedException();
+        }
+
+        public List<MedicalServiceDiscount> GetMedicalServiceDiscounts()
         {
             throw new NotImplementedException();
         }
@@ -159,6 +174,16 @@ namespace Asklepios.Data
             throw new NotImplementedException();
         }
 
+        public void RemoveMedicalPackageById(long selectedPackageId)
+        {
+            throw new NotImplementedException();
+        }
+
+        public void RemoveMedicalRoomById(long selectedRoomId)
+        {
+            throw new NotImplementedException();
+        }
+
         public void RemoveMedicalWorkerById(long selectedWorkerId)
         {
             throw new NotImplementedException();
@@ -168,6 +193,11 @@ namespace Asklepios.Data
         {
             throw new NotImplementedException();
         }
+
+        //public void RemoveRoomById(long id)
+        //{
+        //    throw new NotImplementedException();
+        //}
 
         public void RemoveVisitById(long id)
         {
@@ -180,6 +210,11 @@ namespace Asklepios.Data
         }
 
         public void UpdateLocationImage(IFormFile imageFile, Location location, string webRootPath)
+        {
+            throw new NotImplementedException();
+        }
+
+        public void UpdateMedicalPackage(MedicalPackage newPackage)
         {
             throw new NotImplementedException();
         }
@@ -200,6 +235,11 @@ namespace Asklepios.Data
         }
 
         public void UpdatePersonImage(IFormFile imageFile, Person person, string hostEnvironmentPath)
+        {
+            throw new NotImplementedException();
+        }
+
+        public void UpdateRoom(MedicalRoom newRoom)
         {
             throw new NotImplementedException();
         }
