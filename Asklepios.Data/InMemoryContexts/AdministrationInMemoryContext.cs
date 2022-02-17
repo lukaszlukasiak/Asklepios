@@ -82,6 +82,10 @@ namespace Asklepios.Data.InMemoryContexts
         {
             return PatientMockDB.VisitCategories;
         }
+        public List<MedicalServiceDiscount> GetMedicalServiceDiscounts()
+        {
+            return PatientMockDB.MedicalServiceDiscounts;
+        }
 
         public List<Location> GetAllLocations()
         {
@@ -355,16 +359,84 @@ namespace Asklepios.Data.InMemoryContexts
 
         public MedicalRoom GetRoomById(long id)
         {
-            return PatientMockDB.Rooms.First(c => c.Id == id);
+            return PatientMockDB.MedicalRooms.First(c => c.Id == id);
         }
 
         public void AddMedicalRoom(MedicalRoom room)
         {
-            long id = PatientMockDB.Rooms.Max(c => c.Id) + 1;
+            long id = PatientMockDB.MedicalRooms.Max(c => c.Id) + 1;
             room.Id = id;
+            if (room.LocationId>0 && room.Location==null)
+            {
+                room.Location = GetLocationById(room.LocationId);
+            }
 
-            PatientMockDB.Rooms.Add(room);
+            PatientMockDB.MedicalRooms.Add(room);
         }
 
+        public List<MedicalRoom> GetAllRooms()
+        {
+            return PatientMockDB.MedicalRooms;
+        }
+
+        //public void RemoveRoomById(long id)
+        //{
+        //    MedicalRoom room = PatientMockDB.Rooms.First(c=>c.Id==id);
+        //    if (room!=null)
+        //    {
+        //        PatientMockDB.Rooms.Remove(room);
+        //    }
+        //}
+
+        public void RemoveMedicalRoomById(long selectedRoomId)
+        {
+            MedicalRoom room = PatientMockDB.MedicalRooms.First(c => c.Id == selectedRoomId);
+            if (room != null)
+            {
+                PatientMockDB.MedicalRooms.Remove(room);
+            }
+        }
+
+        public void UpdateRoom(MedicalRoom newRoom)
+        {
+            MedicalRoom oldRoom = medicalRooms.Where(c => c.Id == newRoom.Id).FirstOrDefault();
+            if (oldRoom != null)
+            {
+                PatientMockDB.UpdateRoom(newRoom, oldRoom);
+            }
+        }
+
+        public void AddMedicalPackage(MedicalPackage newPackage)
+        {
+            long id = PatientMockDB.MedicalPackages.Max(c => c.Id) + 1;
+            newPackage.Id = id;
+
+            foreach (MedicalServiceDiscount item in newPackage.MedicalServiceDiscounts)
+            {
+                item.MedicalPackageId = newPackage.Id;
+                item.MedicalPackage = newPackage;
+            }
+
+            PatientMockDB.MedicalPackages.Add(newPackage);
+            PatientMockDB.MedicalServiceDiscounts.AddRange(newPackage.MedicalServiceDiscounts);
+        }
+
+        public void RemoveMedicalPackageById(long selectedPackageId)
+        {
+            MedicalPackage pack = PatientMockDB.MedicalPackages.First(c => c.Id == selectedPackageId);
+            if (pack != null)
+            {
+                PatientMockDB.MedicalPackages.Remove(pack);
+            }
+        }
+
+        public void UpdateMedicalPackage(MedicalPackage newPackage)
+        {
+            MedicalPackage oldPackage = medicalPackages.Where(c => c.Id == newPackage.Id).FirstOrDefault();
+            if (oldPackage != null)
+            {
+                PatientMockDB.UpdateMedicalPackage(newPackage, oldPackage);
+            }
+        }
     }
 }

@@ -9,6 +9,7 @@ namespace Asklepios.Web.Areas.AdministrativeArea.Models
     {
         Read,
         Edit,
-        Remove
+        Remove,
+        Add
     }
 }

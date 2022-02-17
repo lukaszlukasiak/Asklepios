@@ -1,0 +1,108 @@
+﻿@model Asklepios.Web.Areas.AdministrativeArea.Models.PackageItemsManageViewModel
+@{
+    IEnumerable<SelectListItem>
+        removeMode = Html.GetEnumSelectListWithOneValue(Asklepios.Web.Areas.AdministrativeArea.Models.ViewMode.Remove).ToList();
+    IEnumerable<SelectListItem>
+        readMode = Html.GetEnumSelectListWithOneValue(Asklepios.Web.Areas.AdministrativeArea.Models.ViewMode.Read).ToList();
+    IEnumerable<SelectListItem>
+        editMode = Html.GetEnumSelectListWithOneValue(Asklepios.Web.Areas.AdministrativeArea.Models.ViewMode.Edit).ToList();
+    IEnumerable<SelectListItem>
+    addMode = Html.GetEnumSelectListWithOneValue(Asklepios.Web.Areas.AdministrativeArea.Models.ViewMode.Add).ToList();
+
+    if (Model.SelectedPackage != null)
+    {
+        Model.SelectedPackageId = Model.SelectedPackage.Id;
+    }
+    //Model.Vals = new List<long>() { 1, 2, 3, 4, 5, 6, 7 };
+    IEnumerable<int> decimals= Model.MedicalServiceDiscounts.Select(c => (int)(c.Discount*100)).ToList();
+    Model.Vals = new List<int>(decimals);
+    if (TempData.ContainsKey("successMessage"))
+
+    {
+        <div class="messages" id="MessageSpan" style="margin-top: 10px; text-align: center ">
+            <p class="alert alert-success">
+                @*@Model.SuccessMessage*@
+                @TempData["successMessage"].ToString()
+            </p>
+        </div>
+
+    }
+    //if (!string.IsNullOrWhiteSpace(Model.ErrorMessage))
+    if (TempData.ContainsKey("errorMessage"))
+    {
+        <div class="messages" id="MessageSpan" style="margin-top: 10px; text-align: center ">
+            <p class="alert alert-success">
+                @*@Model.ErrorMessage*@
+                @TempData["errorMessage"].ToString()
+
+            </p>
+        </div>
+
+    }
+}
+<form class="d-flex form  flex-column" asp-action="MedicalPackageItemAdd" method="post">
+
+    <div class="d-flex jumbotron w-100 mx-auto" style="padding:20px;align-content:center;">
+        <div class="d-flex flex-column w-100 justify-content-between">
+
+            <label asp-for="SelectedPackage.Name" class="control-label"></label>
+            <input asp-for="SelectedPackage.Name" class="form-control mb-2">
+            <span asp-validation-for="SelectedPackage.Name" class="text-danger"></span>
+
+            <label asp-for="SelectedPackage.Description" class="control-label"></label>
+            <input asp-for="SelectedPackage.Description" class="form-control mb-2">
+            <span asp-validation-for="SelectedPackage.Description" class="text-danger"></span>
+
+            @*<input type="number" min="0" max="100" id="DiscountAll"/>
+            <button type="button" onclick="PutValues()">Wprowadź wszędzie</button>*@
+
+            <div class="d-flex flex-wrap">
+                @for (int i = 0; i < Model.MedicalServiceDiscounts.Count; i++)
+                {
+                <div class="text-center">
+                    <input disabled value="@Model.MedicalServiceDiscounts[i].MedicalService.Name" style="min-width:300px" />
+                    @*<input asp-for="MedicalServiceDiscounts[i].Discount" />*@
+                    <input asp-for="Vals[i]"  />
+
+                </div>
+                }
+                @*@for (int i = 0; i < Model.Vals.Count; i++)
+                {
+                    <div class="text-center">
+                        <input asp-for="Vals[i]" />
+                    </div>
+                }*@
+
+            </div>
+
+        </div>
+    </div>
+    <div>
+        <input asp-for="SelectedPackageId" hidden />
+        <select asp-for="ViewMode" asp-items="addMode" hidden></select>
+    </div>
+    <div class="form-group d-flex flex-column">
+        <button type="submit" class="btn btn-primary btn-icon-split d-flex">
+            <span class="icon text-white-50 left" style="text-align:left;float:left">
+                <i class="fas fa-plus-circle"></i>
+            </span>
+            <span class="text" style="float: left">Dodaj</span>
+        </button>
+    </div>
+
+</form>
+
+<script>
+    $('#MessageSpan').delay(5000).fadeOut(300);
+    function Refresh() {
+        document.getElementById('btnSubmit').click();
+    }
+    function PutValues() {
+        discount = document.getElementById('DiscountAll').value;
+
+        document.getElementsByName('DiscVal').forEach(function (ele, idx) {
+            ele.value = 2;
+        })
+
+    }
+</script>

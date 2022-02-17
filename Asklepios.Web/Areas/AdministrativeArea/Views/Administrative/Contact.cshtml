@@ -6,10 +6,6 @@
     <form class="form" asp-action="Contact" method="post">
         <div class="form-group">
             <label for="inputState">Temat</label>
-            @*<select id="inputState" class="form-control">
-            <option selected>Choose...</option>
-            <option>...</option>
-        </select>*@
             @Html.DropDownListFor(a => a.Subject, new[]
 {
         new SelectListItem() {Text = "Zgłoszenie błędu na portalu pacjenta"},

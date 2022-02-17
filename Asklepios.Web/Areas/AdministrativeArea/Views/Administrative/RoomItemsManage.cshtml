@@ -1,5 +1,70 @@
-﻿@*
-    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
-*@
+﻿@model Asklepios.Web.Areas.AdministrativeArea.Models.RoomItemsManageViewModel
+
 @{
+    ViewData["Title"] = "View";
+    SelectList locations = new SelectList(Model.SortedLocations, "Id", "Name");
+
 }
+
+<h2 style="text-align:center">Placówki</h2>
+@{
+
+    if (TempData.ContainsKey("successMessage"))
+
+    {
+        <div class="messages" id="MessageSpan" style="margin-top: 10px; text-align: center ">
+            <p class="alert alert-success">
+                @*@Model.SuccessMessage*@
+                @TempData["successMessage"].ToString()
+            </p>
+        </div>
+
+    }
+    //if (!string.IsNullOrWhiteSpace(Model.ErrorMessage))
+    if (TempData.ContainsKey("errorMessage"))
+    {
+        <div class="messages" id="MessageSpan" style="margin-top: 10px; text-align: center ">
+            <p class="alert alert-success">
+                @*@Model.ErrorMessage*@
+                @TempData["errorMessage"].ToString()
+            </p>
+        </div>
+
+    }
+    @*<partial name="_RoomItemAdd" model="Model" />*@
+
+}
+
+
+<form class="form my-2" asp-action="RoomItemsManage" method="post" >
+    <div class="form-group d-flex flex-column">
+        <label asp-for="SelectedLocationId" class="control-label"></label>
+        <select class="form-control  mb-2" asp-for="SelectedLocationId" asp-items="locations" onchange="Refresh();">
+            <option value="-1">Wybierz placówkę medyczną</option>
+        </select>
+        <span asp-validation-for="SelectedLocationId" class="text-danger"></span>
+
+        @*<input asp-for="SelectedLocationId"  />*@
+        @*<input asp-for="NewRoom.Name" hidden></input>
+        <input asp-for="NewRoom.FloorNumber" hidden></input>
+        <input asp-for="NewRoom.MedicalRoomType" hidden></input>
+        <input asp-for="NewRoom.FloorNumber" hidden></input>
+        <input asp-for="NewRoom.LocationId" hidden></input>*@
+
+        <button id="btnSubmit" type="submit" class="btn btn-primary w-100 mt-2" hidden>Wyszukaj</button>
+    </div>
+</form>
+
+@foreach (MedicalRoom room in Model.FilteredRooms)
+{
+    Model.SelectedRoom = room;
+    <partial name="_MedicalRoom" model="Model" />
+}
+<script>
+    $('#MessageSpan').delay(5000).fadeOut(300);
+    function Refresh()
+    {
+        document.getElementById('btnSubmit').click();
+    }
+
+</script>

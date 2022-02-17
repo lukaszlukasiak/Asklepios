@@ -31,9 +31,9 @@ namespace Asklepios.Web.Areas.AdministrativeArea.Controllers
         {
             _hostEnvironment = hostEnvironment;
             _context = context;
-
         }
-
+        public const string ERROR_MESSAGE = "errorMessage";
+        public const string SUCCESS_MESSAGE = "successMessage";
         private static User _loggedUser { get; set; }
         //private static Person _person { get; set; }
         private static Patient _selectedPatient { get; set; }
@@ -881,7 +881,7 @@ namespace Asklepios.Web.Areas.AdministrativeArea.Controllers
                         _context.UpdateLocation(model.SelectedLocation, model.SelectedLocationId);
                         model.UnasignedRooms = _context.GetUnasignedRooms();
                         //model.SuccessMessage = "Dane placówki zostały zaktualizowane";
-                        TempData["successMessage"]= "Dane placówki zostały zaktualizowane";
+                        TempData["successMessage"] = "Dane placówki zostały zaktualizowane";
                         return RedirectToAction("Temp", new { id = model.SelectedLocationId });
                         //return View(model);
 
@@ -909,7 +909,7 @@ namespace Asklepios.Web.Areas.AdministrativeArea.Controllers
 
                     Location location = _context.GetLocationById(model.SelectedLocationId);
                     model.SuccessMessage = "Placówka została pomyślnie usunięta!";
-                    TempData["successMessage"]= "Placówka została pomyślnie usunięta!";
+                    TempData["successMessage"] = "Placówka została pomyślnie usunięta!";
                     _context.RemoveLocationById(model.SelectedLocationId);
                     //return RedirectToAction("LocationItemsManage", model);
                     return View();
@@ -987,75 +987,369 @@ namespace Asklepios.Web.Areas.AdministrativeArea.Controllers
                 return NotFound();
             }
         }
-        public IActionResult RoomItemsAdd()
+        [HttpPost]
+        public IActionResult RoomItemRemove(RoomItemsManageViewModel model)
         {
             if (_loggedUser != null)
             {
-                return View();
+                if (model.SelectedRoomId > 0)
+                {
+                    MedicalRoom room = _context.GetRoomById(model.SelectedRoomId);
+                    if (room != null)
+                    {
+                        _context.RemoveMedicalRoomById(model.SelectedRoomId);
+                        TempData[SUCCESS_MESSAGE] = "Gabinet został pomyślnie usunięty!";
+                    }
+                    else
+                    {
+                        TempData[ERROR_MESSAGE] = "Gabinet nie został usunięty! Wystąpiły błędy";
+                    }
+                    return RedirectToAction("RoomItemsManage");
+                }
+                else
+                {
+                    TempData[ERROR_MESSAGE] = "Gabinet nie został usunięty! Wystąpiły błędy";
+                    return RedirectToAction("RoomItemsManage");
+                }
             }
             else
             {
                 return NotFound();
             }
         }
+        [HttpPost]
+        public IActionResult RoomItemsManage(RoomItemsManageViewModel model)
+        {
+            if (_loggedUser != null)
+            {
+                switch (model.ViewMode)
+                {
+                    case ViewMode.Read:
+                        if (model.SelectedLocationId > 0)
+                        {
+                            model.SelectedLocation = _context.GetLocationById(model.SelectedLocationId);
+                        }
+                        //model.AllRooms = _context.GetAllRooms();
+                        //model.Locations = _context.GetAllLocations();
+                        //return View(model);
+
+                        break;
+
+                    case ViewMode.Edit:
+                        break;
+                    case ViewMode.Remove:
+                        //if (model.SelectedRoomId>0)
+                        //{
+                        //    MedicalRoom room = _context.GetRoomById(model.SelectedRoomId);
+                        //    if (room!=null)
+                        //    {
+                        //        _context.RemoveMedicalRoomById(room.Id);
+                        //        TempData[SUCCESS_MESSAGE] = "Pokój został usunięty!";
+                        //        //model.AllRooms = _context.GetAllRooms();
+                        //        //model.Locations = _context.GetAllLocations();
+
+                        //        //return View(model);
+                        //    }
+                        //    else
+                        //    {
+                        //        return NotFound();
+                        //    }
+                        //}
+
+                        break;
+                    case ViewMode.Add:
+                        if (model.NewRoom.IsValid)
+                        {
+                            _context.AddMedicalRoom(model.NewRoom);
+                            TempData[SUCCESS_MESSAGE] = "Pokój został pomyślnie dodany!";
+
+                        }
+                        break;
+                    default:
+                        break;
+                }
+                model.AllRooms = _context.GetAllRooms();
+                model.Locations = _context.GetAllLocations();
+
+                return View(model);
+            }
+            else
+            {
+                return NotFound();
+            }
+        }
+        [HttpPost]
+        public IActionResult RoomItemAdd(RoomItemsManageViewModel model)
+        {
+            if (_loggedUser != null)
+            {
+                //RoomItemsManageViewModel model = new RoomItemsManageViewModel();
+                //model.AllRooms = _context.GetAllRooms();
+                if (model.NewRoom.IsValid)
+                {
+                    _context.AddMedicalRoom(model.NewRoom);
+                    TempData[SUCCESS_MESSAGE] = "Gabinet medyczny został pomyślnie dodany!";
+                }
+                else
+                {
+                    return NotFound();
+                }
+                model.Locations = _context.GetAllLocations();
+                return View(model);
+            }
+            else
+            {
+                return NotFound();
+            }
+        }
+
+        public IActionResult RoomItemAdd()
+        {
+            if (_loggedUser != null)
+            {
+                RoomItemsManageViewModel model = new RoomItemsManageViewModel();
+                //model.AllRooms = _context.GetAllRooms();
+                model.Locations = _context.GetAllLocations();
+                return View(model);
+            }
+            else
+            {
+                return NotFound();
+            }
+        }
+        public IActionResult RoomItemEdit(long id)
+        {
+            if (_loggedUser != null)
+            {
+                if (id > 0)
+                {
+                    RoomItemsManageViewModel model = new RoomItemsManageViewModel();
+                    MedicalRoom room = _context.GetRoomById(id);
+                    if (room != null)
+                    {
+                        model.Locations = _context.GetAllLocations();
+                        return View(model);
+                    }
+                }
+                return NotFound();
+            }
+            else
+            {
+                return NotFound();
+            }
+        }
+        [HttpPost]
+        public IActionResult RoomItemEdit(RoomItemsManageViewModel model)
+        {
+            if (_loggedUser != null)
+            {
+                if (model.ViewMode == ViewMode.Read)
+                {
+                    if (model.SelectedRoomId > 0)
+                    {
+                        model.SelectedRoom = _context.GetRoomById(model.SelectedRoomId);
+                        model.Locations = _context.GetAllLocations();
+                        if (model.SelectedRoom.Location != null)
+                        {
+                            model.SelectedRoom.LocationId = model.SelectedRoom.Location.Id;
+                        }
+                        return View(model);
+                    }
+                }
+                else if (model.ViewMode == ViewMode.Edit)
+                {
+                    if (model.SelectedRoom.IsValid)
+                    {
+                        if (model.SelectedRoom.LocationId > 0)
+                        {
+                            model.SelectedRoom.Location = _context.GetLocationById(model.SelectedRoom.LocationId);
+                        }
+                        _context.UpdateRoom(model.SelectedRoom);
+                        model.Locations = _context.GetAllLocations();
+                        TempData[SUCCESS_MESSAGE] = "Dane gabinetu zostały pomyślnie zaktualizowane!";
+                        return View(model);
+                    }
+                }
+                return NotFound();
+            }
+            else
+            {
+                return NotFound();
+            }
+        }
+
         public IActionResult RoomItemsManage()
         {
             if (_loggedUser != null)
             {
-                return View();
+                RoomItemsManageViewModel model = new RoomItemsManageViewModel();
+                model.AllRooms = _context.GetAllRooms();
+                model.Locations = _context.GetAllLocations();
+                return View(model);
             }
             else
             {
                 return NotFound();
             }
         }
-        public IActionResult MedicalPackageItemsAdd()
+        public IActionResult MedicalPackageItemAdd()
         {
             if (_loggedUser != null)
             {
+                PackageItemsManageViewModel model = new PackageItemsManageViewModel();
+                model.MedicalServices = _context.GetMedicalServices();
 
-                return View();
+                return View(model);
             }
             else
             {
                 return NotFound();
             }
         }
+        [HttpPost]
+        public IActionResult MedicalPackageItemAdd(PackageItemsManageViewModel model)
+        {
+            if (_loggedUser != null)
+            {
+                model.MedicalServices = _context.GetMedicalServices();
+                model.SelectedPackage.MedicalServiceDiscounts = model.UpdateDiscountsWithInputValues();
+                if (model.SelectedPackage.IsValid)
+                {
+                    _context.AddMedicalPackage(model.SelectedPackage);
+                    TempData[SUCCESS_MESSAGE] = "Pakiet został pomyślnie dodany!";
+                    return RedirectToAction("MedicalPackageItemsManage");
+                }
+                else
+                {
+                    TempData[ERROR_MESSAGE] = "Pakiet nie został dodany! Popraw dane!";
+                }
+
+                return View(model);
+            }
+            else
+            {
+                return NotFound();
+            }
+        }
+        [HttpPost]
+        public IActionResult MedicalPackageItemEdit(PackageItemsManageViewModel model)
+        {
+            if (_loggedUser != null)
+            {
+                if (model.ViewMode==ViewMode.Read)
+                {
+                    if (model.SelectedPackageId>0)
+                    {
+                        MedicalPackage package = _context.GetMedicalPackageById(model.SelectedPackageId);
+                        model.MedicalServices = _context.GetMedicalServices();
+                        model.SelectedPackage = package;
+                        
+                    }
+                }
+                else if (model.ViewMode==ViewMode.Edit)
+                {
+                    if (model.NewPackage.IsValid)
+                    {
+                        _context.UpdateMedicalPackage(model.NewPackage);
+                        TempData[SUCCESS_MESSAGE] = "Pakiet został pomyślnie zaktualizowany!";
+                    }
+                    else
+                    {
+                        TempData[ERROR_MESSAGE] = "Wprowadzone dane są błędne/niepełne. Pakeit nie został dodany!";
+                    }
+
+                }
+                model.MedicalServices = _context.GetMedicalServices();
+
+                return View(model);
+            }
+            else
+            {
+                return NotFound();
+            }
+        }
+
+        [HttpPost]
+        public IActionResult MedicalPackageItemRemove(PackageItemsManageViewModel model)
+        {
+            if (_loggedUser != null)
+            {
+                if (model.SelectedPackageId> 0)
+                {
+
+                    MedicalPackage package = _context.GetMedicalPackageById(model.SelectedPackageId);
+                    TempData[SUCCESS_MESSAGE] = "Pakiet medyczny został pomyślnie usunięty!";
+                    _context.RemoveMedicalPackageById(model.SelectedPackageId);
+                    return View();
+                }
+
+                return NotFound();
+            }
+            else
+            {
+                return NotFound();
+            }
+        }
+        [HttpPost]
+        public IActionResult MedicalPackageItemsManage(PackageItemsManageViewModel model)
+        {
+            if (_loggedUser != null)
+            {
+                //if (model.ViewMode==ViewMode.)
+                //{
+
+                //}
+                //PackageItemsManageViewModel model = new PackageItemsManageViewModel();
+                model.MedicalPackages = _context.GetMedicalPackages();
+                model.MedicalServices = _context.GetMedicalServices();
+
+                return View(model);
+            }
+            else
+            {
+                return NotFound();
+            }
+        }
+
         public IActionResult MedicalPackageItemsManage()
         {
             if (_loggedUser != null)
             {
-                return View();
-            }
-            else
-            {
-                return NotFound();
-            }
-        }
-        public IActionResult MedicalServiceItemsAdd()
-        {
-            if (_loggedUser != null)
-            {
+                PackageItemsManageViewModel model = new PackageItemsManageViewModel();
+                model.MedicalPackages = _context.GetMedicalPackages();
+                model.MedicalServices = _context.GetMedicalServices();
 
-                return View();
+                return View(model);
             }
             else
             {
                 return NotFound();
             }
         }
-        public IActionResult MedicalServiceItemsManage()
-        {
-            if (_loggedUser != null)
-            {
+        //public IActionResult MedicalServiceItemsAdd()
+        //{
+        //    if (_loggedUser != null)
+        //    {
 
-                return View();
-            }
-            else
-            {
-                return NotFound();
-            }
-        }
+        //        return View();
+        //    }
+        //    else
+        //    {
+        //        return NotFound();
+        //    }
+        //}
+        //public IActionResult MedicalServiceItemsManage()
+        //{
+        //    if (_loggedUser != null)
+        //    {
+
+        //        return View();
+        //    }
+        //    else
+        //    {
+        //        return NotFound();
+        //    }
+        //}
 
 
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]

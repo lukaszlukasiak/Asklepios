@@ -1,0 +1,83 @@
+﻿@model Asklepios.Web.Areas.AdministrativeArea.Models.RoomItemsManageViewModel
+@{
+    SelectList locations = new SelectList(Model.SortedLocations, "Id", "Name");
+    IEnumerable<SelectListItem>
+    removeMode = Html.GetEnumSelectListWithOneValue(Asklepios.Web.Areas.AdministrativeArea.Models.ViewMode.Remove).ToList();
+    IEnumerable<SelectListItem>
+        readMode = Html.GetEnumSelectListWithOneValue(Asklepios.Web.Areas.AdministrativeArea.Models.ViewMode.Read).ToList();
+    IEnumerable<SelectListItem>
+        editMode = Html.GetEnumSelectListWithOneValue(Asklepios.Web.Areas.AdministrativeArea.Models.ViewMode.Edit).ToList();
+
+}
+<h2 style="text-align:center">Placówki</h2>
+@{
+
+    if (TempData.ContainsKey("successMessage"))
+
+    {
+        <div class="messages" id="MessageSpan" style="margin-top: 10px; text-align: center ">
+            <p class="alert alert-success">
+                @*@Model.SuccessMessage*@
+                @TempData["successMessage"].ToString()
+            </p>
+        </div>
+
+    }
+    //if (!string.IsNullOrWhiteSpace(Model.ErrorMessage))
+    if (TempData.ContainsKey("errorMessage"))
+    {
+        <div class="messages" id="MessageSpan" style="margin-top: 10px; text-align: center ">
+            <p class="alert alert-success">
+                @*@Model.ErrorMessage*@
+                @TempData["errorMessage"].ToString()
+
+            </p>
+        </div>
+
+    }
+    @*<partial name="_RoomItemAdd" model="Model" />*@
+
+}
+
+<form class="form my-2" asp-action="RoomItemEdit" method="post" enctype="multipart/form-data">
+    <div class="form-group d-flex flex-column">
+        @*<span id="MessageSpan" asp-validation-for="User.UserName" class="text-danger"></span>*@
+
+        <label asp-for="SelectedRoom.Name" class="control-label"></label>
+        <input asp-for="SelectedRoom.Name" class="form-control mb-2">
+        <span asp-validation-for="SelectedRoom.Name" class="text-danger"></span>
+
+        <label asp-for="SelectedRoom.FloorNumber" class="control-label"></label>
+        <input asp-for="SelectedRoom.FloorNumber" class="form-control mb-2">
+        <span asp-validation-for="SelectedRoom.FloorNumber" class="text-danger"></span>
+
+
+        <label asp-for="SelectedRoom.MedicalRoomType" class="control-label"></label>
+        <select class="form-control  mb-2" asp-for="SelectedRoom.MedicalRoomType" asp-items="Html.GetEnumSelectList<Asklepios.Core.Enums.MedicalRoomType>()">
+            <option value="">Wybierz domyślną aglomerację</option>
+        </select>
+        <span asp-validation-for="SelectedRoom.MedicalRoomType" class="text-danger"></span>
+
+        <label asp-for="SelectedRoom.LocationId" class="control-label"></label>
+        <select class="form-control  mb-2" asp-for="SelectedRoom.LocationId" asp-items="locations">
+            <option value="-1">Wybierz placówkę</option>
+        </select>
+        <span asp-validation-for="SelectedRoom.LocationId" class="text-danger"></span>
+
+        <select asp-for="ViewMode" asp-items="editMode" hidden></select>
+        <input asp-for="SelectedRoom.Id" hidden ></input>
+
+        <div class="form-group d-flex flex-column mt-2">
+            <button id="btnAdd" type="submit" class="btn btn-primary btn-icon-split d-flex">
+                <span class="icon text-white-50 left" style="text-align:left;float:left">
+                    <i class="fas fa-plus"></i>
+                </span>
+                <span class="text" style="float: left">Aktualizuj</span>
+            </button>
+        </div>
+
+    </div>
+</form>
+<script>
+    $('#MessageSpan').delay(5000).fadeOut(300);
+</script>

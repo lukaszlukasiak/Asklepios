@@ -26,6 +26,7 @@ namespace Asklepios.Data.InMemoryContexts
         //public  Patient Patient { get; set; }
         public static List<MedicalWorker> MedicalWorkers;
         public static List<MedicalService> MedicalServices { get; set; }
+        public static List<MedicalServiceDiscount> MedicalServiceDiscounts { get; private set; }
         public static List<MedicalService> PrimaryMedicalServices { get; set; }
         public static List<VisitCategory> VisitCategories { get; set; }
         public static List<MedicalPackage> MedicalPackages { get; set; }
@@ -54,7 +55,7 @@ namespace Asklepios.Data.InMemoryContexts
         }
         public static Patient CurrentPatient { get; set; }
         public static List<Person> Persons { get; internal set; }
-        public static List<MedicalRoom> Rooms { get; set; }
+        //public static List<MedicalRoom> Rooms { get; set; }
 
         public static bool IsCreated;
         public static void SetData()
@@ -62,9 +63,10 @@ namespace Asklepios.Data.InMemoryContexts
             IsCreated = true;
             Persons = GetAllPersons();
             Users = GetAllUsers();
-            Rooms = GetMedicalRooms().ToList();
+            //Rooms = GetMedicalRooms().ToList();
             NfzUnits = GetNFZUnits().ToList();
             MedicalServices = GetMedicalServices().ToList();
+            MedicalServiceDiscounts = GetMedicalServiceDiscounts();
             MedicalPackages = GetMedicalPackages().ToList();
             AllPatients = GetAllPatients().ToList();
             PrimaryMedicalServices = MedicalServices.Where(c => c.IsPrimaryService == true).ToList();
@@ -78,6 +80,35 @@ namespace Asklepios.Data.InMemoryContexts
             CurrentPatient = GetPatientData(AllPatients[0]);
 
         }
+
+        internal static List<MedicalServiceDiscount> GetMedicalServiceDiscounts()
+        {
+            List<MedicalServiceDiscount> discounts = new List<MedicalServiceDiscount>();
+
+            foreach (MedicalService service in MedicalServices)
+            {
+                MedicalServiceDiscount discount = new MedicalServiceDiscount() { Discount = new decimal(0.2), MedicalService = service, MedicalPackageId = 1 };
+                discounts.Add(discount);
+            }
+            foreach (MedicalService service in MedicalServices)
+            {
+                MedicalServiceDiscount discount = new MedicalServiceDiscount() { Discount = new decimal(0.4), MedicalService = service, MedicalPackageId = 2 };
+                discounts.Add(discount);
+            }
+            foreach (MedicalService service in MedicalServices)
+            {
+                MedicalServiceDiscount discount = new MedicalServiceDiscount() { Discount = new decimal(0.6), MedicalService = service, MedicalPackageId = 3 };
+                discounts.Add(discount);
+            }
+            foreach (MedicalService service in MedicalServices)
+            {
+                MedicalServiceDiscount discount = new MedicalServiceDiscount() { Discount = new decimal(0.8), MedicalService = service, MedicalPackageId = 4 };
+                discounts.Add(discount);
+            }
+
+            return discounts;
+        }
+
         //public static void SetHomeData()
         //{
         //    IsCreated = true;
@@ -195,10 +226,22 @@ namespace Asklepios.Data.InMemoryContexts
                 new User() { Id = ++id, Password = "PasswordAdmin2", EmailAddress = "ad2@asklepios.com", UserType = Core.Enums.UserType.Employee, WorkerModuleType = Core.Enums.WorkerModuleType.AdministrativeWorkerModule, PersonId = 77 },
             };
 
-
             return users;
         }
 
+        internal static void UpdateMedicalPackage(MedicalPackage newPackage, MedicalPackage oldPackage)
+        {
+            int index = MedicalPackages.IndexOf(oldPackage);
+
+            MedicalPackages[index] = newPackage;
+        }
+
+        internal static void UpdateRoom(MedicalRoom newRoom, MedicalRoom oldRoom)
+        {
+            int index = MedicalRooms.IndexOf(oldRoom);
+
+            MedicalRooms[index] = newRoom;
+        }
 
         internal static void AddMedicalWorker(MedicalWorker medicalWorker)
         {
@@ -742,14 +785,15 @@ namespace Asklepios.Data.InMemoryContexts
         public static IEnumerable<Location> GetAllLocations()
         {
             //IEnumerable<MedicalRoom> roomsCollections = GetMedicalRooms();
-            if (Rooms == null)
+            if (MedicalRooms == null)
             {
-                Rooms = GetMedicalRooms().ToList();
+                MedicalRooms = GetMedicalRooms().ToList();
             }
             return new List<Location>()
             {
                 new Location()
-                    {   City="Warszawa",
+                    {
+                        City="Warszawa",
                         StreetAndNumber="Jerozolimskie 80",
                         Description="Ośrodek w centrum Warszawy ze świetnym dojazdem z każdej dzielnicy.",
                         Facilities=new List<string>(){"15 gabinetów ogólno-konsultacyjnych", "Gabinet zabiegowy", "2 gabinety stomatologiczne", "Gabinet higieny jamy ustnej", "Gabinet diagnostyki obrazowej"},
@@ -758,16 +802,15 @@ namespace Asklepios.Data.InMemoryContexts
                         Services=new List<MedicalService>(){ PrimaryMedicalServices[0],PrimaryMedicalServices[1],PrimaryMedicalServices[2],PrimaryMedicalServices[3],PrimaryMedicalServices[4],PrimaryMedicalServices[5],PrimaryMedicalServices[6],PrimaryMedicalServices[7],PrimaryMedicalServices[8] ,PrimaryMedicalServices[9],PrimaryMedicalServices[10]}, 
                         //new List<string>(){"Interna", "Ginekologia", "Pediatria", "Diagnostyka obrazowa", "Stomatologia", "Higiena jamy ustnej", "Dermatologia", "Ortopedia", "Neurochirurgia"},
                         //VoivodeshipType=Core.Enums.VoivodeshipType.mazowieckie,
-                         Aglomeration=Core.Enums.Aglomeration.Warsaw,
-
+                        Aglomeration=Core.Enums.Aglomeration.Warsaw,
                         ImagePath="/img/Locations/loc1.jpeg",
                         PhoneNumber="22 780 421 433",
                         PostalCode="01-111",
-                       MedicalRooms=Rooms.GetRange(0,12),//roomsCollections.ElementAt(0)
-                        },
+                        MedicalRooms=MedicalRooms.GetRange(0,12),//roomsCollections.ElementAt(0)
+                    },
                 new Location()
                     {
-                    City="Warszawa",
+                        City="Warszawa",
                         StreetAndNumber="Grójecka 100",
                         Description="Ośrodek w Warszawie w dzielnicy Ochota, z bardzo dobrym dojazdem z zachodniej części Warszawy.",
                         Facilities=new List<string>(){"12 gabinetów ogólno-konsultacyjnych", "Gabinet zabiegowy", "Gabinet diagnostyki obrazowej", "Gabinek okulistyczny"},
@@ -781,10 +824,11 @@ namespace Asklepios.Data.InMemoryContexts
                         ImagePath="/img/Locations/loc2.jpg",
                         PhoneNumber="22 787 477 323",
                         PostalCode="01-211",
-                        MedicalRooms=Rooms.GetRange(12,13),//roomsCollections.ElementAt(1)
+                        MedicalRooms=MedicalRooms.GetRange(12,13),//roomsCollections.ElementAt(1)
                         },
                 new Location()
-                    {   City="Warszawa",
+                    {
+                    City="Warszawa",
                         StreetAndNumber="KEN 20",
                         Description="Ośrodek na południu Warszawy ze świetnym dojazdem z południa Warszawy oraz regionów wzdłuż M1 oraz południowych okolic Warszawy.",
                         Facilities=new List<string>(){"11 gabinetów ogólno-konsultacyjnych", "2 Gabinety zabiegowe", "2 Gabinety ginekologiczne", "2 gabinety stomatologiczne", "Gabinet diagnostyki obrazowej"},
@@ -793,16 +837,16 @@ namespace Asklepios.Data.InMemoryContexts
                         Services=new List<MedicalService>(){ PrimaryMedicalServices[20],PrimaryMedicalServices[21],PrimaryMedicalServices[22],PrimaryMedicalServices[23],PrimaryMedicalServices[24],PrimaryMedicalServices[25],PrimaryMedicalServices[26],PrimaryMedicalServices[27],PrimaryMedicalServices[28] ,PrimaryMedicalServices[29],PrimaryMedicalServices[30] },
                         //Services=new List<string>(){"Interna", "Ginekologia", "Pediatria", "Diagnostyka obrazowa", "Stomatologia", "Higiena jamy ustnej", "Dermatologia", "Ortopedia", "Neurochirurgia"},
                         //VoivodeshipType=Core.Enums.VoivodeshipType.mazowieckie,
-                                                Aglomeration=Core.Enums.Aglomeration.Warsaw,
-
+                        Aglomeration=Core.Enums.Aglomeration.Warsaw,
                         ImagePath="/img/Locations/loc3.jpg",
                         PhoneNumber="22 777 600 313",
                         PostalCode="03-055",
-                        MedicalRooms=Rooms.GetRange(25,15),//roomsCollections.ElementAt(2)
+                        MedicalRooms=MedicalRooms.GetRange(25,15),//roomsCollections.ElementAt(2)
 
-                        },
+                    },
                 new Location()
-                    {   City="Warszawa",
+                    {
+                        City="Warszawa",
                         StreetAndNumber="Malborska",
                         Description="Ośrodek na wschodzie Warszawy z dobrym dojazdem ze wschodnich dzielnic Warszawy a także wschodnich okolic Warszawy.",
                         Facilities=new List<string>(){"15 gabinetów ogólno-konsultacyjnych", "Gabinet zabiegowy", "2 gabinety stomatologiczne", "Gabinet higieny jamy ustnej", "Gabinet diagnostyki obrazowej"},
@@ -817,11 +861,12 @@ namespace Asklepios.Data.InMemoryContexts
                         ImagePath="/img/Locations/loc4.jpg",
                         PhoneNumber="22 777 444 333",
                         PostalCode="02-222",
-                        MedicalRooms=Rooms.GetRange(40,12),//roomsCollections.ElementAt(3)
+                        MedicalRooms=MedicalRooms.GetRange(40,12),//roomsCollections.ElementAt(3)
 
                         },
-                new Location()
-                    {   City="Kraków",
+                    new Location()
+                    {
+                        City="Kraków",
                         StreetAndNumber="Podgórska 14",
                         Description="Ośrodek w Krakowie, w świetnie skomunikowanym Kazimierzu",
                         Facilities=new List<string>(){"15 gabinetów ogólno-konsultacyjnych", "Gabinet zabiegowy", "2 gabinety stomatologiczne", "Gabinet higieny jamy ustnej", "Gabinet diagnostyki obrazowej"},
@@ -836,11 +881,12 @@ namespace Asklepios.Data.InMemoryContexts
                         ImagePath="/img/Locations/loc5.jpg",
                         PhoneNumber="20 300 400 111",
                         PostalCode="80-078",
-                        MedicalRooms=Rooms.GetRange(52,12),//roomsCollections.ElementAt(4)
+                        MedicalRooms=MedicalRooms.GetRange(52,12),//roomsCollections.ElementAt(4)
 
                         },
-                new Location()
-                    {   City="Gdańsk",
+                    new Location()
+                    {
+                        City="Gdańsk",
                         StreetAndNumber="Chlebnicka 11",
                         Description="Ośrodek w centrum Gdańska na popularnej Wyspie Spichrzów",
                         Facilities=new List<string>(){"22 gabinety ogólno-konsultacyjne", "Gabinet zabiegowy", "2 gabinety stomatologiczne", "Gabinet higieny jamy ustnej", "Gabinet diagnostyki obrazowej"},
@@ -855,17 +901,18 @@ namespace Asklepios.Data.InMemoryContexts
                         ImagePath="/img/Locations/loc6.jpg",
                         PhoneNumber="30 500 500 241",
                         PostalCode="45-100",
-                        MedicalRooms=Rooms.GetRange(64,16),//roomsCollections.ElementAt(5)
+                        MedicalRooms=MedicalRooms.GetRange(64,16),//roomsCollections.ElementAt(5)
 
-                        },
-                                                new Location()
-                    {   City="Poznań",
+                    },
+                    new Location()
+                    {
+                        City="Poznań",
                         StreetAndNumber="Maltańska 1",
                         Description="Ośrodek położony na terenie Galerie Malta Poznań",
                         Facilities=new List<string>(){"20 gabinetów ogólno-konsultacyjnych", "Gabinet zabiegowy", "2 gabinety stomatologiczne", "Gabinet higieny jamy ustnej", "Gabinet diagnostyki obrazowej"},
                         Id=7,
                         Name="Ośrodek Poznań Malta",
-                                                Services=new List<MedicalService>(){ PrimaryMedicalServices[21],PrimaryMedicalServices[22],PrimaryMedicalServices[23],PrimaryMedicalServices[24],PrimaryMedicalServices[25],PrimaryMedicalServices[32],PrimaryMedicalServices[26],PrimaryMedicalServices[27],PrimaryMedicalServices[28] ,PrimaryMedicalServices[29],PrimaryMedicalServices[1] },
+                        Services=new List<MedicalService>(){ PrimaryMedicalServices[21],PrimaryMedicalServices[22],PrimaryMedicalServices[23],PrimaryMedicalServices[24],PrimaryMedicalServices[25],PrimaryMedicalServices[32],PrimaryMedicalServices[26],PrimaryMedicalServices[27],PrimaryMedicalServices[28] ,PrimaryMedicalServices[29],PrimaryMedicalServices[1] },
 
                         //Services=new List<string>(){"Interna", "Ginekologia", "Pediatria", "Diagnostyka obrazowa", "Stomatologia", "Higiena jamy ustnej", "Dermatologia", "Ortopedia", "Neurochirurgia", "Okulistyka"},
                         //VoivodeshipType=Core.Enums.VoivodeshipType.pomorskie,
@@ -873,11 +920,12 @@ namespace Asklepios.Data.InMemoryContexts
                         ImagePath="/img/locations/loc7.jpg",
                         PhoneNumber="30 500 500 241",
                         PostalCode="60-102",
-                        MedicalRooms=Rooms.GetRange(12,13),//roomsCollections.ElementAt(1)
+                        MedicalRooms=MedicalRooms.GetRange(80,10),//roomsCollections.ElementAt(1)
 
-                        },
-                                                new Location()
-                    {   City="Wrocław",
+                    },
+                    new Location()
+                    {
+                        City="Wrocław",
                         StreetAndNumber="Szczytnicka 11",
                         Description="Placówka położona nieco na wschód od ścisłego centrum. Łatwo do niej trafić, idąc prosto od strony placu Grunwaldzkiego.",
                         Facilities=new List<string>(){"15 gabinetów ogólno-konsultacyjnych", "Gabinet zabiegowy", "2 gabinety stomatologiczne", "Gabinet higieny jamy ustnej", "Gabinet diagnostyki obrazowej"},
@@ -891,96 +939,99 @@ namespace Asklepios.Data.InMemoryContexts
                         ImagePath="/img/locations/loc8.jpg",
                         PhoneNumber="71 500 500 241",
                         PostalCode="50-031",
-                        MedicalRooms=Rooms.GetRange(40,12),//roomsCollections.ElementAt(3)
-
-                        },
-                                                            new Location()
-                                 {
-                    City="Katowice",
+                        MedicalRooms=MedicalRooms.GetRange(90,14),//roomsCollections.ElementAt(3)
+                        
+                    },
+                    new Location()
+                    {
+                        City="Katowice",
                         StreetAndNumber="Młyńska 23",
-                        Description="Ośrodek położonyw  bliskiej okolicy dworca PKP oraz Placu Wolności",
+                        Description="Ośrodek położony w bliskiej okolicy dworca PKP oraz Placu Wolności",
                         Facilities=new List<string>(){"21 gabinetów ogólno-konsultacyjnych", "Gabinet zabiegowy", "2 gabinety stomatologiczne", "Gabinet higieny jamy ustnej", "Gabinet diagnostyki obrazowej"},
                         Id=9,
-                        Name="Ośrodek Gdańsk Wyspa Spichrzów",
+                        Name="Ośrodek Kopalnia Katowice",
                         Services=new List<MedicalService>(){ PrimaryMedicalServices[15],PrimaryMedicalServices[16],PrimaryMedicalServices[17],PrimaryMedicalServices[18],PrimaryMedicalServices[14],PrimaryMedicalServices[25],PrimaryMedicalServices[6],PrimaryMedicalServices[7],PrimaryMedicalServices[8] ,PrimaryMedicalServices[9],PrimaryMedicalServices[11] },
-
                         //Services=new List<string>(){"Interna", "Ginekologia", "Pediatria", "Diagnostyka obrazowa", "Stomatologia", "Higiena jamy ustnej", "Dermatologia", "Ortopedia", "Neurochirurgia", "Gastrologia"},
                         //VoivodeshipType=Core.Enums.VoivodeshipType.pomorskie,
                         Aglomeration=Core.Enums.Aglomeration.Silesia,
                         ImagePath="/img/locations/loc9.jpg",
                         PhoneNumber="32 500 500 241",
                         PostalCode="40-750",
-                        MedicalRooms=Rooms.GetRange(25,15),//roomsCollections.ElementAt(2)
-
-                        },
-
-
+                        MedicalRooms=MedicalRooms.GetRange(104,20),//roomsCollections.ElementAt(2)
+                    },
             };
-
         }
 
         public static IEnumerable<MedicalPackage> GetMedicalPackages()
         {
+            long id = 0;
             List<MedicalPackage> MedicalPackages = new List<MedicalPackage>()
             {
                 new MedicalPackage()
                 {
-                    Id=1,
+                    Id=++id,
                     Name="Podstawowy",
                     Description="Podstawowy pakiet dla osób szukajacych podstawowej opieki zdrowotnej. W cenie pakietu są zawarte bezpłatne konsultacje z 7 specjalizacji oraz podstawowe badania",
                     //ServicesDiscounts=new Dictionary<MedicalService, decimal>(),
+                    MedicalServiceDiscounts=MedicalServiceDiscounts.Where(c=>c.Id==id).ToList()
                 },
                 new MedicalPackage()
                 {
-                    Id=2,
+                    Id=++id,
                     Name="Srebrny",
                     Description="Srebrny pakiet jest pakietem dla osób szukajacych rozszerzonej opieki zdrowotnej. W ramach abonamentu medycznego są darmowe konsultacje u większości specjalistów, rozszerzony pakiet badań medycznych oraz 3 wizyty rehabilitacyjnE rocznie.",
                     //ServicesDiscounts=new Dictionary<MedicalService, decimal>(),
+                                        MedicalServiceDiscounts=MedicalServiceDiscounts.Where(c=>c.Id==id).ToList()
+
                 },
                                 new MedicalPackage()
                 {
-                                    Id=3,
+                    Id=++id,
                     Name="Złoty",
-                    Description="Srebrny pakiet dla osób szukajacych specjalistycznej opieki, w tym opieki dentystycznej oraz rehabilitacji.",
+                    Description="Złoty pakiet dla osób szukajacych specjalistycznej opieki, w tym opieki dentystycznej oraz rehabilitacji.",
                     //ServicesDiscounts=new Dictionary<MedicalService, decimal>(),
+                                        MedicalServiceDiscounts=MedicalServiceDiscounts.Where(c=>c.Id==id).ToList()
+
                 },
                 new MedicalPackage()
                 {
-                    Id=4,
+                    Id=++id,
                     Name="Platynowy",
                     Description="Platynowy pakiet jest pakietem dla osób szukajacych pełnej ochrony zdrowia. Wszystkie oferowane przez nas usługi są oferowane nieodpłatnie. Priorytetowa obsługa w przypadku badań/operacji niecierpiących zwłoki. ",
                     //ServicesDiscounts=new Dictionary<MedicalService, decimal>(),
+                                        MedicalServiceDiscounts=MedicalServiceDiscounts.Where(c=>c.Id==id).ToList()
+
                 },
             };
 
-            Dictionary<MedicalService, decimal> discounts = new Dictionary<MedicalService, decimal>();
-            for (int i = 0; i < MedicalServices.Count; i++)
-            {
-                MedicalService service = MedicalServices[i];
-                discounts.Add(service, (decimal)0.2);
-            }
-            Dictionary<MedicalService, decimal> discounts2 = new Dictionary<MedicalService, decimal>();
-            for (int i = 0; i < MedicalServices.Count; i++)
-            {
-                MedicalService service = MedicalServices[i];
-                discounts2.Add(service, (decimal)0.5);
-            }
-            Dictionary<MedicalService, decimal> discounts3 = new Dictionary<MedicalService, decimal>();
-            for (int i = 0; i < MedicalServices.Count; i++)
-            {
-                MedicalService service = MedicalServices[i];
-                discounts3.Add(service, (decimal)0.75);
-            }
-            Dictionary<MedicalService, decimal> discounts4 = new Dictionary<MedicalService, decimal>();
-            for (int i = 0; i < MedicalServices.Count; i++)
-            {
-                MedicalService service = MedicalServices[i];
-                discounts4.Add(service, (decimal)1);
-            }
-            MedicalPackages[0].ServicesDiscounts = discounts;
-            MedicalPackages[1].ServicesDiscounts = discounts2;
-            MedicalPackages[2].ServicesDiscounts = discounts3;
-            MedicalPackages[3].ServicesDiscounts = discounts4;
+            //Dictionary<MedicalService, decimal> discounts = new Dictionary<MedicalService, decimal>();
+            //for (int i = 0; i < MedicalServices.Count; i++)
+            //{
+            //    MedicalService service = MedicalServices[i];
+            //    discounts.Add(service, (decimal)0.2);
+            //}
+            //Dictionary<MedicalService, decimal> discounts2 = new Dictionary<MedicalService, decimal>();
+            //for (int i = 0; i < MedicalServices.Count; i++)
+            //{
+            //    MedicalService service = MedicalServices[i];
+            //    discounts2.Add(service, (decimal)0.5);
+            //}
+            //Dictionary<MedicalService, decimal> discounts3 = new Dictionary<MedicalService, decimal>();
+            //for (int i = 0; i < MedicalServices.Count; i++)
+            //{
+            //    MedicalService service = MedicalServices[i];
+            //    discounts3.Add(service, (decimal)0.75);
+            //}
+            //Dictionary<MedicalService, decimal> discounts4 = new Dictionary<MedicalService, decimal>();
+            //for (int i = 0; i < MedicalServices.Count; i++)
+            //{
+            //    MedicalService service = MedicalServices[i];
+            //    discounts4.Add(service, (decimal)1);
+            //}
+            //MedicalPackages[0].ServicesDiscounts = discounts;
+            //MedicalPackages[1].ServicesDiscounts = discounts2;
+            //MedicalPackages[2].ServicesDiscounts = discounts3;
+            //MedicalPackages[3].ServicesDiscounts = discounts4;
 
             return MedicalPackages;
         }
@@ -2886,7 +2937,7 @@ namespace Asklepios.Data.InMemoryContexts
                 //fizykoterapia
                 new MedicalService(){Id=32,Name="Krioterapia",Description="Krioterapia", StandardPrice=100, IsPrimaryService=false},
                 new MedicalService(){Id=33,Name="Elektrostymulacja",Description="Elektrostymulacja", StandardPrice=100, IsPrimaryService=false},
-                new MedicalService(){Id=34,Name="Laseroterpaia",Description="Laseroterpaia", StandardPrice=200, IsPrimaryService=false},
+                new MedicalService(){Id=34,Name="Laseroterapia",Description="Laseroterapia", StandardPrice=200, IsPrimaryService=false},
                 new MedicalService(){Id=35,Name="Ultradźwięki",Description="Ultradźwięki", StandardPrice=100, IsPrimaryService=false},
                 new MedicalService(){Id=36,Name="Magnetoterapia",Description="Magnetoterapia", StandardPrice=100, IsPrimaryService=false},
 
@@ -3270,88 +3321,89 @@ namespace Asklepios.Data.InMemoryContexts
         {
             //List<List<MedicalRoom>> roomsCollections = new List<List<MedicalRoom>>()
             //{
+            long id = 0;
             List<MedicalRoom> rooms = new List<MedicalRoom>()
             {
                 new MedicalRoom()
                 {
-                    Id = 1,
+                    Id = ++id,
                     FloorNumber = 0,
                     MedicalRoomType = Core.Enums.MedicalRoomType.Cardiological,
                     Name = "1"
                 },
                 new MedicalRoom()
                 {
-                    Id = 2,
+                    Id = ++id,
                     FloorNumber = 0,
                     MedicalRoomType = Core.Enums.MedicalRoomType.Dental,
                     Name = "2"
                 },
                 new MedicalRoom()
                 {
-                    Id = 3,
+                    Id = ++id,
                     FloorNumber = 0,
                     MedicalRoomType = Core.Enums.MedicalRoomType.General,
                     Name = "3"
                 },
                 new MedicalRoom()
                 {
-                    Id = 4,
+                    Id = ++id,
                     FloorNumber = 0,
                     MedicalRoomType = Core.Enums.MedicalRoomType.General,
                     Name = "4"
                 },
                 new MedicalRoom()
                 {
-                    Id = 5,
+                    Id = ++id,
                     FloorNumber = 0,
                     MedicalRoomType = Core.Enums.MedicalRoomType.Gynecological,
                     Name = "5"
                 },
                 new MedicalRoom()
                 {
-                    Id = 6,
+                    Id = ++id,
                     FloorNumber = 0,
                     MedicalRoomType = Core.Enums.MedicalRoomType.Laryngological,
                     Name = "6"
                 },
                 new MedicalRoom()
                 {
-                    Id = 7,
+                    Id = ++id,
                     FloorNumber = 0,
                     MedicalRoomType = Core.Enums.MedicalRoomType.MedicalImaging,
                     Name = "7"
                 },
                 new MedicalRoom()
                 {
-                    Id = 8,
+                    Id = ++id,
                     FloorNumber = 0,
                     MedicalRoomType = Core.Enums.MedicalRoomType.Neurological,
                     Name = "8"
                 },
                 new MedicalRoom()
                 {
-                    Id = 9,
+                    Id = ++id,
                     FloorNumber = 0,
                     MedicalRoomType = Core.Enums.MedicalRoomType.Ophthalmology,
                     Name = "9"
                 },
                 new MedicalRoom()
                 {
-                    Id = 10,
+                    Id = ++id,
                     FloorNumber = 0,
                     MedicalRoomType = Core.Enums.MedicalRoomType.OralHygiene,
                     Name = "10"
                 },
                 new MedicalRoom()
                 {
-                    Id = 11,
+                    Id = ++id,
                     FloorNumber = 0,
                     MedicalRoomType = Core.Enums.MedicalRoomType.OralHygiene,
                     Name = "11"
                 },
                 new MedicalRoom()
                 {
-                    Id = 12,
+                    Id = ++id,
                     FloorNumber = 0,
                     MedicalRoomType = Core.Enums.MedicalRoomType.Rehabilitation,
                     Name = "12"
@@ -3362,94 +3414,94 @@ namespace Asklepios.Data.InMemoryContexts
             //{
                 new MedicalRoom()
                 {
-                    Id=13,
+                    Id = ++id,
                     FloorNumber=1,
                     MedicalRoomType=Core.Enums.MedicalRoomType.Surgical,
                     Name="1A"
                 },
                 new MedicalRoom()
                 {
-                    Id=14,
+                    Id = ++id,
                     FloorNumber=1,
                     MedicalRoomType=Core.Enums.MedicalRoomType.Treatment,
                     Name="1B"
                 },
                 new MedicalRoom()
                 {
-                    Id=15,
+                    Id = ++id,
                     FloorNumber=1,
                     MedicalRoomType=Core.Enums.MedicalRoomType.General,
                     Name="1C"
                 },
                 new MedicalRoom()
                 {
-                    Id=16,
+                    Id = ++id,
                     FloorNumber=1,
                     MedicalRoomType=Core.Enums.MedicalRoomType.General,
                     Name="1D"
                 },
                 new MedicalRoom()
                 {
-                    Id=17,
+                    Id = ++id,
                     FloorNumber=1,
                     MedicalRoomType=Core.Enums.MedicalRoomType.Laryngological,
                     Name="1E"
                 },
                 new MedicalRoom()
                 {
-                    Id=18,
+                    Id = ++id,
                     FloorNumber=2,
                     MedicalRoomType=Core.Enums.MedicalRoomType.Cardiological,
                     Name="2A"
                 },
                 new MedicalRoom()
                 {
-                    Id=19,
+                    Id = ++id,
                     FloorNumber=2,
                     MedicalRoomType=Core.Enums.MedicalRoomType.MedicalImaging,
                     Name="2B"
                 },
                 new MedicalRoom()
                 {
-                    Id=20,
+                    Id = ++id,
                     FloorNumber=2,
                     MedicalRoomType=Core.Enums.MedicalRoomType.Ophthalmology,
                     Name="2C"
                 },
                 new MedicalRoom()
                 {
-                    Id=21,
+                    Id = ++id,
                     FloorNumber=2,
                     MedicalRoomType=Core.Enums.MedicalRoomType.General,
                     Name="2D"
                 },
                 new MedicalRoom()
                 {
-                    Id=22,
+                    Id = ++id,
                     FloorNumber=3,
                     MedicalRoomType=Core.Enums.MedicalRoomType.General,
                     Name="3A"
                 },
                 new MedicalRoom()
                 {
-                    Id=23,
+                    Id = ++id,
                     FloorNumber=3,
                     MedicalRoomType=Core.Enums.MedicalRoomType.Treatment,
                     Name="3B"
                 },
                 new MedicalRoom()
                 {
-                    Id=24,
+                    Id = ++id,
                     FloorNumber=3,
                     MedicalRoomType=Core.Enums.MedicalRoomType.Cardiological,
                     Name="3C"
                 },
                 new MedicalRoom()
                 {
-                    Id=64,
+                    Id = ++id,
                     FloorNumber=3,
                     MedicalRoomType=Core.Enums.MedicalRoomType.General,
-                    Name="3C"
+                    Name="3D"
                 },
 
 
@@ -3458,106 +3510,106 @@ namespace Asklepios.Data.InMemoryContexts
             //{
                 new MedicalRoom()
                 {
-                    Id=25,
+                    Id = ++id,
                     FloorNumber=4,
                     MedicalRoomType=Core.Enums.MedicalRoomType.Treatment,
                     Name="41"
                 },
                 new MedicalRoom()
                 {
-                    Id=26,
-                    FloorNumber=1,
+                    Id = ++id,
+                    FloorNumber=4,
                     MedicalRoomType=Core.Enums.MedicalRoomType.Treatment,
                     Name="42"
                 },
-                                new MedicalRoom()
+                new MedicalRoom()
                 {
-                Id=27,
-                    FloorNumber=1,
+                    Id = ++id,
+                    FloorNumber=4,
                     MedicalRoomType=Core.Enums.MedicalRoomType.General,
                     Name="43"
                 },
                 new MedicalRoom()
                 {
-                    Id=28,
-                    FloorNumber=1,
+                    Id = ++id,
+                    FloorNumber=4,
                     MedicalRoomType=Core.Enums.MedicalRoomType.MedicalImaging,
                     Name="44"
                 },
                 new MedicalRoom()
                 {
-                    Id=29,
-                    FloorNumber=1,
+                    Id = ++id,
+                    FloorNumber=4,
                     MedicalRoomType=Core.Enums.MedicalRoomType.General,
                     Name="45"
                 },
                 new MedicalRoom()
                 {
-                    Id=30,
-                    FloorNumber=1,
+                    Id = ++id,
+                    FloorNumber=4,
                     MedicalRoomType=Core.Enums.MedicalRoomType.Cardiological,
                     Name="46"
                 },
                 new MedicalRoom()
                 {
-                    Id=31,
-                    FloorNumber=1,
+                    Id = ++id,
+                    FloorNumber=4,
                     MedicalRoomType=Core.Enums.MedicalRoomType.Gynecological ,
                     Name="47"
                 },
                 new MedicalRoom()
                 {
-                    Id=32,
-                    FloorNumber=1,
+                    Id = ++id,
+                    FloorNumber=5,
                     MedicalRoomType=Core.Enums.MedicalRoomType.Laryngological,
                     Name="51"
                 },
                 new MedicalRoom()
                 {
-                    Id=33,
-                    FloorNumber=1,
+                    Id = ++id,
+                    FloorNumber=5,
                     MedicalRoomType=Core.Enums.MedicalRoomType.Neurological,
                     Name="52"
                 },
                 new MedicalRoom()
                 {
-                    Id=34,
-                    FloorNumber=1,
+                    Id = ++id,
+                    FloorNumber=5,
                     MedicalRoomType=Core.Enums.MedicalRoomType.Ophthalmology,
                     Name="53"
                 },
                 new MedicalRoom()
                 {
-                    Id=35,
-                    FloorNumber=1,
+                    Id = ++id,
+                    FloorNumber=5,
                     MedicalRoomType=Core.Enums.MedicalRoomType.Rehabilitation,
                     Name="54"
                 },
                 new MedicalRoom()
                 {
-                    Id=36,
-                    FloorNumber=1,
+                    Id = ++id,
+                    FloorNumber=5,
                     MedicalRoomType=Core.Enums.MedicalRoomType.Surgical,
                     Name="55"
                 },
-                                new MedicalRoom()
+                new MedicalRoom()
                 {
-                    Id=61,
-                    FloorNumber=1,
+                    Id = ++id,
+                    FloorNumber=5,
                     MedicalRoomType=Core.Enums.MedicalRoomType.Surgical,
                     Name="56"
                 },
                 new MedicalRoom()
                 {
-                    Id=62,
-                    FloorNumber=1,
+                    Id = ++id,
+                    FloorNumber=5,
                     MedicalRoomType=Core.Enums.MedicalRoomType.Surgical,
                     Name="57"
                 },
                 new MedicalRoom()
                 {
-                    Id=63,
-                    FloorNumber=1,
+                    Id = ++id,
+                    FloorNumber=5,
                     MedicalRoomType=Core.Enums.MedicalRoomType.Surgical,
                     Name="58"
                 },
@@ -3567,84 +3619,84 @@ namespace Asklepios.Data.InMemoryContexts
             //{
                 new MedicalRoom()
                 {
-                    Id=37,
+                    Id = ++id,
                     FloorNumber=7,
                     MedicalRoomType=Core.Enums.MedicalRoomType.Surgical,
                     Name="2"
                 },
                 new MedicalRoom()
                 {
-                    Id=38,
+                    Id = ++id,
                     FloorNumber=7,
                     MedicalRoomType=Core.Enums.MedicalRoomType.Dental,
                     Name="3"
                 },
-                                new MedicalRoom()
+                new MedicalRoom()
                 {
-                    Id=39,
+                    Id = ++id,
                     FloorNumber=7,
                     MedicalRoomType=Core.Enums.MedicalRoomType.OralHygiene,
                     Name="4"
                 },
                 new MedicalRoom()
                 {
-                    Id=40,
+                    Id = ++id,
                     FloorNumber=7,
                     MedicalRoomType=Core.Enums.MedicalRoomType.Cardiological,
                     Name="5"
                 },
                 new MedicalRoom()
                 {
-                    Id=41,
+                    Id = ++id,
                     FloorNumber=7,
                     MedicalRoomType=Core.Enums.MedicalRoomType.General,
                     Name="6"
                 },
                 new MedicalRoom()
                 {
-                    Id=42,
+                    Id = ++id,
                     FloorNumber=7,
                     MedicalRoomType=Core.Enums.MedicalRoomType.General,
                     Name="7"
                 },
                 new MedicalRoom()
                 {
-                    Id=43,
+                    Id = ++id,
                     FloorNumber=7,
                     MedicalRoomType=Core.Enums.MedicalRoomType.Rehabilitation,
                     Name="8"
                 },
                 new MedicalRoom()
                 {
-                    Id=44,
+                    Id = ++id,
                     FloorNumber=7,
                     MedicalRoomType=Core.Enums.MedicalRoomType.Treatment,
                     Name="9"
                 },
                 new MedicalRoom()
                 {
-                    Id=45,
+                    Id = ++id,
                     FloorNumber=7,
                     MedicalRoomType=Core.Enums.MedicalRoomType.Cardiological,
                     Name="10"
                 },
                 new MedicalRoom()
                 {
-                    Id=46,
+                    Id = ++id,
                     FloorNumber=7,
                     MedicalRoomType=Core.Enums.MedicalRoomType.Neurological,
                     Name="11"
                 },
                 new MedicalRoom()
                 {
-                    Id=47,
+                    Id = ++id,
                     FloorNumber=7,
                     MedicalRoomType=Core.Enums.MedicalRoomType.MedicalImaging,
                     Name="12"
                 },
                 new MedicalRoom()
                 {
-                    Id=48,
+                    Id = ++id,
                     FloorNumber=7,
                     MedicalRoomType=Core.Enums.MedicalRoomType.General,
                     Name="13"
@@ -3655,84 +3707,84 @@ namespace Asklepios.Data.InMemoryContexts
             //{
                 new MedicalRoom()
                 {
-                    Id=49,
+                    Id = ++id,
                     FloorNumber=2,
                     MedicalRoomType=Core.Enums.MedicalRoomType.Cardiological,
                     Name="A"
                 },
                 new MedicalRoom()
                 {
-                    Id=50,
+                    Id = ++id,
                     FloorNumber=2,
                     MedicalRoomType=Core.Enums.MedicalRoomType.Cardiological,
                     Name="B"
                 },
-                                new MedicalRoom()
+                new MedicalRoom()
                 {
-                    Id=51,
+                    Id = ++id,
                     FloorNumber=2,
                     MedicalRoomType=Core.Enums.MedicalRoomType.General,
                     Name="C"
                 },
                 new MedicalRoom()
                 {
-                    Id=52,
+                    Id = ++id,
                     FloorNumber=2,
                     MedicalRoomType=Core.Enums.MedicalRoomType.General,
                     Name="D"
                 },
                 new MedicalRoom()
                 {
-                    Id=53,
+                    Id = ++id,
                     FloorNumber=2,
                     MedicalRoomType=Core.Enums.MedicalRoomType.Gynecological,
                     Name="E"
                 },
                 new MedicalRoom()
                 {
-                    Id=54,
+                    Id = ++id,
                     FloorNumber=2,
                     MedicalRoomType=Core.Enums.MedicalRoomType.MedicalImaging,
                     Name="F"
                 },
                 new MedicalRoom()
                 {
-                    Id=55,
+                    Id = ++id,
                     FloorNumber=3,
                     MedicalRoomType=Core.Enums.MedicalRoomType.Surgical,
                     Name="G"
                 },
                 new MedicalRoom()
                 {
-                    Id=56,
+                    Id = ++id,
                     FloorNumber=3,
                     MedicalRoomType=Core.Enums.MedicalRoomType.Treatment,
                     Name="H"
                 },
                 new MedicalRoom()
                 {
-                    Id=57,
+                    Id = ++id,
                     FloorNumber=3,
                     MedicalRoomType=Core.Enums.MedicalRoomType.Treatment,
                     Name="I"
                 },
                 new MedicalRoom()
                 {
-                    Id=58,
+                    Id = ++id,
                     FloorNumber=3,
                     MedicalRoomType=Core.Enums.MedicalRoomType.General,
                     Name="J"
                 },
                 new MedicalRoom()
                 {
-                    Id=59,
+                    Id = ++id,
                     FloorNumber=3,
                     MedicalRoomType=Core.Enums.MedicalRoomType.Cardiological,
                     Name="K"
                 },
                 new MedicalRoom()
                 {
-                    Id=60,
+                    Id = ++id,
                     FloorNumber=3,
                     MedicalRoomType=Core.Enums.MedicalRoomType.General,
                     Name="L"
@@ -3742,155 +3794,431 @@ namespace Asklepios.Data.InMemoryContexts
             //{
                 new MedicalRoom()
                 {
-                    Id = 65,
+                    Id = ++id,
                     FloorNumber = 0,
                     MedicalRoomType = Core.Enums.MedicalRoomType.Cardiological,
                     Name = "1"
                 },
                 new MedicalRoom()
                 {
-                    Id = 66,
+                    Id = ++id,
                     FloorNumber = 0,
                     MedicalRoomType = Core.Enums.MedicalRoomType.Dental,
                     Name = "2"
                 },
                 new MedicalRoom()
                 {
-                    Id = 67,
+                    Id = ++id,
                     FloorNumber = 0,
                     MedicalRoomType = Core.Enums.MedicalRoomType.General,
                     Name = "3"
                 },
                 new MedicalRoom()
                 {
-                    Id = 68,
+                    Id = ++id,
                     FloorNumber = 0,
                     MedicalRoomType = Core.Enums.MedicalRoomType.General,
                     Name = "4"
                 },
                 new MedicalRoom()
                 {
-                    Id = 69,
+                    Id = ++id,
                     FloorNumber = 0,
                     MedicalRoomType = Core.Enums.MedicalRoomType.Gynecological,
                     Name = "5"
                 },
                 new MedicalRoom()
                 {
-                    Id = 70,
+                    Id = ++id,
                     FloorNumber = 0,
                     MedicalRoomType = Core.Enums.MedicalRoomType.Laryngological,
                     Name = "6"
                 },
                 new MedicalRoom()
                 {
-                    Id = 71,
+                    Id = ++id,
                     FloorNumber = 0,
                     MedicalRoomType = Core.Enums.MedicalRoomType.MedicalImaging,
                     Name = "7"
                 },
                 new MedicalRoom()
                 {
-                    Id = 72,
+                    Id = ++id,
                     FloorNumber = 0,
                     MedicalRoomType = Core.Enums.MedicalRoomType.Neurological,
                     Name = "8"
                 },
                 new MedicalRoom()
                 {
-                    Id = 73,
+                    Id = ++id,
                     FloorNumber = 0,
                     MedicalRoomType = Core.Enums.MedicalRoomType.Ophthalmology,
                     Name = "9"
                 },
                 new MedicalRoom()
                 {
-                    Id = 74,
+                    Id = ++id,
                     FloorNumber = 0,
                     MedicalRoomType = Core.Enums.MedicalRoomType.OralHygiene,
                     Name = "10"
                 },
                 new MedicalRoom()
                 {
-                    Id = 75,
+                    Id = ++id,
                     FloorNumber = 0,
                     MedicalRoomType = Core.Enums.MedicalRoomType.OralHygiene,
                     Name = "11"
                 },
                 new MedicalRoom()
                 {
-                    Id = 76,
+                    Id = ++id,
                     FloorNumber = 0,
                     MedicalRoomType = Core.Enums.MedicalRoomType.Rehabilitation,
                     Name = "12"
                 },
                 new MedicalRoom()
                 {
-                    Id = 77,
+                    Id = ++id,
                     FloorNumber = 0,
                     MedicalRoomType = Core.Enums.MedicalRoomType.General,
                     Name = "13"
                 },
                 new MedicalRoom()
                 {
-                    Id = 78,
+                    Id = ++id,
                     FloorNumber = 0,
                     MedicalRoomType = Core.Enums.MedicalRoomType.General,
                     Name = "14"
                 },
                 new MedicalRoom()
                 {
-                    Id = 79,
+                    Id = ++id,
                     FloorNumber = 0,
                     MedicalRoomType = Core.Enums.MedicalRoomType.General,
                     Name = "15"
                 },
                 new MedicalRoom()
                 {
-                    Id = 80,
+                    Id = ++id,
                     FloorNumber = 0,
                     MedicalRoomType = Core.Enums.MedicalRoomType.General,
                     Name = "16"
                 },
                 new MedicalRoom()
                 {
-                    Id = 81,
+                    Id = ++id,
                     FloorNumber = 1,
                     MedicalRoomType = Core.Enums.MedicalRoomType.General,
                     Name = "11"
                 },
                 new MedicalRoom()
                 {
-                    Id = 82,
+                    Id = ++id,
                     FloorNumber = 2,
                     MedicalRoomType = Core.Enums.MedicalRoomType.General,
                     Name = "23"
                 },
                 new MedicalRoom()
                 {
-                    Id = 83,
+                    Id = ++id,
                     FloorNumber = 2,
                     MedicalRoomType = Core.Enums.MedicalRoomType.General,
                     Name = "24"
                 },
                 new MedicalRoom()
                 {
-                    Id = 84,
+                    Id = ++id,
                     FloorNumber = 2,
                     MedicalRoomType = Core.Enums.MedicalRoomType.General,
                     Name = "25"
                 },
-
-            //},
+                new MedicalRoom()
+                {
+                    Id = ++id,
+                    FloorNumber = 5,
+                    MedicalRoomType = Core.Enums.MedicalRoomType.Cardiological,
+                    Name = "51"
+                },
+                new MedicalRoom()
+                {
+                    Id = ++id,
+                    FloorNumber = 5,
+                    MedicalRoomType = Core.Enums.MedicalRoomType.Dental,
+                    Name = "52"
+                },
+                new MedicalRoom()
+                {
+                    Id = ++id,
+                    FloorNumber = 5,
+                    MedicalRoomType = Core.Enums.MedicalRoomType.General,
+                    Name = "53"
+                },
+                new MedicalRoom()
+                {
+                    Id = ++id,
+                    FloorNumber = 5,
+                    MedicalRoomType = Core.Enums.MedicalRoomType.General,
+                    Name = "54"
+                },
+                new MedicalRoom()
+                {
+                    Id = ++id,
+                    FloorNumber = 5,
+                    MedicalRoomType = Core.Enums.MedicalRoomType.Gynecological,
+                    Name = "55"
+                },
+                new MedicalRoom()
+                {
+                    Id = ++id,
+                    FloorNumber = 5,
+                    MedicalRoomType = Core.Enums.MedicalRoomType.Laryngological,
+                    Name = "56"
+                },
+                new MedicalRoom()
+                {
+                    Id = ++id,
+                    FloorNumber = 5,
+                    MedicalRoomType = Core.Enums.MedicalRoomType.MedicalImaging,
+                    Name = "57"
+                },
+                new MedicalRoom()
+                {
+                    Id = ++id,
+                    FloorNumber = 5,
+                    MedicalRoomType = Core.Enums.MedicalRoomType.Neurological,
+                    Name = "58"
+                },
+                new MedicalRoom()
+                {
+                    Id = ++id,
+                    FloorNumber = 5,
+                    MedicalRoomType = Core.Enums.MedicalRoomType.Ophthalmology,
+                    Name = "59"
+                },
+                new MedicalRoom()
+                {
+                    Id = ++id,
+                    FloorNumber = 6,
+                    MedicalRoomType = Core.Enums.MedicalRoomType.OralHygiene,
+                    Name = "60"
+                },
+                new MedicalRoom()
+                {
+                    Id = ++id,
+                    FloorNumber = 6,
+                    MedicalRoomType = Core.Enums.MedicalRoomType.OralHygiene,
+                    Name = "61"
+                },
+                new MedicalRoom()
+                {
+                    Id = ++id,
+                    FloorNumber = 6,
+                    MedicalRoomType = Core.Enums.MedicalRoomType.Rehabilitation,
+                    Name = "62"
+                },
+                new MedicalRoom()
+                {
+                    Id = ++id,
+                    FloorNumber = 6,
+                    MedicalRoomType = Core.Enums.MedicalRoomType.General,
+                    Name = "63"
+                },
+                new MedicalRoom()
+                {
+                    Id = ++id,
+                    FloorNumber = 6,
+                    MedicalRoomType = Core.Enums.MedicalRoomType.General,
+                    Name = "64"
+                },
+                new MedicalRoom()
+                {
+                    Id = ++id,
+                    FloorNumber = 6,
+                    MedicalRoomType = Core.Enums.MedicalRoomType.General,
+                    Name = "65"
+                },
+                new MedicalRoom()
+                {
+                    Id = ++id,
+                    FloorNumber = 6,
+                    MedicalRoomType = Core.Enums.MedicalRoomType.General,
+                    Name = "66"
+                },
+                new MedicalRoom()
+                {
+                    Id = ++id,
+                    FloorNumber = 6,
+                    MedicalRoomType = Core.Enums.MedicalRoomType.General,
+                    Name = "67"
+                },
+                new MedicalRoom()
+                {
+                    Id = ++id,
+                    FloorNumber = 6,
+                    MedicalRoomType = Core.Enums.MedicalRoomType.General,
+                    Name = "68"
+                },
+                new MedicalRoom()
+                {
+                    Id = ++id,
+                    FloorNumber = 6,
+                    MedicalRoomType = Core.Enums.MedicalRoomType.General,
+                    Name = "69"
+                },
+                new MedicalRoom()
+                {
+                    Id = ++id,
+                    FloorNumber = 6,
+                    MedicalRoomType = Core.Enums.MedicalRoomType.General,
+                    Name = "69B"
+                },
+                new MedicalRoom()
+                {
+                    Id = ++id,
+                    FloorNumber = 0,
+                    MedicalRoomType = Core.Enums.MedicalRoomType.Cardiological,
+                    Name = "A"
+                },
+                new MedicalRoom()
+                {
+                    Id = ++id,
+                    FloorNumber = 0,
+                    MedicalRoomType = Core.Enums.MedicalRoomType.Dental,
+                    Name = "B"
+                },
+                new MedicalRoom()
+                {
+                    Id = ++id,
+                    FloorNumber = 0,
+                    MedicalRoomType = Core.Enums.MedicalRoomType.General,
+                    Name = "C"
+                },
+                new MedicalRoom()
+                {
+                    Id = ++id,
+                    FloorNumber = 0,
+                    MedicalRoomType = Core.Enums.MedicalRoomType.General,
+                    Name = "D"
+                },
+                new MedicalRoom()
+                {
+                    Id = ++id,
+                    FloorNumber = 0,
+                    MedicalRoomType = Core.Enums.MedicalRoomType.Gynecological,
+                    Name = "E"
+                },
+                new MedicalRoom()
+                {
+                    Id = ++id,
+                    FloorNumber = 0,
+                    MedicalRoomType = Core.Enums.MedicalRoomType.Laryngological,
+                    Name = "F"
+                },
+                new MedicalRoom()
+                {
+                    Id = ++id,
+                    FloorNumber = 0,
+                    MedicalRoomType = Core.Enums.MedicalRoomType.MedicalImaging,
+                    Name = "G"
+                },
+                new MedicalRoom()
+                {
+                    Id = ++id,
+                    FloorNumber = 0,
+                    MedicalRoomType = Core.Enums.MedicalRoomType.Neurological,
+                    Name = "H"
+                },
+                new MedicalRoom()
+                {
+                    Id = ++id,
+                    FloorNumber = 0,
+                    MedicalRoomType = Core.Enums.MedicalRoomType.Ophthalmology,
+                    Name = "I"
+                },
+                new MedicalRoom()
+                {
+                    Id = ++id,
+                    FloorNumber = 0,
+                    MedicalRoomType = Core.Enums.MedicalRoomType.OralHygiene,
+                    Name = "J"
+                },
+                new MedicalRoom()
+                {
+                    Id = ++id,
+                    FloorNumber = 0,
+                    MedicalRoomType = Core.Enums.MedicalRoomType.OralHygiene,
+                    Name = "K"
+                },
+                new MedicalRoom()
+                {
+                    Id = ++id,
+                    FloorNumber = 0,
+                    MedicalRoomType = Core.Enums.MedicalRoomType.Rehabilitation,
+                    Name = "L"
+                },
+                new MedicalRoom()
+                {
+                    Id = ++id,
+                    FloorNumber = 1,
+                    MedicalRoomType = Core.Enums.MedicalRoomType.General,
+                    Name = "M"
+                },
+                new MedicalRoom()
+                {
+                    Id = ++id,
+                    FloorNumber = 1,
+                    MedicalRoomType = Core.Enums.MedicalRoomType.General,
+                    Name = "N"
+                },
+                new MedicalRoom()
+                {
+                    Id = ++id,
+                    FloorNumber = 1,
+                    MedicalRoomType = Core.Enums.MedicalRoomType.General,
+                    Name = "O"
+                },
+                new MedicalRoom()
+                {
+                    Id = ++id,
+                    FloorNumber = 1,
+                    MedicalRoomType = Core.Enums.MedicalRoomType.General,
+                    Name = "P"
+                },
+                new MedicalRoom()
+                {
+                    Id = ++id,
+                    FloorNumber = 1,
+                    MedicalRoomType = Core.Enums.MedicalRoomType.General,
+                    Name = "R"
+                },
+                new MedicalRoom()
+                {
+                    Id = ++id,
+                    FloorNumber = 2,
+                    MedicalRoomType = Core.Enums.MedicalRoomType.General,
+                    Name = "S"
+                },
+                new MedicalRoom()
+                {
+                    Id = ++id,
+                    FloorNumber = 2,
+                    MedicalRoomType = Core.Enums.MedicalRoomType.General,
+                    Name = "T"
+                },
+                new MedicalRoom()
+                {
+                    Id = ++id,
+                    FloorNumber = 2,
+                    MedicalRoomType = Core.Enums.MedicalRoomType.General,
+                    Name = "U"
+                },
             };
 
-            //return roomsCollections;
             return rooms;
         }
 
         public static MedicalRoom GetMedicalRoomById(long id)
         {
-            //return MedicalRooms.
             return new MedicalRoom();
         }
 

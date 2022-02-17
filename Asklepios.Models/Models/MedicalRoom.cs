@@ -2,12 +2,19 @@
 using Asklepios.Core.Extensions;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Text;
 
 namespace Asklepios.Core.Models
 {
     public class MedicalRoom
     {
+        public long Id { get; set; }
+        [Display(Name = "Placówka")]
+        public long LocationId { get; set; }
+        public Location Location { get; set; }
+        [Required(ErrorMessage = "Wprowadź nazwę pokoju!")]
+        [Display(Name = "Nazwa pokoju")]
         public string Name { get; set; }
         public string Description
         {
@@ -20,12 +27,38 @@ namespace Asklepios.Core.Models
         {
             get
             {
-                return "Pokój numer: " + Name + " | " + MedicalRoomType.GetDescription();
+                if (MedicalRoomType.HasValue)
+                {
+                    return "Pokój numer: " + Name + " | " + MedicalRoomType.GetDescription();
+                }
+                else
+                {
+                    return "Pokój numer: " + Name;
+                }
             }
         }
-
-        public short FloorNumber { get; set; }
-        public MedicalRoomType MedicalRoomType {get;set;}
-        public long Id { get; set; }
+        [Required(ErrorMessage = "Wprowadź numer piętra!")]
+        [Display(Name = "Numer piętra")]
+        public short? FloorNumber { get; set; }
+        [Required(ErrorMessage = "Wprowadź typ pokoju!")]
+        [Display(Name = "Typ pokoju")]
+        public MedicalRoomType? MedicalRoomType {get;set;}
+        public bool IsValid 
+        {
+            get
+            {
+                if (!string.IsNullOrWhiteSpace(Name))
+                {
+                    if (FloorNumber.HasValue)
+                    {
+                        if (MedicalRoomType.HasValue)
+                        {
+                            return true;
+                        }
+                    }
+                }
+                return false;
+            }
+        }
     }
 }
