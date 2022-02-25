@@ -43,6 +43,7 @@ editMode = Html.GetEnumSelectListWithOneValue(Asklepios.Web.Areas.Administrative
 @foreach (MedicalPackage pack in Model.MedicalPackages)
 {
     Model.SelectedPackage = pack;
+    Model.SelectedPackageId = pack.Id;
     <partial name="_MedicalPackage" model="Model" />
 }
 <script>

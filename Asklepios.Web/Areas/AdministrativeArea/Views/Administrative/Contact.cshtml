@@ -25,7 +25,17 @@
             <span asp-validation-for="Message" type="text" class="text-danger"></span>
 
         </div>
-        <button type="submit" class="btn btn-primary w-100">Wyślij</button>
+
+        <div class="form-group d-flex flex-column mt-2">
+            <button id="btnSubmit" type="submit" class="btn btn-primary btn-icon-split d-flex">
+                <span class="icon text-white-50 left" style="text-align:left;float:left">
+                    <i class="fas fa-forward"></i>
+                </span>
+                <span class="text" style="float: left">Wyślij</span>
+            </button>
+        </div>
+
+        @*<button type="submit" class="btn btn-primary w-100">Wyślij</button>*@
 
         @if (Model.HasInfoMessage)
         {

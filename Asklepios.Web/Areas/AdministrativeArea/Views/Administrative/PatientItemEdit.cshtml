@@ -17,9 +17,9 @@
                     @Model.SuccessMessage
                 </p>
             </div>
-            <a asp-controller="Administrative" asp-action="PatientItemsAdd"  class="btn btn-outline-secondary btn-icon-split ">
+            @*@*<a asp-controller="Administrative" asp-action="PatientItemsAdd"  class="btn btn-outline-secondary btn-icon-split ">
                 <span class="text" style="float: left">Resetuj dane</span>
-            </a>
+            </a>*@
             }
     }
 
@@ -110,7 +110,17 @@
             <select hidden asp-for="ViewMode" asp-items="Html.GetEnumSelectListWithOneValue(editViewMode)">
             </select>
 
-            <button id="btnSubmit" type="submit" class="btn btn-primary w-100 mt-2">Zaktualizuj dane</button>
+
+            <div class="form-group d-flex flex-column mt-2">
+                <button id="btnSubmit" type="submit" class="btn btn-primary btn-icon-split d-flex">
+                    <span class="icon text-white-50 left" style="text-align:left;float:left">
+                        <i class="fas fa-pen-square"></i>
+                    </span>
+                    <span class="text" style="float: left">Zaktualizuj</span>
+                </button>
+            </div>
+
+            @*<button id="btnSubmit" type="submit" class="btn btn-primary w-100 mt-2">Zaktualizuj dane</button>*@
 
         </div>
     </form>

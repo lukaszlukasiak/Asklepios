@@ -24,6 +24,7 @@ namespace Asklepios.Core.Models
         public MedicalRoom MedicalRoom { get; set; }
         public string MedicalHistory { get; set; }
         private MedicalTestResult _medicalTestResult;
+
         public MedicalTestResult MedicalResult 
         { 
             get
@@ -54,7 +55,20 @@ namespace Asklepios.Core.Models
                 _visitReview.Visit = this;               
             }
         }
-
+        public bool IsBooked
+        {
+            get
+            {
+                if (Patient!=null)
+                {
+                    return true;
+                }
+                else
+                {
+                    return false;
+                }
+            }
+        }
         //public VisitSummary VisitSummary { get; set; }
         public string GetVisitDateDescription()
         {
@@ -71,6 +85,10 @@ namespace Asklepios.Core.Models
         {
             get
             {
+                if (PrimaryService==null )
+                {
+                    return null;
+                }
                 string description = PrimaryService.Name;
                 switch (VisitCategory.Type)
                 {
@@ -104,6 +122,10 @@ namespace Asklepios.Core.Models
         {
             get
             {
+                if (VisitCategory==null)
+                {
+                    return false;
+                }
                 if (VisitCategory.Type == VisitCategoryType.MedicalImaging || VisitCategory.Type == VisitCategoryType.MedicalImaging)
                 {
                     if (this.MedicalResult == null)
@@ -119,7 +141,7 @@ namespace Asklepios.Core.Models
         {
             MedicalPackage package = Patient.MedicalPackage;
             decimal price = decimal.MinusOne;
-            MedicalServiceDiscount discount = package.MedicalServiceDiscounts.First(c => c.MedicalService == service);
+            MedicalServiceDiscount discount = package.ServiceDiscounts.First(c => c.MedicalService == service);
             if (discount!=null)
             {
                 price = service.StandardPrice * discount.Discount;//package.ServicesDiscounts[service];
@@ -135,7 +157,7 @@ namespace Asklepios.Core.Models
             MedicalPackage package = Patient.MedicalPackage;
             decimal totalPrice = decimal.MinusOne;
 
-            MedicalServiceDiscount discount = package.MedicalServiceDiscounts.First(c => c.MedicalService == PrimaryService);
+            MedicalServiceDiscount discount = package.ServiceDiscounts.First(c => c.MedicalService == PrimaryService);
 
             //if (package.ServicesDiscounts.ContainsKey(PrimaryService))
             if (discount != null)
@@ -148,7 +170,7 @@ namespace Asklepios.Core.Models
             for (int i = 0; i < MinorMedicalServices?.Count; i++)
             {
                 MedicalService service = MinorMedicalServices[i];
-                MedicalServiceDiscount discount2 = package.MedicalServiceDiscounts.First(c => c.MedicalService == service);
+                MedicalServiceDiscount discount2 = package.ServiceDiscounts.First(c => c.MedicalService == service);
 
                 //if (package.ServicesDiscounts.ContainsKey(PrimaryService))
                 if (discount2 != null)

@@ -2715,7 +2715,7 @@ readers do not read off random characters that represent icons */
 .fa-minus:before {
   content: "\f068"; }
 
-.fa-minus-circle:before {
+.fa-minus-square:before {
   content: "\f056"; }
 
 .fa-minus-square:before {

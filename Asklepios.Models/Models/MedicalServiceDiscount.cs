@@ -12,6 +12,8 @@ namespace Asklepios.Core.Models
         [Required(ErrorMessage = "Proszę podać wysokość rabatu (0-100%)")]
         [Display(Name = "Wysokość rabatu (0.2=20%)")]
         [Range(0,100)]
+        [DisplayFormat(DataFormatString = "{0:P2}")]
+
         public decimal Discount { get; set; }
 
         public MedicalPackage MedicalPackage { get; set; }

@@ -91,6 +91,20 @@ namespace Asklepios.Web.Areas.AdministrativeArea.Models
                     return null;
                 }
             }
+            if (SearchOptions.SelectedServiceId > 0)
+            {
+                foreach (MedicalWorker www in AllMedicalWorkers)
+                {
+                    www.MedicalServiceIds = www.MedicalServices.Select(c => c.Id).ToList();
+                }
+
+                filteredWorkers = filteredWorkers.Where(c => c.MedicalServiceIds.Contains(SearchOptions.SelectedServiceId)).ToList();
+                if (filteredWorkers == null)
+                {
+                    return null;
+                }
+            }
+
             if (SearchOptions.SelectedGender.HasValue)
             {
                 filteredWorkers = filteredWorkers.Where(c => c.Person.Gender == SearchOptions.SelectedGender).ToList();

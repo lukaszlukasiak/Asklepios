@@ -21,7 +21,7 @@
 
             <label asp-for="SearchOptions.SelectedServiceId" class="control-label"></label>
             <select class="form-control  mb-2" asp-for="SearchOptions.SelectedServiceId" asp-items="services">
-                <option value="-1">Wybierz pakiet</option>
+                <option value="-1">Wybierz typ usługi</option>
             </select>
             <span asp-validation-for="SearchOptions.SelectedServiceId" class="text-danger"></span>
 
@@ -64,9 +64,17 @@
             <span asp-validation-for="SearchOptions.SelectedPassportNumber" class="text-danger"></span>
 
 
+            <div class="form-group d-flex flex-column mt-2">
+                <button id="btnSubmit" type="submit" class="btn btn-primary btn-icon-split d-flex" hidden>
+                    <span class="icon text-white-50 left" style="text-align:left;float:left">
+                        <i class="fas fa-search"></i>
+                    </span>
+                    <span class="text" style="float: left">Wyszukaj</span>
+                </button>
+            </div>
 
 
-            <button id="btnSubmit" type="submit" class="btn btn-primary w-100 mt-2">Wyszukaj</button>
+            @*<button id="btnSubmit" type="submit" class="btn btn-primary w-100 mt-2">Wyszukaj</button>*@
         </div>
     </form>
     @{
@@ -107,7 +115,7 @@
         {
             <div class="messages" style="margin-top: 10px; text-align: center ">
                 <p class="alert alert-danger">
-                    Brak pacjentów spełniających wymagania...
+                    Brak pracowników medycznych spełniających wymagania...
                 </p>
             </div>
 
