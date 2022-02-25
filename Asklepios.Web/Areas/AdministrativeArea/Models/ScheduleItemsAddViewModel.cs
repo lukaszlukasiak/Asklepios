@@ -78,7 +78,10 @@ namespace Asklepios.Web.Areas.AdministrativeArea.Models
                     return DateTimeOffset.Now.Date.AddDays(1);
                 }
             }
-            set { _firstVisitInitialDateTime = value; }
+            set
+            {
+                _firstVisitInitialDateTime = value;
+            }
         }
 
         public string SuccessMessage { get; internal set; }
@@ -127,42 +130,42 @@ namespace Asklepios.Web.Areas.AdministrativeArea.Models
             }
             return false;
         }
-            
-    
-    public bool IsDuplicated(List<Visit> visits)
-    {
-        if (long.TryParse(SelectedRoomId, out long roomdId))
+
+
+        public bool IsDuplicated(List<Visit> visits)
         {
-            if (long.TryParse(SelectedMedicalWorkerId, out long workerId))
+            if (long.TryParse(SelectedRoomId, out long roomdId))
             {
-                if (roomdId > 0 && workerId > 0)
+                if (long.TryParse(SelectedMedicalWorkerId, out long workerId))
                 {
-                    List<Visit> filteredVisits = visits.Where(c => c.DateTimeSince.Date == VisitsDate.Date && c.MedicalRoom.Id == roomdId).ToList();
-                    TimeSpan start = VisitsDate.TimeOfDay;
-                    TimeSpan end = VisitsDate.TimeOfDay.Add(new TimeSpan(0, NumberOfVisitsToAdd * DurationOfVisit, 0));
-
-
-                    List<Visit> duplicates = filteredVisits.Where(c => (c.DateTimeSince.TimeOfDay > start && c.DateTimeSince.TimeOfDay < end) || (c.DateTimeTill.TimeOfDay > start && c.DateTimeTill.TimeOfDay < end)).ToList();
-
-                    if (duplicates != null && duplicates?.Count > 0)
+                    if (roomdId > 0 && workerId > 0)
                     {
-                        ErrorMessage = ERROR_MESSAGE_ROOM;
-                        return true;
-                    }
+                        List<Visit> filteredVisits = visits.Where(c => c.DateTimeSince.Date == VisitsDate.Date && c.MedicalRoom.Id == roomdId).ToList();
+                        TimeSpan start = VisitsDate.TimeOfDay;
+                        TimeSpan end = VisitsDate.TimeOfDay.Add(new TimeSpan(0, NumberOfVisitsToAdd * DurationOfVisit, 0));
 
-                    filteredVisits = visits.Where(c => c.DateTimeSince.Date == VisitsDate.Date && c.MedicalWorker.Id == workerId).ToList();
-                    duplicates = filteredVisits.Where(c => (c.DateTimeSince.TimeOfDay > start && c.DateTimeSince.TimeOfDay < end) || (c.DateTimeTill.TimeOfDay > start && c.DateTimeTill.TimeOfDay < end)).ToList();
-                    if (duplicates != null && duplicates?.Count > 0)
-                    {
-                        ErrorMessage = ERROR_MESSAGE_WORKER;
-                        return true;
+
+                        List<Visit> duplicates = filteredVisits.Where(c => (c.DateTimeSince.TimeOfDay > start && c.DateTimeSince.TimeOfDay < end) || (c.DateTimeTill.TimeOfDay > start && c.DateTimeTill.TimeOfDay < end)).ToList();
+
+                        if (duplicates != null && duplicates?.Count > 0)
+                        {
+                            ErrorMessage = ERROR_MESSAGE_ROOM;
+                            return true;
+                        }
+
+                        filteredVisits = visits.Where(c => c.DateTimeSince.Date == VisitsDate.Date && c.MedicalWorker.Id == workerId).ToList();
+                        duplicates = filteredVisits.Where(c => (c.DateTimeSince.TimeOfDay > start && c.DateTimeSince.TimeOfDay < end) || (c.DateTimeTill.TimeOfDay > start && c.DateTimeTill.TimeOfDay < end)).ToList();
+                        if (duplicates != null && duplicates?.Count > 0)
+                        {
+                            ErrorMessage = ERROR_MESSAGE_WORKER;
+                            return true;
+                        }
+
                     }
 
                 }
-
             }
+            return false;
         }
-        return false;
     }
-}
 }

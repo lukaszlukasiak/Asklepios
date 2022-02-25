@@ -65,8 +65,16 @@
             <input asp-for="VisitsDateTo" class="form-control mb-2">
             <span asp-validation-for="VisitsDateTo" class="text-danger"></span>
 
-            
-            <button id="btnSubmit" type="submit" class="btn btn-primary w-100 mt-2" >Wyszukaj</button>
+            <div class="form-group d-flex flex-column mt-2">
+                <button id="btnSubmit" type="submit" class="btn btn-primary btn-icon-split d-flex">
+                    <span class="icon text-white-50 left" style="text-align:left;float:left">
+                        <i class="fas fa-search"></i>
+                    </span>
+                    <span class="text" style="float: left">Wyszukaj</span>
+                </button>
+            </div>
+
+            @*<button id="btnSubmit" type="submit" class="btn btn-primary w-100 mt-2">Wyszukaj</button>*@
         </div>
     </form>
     @{

@@ -50,6 +50,11 @@ namespace Asklepios.Core.Enums
         Rehabilitation,
         [Display(Name = "Gabinet diagnostyki obrazowej")]
         [Description("Gabinet diagnostyki obrazowej")]
-        MedicalImaging
+        MedicalImaging,
+        [Display(Name = "Gabinet USG")]
+        [Description("Gabinet USG")]
+        USG
+
+
     }
 }

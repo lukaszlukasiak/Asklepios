@@ -46,7 +46,7 @@ editMode = Html.GetEnumSelectListWithOneValue(Asklepios.Web.Areas.Administrative
     if (TempData.ContainsKey("errorMessage"))
     {
         <div class="messages" id="MessageSpan" style="margin-top: 10px; text-align: center ">
-            <p class="alert alert-success">
+            <p class="alert alert-danger">
                 @TempData["errorMessage"].ToString()
             </p>
         </div>
@@ -133,7 +133,7 @@ editMode = Html.GetEnumSelectListWithOneValue(Asklepios.Web.Areas.Administrative
             <div class="form-group d-flex flex-column mt-5">
                 <button id="btnSubmit" type="submit" class="btn btn-primary btn-icon-split d-flex">
                     <span class="icon text-white-50 left" style="text-align:left;float:left">
-                        <i class="fas fa-edit"></i>
+                        <i class="fas fa-pen-square"></i>
                     </span>
                     <span class="text" style="float: left">Zaktualizuj</span>
                 </button>

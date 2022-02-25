@@ -10,6 +10,7 @@ namespace Asklepios.Web.Areas.AdministrativeArea.Models
 {
     public class PackageItemsManageViewModel
     {
+        [Display(Name = "Id pakietu medycznego")]
         public long SelectedPackageId { get; set; }
         public MedicalPackage SelectedPackage { get; set; }
         //public MedicalRoom SelectedRoom { get; set; }
@@ -90,9 +91,11 @@ namespace Asklepios.Web.Areas.AdministrativeArea.Models
                 for (int i = 0; i < MedicalServiceDiscounts.Count; i++)
                 {
                     MedicalServiceDiscount discount = MedicalServiceDiscounts[i];
-                    discount.Discount = Vals[i]/100;
+                    discount.Discount =new decimal (Vals[i]/100.0);
                     discounts.Add(discount);
                     discount.MedicalPackage = SelectedPackage;
+                    discount.MedicalPackageId = SelectedPackage.Id;
+                    //discount.Id
                 }
                 return discounts;
             }

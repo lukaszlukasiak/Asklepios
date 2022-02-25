@@ -90,7 +90,7 @@
         <div class="form-group d-flex flex-column mt-2">
             <button id="btnSubmit" type="submit" class="btn btn-primary btn-icon-split d-flex">
                 <span class="icon text-white-50 left" style="text-align:left;float:left">
-                    <i class="fas fa-plus"></i>
+                    <i class="fas fa-plus-square"></i>
                 </span>
                 <span class="text" style="float: left">Dodaj</span>
             </button>
@@ -98,6 +98,19 @@
 
     </div>
 </form>
+
+<form class="form " asp-action="LocationItemAdd" method="get">
+
+    <div class="form-group d-flex flex-column">
+        <button id="btnAdd" type="submit" class="btn btn-primary btn-icon-split d-flex" onmousedown="RemoveGuard()" onkeydown="RemoveGuard()">
+            <span class="icon text-white-50 left" style="text-align:left;float:left">
+                <i class="fas fa-chalkboard"></i>
+            </span>
+            <span class="text" style="float: left">Zresetuj formularz</span>
+        </button>
+    </div>
+</form>
+
 <script>
     $('#MessageSpan').delay(5000).fadeOut(300);
 </script>

@@ -13,22 +13,22 @@
     {
         Model.SelectedPackageId = Model.SelectedPackage.Id;
     }
+    IEnumerable<int> decimals = Model.SelectedPackage.ServiceDiscounts.Select(c => (int)(c.Discount * 100)).ToList();
+    Model.Vals = new List<int>(decimals);
 
     if (TempData.ContainsKey("successMessage"))
-
     {
         <div class="messages" id="MessageSpan" style="margin-top: 10px; text-align: center ">
             <p class="alert alert-success">
                 @TempData["successMessage"].ToString()
             </p>
         </div>
-
     }
     //if (!string.IsNullOrWhiteSpace(Model.ErrorMessage))
     if (TempData.ContainsKey("errorMessage"))
     {
         <div class="messages" id="MessageSpan" style="margin-top: 10px; text-align: center ">
-            <p class="alert alert-success">
+            <p class="alert alert-danger">
                 @*@Model.ErrorMessage*@
                 @TempData["errorMessage"].ToString()
 
@@ -38,14 +38,16 @@
     }
 }
 
-<div class="d-flex jumbotron w-100 mx-auto" style="padding:20px;">
-    <form class="d-flex form  flex-column" asp-action="PackageItemEdit" method="post">
+<form class="d-flex form  flex-column" asp-action="MedicalPackageItemEdit" method="post">
+    <div class="d-flex jumbotron w-100 mx-auto" style="padding:20px;">
+
         <div class="d-flex jumbotron w-100 mx-auto" style="padding:20px;align-content:center;">
             <div class="d-flex flex-column w-100 justify-content-between">
 
 
-                <label asp-for="SelectedPackage.Name" class="control-label"></label>
-                <input asp-for="SelectedPackageId" disabled />
+                <label asp-for="SelectedPackageId" class="control-label"></label>
+                <input asp-for="SelectedPackageId" disabled>
+                <input asp-for="SelectedPackage.Id" hidden/>
 
 
                 <label asp-for="SelectedPackage.Name" class="control-label"></label>
@@ -53,37 +55,65 @@
                 <span asp-validation-for="SelectedPackage.Name" class="text-danger"></span>
 
                 <label asp-for="SelectedPackage.Description" class="control-label"></label>
-                <input asp-for="SelectedPackage.Description" class="form-control mb-2">
+                <textarea asp-for="SelectedPackage.Description" class="form-control mb-2" TextMode="MultiLine" Rows="5"></textarea>
                 <span asp-validation-for="SelectedPackage.Description" class="text-danger"></span>
 
-                @for (int i = 0; i < Model.MedicalServiceDiscounts.Count; i++)
-                {
-                    <div class="d-flex flex-column w-100 align-content-around">
-                        <label class="control-label" >@Model.MedicalServiceDiscounts[i].MedicalService.Name</label>
-                        <input asp-for="MedicalServiceDiscounts[i].Discount" class="form-control mb-2"/>
-                    </div>
-                }
-                <div class="form-group d-flex flex-column">
-                    <button type="submit" class="btn btn-primary btn-icon-split d-flex">
-                        <span class="icon text-white-50 left" style="text-align:left;float:left">
-                            <i class="fas fa-address-book"></i>
-                        </span>
-                        <span class="text" style="float: left">Aktualizuj</span>
-                    </button>
-                </div>
-                </div>
+                @*@for (int i = 0; i < Model.MedicalServiceDiscounts.Count; i++)
+        {
+            <div class="d-flex flex-column w-100 align-content-around">
+                <label class="control-label">@Model.MedicalServiceDiscounts[i].MedicalService.Name</label>
+                <input asp-for="MedicalServiceDiscounts[i].Discount" class="form-control mb-2" />
             </div>
-    </form>
-</div>
+        }*@
+                <label asp-for="SelectedPackage.ServiceDiscounts" class="control-label"></label>
+                <div class="d-flex flex-wrap justify-content-between">
 
-<form class="form my-0" asp-action="PackageItemRemove" method="post">
+                    @for (int i = 0; i < Model.MedicalServiceDiscounts.Count; i++)
+                    {
+                        <div class="text-center mb-1">
+                            <input disabled value="@Model.SelectedPackage.ServiceDiscounts[i].MedicalService.Name" style="min-width:300px" />
+                            @*<input asp-for="SelectedPackage.ServiceDiscounts[i].Discount" />*@
+                            <input asp-for="Vals[i]" />
+                            @*<span class="fa-percentage"></span>*@
+
+                        </div>
+                    }
+                    @*@for (int i = 0; i < Model.Vals.Count; i++)
+            {
+                <div class="text-center">
+                    <input asp-for="Vals[i]" />
+                </div>
+            }*@
+
+                </div>
+
+            </div>
+        </div>
+    </div>
+    <select asp-for="ViewMode" asp-items="editMode" hidden></select>
+
+    <div class="form-group d-flex flex-column">
+        <button type="submit" class="btn btn-primary btn-icon-split d-flex">
+            <span class="icon text-white-50 left" style="text-align:left;float:left">
+                <i class="fas fa-pen-square"></i>
+            </span>
+            <span class="text" style="float: left">Aktualizuj</span>
+        </button>
+    </div>
+
+</form>
+
+<form class="form my-0" asp-action="MedicalPackageItemRemove" method="post">
 
     <input asp-for="SelectedPackageId" hidden />
+    <input asp-for="SelectedPackage.Id" hidden />
+
+    <select asp-for="ViewMode" asp-items="removeMode" hidden></select>
 
     <div class="form-group d-flex flex-column mt-1">
         <button id="btnSubmit" type="submit" class="btn btn-primary btn-icon-split d-flex">
             <span class="icon text-white-50 left" style="text-align:left;float:left">
-                <i class="fas fa-remove"></i>
+                <i class="fas fa-minus-square"></i>
             </span>
             <span class="text" style="float: left">Usuń</span>
         </button>

@@ -331,8 +331,8 @@ namespace Asklepios.Web.Areas.CustomerServiceArea.Controllers
                         return NotFound();
                     }
 
-                    VisitViewModel model = new VisitViewModel(_selectedPatient, visit);
-                    return View(model);
+                    //VisitViewModel model = new VisitViewModel(_selectedPatient, visit);
+                    return View(visit);
                 }
                 else
                 {

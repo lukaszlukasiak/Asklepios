@@ -242,7 +242,6 @@ namespace Asklepios.Web.Areas.AdministrativeArea.Controllers
                     {
                         return NotFound();
                     }
-
                 }
                 else
                 {
@@ -615,7 +614,7 @@ namespace Asklepios.Web.Areas.AdministrativeArea.Controllers
                     else if (model.ViewMode == ViewMode.Edit)
                     {
                         UpdatePatientData(model, patient);
-
+                        model.CurrentPatient = _context.GetPatientById(patient.Id);
                     }
                     else if (model.ViewMode == ViewMode.Remove)
                     {
@@ -654,7 +653,6 @@ namespace Asklepios.Web.Areas.AdministrativeArea.Controllers
                 patient.User.Password = model.CurrentPatient.User.EmailAddress;
             }
             model.CurrentPatient.User = patient.User;
-            model.CurrentPatient.User.Person = model.CurrentPatient.Person;
 
             if (model.CurrentPatient.Person.ImageFile != null)
             {
@@ -663,6 +661,11 @@ namespace Asklepios.Web.Areas.AdministrativeArea.Controllers
                 //string imagePath = SaveImage(model.CurrentPatient.Person.ImageFile, ImageFolderType.Persons, _hostEnvironment.WebRootPath);
                 //model.CurrentPatient.Person.ImageFilePath = imagePath;
             }
+            else
+            {
+                model.CurrentPatient.Person.ImageFilePath = patient.Person.ImageFilePath;
+            }
+            model.CurrentPatient.User.Person = model.CurrentPatient.Person;
 
             if (model.IsValid)
             {
@@ -687,7 +690,12 @@ namespace Asklepios.Web.Areas.AdministrativeArea.Controllers
                 if (long.TryParse(id, out long lid))
                 {
                     Patient patient = _context.GetPatientById(lid);
-                    return View(patient);
+                    PatientDetailsViewModel model = new PatientDetailsViewModel();
+                    model.CurrentPatient = patient;
+                    model.CurrentPatientId = patient.Id;
+                    model.MedicalPackages = _context.GetMedicalPackages();
+                    model.NFZUnits = _context.GetNFZUnits();
+                    return View(model);
                 }
                 else
                 {
@@ -1212,7 +1220,7 @@ namespace Asklepios.Web.Areas.AdministrativeArea.Controllers
             if (_loggedUser != null)
             {
                 model.MedicalServices = _context.GetMedicalServices();
-                model.SelectedPackage.MedicalServiceDiscounts = model.UpdateDiscountsWithInputValues();
+                model.SelectedPackage.ServiceDiscounts = model.UpdateDiscountsWithInputValues();
                 if (model.SelectedPackage.IsValid)
                 {
                     _context.AddMedicalPackage(model.SelectedPackage);
@@ -1236,6 +1244,10 @@ namespace Asklepios.Web.Areas.AdministrativeArea.Controllers
         {
             if (_loggedUser != null)
             {
+                if (model.SelectedPackage!=null)
+                {
+                    model.SelectedPackageId = model.SelectedPackage.Id;
+                }
                 if (model.ViewMode==ViewMode.Read)
                 {
                     if (model.SelectedPackageId>0)
@@ -1248,9 +1260,19 @@ namespace Asklepios.Web.Areas.AdministrativeArea.Controllers
                 }
                 else if (model.ViewMode==ViewMode.Edit)
                 {
-                    if (model.NewPackage.IsValid)
+                    MedicalPackage package = _context.GetMedicalPackageById(model.SelectedPackage.Id);
+                    model.MedicalServices = _context.GetMedicalServices();
+
+                    model.SelectedPackage.ServiceDiscounts = package.ServiceDiscounts;
+                    foreach (MedicalServiceDiscount item in model.SelectedPackage.ServiceDiscounts)
                     {
-                        _context.UpdateMedicalPackage(model.NewPackage);
+                        item.MedicalServiceId = item.MedicalService.Id;
+                    }
+                    //model.SelectedPackage.ServiceDiscounts = model.UpdateDiscountsWithInputValues();
+
+                    if (model.SelectedPackage.IsValid)
+                    {
+                        _context.UpdateMedicalPackage(model.SelectedPackage);
                         TempData[SUCCESS_MESSAGE] = "Pakiet został pomyślnie zaktualizowany!";
                     }
                     else
@@ -1259,7 +1281,7 @@ namespace Asklepios.Web.Areas.AdministrativeArea.Controllers
                     }
 
                 }
-                model.MedicalServices = _context.GetMedicalServices();
+                //model.MedicalServices = _context.GetMedicalServices();
 
                 return View(model);
             }
@@ -1274,12 +1296,12 @@ namespace Asklepios.Web.Areas.AdministrativeArea.Controllers
         {
             if (_loggedUser != null)
             {
-                if (model.SelectedPackageId> 0)
+                if (model.SelectedPackage.Id> 0)
                 {
 
-                    MedicalPackage package = _context.GetMedicalPackageById(model.SelectedPackageId);
+                    MedicalPackage package = _context.GetMedicalPackageById(model.SelectedPackage.Id);
                     TempData[SUCCESS_MESSAGE] = "Pakiet medyczny został pomyślnie usunięty!";
-                    _context.RemoveMedicalPackageById(model.SelectedPackageId);
+                    _context.RemoveMedicalPackageById(model.SelectedPackage.Id);
                     return View();
                 }
 

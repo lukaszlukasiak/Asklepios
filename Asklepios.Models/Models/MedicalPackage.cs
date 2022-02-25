@@ -18,7 +18,8 @@ namespace Asklepios.Core.Models
         [DataType(DataType.MultilineText)]
         public string Description { get; set; }
         //public Dictionary<MedicalService, decimal> ServicesDiscounts { get; set; }
-        public List<MedicalServiceDiscount> MedicalServiceDiscounts { get; set; }
+        [Display(Name = "Wysokości rabatów (wyrażone w %)")]
+        public List<MedicalServiceDiscount> ServiceDiscounts { get; set; }
         public bool IsValid
         {
             get
@@ -27,11 +28,11 @@ namespace Asklepios.Core.Models
                 {
                     if (!string.IsNullOrWhiteSpace(Description))
                     {
-                        if (MedicalServiceDiscounts==null)
+                        if (ServiceDiscounts==null)
                         {
                             return false;
                         }
-                        foreach (MedicalServiceDiscount discount in MedicalServiceDiscounts)
+                        foreach (MedicalServiceDiscount discount in ServiceDiscounts)
                         {
                             if (discount.Discount>=0 && discount.Discount<=1)
                             {

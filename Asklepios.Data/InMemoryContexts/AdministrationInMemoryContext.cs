@@ -411,14 +411,14 @@ namespace Asklepios.Data.InMemoryContexts
             long id = PatientMockDB.MedicalPackages.Max(c => c.Id) + 1;
             newPackage.Id = id;
 
-            foreach (MedicalServiceDiscount item in newPackage.MedicalServiceDiscounts)
+            foreach (MedicalServiceDiscount item in newPackage.ServiceDiscounts)
             {
                 item.MedicalPackageId = newPackage.Id;
                 item.MedicalPackage = newPackage;
             }
 
             PatientMockDB.MedicalPackages.Add(newPackage);
-            PatientMockDB.MedicalServiceDiscounts.AddRange(newPackage.MedicalServiceDiscounts);
+            PatientMockDB.MedicalServiceDiscounts.AddRange(newPackage.ServiceDiscounts);
         }
 
         public void RemoveMedicalPackageById(long selectedPackageId)

@@ -22,13 +22,15 @@
 
             <form class="d-flex form  flex-column" asp-action="MedicalPackageItemEdit" method="post">
                 <div>
-                    <input asp-for="SelectedPackageId" hidden />
+                    <input asp-for="SelectedPackage.Id" hidden />
+                    @*<input asp-for="SelectedPackageId" hidden />*@
+
                     <select asp-for="ViewMode" asp-items="readMode" hidden></select>
                 </div>
                 <div class="form-group d-flex flex-column">
                     <button type="submit" class="btn btn-primary btn-icon-split d-flex">
                         <span class="icon text-white-50 left" style="text-align:left;float:left">
-                            <i class="fas fa-address-book"></i>
+                            <i class="fas fa-pen-square"></i>
                         </span>
                         <span class="text" style="float: left">Edytuj</span>
                     </button>
@@ -38,12 +40,14 @@
             <form class="d-flex form my-0 flex-column" asp-action="MedicalPackageItemRemove" method="post">
                 <div class="form-group d-flex flex-column">
                     <input asp-for="SelectedPackageId" hidden />
+                    <input asp-for="SelectedPackage.Id" hidden />
+
                     <select asp-for="ViewMode" asp-items="removeMode" hidden></select>
                 </div>
                 <div class="form-group d-flex flex-column">
                     <button type="submit" class="btn btn-primary btn-icon-split d-flex">
                         <span class="icon text-white-50 left" style="text-align:left;float:left">
-                            <i class="fas fa-minus-circle"></i>
+                            <i class="fas fa-minus-square"></i>
                         </span>
                         <span class="text" style="float: left">Usuń</span>
                     </button>
