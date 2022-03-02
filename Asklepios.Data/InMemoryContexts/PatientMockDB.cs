@@ -1392,6 +1392,20 @@ namespace Asklepios.Data.InMemoryContexts
 
 
             }
+
+            int visitCounter = 100;
+            for (int i = 0; i < AllPatients.Count; i++)
+            {
+                availableVisits[visitCounter*(i+1)].Patient = AllPatients[i];
+                availableVisits[visitCounter * (i + 1) + 30].Patient = AllPatients[i];
+                availableVisits[visitCounter * (i + 1) + 200].Patient = AllPatients[i];
+
+            }
+
+            //for (int i = 100; i < availableVisits.Count; i+=10)
+            //{
+
+            //}
             //{
             //    new Visit()
             //    {
@@ -2886,12 +2900,10 @@ namespace Asklepios.Data.InMemoryContexts
                     {
                         PrimaryMedicalServices[28],PrimaryMedicalServices[29]
                     }
-
                 },
                 new Doctor(Persons[63],"YAJHD5461321")
                 {
-                                                        User=Users[userId++],
-
+                    User=Users[userId++],
                     Id = ++id,
                     Education =UM_5,// new List<string>() {UM_5},
                     Experience="W latach 2009-2021 praca w szpitalu w Przemyślu",
@@ -2902,13 +2914,11 @@ namespace Asklepios.Data.InMemoryContexts
                     {
                         PrimaryMedicalServices[20],PrimaryMedicalServices[21]
                     }
-
                 },
                 new Doctor(Persons[64],"OOXCZX6541546")
                 {
                     Id = ++id,
-                                                        User=Users[userId++],
-
+                    User=Users[userId++],
                     Education =UM_3,// new List<string>() {UM_3},
                     Experience="W latach 2008-2020 praca w szpitalu w Lublinie",
                     //ImagePath="/img/mw/k/33.jpg",
@@ -2918,13 +2928,11 @@ namespace Asklepios.Data.InMemoryContexts
                     {
                         PrimaryMedicalServices[16],
                     }
-
                 },
                 new Physiotherapist(Persons[65],"FSDRGD54543")
                 {
                     Id = ++id,
-                                                        User=Users[userId++],
-
+                    User=Users[userId++],
                     Education =UM_2,// new List<string>() {UM_1,UM_2},
                     Experience="W latach 2005-2020 praca w szpitalu Bródnowskim",
                     //ImagePath="/img/mw/k/34.jpg",
@@ -2934,13 +2942,11 @@ namespace Asklepios.Data.InMemoryContexts
                     {
                         PrimaryMedicalServices[31],PrimaryMedicalServices[32],PrimaryMedicalServices[33]
                     }
-
                 },
                 new Doctor(Persons[66],"UHJKSAD51321")
                 {
                     Id = ++id,
-                                                        User=Users[userId++],
-
+                    User=Users[userId++],
                     Education =UM_3,// new List<string>() {UM_1,UM_2},
                     Experience="W latach 2005-2020 praca w szpitalu Bródnowskim",
                     //ImagePath="/img/mw/k/35.jpg",
@@ -2950,13 +2956,11 @@ namespace Asklepios.Data.InMemoryContexts
                     {
                         PrimaryMedicalServices[19]
                     }
-
                 },
                 new Doctor(Persons[67],"BNSDSA546123")
                 {
                     Id = ++id,
-                                                        User=Users[userId++],
-
+                    User=Users[userId++],
                     Education =UM_5,// new List<string>() {UM_5,UM_2},
                     Experience="W latach 2005-2020 praca w szpitalu Bródnowskim",
                     //ImagePath="/img/mw/k/36.jpg",
@@ -2965,13 +2969,11 @@ namespace Asklepios.Data.InMemoryContexts
                     {
                         PrimaryMedicalServices[9]
                     }
-
                 },
                 new ElectroradiologyTechnician(Persons[68],"KLSAD546123")
                 {
                     Id = ++id,
-                                                        User=Users[userId++],
-
+                    User=Users[userId++],
                     Education =UM_1,// new List<string>() {UM_1,UM_2},
                     Experience="W latach 2016-2020 praca w szpitalu lwowskim na Ukrainie",
                     //ImagePath="/img/mw/k/37.jpg",
@@ -2981,12 +2983,11 @@ namespace Asklepios.Data.InMemoryContexts
                     {
                         PrimaryMedicalServices[28],PrimaryMedicalServices[29]
                     }
-
                 },
                 new DentalHygienist(Persons[69],"JHDAS4564231")
                 {
                     Id = ++id,
-                                                        User=Users[userId++],
+                    User=Users[userId++],
                     Education =UM_3,// new List<string>() {UM_1,UM_2},
                     Experience="W latach 2005-2020 praca w szpitalu Bródnowskim",
                     ////ImagePath="/img/MW/k/38.jpg",
@@ -3000,7 +3001,7 @@ namespace Asklepios.Data.InMemoryContexts
                 new DentalHygienist(Persons[70],"JHDAS4564231")
                 {
                     Id = ++id,
-                                                        User=Users[userId++],
+                    User=Users[userId++],
                     Education =UM_5,// new List<string>() {UM_1,UM_2},
                     Experience="W latach 2016-2021 praca w szpitalu centralnym w Łodzi",
                     ////ImagePath="/img/MW/k/38.jpg",
@@ -3015,7 +3016,7 @@ namespace Asklepios.Data.InMemoryContexts
                 new DentalHygienist(Persons[71],"JHDAS4564231")
                 {
                     Id = ++id,
-                                                        User=Users[userId++],
+                    User=Users[userId++],
                     Education =UM_4,// new List<string>() {UM_1,UM_2},
                     Experience="W latach 2013-2022 praca w Głównym Szpitalu Śląskim",
                     ////ImagePath="/img/MW/k/38.jpg",
@@ -3303,7 +3304,6 @@ namespace Asklepios.Data.InMemoryContexts
                     PrimaryMedicalService=PrimaryMedicalServices[7],
                     MinorMedicalService=MedicalServices[1],
                     //VisitSummary=visitSummaries.ElementAt(1)
-
                 },
                 new MedicalReferral()
                 {
@@ -3315,7 +3315,6 @@ namespace Asklepios.Data.InMemoryContexts
                     PrimaryMedicalService=PrimaryMedicalServices[0],
                     MinorMedicalService=MedicalServices[3],
                     //VisitSummary=visitSummaries.ElementAt(2)
-
                 },
                 new MedicalReferral()
                 {
@@ -3327,7 +3326,6 @@ namespace Asklepios.Data.InMemoryContexts
                     PrimaryMedicalService=PrimaryMedicalServices[0],
                     MinorMedicalService=MedicalServices[4],
                     //VisitSummary=visitSummaries.ElementAt(4)
-
                 },
                 new MedicalReferral()
                 {
@@ -3347,7 +3345,6 @@ namespace Asklepios.Data.InMemoryContexts
                     IssuedTo=patient,
                     PrimaryMedicalService=PrimaryMedicalServices[23],
                     //VisitSummary=visitSummaries.ElementAt(6)
-
                 },
                 new MedicalReferral()
                 {
@@ -3358,7 +3355,6 @@ namespace Asklepios.Data.InMemoryContexts
                     IssuedTo=patient,
                     PrimaryMedicalService=PrimaryMedicalServices[33],
                     //VisitSummary=visitSummaries.ElementAt(7)
-
                 },
                 new MedicalReferral()
                 {
@@ -3370,9 +3366,8 @@ namespace Asklepios.Data.InMemoryContexts
                     PrimaryMedicalService=PrimaryMedicalServices[34],
                     MinorMedicalService=MedicalServices[7],
                     //VisitSummary=visitSummaries.ElementAt(7)
-
                 },
-                        new MedicalReferral()
+                new MedicalReferral()
                 {
                     Id=9,
                     IssueDate=now.AddDays(-24),
@@ -3382,7 +3377,6 @@ namespace Asklepios.Data.InMemoryContexts
                     PrimaryMedicalService=PrimaryMedicalServices[34],
                     MinorMedicalService=MedicalServices[8],
                     //VisitSummary=visitSummaries.ElementAt(7)
-
                 },
                 new MedicalReferral()
                 {
@@ -3394,7 +3388,6 @@ namespace Asklepios.Data.InMemoryContexts
                     PrimaryMedicalService=PrimaryMedicalServices[34],
                     MinorMedicalService=MedicalServices[9],
                     //VisitSummary=visitSummaries.ElementAt(7)
-
                 },
 
                 //new ExaminationReferral()
@@ -3431,7 +3424,6 @@ namespace Asklepios.Data.InMemoryContexts
 
             List<Visit> patientHistoricalVisits = new List<Visit>()
             {
-
                 new Visit()
                 {
                     Id=1,
@@ -3444,7 +3436,7 @@ namespace Asklepios.Data.InMemoryContexts
                     MedicalWorker=MedicalWorkers.ElementAt(29),
                     Patient=patient,
                     VisitCategory=VisitCategories.ElementAt(0),
-                                        MedicalHistory="Pacjent skarży się na problemy z układem pokarmowym, nawracające biegunki, gazy, bóle brzucha",
+                    MedicalHistory="Pacjent skarży się na problemy z układem pokarmowym, nawracające biegunki, gazy, bóle brzucha",
                     Prescription=prescriptions[4],
                     Recommendations= new List<Recommendation>   (){ recommendations[0] , recommendations[4]},
                     ExaminationReferrals=new List<MedicalReferral>(){referrals[0], referrals[1]}

@@ -1,0 +1,112 @@
+﻿@model Asklepios.Web.Areas.AdministrativeArea.Models.PatientDetailsViewModel
+@{
+    //SelectList medicalPackagesList = new SelectList(Model.MedicalPackages, "Id", "Name");
+    //SelectList nfzUnits = new SelectList(Model.NFZUnits, "Id", "Description");
+    //Model.CurrentPatient.Person.HasPolishCitizenship = true;
+
+    //Asklepios.Web.Areas.AdministrativeArea.Models.ViewMode editViewMode = Asklepios.Web.Areas.AdministrativeArea.Models.ViewMode.Edit;
+    //Asklepios.Web.Areas.AdministrativeArea.Models.ViewMode removeViewMode = Asklepios.Web.Areas.AdministrativeArea.Models.ViewMode.Remove;
+}
+<div class="d-flex flex-column">
+
+    <div class="form-group d-flex flex-column">
+        @*<span id="MessageSpan" asp-validation-for="User.UserName" class="text-danger"></span>*@
+
+        <label asp-for="CurrentPatient.User.EmailAddress" class="control-label"></label>
+        <input asp-for="CurrentPatient.User.EmailAddress" class="form-control mb-2" readonly />
+
+        @*<label asp-for="CurrentPatient.User.Password" class="control-label"></label>
+            <input asp-for="CurrentPatient.User.Password" class="form-control mb-2" readonly />*@
+
+        <label asp-for="CurrentPatient.Person.Name" class="control-label"></label>
+        <input asp-for="CurrentPatient.Person.Name" class="form-control mb-2" readonly />
+
+        <label asp-for="CurrentPatient.Person.Surname" class="control-label"></label>
+        <input asp-for="CurrentPatient.Person.Surname" class="form-control mb-2" readonly />
+
+        <label asp-for="CurrentPatient.Person.Gender" class="control-label"></label>
+        <input class="form-control  mb-2" asp-for="CurrentPatient.Person.Gender" readonly />
+
+        <label asp-for="CurrentPatient.Person.PhoneNumber" class="control-label"></label>
+        <input asp-for="CurrentPatient.Person.PhoneNumber" class="form-control mb-2" readonly />
+
+
+        <label asp-for="CurrentPatient.Person.DefaultAglomeration" class="control-label"></label>
+        <input class="form-control  mb-2" asp-for="CurrentPatient.Person.DefaultAglomeration" readonly />
+
+
+        <label asp-for="CurrentPatient.Person.BirthDate" class="control-label"></label>
+        <input asp-for="CurrentPatient.Person.BirthDate" class="form-control mb-2" readonly />
+
+        <div class="d-flex flex-row">
+            <label asp-for="CurrentPatient.Person.HasPolishCitizenship"></label>
+            <input type="checkbox" asp-for="CurrentPatient.Person.HasPolishCitizenship" class="custom-control ml-2 " style="height:20px;width:20px" readonly />
+        </div>
+
+        <label asp-for="CurrentPatient.Person.PESEL" class="control-label"></label>
+        <input asp-for="CurrentPatient.Person.PESEL" class="form-control mb-2" readonly />
+
+        <label asp-for="CurrentPatient.Person.PassportNumber" class="control-label"></label>
+        <input asp-for="CurrentPatient.Person.PassportNumber" class="form-control mb-2" readonly />
+
+        <label asp-for="CurrentPatient.Person.PassportCode" class="control-label"></label>
+        <input asp-for="CurrentPatient.Person.PassportCode" class="form-control mb-2" readonly />
+
+        <label asp-for="CurrentPatient.Person.ImageFile" class="control-label"></label>
+
+        <div class="d-flex flex-fill  justify-content-center mt-2" style="text-align:center">
+            <img src="@Model.CurrentPatient.Person.ImageSource" class="img-fluid" style="display: block; max-height:300px;
+        border-radius: 6px; ">
+        </div>
+
+        <label asp-for="CurrentPatient.MedicalPackageId" class="control-label"></label>
+        <input asp-for="CurrentPatient.MedicalPackage.Name" class="form-control mb-2" readonly />
+        @*<select class="form-control  mb-2" asp-for="CurrentPatient.MedicalPackageId" asp-items="medicalPackagesList">
+                <option value="">Wybierz pakiet</option>
+            </select>*@
+        @*<span asp-validation-for="CurrentPatient.MedicalPackageId" class="text-danger"></span>*@
+        <label asp-for="CurrentPatient.NFZUnitId" class="control-label"></label>
+        @*<select class="form-control  mb-2" asp-for="CurrentPatient.NFZUnitId" asp-items="nfzUnits">
+                <option value="">Wybierz oddział NFZ</option>
+            </select>*@
+        <input asp-for="CurrentPatient.NFZUnit.Description" class="form-control mb-2" readonly />
+        @*<span asp-validation-for="CurrentPatient.NFZUnitId" class="text-danger"></span>*@
+
+        <!--<input hidden asp-for="CurrentPatient.Id" class="form-control mb-2">-->
+        @*<input hidden asp-for="ViewMode" />*@
+        <!--<select hidden asp-for="ViewMode" asp-items="Html.GetEnumSelectListWithOneValue(editViewMode)">
+        </select>-->
+    </div>
+
+    <form class="form my-2" asp-action="PatientItemEdit" asp-route-id="@Model.CurrentPatient.Id" method="get" >
+        @*<input hidden asp-for="CurrentPatient.Id" class="form-control m-0">*@
+
+        <div class="form-group d-flex flex-column mt-5">
+            <button id="btnSubmit" type="submit" class="btn btn-primary btn-icon-split d-flex">
+                <span class="icon text-white-50 left" style="text-align:left;float:left">
+                    <i class="fas fa-pen-square"></i>
+                </span>
+                <span class="text" style="float: left">Edytuj</span>
+            </button>
+        </div>
+
+        @*<button id="btnSubmit" type="submit" class="btn btn-primary w-100 mt-2">Zaktualizuj dane</button>*@
+
+    </form>
+    <form asp-action="PatientItemRemove" method="post">
+        <input hidden asp-for="CurrentPatient.Id" class="form-control m-0">
+        @*<select hidden asp-for="ViewMode" asp-items="Html.GetEnumSelectListWithOneValue(removeViewMode)"/>*@
+        <div class="form-group d-flex flex-column">
+
+            <button id="btnSubmit" type="submit" class="btn btn-primary btn-icon-split d-flex">
+                <span class="icon text-white-50 left" style="text-align:left;float:left">
+                    <i class="fas fa-minus-square"></i>
+                </span>
+                <span class="text" style="float: left">Usuń</span>
+            </button>
+        </div>
+    </form>
+</div>
+<script>
+    $('#MessageSpan').delay(5000).fadeOut(300);
+</script>
