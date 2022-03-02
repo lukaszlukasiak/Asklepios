@@ -99,6 +99,10 @@ namespace Asklepios.Web.Areas.AdministrativeArea.Models
             {
                 if (CurrentPatient!=null)
                 {
+                    if (CurrentPatient.User==null || CurrentPatient.Person==null)
+                    {
+                        return false;
+                    }
                     return CurrentPatient.User.IsValid && CurrentPatient.Person.IsValid && CurrentPatient.IsValid;
                 }
                 else

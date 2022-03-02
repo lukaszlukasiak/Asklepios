@@ -596,6 +596,32 @@ namespace Asklepios.Web.Areas.AdministrativeArea.Controllers
                 return NotFound();
             }
         }
+        [HttpGet]
+        public IActionResult PatientItemEdit(string id)
+        {
+            if (_loggedUser != null)
+            {
+                if (long.TryParse(id, out long lid))
+                {
+                    Patient patient = _context.GetPatientById(lid);
+                    PatientDetailsViewModel model = new PatientDetailsViewModel();
+                    model.CurrentPatient = patient;
+                    model.CurrentPatientId = patient.Id;
+                    model.MedicalPackages = _context.GetMedicalPackages();
+                    model.NFZUnits = _context.GetNFZUnits();
+                    return View(model);
+                }
+                else
+                {
+                    return NotFound();
+                }
+            }
+            else
+            {
+                return NotFound();
+            }
+        }
+
         [HttpPost]
         public IActionResult PatientItemEdit(PatientDetailsViewModel model)
         {
@@ -682,8 +708,7 @@ namespace Asklepios.Web.Areas.AdministrativeArea.Controllers
             model.NFZUnits = _context.GetNFZUnits();
             model.MedicalPackages = _context.GetMedicalPackages();
         }
-
-        public IActionResult PatientItemEdit(string id)
+        public IActionResult PatientItemDetails(string id)
         {
             if (_loggedUser != null)
             {
@@ -693,8 +718,8 @@ namespace Asklepios.Web.Areas.AdministrativeArea.Controllers
                     PatientDetailsViewModel model = new PatientDetailsViewModel();
                     model.CurrentPatient = patient;
                     model.CurrentPatientId = patient.Id;
-                    model.MedicalPackages = _context.GetMedicalPackages();
-                    model.NFZUnits = _context.GetNFZUnits();
+                    //model.MedicalPackages = _context.GetMedicalPackages();
+                    //model.NFZUnits = _context.GetNFZUnits();
                     return View(model);
                 }
                 else

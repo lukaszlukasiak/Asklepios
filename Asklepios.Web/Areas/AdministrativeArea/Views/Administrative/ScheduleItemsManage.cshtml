@@ -4,6 +4,7 @@
     SelectList locationItems = new SelectList(Model.Locations, "Id", "Name");
     SelectList categoriesList = new SelectList(Model.VisitCategories, "Id", "CategoryName");
     SelectList roomsList = null;
+
     if (long.TryParse(Model.SelectedLocationId, out long lid))
     {
         if (lid > 0)
@@ -52,30 +53,39 @@
             </select>
             <span asp-validation-for="SelectedMedicalWorkerId" class="text-danger"></span>
 
-            @if (Model.SelectedMedicalWorker != null)
-            {
-                <partial name="_MedicalWorker" model="Model.SelectedMedicalWorker" />
+            <label asp-for="IsBooked" class="control-label"></label>
+            <select class="form-control" asp-for="IsBooked" onchange="document.getElementById('btnSubmit').click();">
+                <option  value="null">Zarezerwowana?</option>
+                <option value="true">Tak</option>
+                <option value="false">Nie</option>
+            </select>
+            <span asp-validation-for="IsBooked" class="text-danger mb-2"></span>
 
-            }
 
-            <label asp-for="VisitsDateFrom" class="control-label"></label>
-            <input asp-for="VisitsDateFrom" class="form-control mb-2">
-            <span asp-validation-for="VisitsDateFrom" class="text-danger"></span>
-            <label asp-for="VisitsDateTo" class="control-label"></label>
-            <input asp-for="VisitsDateTo" class="form-control mb-2">
-            <span asp-validation-for="VisitsDateTo" class="text-danger"></span>
+                @if (Model.SelectedMedicalWorker != null)
+                {
+                    <partial name="_MedicalWorker" model="Model.SelectedMedicalWorker" />
 
-            <div class="form-group d-flex flex-column mt-2">
-                <button id="btnSubmit" type="submit" class="btn btn-primary btn-icon-split d-flex">
-                    <span class="icon text-white-50 left" style="text-align:left;float:left">
-                        <i class="fas fa-search"></i>
-                    </span>
-                    <span class="text" style="float: left">Wyszukaj</span>
-                </button>
-            </div>
+                }
 
-            @*<button id="btnSubmit" type="submit" class="btn btn-primary w-100 mt-2">Wyszukaj</button>*@
-        </div>
+                <label asp-for="VisitsDateFrom" class="control-label"></label>
+                <input asp-for="VisitsDateFrom" class="form-control mb-2">
+                <span asp-validation-for="VisitsDateFrom" class="text-danger"></span>
+                <label asp-for="VisitsDateTo" class="control-label"></label>
+                <input asp-for="VisitsDateTo" class="form-control mb-2">
+                <span asp-validation-for="VisitsDateTo" class="text-danger"></span>
+
+                <div class="form-group d-flex flex-column mt-2">
+                    <button id="btnSubmit" type="submit" class="btn btn-primary btn-icon-split d-flex">
+                        <span class="icon text-white-50 left" style="text-align:left;float:left">
+                            <i class="fas fa-search"></i>
+                        </span>
+                        <span class="text" style="float: left">Wyszukaj</span>
+                    </button>
+                </div>
+
+                @*<button id="btnSubmit" type="submit" class="btn btn-primary w-100 mt-2">Wyszukaj</button>*@
+</div>
     </form>
     @{
         List<Visit> visits = Model.FilteredSchedule;
@@ -88,6 +98,5 @@
             model.Visit = visit;
             <partial name="_ScheduleItem" model="model" />
         }
-
     }
     </div>

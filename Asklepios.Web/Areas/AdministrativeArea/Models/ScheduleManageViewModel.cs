@@ -55,6 +55,13 @@ namespace Asklepios.Web.Areas.AdministrativeArea.Models
         [Display(Name = "Kategoria wizyty")]
 
         public string SelectedVisitCategoryId { get; set; }
+
+        [Display(Name = "Czy wizyta została zarezerwowana?")]
+
+        public bool? IsBooked { get; set; }
+
+
+
         public bool IsFilterOn
         {
             get
@@ -80,6 +87,10 @@ namespace Asklepios.Web.Areas.AdministrativeArea.Models
                     return true;
                 }
                 if (VisitsDateTo.HasValue)
+                {
+                    return true;
+                }
+                if (IsBooked.HasValue)
                 {
                     return true;
                 }
@@ -200,10 +211,15 @@ namespace Asklepios.Web.Areas.AdministrativeArea.Models
                 {
                     return null;
                 }
-
             }
-
-
+            if (IsBooked.HasValue)
+            {
+                filteredVisits = filteredVisits.Where(c => c.IsBooked== IsBooked.Value).ToList();
+                if (filteredVisits == null)
+                {
+                    return null;
+                }
+            }
 
             filteredVisits = filteredVisits.OrderBy(c => c.DateTimeSince).ToList();
             if (filteredVisits.Count < ItemsPerPage)

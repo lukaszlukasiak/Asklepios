@@ -1032,3 +1032,4 @@ C:\Users\lukas\source\repos\Asklepios8\Asklepios.Web\obj\Debug\net5.0\Asklepios.
 C:\Users\lukas\source\repos\Asklepios8\Asklepios.Web\obj\Debug\net5.0\ref\Asklepios.Web.dll
 C:\Users\lukas\source\repos\Asklepios8\Asklepios.Web\obj\Debug\net5.0\Asklepios.Web.pdb
 C:\Users\lukas\source\repos\Asklepios8\Asklepios.Web\obj\Debug\net5.0\Asklepios.Web.genruntimeconfig.cache
+C:\Users\lukas\source\repos\Asklepios8\Asklepios.Web\obj\Debug\net5.0\Razor\Areas\AdministrativeArea\Views\Administrative\PatientItemDetails.cshtml.g.cs
