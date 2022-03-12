@@ -7,9 +7,9 @@
         <div class="form-group">
             <label for="inputState">Temat</label>
             @*<select id="inputState" class="form-control">
-            <option selected>Choose...</option>
-            <option>...</option>
-        </select>*@
+                <option selected>Choose...</option>
+                <option>...</option>
+            </select>*@
             @Html.DropDownListFor(a => a.Subject, new[]
 {
         new SelectListItem() {Text = "Zgłoszenie błędu na portalu pacjenta"},
@@ -29,7 +29,14 @@
             <span asp-validation-for="Message" type="text" class="text-danger"></span>
 
         </div>
-        <button type="submit" class="btn btn-primary w-100">Wyślij</button>
+        @*<button type="submit" class="btn btn-primary w-100">Wyślij</button>*@
+        <button type="submit" class="btn btn-primary btn-icon-split w-100">
+            <span class="icon text-white-50 left" style="text-align:left;float:left">
+                <i class="fas fa-forward"></i>
+            </span>
+
+            <span class="text" style="float: left">Wyślij!</span>
+        </button>
 
         @if (Model.HasInfoMessage)
         {

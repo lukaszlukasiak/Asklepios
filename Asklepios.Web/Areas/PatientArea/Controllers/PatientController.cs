@@ -4,6 +4,7 @@ using Asklepios.Web.Areas.HomeArea.Models;
 using Asklepios.Web.Areas.PatientArea.Models;
 using Asklepios.Web.Models;
 using Microsoft.AspNetCore.Mvc;
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -32,35 +33,63 @@ namespace Asklepios.Web.Areas.PatientArea.Controllers
             _selectedPatient = null;
         }
 
-        public IActionResult Index(string id)
+        public IActionResult Index()
         {
-            if (id == null)
+            if (_loggedUser==null)
             {
-                //id = _context.GetPatientData().Id.ToString();
-                if (_selectedPatient?.Id!=null)
+                if (TempData.ContainsKey("User") == true)
                 {
-                    id = _selectedPatient.Id.ToString();
-                }
-                else
-                {
-                    return NotFound();
-                }
-            }
-            if (int.TryParse(id, out int parsedId))
-            {
-                _loggedUser = _context.GetUser(parsedId);
-                //_person = _context.GetPerson(_loggedUser.PersonId);
-                _selectedPatient = _context.GetPatientById(_loggedUser.PersonId);
+                    User user = JsonConvert.DeserializeObject<User>((string)TempData["User"]);
+                    _loggedUser = user;
+                    _selectedPatient = _context.GetPatientByUserId(_loggedUser.PersonId);
 
-                PatientArea.Models.PatientViewModel viewModel = new Models.PatientViewModel(_selectedPatient);
-                return View(viewModel);
+                    // User user = TempData["User"] as User;
+                }
+
             }
             else
             {
-                return null;
             }
-        }
+            return RedirectToAction("Dashboard");
 
+        }
+        public IActionResult Dashboard()
+        {
+            if (_loggedUser == null)
+            {
+                return NotFound();
+            }
+            else
+            {
+                PatientArea.Models.PatientViewModel viewModel = new Models.PatientViewModel(_selectedPatient);
+                return View(viewModel);
+            }
+            //if (id == null)
+            //{
+            //    //id = _context.GetPatientData().Id.ToString();
+            //    if (_selectedPatient?.Id!=null)
+            //    {
+            //        id = _selectedPatient.Id.ToString();
+            //    }
+            //    else
+            //    {
+            //        return NotFound();
+            //    }
+            //}
+            //if (int.TryParse(id, out int parsedId))
+            //{
+            //    _loggedUser = _context.GetUser(parsedId);
+            //    //_person = _context.GetPerson(_loggedUser.PersonId);
+            //    _selectedPatient = _context.GetPatientById(_loggedUser.PersonId);
+
+            //    PatientArea.Models.PatientViewModel viewModel = new Models.PatientViewModel(_selectedPatient);
+            //    return View(viewModel);
+            //}
+            //else
+            //{
+            //    return null;
+            //}
+        }
 
         public IActionResult Locations()
         {

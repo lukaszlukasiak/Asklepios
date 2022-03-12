@@ -41,8 +41,8 @@
             <hr class="sidebar-divider my-0">
 
             <!-- Nav Item - Dashboard -->
-            <li class="nav-item active">
-                <a class="nav-link" asp-area="PatientArea" asp-controller="Patient" asp-action="Index">
+            <li class="nav-item">
+                <a class="nav-link" asp-area="PatientArea" asp-controller="Patient" asp-action="Dashboard" data-value="Dashboard">
                     <i class="fas fa-fw fa-tachometer-alt"></i>
                     <span>Pulpit</span>
                 </a>
@@ -59,8 +59,8 @@
             <!-- Nav Item - Pages Collapse Menu -->
             <li class="nav-item">
                 <a class="nav-link collapsed"
-                   aria-expanded="true" aria-controls="collapseTwo" asp-area="PatientArea" asp-controller="Patient" asp-action="BookVisit">
-                    <i class="fas fa-fw fa-cog"></i>
+                   aria-expanded="true" aria-controls="collapseTwo" asp-area="PatientArea" asp-controller="Patient" asp-action="BookVisit" data-value="BookVisit">
+                    <i class="fas fa-book"></i>
                     <span>Umów się na wizytę</span>
                 </a>
             </li>
@@ -68,8 +68,8 @@
             <!-- Nav Item - Utilities Collapse Menu -->
             <li class="nav-item">
                 <a class="nav-link"
-                   aria-expanded="true" aria-controls="collapseUtilities" asp-area="PatientArea" asp-controller="Patient" asp-action="PlannedVisits">
-                    <i class="fas fa-fw fa-wrench"></i>
+                   aria-expanded="true" aria-controls="collapseUtilities" asp-area="PatientArea" asp-controller="Patient" asp-action="PlannedVisits" data-value="PlannedVisits">
+                    <i class="fas fa-book-reader"></i>
                     <span>Zaplanowane wizyty</span>
                 </a>
             </li>
@@ -84,8 +84,8 @@
             </div>
 
             <li class="nav-item">
-                <a class="nav-link" asp-area="PatientArea" asp-controller="Patient" asp-action="HistoricalVisits">
-                    <i class="fas fa-fw fa-chart-area"></i>
+                <a class="nav-link" asp-area="PatientArea" asp-controller="Patient" asp-action="HistoricalVisits" data-value="HistoricalVisits">
+                    <i class="fas fa-history"></i>
                     <span>Wizyty</span>
                 </a>
             </li>
@@ -97,23 +97,23 @@
             </div>
 
             <li class="nav-item">
-                <a class="nav-link" asp-area="PatientArea" asp-controller="Patient" asp-action="Referrals">
-                    <i class="fas fa-fw fa-chart-area"></i>
+                <a class="nav-link" asp-area="PatientArea" asp-controller="Patient" asp-action="Referrals" data-value="Referrals">
+                    <i class="fas fa-forward"></i>
                     <span>Skierowania</span>
                 </a>
             </li>
 
             <!-- Nav Item - Tables -->
             <li class="nav-item">
-                <a class="nav-link" asp-area="PatientArea" asp-controller="Patient" asp-action="Prescriptions">
-                    <i class="fas fa-fw fa-table"></i>
+                <a class="nav-link" asp-area="PatientArea" asp-controller="Patient" asp-action="Prescriptions" data-value="Prescriptions">
+                    <i class="fas fa-receipt"></i>
                     <span>Recepty</span>
                 </a>
             </li>
             <!-- Nav Item - Tables -->
             <li class="nav-item">
-                <a class="nav-link" asp-area="PatientArea" asp-controller="Patient" asp-action="TestResults">
-                    <i class="fas fa-fw fa-table"></i>
+                <a class="nav-link" asp-area="PatientArea" asp-controller="Patient" asp-action="TestResults" data-value="TestResults">
+                    <i class="fas fa-notes-medical"></i>
                     <span>Wyniki badań</span>
                 </a>
             </li>
@@ -129,21 +129,21 @@
                 Inne
             </div>
             <li class="nav-item">
-                <a class="nav-link" asp-controller="Patient" asp-action="MedicalWorkersList">
-                    <i class="fas fa-fw fa-table"></i>
+                <a class="nav-link" asp-controller="Patient" asp-action="MedicalWorkersList" data-value="MedicalWorkersList">
+                    <i class="fas fa-list"></i>
                     <span>Lista lekarzy</span>
                 </a>
             </li>
             <li class="nav-item">
-                <a class="nav-link" asp-area="PatientArea" asp-controller="Patient" asp-action="Locations">
-                    <i class="fas fa-fw fa-table"></i>
+                <a class="nav-link" asp-area="PatientArea" asp-controller="Patient" asp-action="Locations" data-value="Locations">
+                    <i class="fas fa-building"></i>
                     <span>Lista oddziałów</span>
                 </a>
             </li>
 
             <li class="nav-item">
-                <a class="nav-link" asp-area="PatientArea" asp-controller="Patient" asp-action="Contact">
-                    <i class="fas fa-fw fa-table"></i>
+                <a class="nav-link" asp-area="PatientArea" asp-controller="Patient" asp-action="Contact" data-value="Contact">
+                    <i class="fas fa-mail-bulk"></i>
                     <span>Kontakt</span>
                 </a>
             </li>
@@ -323,26 +323,19 @@
         <div class="modal-dialog" role="document">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title" id="exampleModalLabel">Zakończyć sesję?</h5>
+                    <h5 class="modal-title" id="exampleModalLabel">Chcesz się wylogować?</h5>
                     <button class="close" type="button" data-dismiss="modal" aria-label="Close">
                         <span aria-hidden="true">×</span>
                     </button>
                 </div>
-                <div class="modal-body">Wybierz "Wyloguj się" jeżeli chcesz zakończyć obecną sesję.</div>
+                <div class="modal-body">Wybierz "Wyloguj" poniżej, jeżeli chcesz sie wylogować z obecnej sesji.</div>
                 <div class="modal-footer">
                     <button class="btn btn-secondary" type="button" data-dismiss="modal">Anuluj</button>
-                    <a class="btn btn-primary" href="\">Wyloguj się</a>
+                    <a class="btn btn-primary" asp-action="LogOut" asp-controller="Home" asp-area="HomeArea">Wyloguj się</a>
                 </div>
             </div>
         </div>
     </div>
-    <script>
-        $('.nav-item .nav-link').click(function () {
-            $('.nav-item .nav-link').removeClass('active');
-            $(this).addClass('active');
-        })
-
-    </script>
     <!-- Bootstrap core JavaScript-->
     <script src="~/vendor/jquery/jquery.min.js"></script>
     <script src="~/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
@@ -352,6 +345,39 @@
 
     <!-- Custom scripts for all pages-->
     <script src="~/js/sb-admin-2.min.js"></script>
+    <script>
+        jQuery(function ($) {
+            var last = window.location.href.substr(window.location.href.lastIndexOf("/") + 1);
+            var lastIndex = window.location.href.lastIndexOf("/");
+            var withoutLast = window.location.href.substr(0, lastIndex);
+            var preLastIndex = withoutLast.lastIndexOf("/");
+            var preLast = window.location.href.substr(preLastIndex + 1, lastIndex - preLastIndex - 1);
+
+            $(".nav-item").each(function () {
+
+                $(this).removeClass("active");
+            })
+
+
+            $(".nav-link").each(function () {
+                let value = $(this).attr("data-value");
+                if (last.indexOf("?") == -1) {
+                    if (last.indexOf(value) > -1) {
+                        $(this).parent().addClass("active");
+                    }
+
+                }
+                else {
+                    if (preLast.indexOf(value) > -1) {
+                        $(this).parent().addClass("active");
+                    }
+                }
+                //    if ($(this).attr("data-value") == last || $(this).attr("data-value") == preLast)
+                //        $(this).parent().addClass("active");
+            })
+        });
+
+    </script>
 
 </body>
 </html>

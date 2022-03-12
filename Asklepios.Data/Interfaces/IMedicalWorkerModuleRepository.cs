@@ -10,6 +10,7 @@ namespace Asklepios.Data.Interfaces
     public interface IMedicalWorkerModuleRepository
     {
         MedicalWorker GetMedicalWorkerData();
-
+        MedicalWorker GetMedicalWorkerByUserId(long personId);
+        Visit GetVisitById(long currentVisitId);
     }
 }

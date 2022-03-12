@@ -21,6 +21,11 @@ namespace Asklepios.Data.DBContexts
             throw new NotImplementedException();
         }
 
+        public Patient GetUserById(string userId)
+        {
+            throw new NotImplementedException();
+        }
+
         public User LogIn(User user)
         {
             throw new NotImplementedException();
