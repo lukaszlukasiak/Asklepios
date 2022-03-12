@@ -54,14 +54,14 @@ namespace Asklepios.Web.Areas.CustomerServiceArea.Models
             ContactEMailAddress = patient.User.EmailAddress;
             UserId = patient.Id;
         }
-        public ContactMessageViewModel(Core.Models.MedicalWorker worker, Core.Models.Patient patient)
-        {
-            SelectedPatient = patient;
-            UserType = Core.Enums.UserType.Employee;
-            ContactName = worker.Person.FullName;
-            ContactEMailAddress = worker.User.EmailAddress;
-            UserId = worker.Id;
-        }
+        //public ContactMessageViewModel(Core.Models.MedicalWorker worker, Core.Models.Patient patient)
+        //{
+        //    SelectedPatient = patient;
+        //    UserType = Core.Enums.UserType.Employee;
+        //    ContactName = worker.Person.FullName;
+        //    ContactEMailAddress = worker.User.EmailAddress;
+        //    UserId = worker.Id;
+        //}
         public ContactMessageViewModel(Core.Models.MedicalWorker worker)
         {
             UserType = Core.Enums.UserType.Employee;

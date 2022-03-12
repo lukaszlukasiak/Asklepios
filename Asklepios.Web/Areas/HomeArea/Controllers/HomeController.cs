@@ -4,6 +4,7 @@ using Asklepios.Web.Areas.HomeArea.Models;
 using Asklepios.Web.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -30,7 +31,7 @@ namespace Asklepios.Web.Areas.HomeArea.Controllers
             CustomerServiceArea.Controllers.CustomerServiceController.LogOut();
             AdministrativeArea.Controllers.AdministrativeController.LogOut();
 
-            return RedirectToAction("Index", "Home", new { area = "HomeArea"});
+            return RedirectToAction("Index", "Home", new { area = "HomeArea" });
 
         }
         //public IActionResult Index()
@@ -65,9 +66,22 @@ namespace Asklepios.Web.Areas.HomeArea.Controllers
         [HttpPost]
         public IActionResult LogInPatient(LogInViewModel model)
         {
-            string userId = "1";
+            //string userId = "1";
             model.User.UserType = Core.Enums.UserType.Patient;
-            return RedirectToAction("Index", "Patient", new { area = "PatientArea", id= userId });
+            User user = _context.LogIn(model.User);
+
+            if (user != null)
+            {
+               // Patient patient = _context.Get(userId);
+
+                TempData["User"] = JsonConvert.SerializeObject(user);
+                return RedirectToAction("Index", "Patient", new { area = "PatientArea" });
+            }
+            else
+            {
+                model.LogInFailed = true;
+                return View("LogIn", model);
+            }
         }
         [HttpPost]
         public IActionResult LogInEmployee(LogInViewModel model)
@@ -76,8 +90,10 @@ namespace Asklepios.Web.Areas.HomeArea.Controllers
             model.User.UserType = Core.Enums.UserType.Employee;
             User user = _context.LogIn(model.User);
 
-            if (user!=null)
+            if (user != null)
             {
+                TempData["User"] = JsonConvert.SerializeObject(user);
+
                 switch (model.User.WorkerModuleType)
                 {
                     case Core.Enums.WorkerModuleType.CustomerServiceModule:

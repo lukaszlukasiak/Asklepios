@@ -54,6 +54,10 @@ namespace Asklepios.Web.Areas.PatientArea.Models
         public List<Visit> GetCommingVisits(int numberOfVisits=3)
         {
             List<Visit> commingVisits = new List<Visit>();
+            if (Patient.BookedVisits==null)
+            {
+                return null;
+            }
             List<Visit> visits = Patient.BookedVisits.OrderBy(c=>c.DateTimeSince).ToList();
 
             if (visits.Count>0)
@@ -114,6 +118,10 @@ namespace Asklepios.Web.Areas.PatientArea.Models
         {
             List<Visit> pastVisits = new List<Visit>();
 
+            if (Patient.HistoricalVisits==null)
+            {
+                return null;
+            }
             List<Visit> visits = Patient.HistoricalVisits.OrderByDescending(c => c.DateTimeSince).ToList();
             if (visits.Count > 0)
             {

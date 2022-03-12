@@ -174,5 +174,11 @@ namespace Asklepios.Data.InMemoryContexts
             //selectedPatient.BookedVisits.Add(selectedVisit);
             PatientMockDB.CurrentPatient.BookedVisits.Add(selectedVisit);
         }
+
+        public Patient GetPatientByUserId(long userId)
+        {
+            Patient patient = PatientMockDB.AllPatients.Where(c => c.User.Id == userId).FirstOrDefault();
+            return patient;
+        }
     }
 }

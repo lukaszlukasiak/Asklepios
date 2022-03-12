@@ -160,11 +160,17 @@ namespace Asklepios.Data.InMemoryContexts
             }
         }
 
+        public Patient GetUserById(string userId)
+        {
+            throw new NotImplementedException();
+        }
+
         public User LogIn(User user)
         {
             List<User> users = PatientMockDB.Users;
             users = users.Where(c => c.UserType == user.UserType).ToList();
-            User user1 = users.Where(c => c.EmailAddress == user.EmailAddress).FirstOrDefault();
+            string emailAddressUpper = user.EmailAddress.ToUpper();
+            User user1 = users.Where(c => c.EmailAddress.ToUpper() == emailAddressUpper).FirstOrDefault();
             if (user1==null)
             {
                 return null;

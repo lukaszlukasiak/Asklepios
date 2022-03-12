@@ -48,11 +48,11 @@
 
             <!-- Nav Item - Dashboard -->
             <!--<li class="nav-item active">
-        <a class="nav-link" asp-area="AdministrativeArea" asp-controller="AdministrativeWorker" asp-action="Index">
-            <i class="fas fa-fw fa-tachometer-alt" ></i>
-            <span>Pulpit</span>
-        </a>
-    </li>-->
+                <a class="nav-link" asp-area="AdministrativeArea" asp-controller="AdministrativeWorker" asp-action="Index">
+                    <i class="fas fa-fw fa-tachometer-alt" ></i>
+                    <span>Pulpit</span>
+                </a>
+            </li>-->
             <!-- Divider -->
             <!--<hr class="sidebar-divider">-->
             <br />
@@ -63,16 +63,16 @@
             </div>
 
             <!-- Nav Item - Pages Collapse Menu -->
-            <li class="nav-item ">
-                <a class="nav-link collapsed pt-2 pb-0" asp-action="ScheduleItemsAdd" asp-controller="Administrative" asp-area="AdministrativeArea"
+            <li class="nav-item my-3">
+                <a class="nav-link collapsed py-0" asp-action="ScheduleItemsAdd" asp-controller="Administrative" asp-area="AdministrativeArea" data-value="ScheduleItemsAdd"
                    aria-expanded="true" aria-controls="collapseTwo">
                     <i class="fas fa-fw fa-edit"></i>
                     <span>Dodaj</span>
                 </a>
             </li>
 
-            <li class="nav-item ">
-                <a class="nav-link collapsed pt-2 pb-2" asp-action="ScheduleItemsManage" asp-controller="Administrative" asp-area="AdministrativeArea">
+            <li class="nav-item mb-3">
+                <a class="nav-link collapsed py-0" asp-action="ScheduleItemsManage" asp-controller="Administrative" asp-area="AdministrativeArea" data-value="ScheduleItemsManage">
                     <i class="fas fa-fw fa-cog "></i>
                     <span>Zarządzaj</span>
                 </a>
@@ -80,29 +80,26 @@
 
             <!-- Nav Item - Utilities Collapse Menu -->
             @*<li class="nav-item">
-            <a class="nav-link" href="#"
-               aria-expanded="true" aria-controls="collapseUtilities">
-                <i class="fas fa-fw fa-wrench"></i>
-                <span>Zaplanowane wizyty</span>
-            </a>
-        </li>*@
-
-
-
+                    <a class="nav-link" href="#"
+                       aria-expanded="true" aria-controls="collapseUtilities">
+                        <i class="fas fa-fw fa-wrench"></i>
+                        <span>Zaplanowane wizyty</span>
+                    </a>
+                </li>*@
             <hr class="sidebar-divider">
             <div class="sidebar-heading">
                 Pacjenci
             </div>
-            <li class="nav-item ">
-                <a class="nav-link collapsed pt-2 pb-0" asp-action="PatientItemsAdd" asp-controller="Administrative" asp-area="AdministrativeArea"
+            <li class="nav-item my-3">
+                <a class="nav-link collapsed py-0" asp-action="PatientItemsAdd" asp-controller="Administrative" asp-area="AdministrativeArea" data-value="PatientItemsAdd"
                    aria-expanded="true" aria-controls="collapseTwo">
                     <i class="fas fa-fw fa-edit"></i>
                     <span>Dodaj</span>
                 </a>
             </li>
 
-            <li class="nav-item ">
-                <a class="nav-link collapsed pt-2 pb-2" asp-action="PatientItemsManage" asp-controller="Administrative" asp-area="AdministrativeArea">
+            <li class="nav-item mb-3">
+                <a class="nav-link collapsed py-0" asp-action="PatientItemsManage" asp-controller="Administrative" asp-area="AdministrativeArea" data-value="PatientItemsManage">
                     <i class="fas fa-fw fa-cog "></i>
                     <span>Zarządzaj</span>
                 </a>
@@ -112,39 +109,39 @@
                 Pracownicy medyczni
             </div>
 
-            <li class="nav-item ">
-                <a class="nav-link collapsed pt-2 pb-0" asp-action="MedicalWorkerItemAdd" asp-controller="Administrative" asp-area="AdministrativeArea"
+            <li class="nav-item my-3">
+                <a class="nav-link collapsed py-0" asp-action="MedicalWorkerItemAdd" asp-controller="Administrative" asp-area="AdministrativeArea" data-value="MedicalWorkerItemAdd"
                    aria-expanded="true" aria-controls="collapseTwo">
                     <i class="fas fa-fw fa-edit"></i>
                     <span>Dodaj</span>
                 </a>
             </li>
 
-            <li class="nav-item ">
-                <a class="nav-link collapsed pt-2 pb-2" asp-action="MedicalWorkerItemsManage" asp-controller="Administrative" asp-area="AdministrativeArea">
+            <li class="nav-item mb-3">
+                <a class="nav-link collapsed py-0" asp-action="MedicalWorkerItemsManage" asp-controller="Administrative" asp-area="AdministrativeArea" data-value="MedicalWorkerItemsManage">
                     <i class="fas fa-fw fa-cog "></i>
                     <span>Zarządzaj</span>
                 </a>
             </li>
             @*<hr class="sidebar-divider">
-            <div class="sidebar-heading">
-                Pracownicy niemedyczni
-            </div>
+                <div class="sidebar-heading">
+                    Pracownicy niemedyczni
+                </div>
 
-            <li class="nav-item ">
-                <a class="nav-link collapsed pt-2 pb-0" asp-action="NonMedicalWorkerItemsAdd" asp-controller="Administrative" asp-area="AdministrativeArea"
-                   aria-expanded="true" aria-controls="collapseTwo">
-                    <i class="fas fa-fw fa-edit"></i>
-                    <span>Dodaj</span>
-                </a>
-            </li>
+                <li class="nav-item ">
+                    <a class="nav-link collapsed py-0" asp-action="NonMedicalWorkerItemsAdd" asp-controller="Administrative" asp-area="AdministrativeArea"
+                       aria-expanded="true" aria-controls="collapseTwo">
+                        <i class="fas fa-fw fa-edit"></i>
+                        <span>Dodaj</span>
+                    </a>
+                </li>
 
-            <li class="nav-item ">
-                <a class="nav-link collapsed pt-2 pb-2" asp-action="NonMedicalWorkerItemsManage" asp-controller="Administrative" asp-area="AdministrativeArea">
-                    <i class="fas fa-fw fa-cog "></i>
-                    <span>Zarządzaj</span>
-                </a>
-            </li>*@
+                <li class="nav-item ">
+                    <a class="nav-link collapsed py-0" asp-action="NonMedicalWorkerItemsManage" asp-controller="Administrative" asp-area="AdministrativeArea">
+                        <i class="fas fa-fw fa-cog "></i>
+                        <span>Zarządzaj</span>
+                    </a>
+                </li>*@
 
             <hr class="sidebar-divider d-none d-md-block">
 
@@ -153,16 +150,16 @@
                 Placówki
             </div>
 
-            <li class="nav-item ">
-                <a class="nav-link collapsed pt-2 pb-0" asp-action="LocationItemAdd" asp-controller="Administrative" asp-area="AdministrativeArea"
+            <li class="nav-item my-3">
+                <a class="nav-link collapsed py-0" asp-action="LocationItemAdd" asp-controller="Administrative" asp-area="AdministrativeArea" data-value="LocationItemAdd"
                    aria-expanded="true" aria-controls="collapseTwo">
                     <i class="fas fa-fw fa-edit"></i>
                     <span>Dodaj</span>
                 </a>
             </li>
 
-            <li class="nav-item ">
-                <a class="nav-link collapsed pt-2 pb-2" asp-action="LocationItemsManage" asp-controller="Administrative" asp-area="AdministrativeArea">
+            <li class="nav-item mb-3">
+                <a class="nav-link collapsed py-0" asp-action="LocationItemsManage" asp-controller="Administrative" asp-area="AdministrativeArea" data-value="LocationItemsManage">
                     <i class="fas fa-fw fa-cog "></i>
                     <span>Zarządzaj</span>
                 </a>
@@ -172,16 +169,16 @@
             <div class="sidebar-heading">
                 Gabinety
             </div>
-            <li class="nav-item ">
-                <a class="nav-link collapsed pt-2 pb-0" asp-action="RoomItemAdd" asp-controller="Administrative" asp-area="AdministrativeArea"
+            <li class="nav-item my-3">
+                <a class="nav-link collapsed py-0" asp-action="RoomItemAdd" asp-controller="Administrative" asp-area="AdministrativeArea" data-value="RoomItemAdd"
                    aria-expanded="true" aria-controls="collapseTwo">
                     <i class="fas fa-fw fa-edit"></i>
                     <span>Dodaj</span>
                 </a>
             </li>
 
-            <li class="nav-item ">
-                <a class="nav-link collapsed pt-2 pb-2" asp-action="RoomItemsManage" asp-controller="Administrative" asp-area="AdministrativeArea">
+            <li class="nav-item mb-3">
+                <a class="nav-link collapsed py-0" asp-action="RoomItemsManage" asp-controller="Administrative" asp-area="AdministrativeArea" data-value="RoomItemsManage">
                     <i class="fas fa-fw fa-cog "></i>
                     <span>Zarządzaj</span>
                 </a>
@@ -189,29 +186,29 @@
 
             <!-- Heading -->
             <!--<div class="sidebar-heading">
-        Leczenie
-    </div>-->
+                Leczenie
+            </div>-->
             @*<li class="nav-item">
-            <a class="nav-link" href="charts.html">
-                <i class="fas fa-fw fa-chart-area"></i>
-                <span>Gabinety</span>
-            </a>
-        </li>*@
+                    <a class="nav-link" href="charts.html">
+                        <i class="fas fa-fw fa-chart-area"></i>
+                        <span>Gabinety</span>
+                    </a>
+                </li>*@
             <hr class="sidebar-divider">
 
             <div class="sidebar-heading">
                 Pakiety medyczne
             </div>
-            <li class="nav-item ">
-                <a class="nav-link collapsed pt-2 pb-0" asp-action="MedicalPackageItemAdd" asp-controller="Administrative" asp-area="AdministrativeArea"
+            <li class="nav-item my-3">
+                <a class="nav-link collapsed py-0" asp-action="MedicalPackageItemAdd" asp-controller="Administrative" asp-area="AdministrativeArea" data-value="MedicalPackageItemAdd"
                    aria-expanded="true" aria-controls="collapseTwo">
                     <i class="fas fa-fw fa-edit"></i>
                     <span>Dodaj</span>
                 </a>
             </li>
 
-            <li class="nav-item ">
-                <a class="nav-link collapsed pt-2 pb-2" asp-action="MedicalPackageItemsManage" asp-controller="Administrative" asp-area="AdministrativeArea">
+            <li class="nav-item mb-3">
+                <a class="nav-link collapsed py-0" asp-action="MedicalPackageItemsManage" asp-controller="Administrative" asp-area="AdministrativeArea" data-value="MedicalPackageItemsManage">
                     <i class="fas fa-fw fa-cog "></i>
                     <span>Zarządzaj</span>
                 </a>
@@ -219,23 +216,23 @@
             @*<hr class="sidebar-divider">*@
 
             @*<div class="sidebar-heading">
-                Usługi
-            </div>
+                    Usługi
+                </div>
 
-            <li class="nav-item ">
-                <a class="nav-link collapsed pt-2 pb-0" asp-action="MedicalServiceItemsAdd" asp-controller="Administrative" asp-area="AdministrativeArea"
-                   aria-expanded="true" aria-controls="collapseTwo">
-                    <i class="fas fa-fw fa-edit"></i>
-                    <span>Dodaj</span>
-                </a>
-            </li>
+                <li class="nav-item ">
+                    <a class="nav-link collapsed py-0" asp-action="MedicalServiceItemsAdd" asp-controller="Administrative" asp-area="AdministrativeArea"
+                       aria-expanded="true" aria-controls="collapseTwo">
+                        <i class="fas fa-fw fa-edit"></i>
+                        <span>Dodaj</span>
+                    </a>
+                </li>
 
-            <li class="nav-item ">
-                <a class="nav-link collapsed pt-2 pb-2" asp-action="MedicalServiceItemsManage" asp-controller="Administrative" asp-area="AdministrativeArea">
-                    <i class="fas fa-fw fa-cog "></i>
-                    <span>Zarządzaj</span>
-                </a>
-            </li>*@
+                <li class="nav-item ">
+                    <a class="nav-link collapsed py-0" asp-action="MedicalServiceItemsManage" asp-controller="Administrative" asp-area="AdministrativeArea">
+                        <i class="fas fa-fw fa-cog "></i>
+                        <span>Zarządzaj</span>
+                    </a>
+                </li>*@
             <hr class="sidebar-divider d-none d-md-block">
 
             <div class="sidebar-heading">
@@ -249,11 +246,11 @@
             </li>
 
             @*<li class="nav-item">
-            <a class="nav-link" href="tables.html">
-                <i class="fas fa-fw fa-table"></i>
-                <span>Kontakt</span>
-            </a>
-        </li>*@
+                    <a class="nav-link" href="tables.html">
+                        <i class="fas fa-fw fa-table"></i>
+                        <span>Kontakt</span>
+                    </a>
+                </li>*@
 
             <!-- Divider -->
             <hr class="sidebar-divider d-none d-md-block">
@@ -285,27 +282,27 @@
 
                         <!-- Nav Item - Search Dropdown (Visible Only XS) -->
                         <!--<li class="nav-item dropdown no-arrow d-sm-none">
-                <a class="nav-link dropdown-toggle" href="#" id="searchDropdown" role="button"
-                   data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                    <i class="fas fa-search fa-fw"></i>
-                </a>-->
+                        <a class="nav-link dropdown-toggle" href="#" id="searchDropdown" role="button"
+                           data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                            <i class="fas fa-search fa-fw"></i>
+                        </a>-->
                         <!-- Dropdown - Messages -->
                         <!--<div class="dropdown-menu dropdown-menu-right p-3 shadow animated--grow-in"
-                     aria-labelledby="searchDropdown">
-                    <form class="form-inline mr-auto w-100 navbar-search">
-                        <div class="input-group">
-                            <input type="text" class="form-control bg-light border-0 small"
-                                   placeholder="Search for..." aria-label="Search"
-                                   aria-describedby="basic-addon2">
-                            <div class="input-group-append">
-                                <button class="btn btn-primary" type="button">
-                                    <i class="fas fa-search fa-sm"></i>
-                                </button>
+                                 aria-labelledby="searchDropdown">
+                                <form class="form-inline mr-auto w-100 navbar-search">
+                                    <div class="input-group">
+                                        <input type="text" class="form-control bg-light border-0 small"
+                                               placeholder="Search for..." aria-label="Search"
+                                               aria-describedby="basic-addon2">
+                                        <div class="input-group-append">
+                                            <button class="btn btn-primary" type="button">
+                                                <i class="fas fa-search fa-sm"></i>
+                                            </button>
+                                        </div>
+                                    </div>
+                                </form>
                             </div>
-                        </div>
-                    </form>
-                </div>
-            </li>-->
+                        </li>-->
                         <!-- Nav Item - Alerts -->
                         <li class="nav-item dropdown no-arrow mx-1">
                             <a class="nav-link dropdown-toggle" href="#" id="alertsDropdown" role="button"
@@ -404,19 +401,19 @@
 
             </div>
 
-        <!-- End of Main Content -->
-        <!-- Footer -->
-        <footer class="sticky-footer bg-white">
-            <div class="container my-auto">
-                <div class="copyright text-center my-auto">
-                    <span>Copyright &copy; Asklepios - Łukasz Łukasiak</span>
+            <!-- End of Main Content -->
+            <!-- Footer -->
+            <footer class="sticky-footer bg-white">
+                <div class="container my-auto">
+                    <div class="copyright text-center my-auto">
+                        <span>Copyright &copy; Asklepios - Łukasz Łukasiak</span>
+                    </div>
                 </div>
-            </div>
-        </footer>
-        <!-- End of Footer -->
+            </footer>
+            <!-- End of Footer -->
 
-    </div>
-    <!-- End of Content Wrapper -->
+        </div>
+        <!-- End of Content Wrapper -->
     </div>
     <!-- End of Page Wrapper -->
     <!-- Scroll to Top Button-->
@@ -430,19 +427,20 @@
         <div class="modal-dialog" role="document">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title" id="exampleModalLabel">Ready to Leave?</h5>
+                    <h5 class="modal-title" id="exampleModalLabel">Chcesz się wylogować?</h5>
                     <button class="close" type="button" data-dismiss="modal" aria-label="Close">
                         <span aria-hidden="true">×</span>
                     </button>
                 </div>
-                <div class="modal-body">Select "Logout" below if you are ready to end your current session.</div>
+                <div class="modal-body">Wybierz "Wyloguj" poniżej, jeżeli chcesz sie wylogować z obecnej sesji.</div>
                 <div class="modal-footer">
-                    <button class="btn btn-secondary" type="button" data-dismiss="modal">Cancel</button>
-                    <a class="btn btn-primary" href="login.html">Logout</a>
+                    <button class="btn btn-secondary" type="button" data-dismiss="modal">Anuluj</button>
+                    <a class="btn btn-primary" asp-action="LogOut" asp-controller="Home" asp-area="HomeArea">Wyloguj się</a>
                 </div>
             </div>
         </div>
     </div>
+
 
     <!-- Bootstrap core JavaScript-->
     <script src="~/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
@@ -452,6 +450,28 @@
 
     <!-- Custom scripts for all pages-->
     <script src="~/js/sb-admin-2.min.js"></script>
+    <script>
+        jQuery(function ($) {
+            var last = window.location.href.substr(window.location.href.lastIndexOf("/") + 1);
+            var lastIndex = window.location.href.lastIndexOf("/");
+            var withoutLast = window.location.href.substr(0, lastIndex);
+            var preLastIndex = withoutLast.lastIndexOf("/");
+            var preLast = window.location.href.substr(preLastIndex + 1, lastIndex - preLastIndex - 1);
+
+            $(".nav-item").each(function () {
+
+                $(this).removeClass("active");
+            })
+
+
+            $(".nav-link").each(function () {
+
+                if ($(this).attr("data-value") == last || $(this).attr("data-value") == preLast)
+                    $(this).parent().addClass("active");
+            })
+        });
+
+    </script>
 
 </body>
 </html>

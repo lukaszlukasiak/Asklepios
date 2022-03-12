@@ -28,7 +28,7 @@
         <ul class="navbar-nav bg-gradient-primary sidebar sidebar-dark accordion" id="accordionSidebar">
 
             <!-- Sidebar - Brand -->
-            <a class="sidebar-brand d-flex align-items-center justify-content-center" >
+            <a class="sidebar-brand d-flex align-items-center justify-content-center">
                 <div class="sidebar-brand-icon rotate-n-15">
                     <i class="fas fa-book-medical"></i>
                 </div>
@@ -44,7 +44,7 @@
 
             <!-- Nav Item - Dashboard -->
             <li class="nav-item active">
-                <a class="nav-link" asp-area="CustomerServiceArea" asp-controller="CustomerService" asp-action="Index" >
+                <a class="nav-link" asp-area="CustomerServiceArea" asp-controller="CustomerService" asp-action="Index" data-value="Index">
                     <i class="fas fa-fw fa-user"></i>
                     <span>Wybierz pacjenta</span>
                 </a>
@@ -53,102 +53,102 @@
             {
 
 
-            <!-- Divider -->
-            <hr class="sidebar-divider">
+                <!-- Divider -->
+                <hr class="sidebar-divider">
 
-            <!-- Heading -->
-            <div class="sidebar-heading">
-                Kalendarz wizyt
-            </div>
+                <!-- Heading -->
+                <div class="sidebar-heading">
+                    Kalendarz wizyt
+                </div>
 
-            <!-- Nav Item - Pages Collapse Menu -->
-            <li class="nav-item">
-                <a class="nav-link collapsed" 
-                   aria-expanded="true" aria-controls="collapseTwo" asp-area="CustomerServiceArea" asp-controller="CustomerService" asp-action="BookVisit">
-                    <i class="fas fa-fw fa-book-medical"></i>
-                    <span>Umów na wizytę</span>
-                </a>
-            </li>
+                <!-- Nav Item - Pages Collapse Menu -->
+                <li class="nav-item">
+                    <a class="nav-link collapsed"
+                       aria-expanded="true" aria-controls="collapseTwo" asp-area="CustomerServiceArea" asp-controller="CustomerService" asp-action="BookVisit" data-value="BookVisit">
+                        <i class="fas fa-fw fa-book-medical"></i>
+                        <span>Umów na wizytę</span>
+                    </a>
+                </li>
 
-            <!-- Nav Item - Utilities Collapse Menu -->
-            <li class="nav-item">
-                <a class="nav-link" 
-                   aria-expanded="true" aria-controls="collapseUtilities" asp-area="CustomerServiceArea" asp-controller="CustomerService" asp-action="PlannedVisits">
-                    <i class="fas fa-fw fa-address-card"></i>
-                    <span>Zaplanowane wizyty</span>
-                </a>
-            </li>
+                <!-- Nav Item - Utilities Collapse Menu -->
+                <li class="nav-item">
+                    <a class="nav-link"
+                       aria-expanded="true" aria-controls="collapseUtilities" asp-area="CustomerServiceArea" asp-controller="CustomerService" asp-action="PlannedVisits" data-value="PlannedVisits">
+                        <i class="fas fa-fw fa-address-card"></i>
+                        <span>Zaplanowane wizyty</span>
+                    </a>
+                </li>
 
 
 
-            <hr class="sidebar-divider">
+                <hr class="sidebar-divider">
 
-            <!-- Heading -->
-            <div class="sidebar-heading">
-                Historia
-            </div>
+                <!-- Heading -->
+                <div class="sidebar-heading">
+                    Historia
+                </div>
 
-            <li class="nav-item">
-                <a class="nav-link" asp-area="CustomerServiceArea" asp-controller="CustomerService" asp-action="HistoricalVisits">
-                    <i class="fas fa-fw fa-archive"></i>
-                    <span>Wizyty</span>
-                </a>
-            </li>
-            <hr class="sidebar-divider">
+                <li class="nav-item">
+                    <a class="nav-link" asp-area="CustomerServiceArea" asp-controller="CustomerService" asp-action="HistoricalVisits" data-value="HistoricalVisits">
+                        <i class="fas fa-fw fa-archive"></i>
+                        <span>Wizyty</span>
+                    </a>
+                </li>
+                <hr class="sidebar-divider">
 
-            <!-- Heading -->
-            <div class="sidebar-heading">
-                Leczenie
-            </div>
+                <!-- Heading -->
+                <div class="sidebar-heading">
+                    Leczenie
+                </div>
 
-            <li class="nav-item">
-                <a class="nav-link" asp-area="CustomerServiceArea" asp-controller="CustomerService" asp-action="Referrals">
-                    <i class="fas fa-fw fa-forward"></i>
-                    <span>Skierowania</span>
-                </a>
-            </li>
+                <li class="nav-item">
+                    <a class="nav-link" asp-area="CustomerServiceArea" asp-controller="CustomerService" asp-action="Referrals" data-value="Referrals">
+                        <i class="fas fa-fw fa-forward"></i>
+                        <span>Skierowania</span>
+                    </a>
+                </li>
 
-            <!-- Nav Item - Tables -->
-            <li class="nav-item">
-                <a class="nav-link" asp-area="CustomerServiceArea" asp-controller="CustomerService" asp-action="Prescriptions">
-                    <i class="fas fa-fw fa-receipt"></i>
-                    <span>Recepty</span>
-                </a>
-            </li>
-            <!-- Nav Item - Tables -->
-            <li class="nav-item">
-                <a class="nav-link" asp-area="CustomerServiceArea" asp-controller="CustomerService" asp-action="TestResults">
-                    <i class="fas fa-fw fa-book-reader"></i>
-                    <span>Wyniki badań</span>
-                </a>
-            </li>
+                <!-- Nav Item - Tables -->
+                <li class="nav-item">
+                    <a class="nav-link" asp-area="CustomerServiceArea" asp-controller="CustomerService" asp-action="Prescriptions" data-value="Prescriptions">
+                        <i class="fas fa-fw fa-receipt"></i>
+                        <span>Recepty</span>
+                    </a>
+                </li>
+                <!-- Nav Item - Tables -->
+                <li class="nav-item">
+                    <a class="nav-link" asp-area="CustomerServiceArea" asp-controller="CustomerService" asp-action="TestResults" data-value="TestResults">
+                        <i class="fas fa-fw fa-book-reader"></i>
+                        <span>Wyniki badań</span>
+                    </a>
+                </li>
             }
             @*<li class="nav-item">
-                <a class="nav-link" asp-area="CustomerServiceArea" asp-controller="CustomerService" asp-action="MedicalAdvice">
-                    <i class="fas fa-fw fa-table"></i>
-                    <span>Zalecenia</span>
-                </a>
-            </li>*@
+                    <a class="nav-link" asp-area="CustomerServiceArea" asp-controller="CustomerService" asp-action="MedicalAdvice">
+                        <i class="fas fa-fw fa-table"></i>
+                        <span>Zalecenia</span>
+                    </a>
+                </li>*@
             <hr class="sidebar-divider d-none d-md-block">
 
             <div class="sidebar-heading">
                 Inne
             </div>
             <li class="nav-item">
-                <a class="nav-link"  asp-controller="CustomerService" asp-action="MedicalWorkersList">
+                <a class="nav-link" asp-controller="CustomerService" asp-action="MedicalWorkersList" data-value="MedicalWorkersList">
                     <i class="fas fa-fw fa-th-list"></i>
                     <span>Lista lekarzy</span>
                 </a>
             </li>
             <li class="nav-item">
-                <a class="nav-link" asp-area="CustomerServiceArea" asp-controller="CustomerService" asp-action="Locations">
-                    <i class="fas fa-fw fa-list"></i>
+                <a class="nav-link" asp-area="CustomerServiceArea" asp-controller="CustomerService" asp-action="Locations" data-value="Locations">
+                    <i class="fas fa-fw fa-building"></i>
                     <span>Lista oddziałów</span>
                 </a>
             </li>
 
             <li class="nav-item">
-                <a class="nav-link" asp-area="CustomerServiceArea" asp-controller="CustomerService" asp-action="Contact">
+                <a class="nav-link" asp-area="CustomerServiceArea" asp-controller="CustomerService" asp-action="Contact" data-value="Contact">
                     <i class="fas fa-fw fa-mail-bulk"></i>
                     <span>Kontakt</span>
                 </a>
@@ -188,8 +188,8 @@
                                data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                 <i class="fas fa-search fa-fw"></i>
                             </a>-->
-                            <!-- Dropdown - Messages -->
-                            <!--<div class="dropdown-menu dropdown-menu-right p-3 shadow animated--grow-in"
+                        <!-- Dropdown - Messages -->
+                        <!--<div class="dropdown-menu dropdown-menu-right p-3 shadow animated--grow-in"
                                  aria-labelledby="searchDropdown">
                                 <form class="form-inline mr-auto w-100 navbar-search">
                                     <div class="input-group">
@@ -205,7 +205,6 @@
                                 </form>
                             </div>
                         </li>-->
-
                         <!-- Nav Item - Alerts -->
                         <li class="nav-item dropdown no-arrow mx-1">
                             <a class="nav-link dropdown-toggle" href="#" id="alertsDropdown" role="button"
@@ -261,10 +260,10 @@
 
                         <!-- Nav Item - User Information -->
                         <li class="nav-item dropdown no-arrow">
-                            <a class="nav-link dropdown-toggle"  id="userDropdown" role="button"
+                            <a class="nav-link dropdown-toggle" id="userDropdown" role="button"
                                data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                 <span class="mr-2 d-none d-lg-inline">Łukasz Łukasiak</span>
-                                    <i class="fas fa-user-cog"></i>
+                                <i class="fas fa-user-cog"></i>
 
                             </a>
                             <!-- Dropdown - User Information -->
@@ -304,19 +303,19 @@
 
             </div>
 
-        <!-- End of Main Content -->
-        <!-- Footer -->
-        <footer class="sticky-footer bg-white">
-            <div class="container my-auto">
-                <div class="copyright text-center my-auto">
-                    <span>Copyright &copy; Asklepios - Łukasz Łukasiak</span>
+            <!-- End of Main Content -->
+            <!-- Footer -->
+            <footer class="sticky-footer bg-white">
+                <div class="container my-auto">
+                    <div class="copyright text-center my-auto">
+                        <span>Copyright &copy; Asklepios - Łukasz Łukasiak</span>
+                    </div>
                 </div>
-            </div>
-        </footer>
-        <!-- End of Footer -->
+            </footer>
+            <!-- End of Footer -->
 
-    </div>
-    <!-- End of Content Wrapper -->
+        </div>
+        <!-- End of Content Wrapper -->
     </div>
     <!-- End of Page Wrapper -->
     <!-- Scroll to Top Button-->
@@ -330,15 +329,15 @@
         <div class="modal-dialog" role="document">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title" id="exampleModalLabel">Ready to Leave?</h5>
+                    <h5 class="modal-title" id="exampleModalLabel">Chcesz się wylogować?</h5>
                     <button class="close" type="button" data-dismiss="modal" aria-label="Close">
                         <span aria-hidden="true">×</span>
                     </button>
                 </div>
-                <div class="modal-body">Select "Logout" below if you are ready to end your current session.</div>
+                <div class="modal-body">Wybierz "Wyloguj" poniżej, jeżeli chcesz sie wylogować z obecnej sesji.</div>
                 <div class="modal-footer">
-                    <button class="btn btn-secondary" type="button" data-dismiss="modal">Cancel</button>
-                    <a class="btn btn-primary" href="login.html">Logout</a>
+                    <button class="btn btn-secondary" type="button" data-dismiss="modal">Anuluj</button>
+                    <a class="btn btn-primary" asp-action="LogOut" asp-controller="Home" asp-area="HomeArea">Wyloguj się</a>
                 </div>
             </div>
         </div>
@@ -353,6 +352,28 @@
 
     <!-- Custom scripts for all pages-->
     <script src="~/js/sb-admin-2.min.js"></script>
+    <script>
+        jQuery(function ($) {
+            var last = window.location.href.substr(window.location.href.lastIndexOf("/") + 1);
+            var lastIndex = window.location.href.lastIndexOf("/");
+            var withoutLast = window.location.href.substr(0, lastIndex);
+            var preLastIndex = withoutLast.lastIndexOf("/");
+            var preLast = window.location.href.substr(preLastIndex + 1, lastIndex - preLastIndex - 1);
+
+            $(".nav-item").each(function () {
+
+                $(this).removeClass("active");
+            })
+
+
+            $(".nav-link").each(function () {
+
+                if ($(this).attr("data-value") == last || $(this).attr("data-value") == preLast)
+                    $(this).parent().addClass("active");
+            })
+        });
+
+    </script>
 
 </body>
 </html>

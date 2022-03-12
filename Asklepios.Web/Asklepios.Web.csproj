@@ -95,7 +95,6 @@
     <Folder Include="Areas\CustomerServiceArea\Data\" />
     <Folder Include="Areas\HomeArea\Data\" />
     <Folder Include="Areas\MedicalWorkerArea\Data\" />
-    <Folder Include="Areas\MedicalWorkerArea\Models\" />
     <Folder Include="Areas\PatientArea\Data\" />
   </ItemGroup>
 

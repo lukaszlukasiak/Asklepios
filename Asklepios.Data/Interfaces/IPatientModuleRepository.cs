@@ -32,6 +32,7 @@ namespace Asklepios.Data.Interfaces
         User GetUser(int parsedId);
 
         void UpdateReferral(MedicalReferral referral);
+        Patient GetPatientByUserId(long personId);
         void UpdateVisit(Visit visit);
         void ResignFromVisit(Visit plannedVisit, Patient patient);
         void BookVisit(Patient selectedPatient, Visit selectedVisit);

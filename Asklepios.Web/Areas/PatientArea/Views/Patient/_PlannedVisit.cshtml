@@ -59,7 +59,9 @@
                 <a asp-area="PatientArea" asp-controller="Patient" asp-action="RescheduleVisit" asp-route-id="@Model.Id" class="btn btn-primary btn-icon-split">
                     @*<a class="btn btn-primary btn-icon-split ">*@
                     <span class="icon text-white-50 left" style="text-align:left;float:left">
-                        <i class="fas fa-address-book"></i>
+                        @*<i class="fas fa-arrow-circle-right"></i>*@
+                        <i class="fas fa-window-restore"></i>
+
                     </span>
                     <span class="text" style="float: left">Przełóż wizytę</span>
                 </a>
@@ -69,7 +71,7 @@
                 @*</form>*@
                 <a asp-area="PatientArea" asp-controller="Patient" asp-action="ResignFromVisit" asp-route-id="@Model.Id" class="btn btn-primary btn-icon-split mt-2">
                     <span class="icon text-white-50 left" style="text-align:left;float:left">
-                        <i class="fas fa-address-book"></i>
+                        <i class="fas fa-calendar-minus"></i>
                     </span>
                     <span class="text" style="float: left">Zrezygnuj z wizyty</span>
                 </a>
