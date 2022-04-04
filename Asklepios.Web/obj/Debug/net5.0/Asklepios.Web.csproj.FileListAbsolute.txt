@@ -1044,3 +1044,4 @@ C:\Users\lukas\source\repos\Asklepios8\Asklepios.Web\obj\Debug\net5.0\Razor\Area
 C:\Users\lukas\source\repos\Asklepios8\Asklepios.Web\obj\Debug\net5.0\Razor\Areas\MedicalWorkerArea\Views\MedicalWorker\_MedicalReview.cshtml.g.cs
 C:\Users\lukas\source\repos\Asklepios8\Asklepios.Web\obj\Debug\net5.0\Razor\Areas\MedicalWorkerArea\Views\MedicalWorker\_Stars.cshtml.g.cs
 C:\Users\lukas\source\repos\Asklepios8\Asklepios.Web\obj\Debug\net5.0\Razor\Areas\MedicalWorkerArea\Views\MedicalWorker\Schedule.cshtml.g.cs
+C:\Users\lukas\source\repos\Asklepios8\Asklepios.Web\obj\Debug\net5.0\Razor\Areas\MedicalWorkerArea\Views\MedicalWorker\_Location.cshtml.g.cs

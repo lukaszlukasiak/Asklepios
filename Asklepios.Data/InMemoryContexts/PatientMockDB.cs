@@ -1,5 +1,6 @@
 ﻿using Asklepios.Core.Models;
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -19,12 +20,27 @@ namespace Asklepios.Data.InMemoryContexts
         const string UM_8 = "Warszawski Uniwersytet Medyczny";
         const string UM_9 = "Uniwersytet Medyczny im.Piastów Śląskich we Wrocławiu";
 
-        public static ICollection<Visit> AvailableVisits;
-        //readonly IEnumerable<Visit> historicalVisits;
+        public static ICollection<Visit> AvailableVisits
+        {
+            get
+            {
+                return FutureVisits.Where(c => c.IsBooked == false).ToList();
+            }
+        }
+        public static ICollection<Visit> BookedVisits
+        {
+            get
+            {
+                //BookedVisits =
+                return FutureVisits.Where(c => c.IsBooked == true).ToList();
+            }
+        }
+        public static List<Visit> FutureVisits { get; set; }
+        public static List<Visit> HistoricalVisits {get;set;}
 
-        public static List<Location> Locations;
+        public static List<Location> Locations { get; set; }
         //public  Patient Patient { get; set; }
-        public static List<MedicalWorker> MedicalWorkers;
+        public static List<MedicalWorker> MedicalWorkers { get; set; }
         public static List<MedicalService> MedicalServices { get; set; }
         public static List<MedicalServiceDiscount> MedicalServiceDiscounts { get; private set; }
         public static List<MedicalService> PrimaryMedicalServices { get; set; }
@@ -67,6 +83,7 @@ namespace Asklepios.Data.InMemoryContexts
             NfzUnits = GetNFZUnits().ToList();
             MedicalServices = GetMedicalServices().ToList();
             MedicalServiceDiscounts = GetMedicalServiceDiscounts();
+
             MedicalPackages = GetMedicalPackages().ToList();
             AllPatients = GetAllPatients().ToList();
             PrimaryMedicalServices = MedicalServices.Where(c => c.IsPrimaryService == true).ToList();
@@ -74,11 +91,36 @@ namespace Asklepios.Data.InMemoryContexts
             MedicalRooms = GetMedicalRooms().ToList();
             Locations = GetAllLocations().ToList();
             MedicalWorkers = GetMedicalWorkers().ToList();
-            AvailableVisits = GetAvailableVisits().ToList();
             //AllPatients = GetAllPatients().ToList();
-            //List<Visit> HistoricalVisits GetHistoricalVisits();
+            FutureVisits = GetFutureVisits().ToList();
+            HistoricalVisits =GetHistoricalVisits().ToList();
             CurrentPatient = GetPatientData(AllPatients[0]);
+            BookRandomVisits();
+        }
 
+        private static void BookRandomVisits()
+        {
+            foreach (Patient patient in AllPatients)
+            {
+                for (int i = 1; i < 4; i++)
+                {
+                    int number = (333 * i % AvailableVisits.Count);
+                    AvailableVisits.ElementAt(number).Patient = patient;
+                }
+            }
+
+            foreach (MedicalWorker medicalWorker in MedicalWorkers)
+            {
+                List<Visit> visits = AvailableVisits.Where(c => c.MedicalWorker.Id == medicalWorker.Id).ToList();
+                int pNumber = 0;
+                for (int i = 1; i < 4; i++)
+                {
+                    pNumber++;
+                    
+                    int number = (333 * i % BookedVisits.Count);
+                    BookedVisits.ElementAt(number).Patient = AllPatients.ElementAt(pNumber % AllPatients.Count);
+                }
+            }
         }
 
         internal static List<MedicalServiceDiscount> GetMedicalServiceDiscounts()
@@ -328,7 +370,7 @@ namespace Asklepios.Data.InMemoryContexts
             }
         }
 
-        public static IEnumerable<Visit> GetAvailableVisits()
+        public static IEnumerable<Visit> GetFutureVisits()
         {
             DateTimeOffset dateTimeOffset = DateTime.Now;
 
@@ -1469,7 +1511,107 @@ namespace Asklepios.Data.InMemoryContexts
 
         public static IEnumerable<Visit> GetHistoricalVisits()
         {
-            DateTimeOffset dateTimeOffset = DateTime.Now;
+            DateTimeOffset dateTimeOffset = new DateTimeOffset(DateTime.Now);
+            DateTimeOffset now = DateTime.Now;
+
+            List<Prescription> prescriptions=GetDummyPrescriptions(dateTimeOffset);
+            List<VisitReview> reviews = GetDummyMedicalReviews();
+            List<MedicalReferral> referrals = GetDummyMedicalReferrals(null,now);
+            List<string> medicalHistories = GetDummyMedicalHistories();
+            List<Visit> historicalVisits = new List<Visit>();
+            List<Recommendation> recommendations = GetSomeRecommendations();
+
+            Random rnd = new Random();
+            long id = FutureVisits.Max(c => c.Id) ;
+
+
+            foreach (Patient patient in AllPatients)
+            {
+                int numberOfVisits = rnd.Next(0, 10);
+
+                for (int i = 0; i < numberOfVisits; i++)
+                {
+                    int medicalWorkerIndex = rnd.Next(0, MedicalWorkers.Count-1);
+
+                    int daysAgo = rnd.Next(0, 100);
+                    int hour = rnd.Next(0, 12);
+                    int quarter = rnd.Next(0, 3);
+                    int medicalLocationIndex = rnd.Next(0, Locations.Count - 1);
+                    int roomIndex = rnd.Next(0, Locations[medicalLocationIndex].MedicalRooms.Count - 1);
+                    int medicalReviewIndex = rnd.Next(-10, reviews.Count - 1);
+                    int prescriptionIndex = rnd.Next(-5, prescriptions.Count - 1);
+                    int referralsIndex= rnd.Next(-10, referrals.Count - 1);
+                    int medicalHistoryIndex= rnd.Next(-2, medicalHistories.Count - 1); 
+                    int primaryMedicalServiceIndex= rnd.Next(0, PrimaryMedicalServices.Count - 1);
+                    int recommendationIndex= rnd.Next(-4, recommendations.Count - 1);
+                    TimeSpan timeSpan1 = new TimeSpan(7, 0, 0);
+                    DateTimeOffset dateTime = new DateTimeOffset(now.AddDays(daysAgo).Date, timeSpan1);
+
+                    TimeSpan timeSpan2 = new TimeSpan(hour, quarter * 15, 0);
+                    dateTime = new DateTimeOffset(dateTime.DateTime, timeSpan2);
+                    MedicalService medicalService = PrimaryMedicalServices[primaryMedicalServiceIndex];
+                    //int minorServiceIndex = -1;
+                    int minorServiceIndex =minorServiceIndex = medicalService.SubServices == null ? -1 : medicalService.SubServices.Count() - 1;
+                    MedicalService minorService = null;
+                    if (minorServiceIndex>=0)
+                    {
+                        minorServiceIndex = rnd.Next(0, medicalService.SubServices == null ? -1 : medicalService.SubServices.Count() - 1);
+                        minorService = medicalService.SubServices.ElementAt(minorServiceIndex);
+                    }
+
+                    Location location = null;
+                    if (medicalLocationIndex>=0)
+                    {
+                        location = Locations[medicalLocationIndex];
+                    }
+                    MedicalRoom medicalRoom = null;
+                    if (roomIndex>=0)
+                    {
+                        medicalRoom = location.MedicalRooms[roomIndex];
+                    }
+                    List<MedicalReferral> examinationReferrals = null;
+                    if (referralsIndex>=0)
+                    {
+                        examinationReferrals = new List<MedicalReferral>() { referrals[referralsIndex] };
+                    }
+                    string history = null;
+                    if (medicalHistoryIndex>=0)
+                    {
+                        history = medicalHistories[medicalHistoryIndex];
+                    }
+                    Prescription prescription = null;
+                    if (prescriptionIndex>=0)
+                    {
+                        prescription= prescriptions[prescriptionIndex];
+                    }
+                    List<Recommendation> visitRecommendations = null;
+                    if (recommendationIndex>=0)
+                    {
+                        visitRecommendations = new List<Recommendation>() { recommendations[recommendationIndex] };
+                    }
+                    
+
+                    Visit visit = new Visit()
+                    {
+                        Id = ++id,
+                        DateTimeSince = dateTime,
+                        DateTimeTill = dateTime.AddMinutes(15),
+                        Location = Locations[medicalLocationIndex],
+                        MedicalRoom = medicalRoom,
+                        ExaminationReferrals = examinationReferrals,
+                        MedicalHistory = history,
+                        Prescription=prescription,
+                        Recommendations= visitRecommendations,
+                        PrimaryService = medicalService,
+
+                        VisitCategory = VisitCategories.Where(c=> c.PrimaryMedicalServices.Any(d => d.Id == medicalService.Id)).FirstOrDefault(),
+                        Patient=patient,
+                        MedicalWorker=MedicalWorkers[medicalWorkerIndex],
+                        MinorMedicalServices= new List<MedicalService>() { minorService },
+                    };
+                    historicalVisits.Add(visit);
+                }
+            }
 
             //IEnumerable<Visit> historicalVisits=new List<Visit>     ()
             //{
@@ -1495,7 +1637,291 @@ namespace Asklepios.Data.InMemoryContexts
 
             //}
 
-            return new List<Visit>();
+            return historicalVisits;
+
+        }
+
+        private static List<string> GetDummyMedicalHistories()
+        {
+            List<string> histories = new List<string>()
+            {
+                "Pacjent skarży się na problemy z układem pokarmowym, nawracające biegunki, gazy, bóle brzucha",
+                "Swędzenie skóry, uczucie senności po posiłku",
+                 "Pacjent posiada typowe dla łuszczycy zmiany skórne: na skórze głowy oraz pod pachami. Twierdzi, że ma je ok. 3 miesięcy.",
+                "Podejrzenie złamania nadgarstka. Pacjent przewrócił się wczoraj na rowerze, od tego czasu odczuwa ból w okolicach nadgarstka, mocno ograniczone ruchy nadgarstka, duża opuchlizna. Skierowanie na rtg oraz zalecenie zakupu ortezy na nadgarstek.",
+                "Rehabilitacja nadgarstka złamanego 3 miesiące temu. Orteza noszona przez miesiąc, pacjent uskarża się na sztywność nadgarstka i lekkie bóle podczas wyginania nadgarstka.",
+                "Ból lewej, dolnej szóstki od kilku tygodni.",
+                "Pacjent skarży się na chroniczne zmęczenie. Wspomina też o tym, że mimo że je tyle samo co wcześniej, to ostatnio sporo przytył. Ma nadwagę, 170 cm wzrostu, 90 kg.",
+                "Mocno opuchnięta kostka, pacjent odczuwa ból. Podejrzenie zwichnięcia. Zdarzenie miało miejsce 2 dni temu podczas gry w piłkę.",
+                "Poczucie duszności, trudność w oddychaniu i słyszalny świst przy nim, ból w klatce peirsiowej oraz uciążliwy, suchy kaszel. Podejrzenie zatorowości płucnej",
+                "Zażółcone spojówki oczu oraz skóra w niektórych miejscach, pacjent skarży się także na świąd skóry. Podejrzenie żółtaczki.",
+                "Katar, kaszel, ból gardła oraz lekka gorączka od ok.  3 dni. Przeziębienie.",
+                "Pacjent czuje osłabienie, ma regularne bóle brzucha. Potencjalne problemy układu pokarmowego, wątroby, nerek, trzustki. Badania diagnostyczne."
+            };
+            return histories;
+        }
+
+        static List<VisitReview> GetDummyMedicalReviews()
+        {
+            DateTimeOffset now = DateTime.Now;
+            long id = 0;
+            List<VisitReview> visitReviews = new List<VisitReview>()
+            {
+                new VisitReview(){Id=++id,AtmosphereRate=1,CompetenceRate=4,GeneralRate=3,ShortDescription="Lekarz w miarę kompetentny, ale chamski gbur"},
+                new VisitReview(){Id=++id,AtmosphereRate=5,CompetenceRate=2,GeneralRate=3,ShortDescription="Miły lekarz, niestety jego zalecenia nic nie pomogły"},
+                new VisitReview(){Id=++id,AtmosphereRate=4,CompetenceRate=4,GeneralRate=4,ShortDescription="Przepisane przez niego medykamenty poprawiły mój stan, ale część objawów się utrzymała."},
+                new VisitReview(){Id=++id,AtmosphereRate=5,CompetenceRate=5,GeneralRate=5,ShortDescription="Super lekarz, pomógł mi, dodatkowo jest bardzo sympatyczny i wszystko mi po kolei wyjaśnił. Lekarz-ideał."},
+                new VisitReview(){Id=++id,AtmosphereRate=2,CompetenceRate=1,GeneralRate=1,ShortDescription="Lekarza nie interesowały wyniki badań, nie interesowało co mówię, jedyne co mi zalecił, to leki przeciwbólowe!."},
+                new VisitReview(){Id=++id,AtmosphereRate=1,CompetenceRate=2,GeneralRate=2,ShortDescription="Bardzo nieprzyjemny, jego leczenie nie przyniosło większej poprawy"},
+                new VisitReview(){Id=++id,AtmosphereRate=5,CompetenceRate=5,GeneralRate=5,ShortDescription="Polecam, 100% zaangażowania w problem z jakim przychodzi się do doktora.Szczegółowo omawia choroba, natychmiastowo zleca dalsze badania i dobiera leczenie."},
+                new VisitReview(){Id=++id,AtmosphereRate=4,CompetenceRate=5,GeneralRate=5,ShortDescription="Doktor sumiennie zajmuje się pacjentem na wizycie. Odpowiada na pytania, doskonale tłumaczy sposób leczenia."},
+                new VisitReview(){Id=++id,AtmosphereRate=5,CompetenceRate=5,GeneralRate=5,ShortDescription="Bardzo dobry lekarz z ogromnym doświadczeniem, oddany pacjentom, przyjazny, można mu zaufać, rzeczowy w wyjaśnieniach." },
+                new VisitReview(){Id=++id,AtmosphereRate=4,CompetenceRate=5,GeneralRate=5,ShortDescription="Bardzo profesjonalne podejście do pacjenta. Wszystko dokładnie wyjaśnione. Serdecznie polecam!"},
+                new VisitReview(){Id=++id,AtmosphereRate=5,CompetenceRate=4,GeneralRate=4,ShortDescription="Doktor jest cudownym człowiekiem. Jest niesamowicie miły i empatyczny. Bardzo zaangażowany w problemy pacjenta. Szczegółowo wyjaśnia wszystkie wątpliwości. Na pacjenta poświęca tyle czasu ile jest niezbędne, a nie tyle ile jest w grafiku. Zaproponowane leczenie okazało sie bardzo skuteczne i znacznie poprawiło mój komfort życia."},
+                new VisitReview(){Id=++id,AtmosphereRate=4,CompetenceRate=5,GeneralRate=4,ShortDescription="Bardzo dobry lekarz, z dużym doświadczeniem. Dokładny wywiad, badania, szybka diagnoza i leczenie. Polecam."},
+                new VisitReview(){Id=++id,AtmosphereRate=4,CompetenceRate=4,GeneralRate=4,ShortDescription="Polecam, 100% zaangażowania w problem z jakim przychodzi się do doktora.Szczegółowo omawia przypadłość, natychmiast zleca dalsze badania i dobiera leczenie." },
+                new VisitReview(){Id=++id,AtmosphereRate=5,CompetenceRate=4,GeneralRate=4,ShortDescription="Bardzo miły i pomocny lekarz :) Wszystko wyjaśnił, o wszystko co istotne zapytał. Polecam!!!" },
+                new VisitReview(){Id=++id,AtmosphereRate=4,CompetenceRate=5,GeneralRate=4,ShortDescription="Było tak, jak chyba każdy pacjent oczekuje. Lekarz elokwentny i ewidentnie zna się na swoim fachu.Polecam." },
+                new VisitReview(){Id=++id,AtmosphereRate=2,CompetenceRate=2,GeneralRate=2,ShortDescription="Miałam teleporade u tego lekarza, która trwała może z 2 min z czego większość czasu mówiłam ja. Żadnego dzień dobry, Lekarz wysłuchał i wystawił zwolnienie i tyle. Zero porady, brak pytań z jego strony oprócz prośby o pesel i pytania co się dzieje. Osobiście nie polecam." },
+                new VisitReview(){Id=++id,AtmosphereRate=1,CompetenceRate=2,GeneralRate=2,ShortDescription="Nieuprzejmy, wręcz opryskliwy doktor, bez szacunku do pacjenta." },
+                new VisitReview(){Id=++id,AtmosphereRate=2,CompetenceRate=3,GeneralRate=2,ShortDescription="Doktor nie słucha, poucza (a nie doradza pacjentowi, który w końcu nie przychodzi na wizytę dla przyjemności).W rezultacie przepisuje leki, które wcześniej samemu sie zażywało bez wizyty u lekarza. Bardzo niemiła i nieprofesjonalna wizyta. Szczerze odradzam, szkoda czasu i zdrowia." },
+                new VisitReview(){Id=++id,AtmosphereRate=3,CompetenceRate=2,GeneralRate=2,ShortDescription="Pan doktor bardziej byl zainteresowany nipem do L4 niz stanem mojego zdrowia. Po skończeniu przepisanego przez Pana doktora antybiotyku nastąpiły powikłania i nawrót choroby." },
+                new VisitReview(){Id=++id,AtmosphereRate=2,CompetenceRate=3,GeneralRate=2,ShortDescription="Mało delikatnie dał mi do zrozumienia, że zabieram mu za dużo czasu, bo mam dwie sprawy a nie jedną." },
+                new VisitReview(){Id=++id,AtmosphereRate=3,CompetenceRate=1,GeneralRate=2,ShortDescription="Podczas wizyty doktor powiedział, że ludzie niepotrzebnie chcą się badać i wykonywanie badań kontrolnych jest bez sensu. Z łaską dostałam skierowanie do specjalisty, u którego okazało się, że pan doktor postawił u mnie błędną diagnozę." },
+                new VisitReview(){Id=++id,AtmosphereRate=2,CompetenceRate=2,GeneralRate=2,ShortDescription="Lekarz podczas wizyty skupione głównie nie na pacjencie, tylko na zabawie ze smartfonem. Zdawkowe odpowiedzi, leczenie nie przyniosło pożądancyh rezultatów." },
+                new VisitReview(){Id=++id,AtmosphereRate=2,CompetenceRate=4,GeneralRate=3,ShortDescription="Lekarz niemiły podczas wizyty, ale zalecone leki wydają się działać." },
+                new VisitReview(){Id=++id,AtmosphereRate=5,CompetenceRate=2,GeneralRate=2,ShortDescription="Doktor przyjazny, dopytywał o wiele rzeczy, niestety zalecone leczenie jedynie pogorszyło mój stan. więc niestety nie mogę polecić." }
+
+            };
+
+            return visitReviews;
+        }
+    
+        static List<Prescription> GetDummyPrescriptions(DateTimeOffset dateTimeOffset)
+        {
+            List<Prescription> prescriptions = new List<Prescription>()
+            {
+                new Prescription()
+                {
+                    AccessCode="156134",
+                    Id=1,
+                    //IssuedBy=(MedicalWorkers.ElementAt(0) as Doctor),
+                    IssueDate= dateTimeOffset,
+                    ExpirationDate=dateTimeOffset.AddMonths(1),
+                    IdentificationCode="sd5f4ads5f4dsa65f46dsa54f6",
+                    IssuedMedicines=new List<IssuedMedicine>()
+                    {
+                        new IssuedMedicine(){
+                            //Dosage="Dwa razy dziennie po 1 tabletce",
+                            PackageSize="60 tabletek",
+                            MedicineName="Metformax",
+                            PaymentDiscount=30,
+
+                        },
+                        new IssuedMedicine() {
+                            //Dosage="Raz dziennie 2 tabletki",
+                            PackageSize="50 tabletek",
+                            MedicineName="Metformina",
+                            PaymentDiscount=40
+                        },
+                        new IssuedMedicine() {
+                            //Dosage="Trzy raz dziennie na zmianę skórną",
+                            PackageSize="Buteleczka 100 ml",
+                            MedicineName="Belosalic",
+                            PaymentDiscount=40
+                        }
+                    }
+                },
+                new Prescription()
+                {
+                    AccessCode = "749643216",
+                    Id = 2,
+                    //IssuedBy = (MedicalWorkers.ElementAt(1) as Doctor),
+                    IssueDate = dateTimeOffset.AddDays(-10),
+                    ExpirationDate = dateTimeOffset.AddDays(70),
+                                        IdentificationCode="u5y4fg654h6fds54gdfs56g46df",
+
+                    IssuedMedicines = new List<IssuedMedicine>()
+                    {
+                        new IssuedMedicine(){
+                            //Dosage="Dwa razy dziennie po 1 tabletce",
+                            PackageSize="20 tabletek",MedicineName="Lakcid",PaymentDiscount=30},
+                        new IssuedMedicine() {
+                            //Dosage="Dwa razy dziennie po 1 tabletce",
+                            PackageSize="30 tabletek",MedicineName="Trilac Plus",PaymentDiscount=0},
+                        new IssuedMedicine() {
+                            //Dosage="Raz dziennie po 1 tabletce",
+                            PackageSize="30 tabletek",MedicineName="Enterol",PaymentDiscount=40},
+
+                    }
+                },
+                new Prescription()
+                {
+                    AccessCode = "55554654646",
+                    Id = 3,
+                    //IssuedBy = (MedicalWorkers.ElementAt(2) as Doctor),
+                    IssueDate = dateTimeOffset.AddDays(-20),
+                    ExpirationDate = dateTimeOffset.AddDays(40),
+                    IdentificationCode="asd4a5s64d65as4fsd564f65sd4f",
+
+                    IssuedMedicines = new List<IssuedMedicine>()
+                    {
+                        new IssuedMedicine(){
+                            //Dosage="Dwa razy dziennie po 1 tabletce",
+                            PackageSize="60 tabletek",MedicineName="Eltroxin",PaymentDiscount=30},
+                        new IssuedMedicine() {
+                            //Dosage="Dwa razy dziennie po 1 tabletce",
+                            PackageSize="40 tabletek",MedicineName="Thyrozol",PaymentDiscount=10},
+                        new IssuedMedicine() {
+                            //Dosage="Trzy razy dziennie po 2 tabletki",
+                            PackageSize="100 tabletek",MedicineName="Metoprolol",PaymentDiscount=40},
+
+                    }
+                },
+                new Prescription()
+                {
+                    AccessCode = "45641345695",
+                    Id = 4,
+                    //IssuedBy = (MedicalWorkers.ElementAt(2) as Doctor),
+                    IssueDate = dateTimeOffset.AddDays(-20),
+                    ExpirationDate = dateTimeOffset.AddDays(40),
+                    IdentificationCode="dsfgdad4sf4ds56af4sd6f4",
+
+                    IssuedMedicines = new List<IssuedMedicine>()
+                    {
+                        new IssuedMedicine(){
+                            //Dosage="Dwa razy dziennie po 1 tabletce",
+                            PackageSize="100 tabletek",MedicineName="Debretin 100 mg",PaymentDiscount=30},
+                        new IssuedMedicine() {
+                            //Dosage="Dwa razy dziennie po 1 tabletce",
+                            PackageSize="60 tabletek",MedicineName="Duspatalin 200 mg",PaymentDiscount=40},
+
+                    }
+                },
+                new Prescription()  
+                {
+                    AccessCode = "547897946213",
+                    Id = 5,
+                    //IssuedBy = (MedicalWorkers.ElementAt(2) as Doctor),
+                    IssueDate = dateTimeOffset.AddDays(-20),
+                    ExpirationDate = dateTimeOffset.AddDays(40),
+                    IdentificationCode="sadsd5f4ds6f4ds65f4",
+
+                    IssuedMedicines = new List<IssuedMedicine>()
+                    {
+                        new IssuedMedicine(){
+                            //Dosage="Dwa razy dziennie po 1 tabletce",
+                            PackageSize="20 sztuk",MedicineName="Flavamed, 30 mg",PaymentDiscount=30},
+                        new IssuedMedicine() {
+                            //Dosage="Dwa razy dziennie po 1 tabletce",
+                            PackageSize="150 ml",MedicineName="Prospan",PaymentDiscount=20},
+
+                    }
+                },
+                new Prescription()  
+                {
+                    AccessCode = "132469798456",
+                    Id = 6,
+                    //IssuedBy = (MedicalWorkers.ElementAt(2) as Doctor),
+                    IssueDate = dateTimeOffset.AddDays(-20),
+                    ExpirationDate = dateTimeOffset.AddDays(40),
+                    IdentificationCode="tg4564sda8f7a9f7s9",
+
+                    IssuedMedicines = new List<IssuedMedicine>()
+                    {
+                        new IssuedMedicine(){
+                            //Dosage="Dwa razy dziennie po 1 tabletce",
+                            PackageSize="28 tabletek",MedicineName="Betaloc ZOK 100 mg",PaymentDiscount=30},
+                        new IssuedMedicine() {
+                            //Dosage="Dwa razy dziennie po 1 tabletce",
+                            PackageSize="60 tabletek",MedicineName="Vivacor 25 mg",PaymentDiscount=40},
+
+                    }
+                },
+                new Prescription()  
+                {
+                    AccessCode = "45641345695",
+                    Id = 7,
+                    //IssuedBy = (MedicalWorkers.ElementAt(2) as Doctor),
+                    IssueDate = dateTimeOffset.AddDays(-20),
+                    ExpirationDate = dateTimeOffset.AddDays(40),
+                    IdentificationCode="u8n4nb4v654vs68",
+
+                    IssuedMedicines = new List<IssuedMedicine>()
+                    {
+                        new IssuedMedicine(){
+                            //Dosage="Dwa razy dziennie po 1 tabletce",
+                            PackageSize="60 tabletek",MedicineName="Zuccarin",PaymentDiscount=50},
+                        new IssuedMedicine() {
+                            //Dosage="Dwa razy dziennie po 1 tabletce",
+                            PackageSize="30 tabletek",MedicineName="Thionerv 600",PaymentDiscount=60},
+
+                    }
+                },
+                new Prescription()  
+                {
+                    AccessCode = "964654697",
+                    Id = 8,
+                    //IssuedBy = (MedicalWorkers.ElementAt(2) as Doctor),
+                    IssueDate = dateTimeOffset.AddDays(-20),
+                    ExpirationDate = dateTimeOffset.AddDays(40),
+                    IdentificationCode="qasdfs8f97sd946",
+
+                    IssuedMedicines = new List<IssuedMedicine>()
+                    {
+                        new IssuedMedicine(){
+                            //Dosage="Dwa razy dziennie po 1 tabletce",
+                            PackageSize="10 ampułko-strzykawek",MedicineName="Clexane 60 mg",PaymentDiscount=30},
+                        new IssuedMedicine() {
+                            //Dosage="Dwa razy dziennie po 1 tabletce",
+                            PackageSize="20 ampułek",MedicineName="Nebbud 2 ml",PaymentDiscount=66},
+
+                    }
+                },
+                new Prescription()  
+                {
+                    AccessCode = "852134864",
+                    Id = 9,
+                    //IssuedBy = (MedicalWorkers.ElementAt(2) as Doctor),
+                    IssueDate = dateTimeOffset.AddDays(-20),
+                    ExpirationDate = dateTimeOffset.AddDays(40),
+                    IdentificationCode="bnvvb5546df1g32fd4",
+
+                    IssuedMedicines = new List<IssuedMedicine>()
+                    {
+                        new IssuedMedicine(){
+                            //Dosage="Dwa razy dziennie po 1 tabletce",
+                            PackageSize="100 ml",MedicineName="Iberogast",PaymentDiscount=20},
+                        new IssuedMedicine() {
+                            //Dosage="Dwa razy dziennie po 1 tabletce",
+                            PackageSize="100 tabletek",MedicineName="Espumisan 40 mg",PaymentDiscount=20},
+
+                    }
+                },
+                new Prescription() 
+                {
+                    AccessCode = "78945134687",
+                    Id = 10,
+                    //IssuedBy = (MedicalWorkers.ElementAt(2) as Doctor),
+                    IssueDate = dateTimeOffset.AddDays(-20),
+                    ExpirationDate = dateTimeOffset.AddDays(40),
+                    IdentificationCode="ghjfgh15446df546",
+
+                    IssuedMedicines = new List<IssuedMedicine>()
+                    {
+                        new IssuedMedicine(){
+                            //Dosage="Dwa razy dziennie po 1 tabletce",
+                            PackageSize="28 tabletek",MedicineName="Nezyr 28 mg",PaymentDiscount=30},
+                        new IssuedMedicine() {
+                            //Dosage="Dwa razy dziennie po 1 tabletce",
+                            PackageSize="30 tabletek",MedicineName="Apo-Pentox 400 SR 400 mg",PaymentDiscount=40},
+
+                    }
+                }
+
+            };
+
+            return prescriptions;
         }
 
         public static IEnumerable<Location> GetAllLocations()
@@ -3205,222 +3631,9 @@ namespace Asklepios.Data.InMemoryContexts
 
 
             };
-
-            List<MedicalTestResult> medicalTestResults = new List<MedicalTestResult>()
-            {
-                new MedicalTestResult()
-                {
-                    Descritpion="Wyniki rozszerzonych badań krwi",
-                    MedicalService=MedicalServices[8],
-                    PdfDocument= Properties.Resources.Badania_krwi_i_moczu                ,  //new PdfSharpCore.Pdf.PdfDocument( new MemoryStream( Properties.Resources.Badania_krwi_i_moczu                )),
-                    Id=1,
-                },
-                new MedicalTestResult()
-                {
-                    Id=2,
-                    Descritpion="Wyniki podstawowych badań krwi",
-                    MedicalService=MedicalServices[7],
-                    PdfDocument= Properties.Resources.badania_krwi,// new PdfSharpCore.Pdf.PdfDocument( new MemoryStream( Properties.Resources.badania_krwi                ))
-                },
-                new MedicalTestResult()
-                {
-                    Id=3,
-                    Descritpion="Wyniki badań cholesterolu",
-                    MedicalService=MedicalServices[50],
-                    PdfDocument=Properties.Resources.cholesterol,//  new PdfSharpCore.Pdf.PdfDocument( new MemoryStream( Properties.Resources.cholesterol ))
-                },
-                new MedicalTestResult()
-                {
-                    Id=4,
-                    Descritpion="Wyniki ekg serca",
-                    MedicalService=MedicalServices[0],
-                    PdfDocument=Properties.Resources.ekg,//  new PdfSharpCore.Pdf.PdfDocument( new MemoryStream( Properties.Resources.ekg))
-                },
-                new MedicalTestResult()
-                {
-                    Id=5,
-                    Descritpion="RTG nadgarstka z trzech stron",
-                    MedicalService=MedicalServices[86],//wybrać ekg serca
-                    PdfDocument=Properties.Resources.ekg,//new PdfSharpCore.Pdf.PdfDocument(new MemoryStream(Properties.Resources.ekg)),
-                }
-
-            };
-
-            List<Core.Models.Recommendation> recommendations = new List<Recommendation>()
-            {
-                new Recommendation()
-                {
-                    Id=2,
-                    Title="Chroniczne zmęczenie, tycie, badania kontrolne",
-                    Description="Proszę wdrożyć dietę nisko-tłuszczową o nisko-cukrową oraz wykonać zlecone badania krwii i moczu"
-                },
-
-                new Recommendation()
-                {
-                    Id=1,
-                    Title="Cukrzyca - podejrzenie",
-                    Description="Proszę ograniczyć spożywanie słodkich napojów, słodyczy. Proszę zrobić badanie krwi.",
-                },
-                new Recommendation()
-                {
-                    Id=3,
-                    Title="Podejrzenie miażdzycy i wysokiego cholesterolu",
-                    Description="Proszę wdrożyć niskotłuszczową dietę. Wysokie ciśnienie 160/100, podejrzenie miażdzycy oraz podwyższonego cholesterolu."
-                },
-                new Recommendation()
-                {
-                    Id=4,
-                    Title="Szybkie męczenie u wysportowanej osoby",
-                    Description="Proszę unikać w najblizszym czasie dużego wysiłku oraz wykonać badanie ekg"
-                },
-                new Recommendation()
-                {
-                    Id=5,
-                    Title="Zmiany skórne typowe dla łuszczycy",
-                    Description="Proszę stosować belosalic na zmiany skórne."
-                },
-
-            };
-            List<MedicalReferral> referrals = new List<MedicalReferral>()
-            {
-                new MedicalReferral()
-                {
-                    Id=1,
-                    IssueDate=now.AddDays(-15),
-                    ExpireDate=now.AddDays(-15).AddMonths(3),
-                    IssuedBy=MedicalWorkers.ElementAt(1),
-                    IssuedTo=patient,
-                    PrimaryMedicalService=PrimaryMedicalServices[7],
-                    MinorMedicalService=MedicalServices[0],
-                    //VisitSummary=visitSummaries.ElementAt(0)
-                },
-                new MedicalReferral()
-                {
-                    Id=2,
-                    IssueDate=now.AddDays(-18),
-                    ExpireDate=now.AddDays(-15).AddMonths(3),
-                    IssuedBy=MedicalWorkers.ElementAt(2),
-                    IssuedTo=patient,
-                    PrimaryMedicalService=PrimaryMedicalServices[7],
-                    MinorMedicalService=MedicalServices[1],
-                    //VisitSummary=visitSummaries.ElementAt(1)
-                },
-                new MedicalReferral()
-                {
-                    Id=3,
-                    IssueDate=now.AddDays(-20),
-                    ExpireDate=now.AddDays(-15).AddMonths(3),
-                    IssuedBy=MedicalWorkers.ElementAt(3),
-                    IssuedTo=patient,
-                    PrimaryMedicalService=PrimaryMedicalServices[0],
-                    MinorMedicalService=MedicalServices[3],
-                    //VisitSummary=visitSummaries.ElementAt(2)
-                },
-                new MedicalReferral()
-                {
-                    Id=4,
-                    IssueDate=now.AddDays(-21),
-                    ExpireDate=now.AddDays(-15).AddMonths(3),
-                    IssuedBy=MedicalWorkers.ElementAt(4),
-                    IssuedTo=patient,
-                    PrimaryMedicalService=PrimaryMedicalServices[0],
-                    MinorMedicalService=MedicalServices[4],
-                    //VisitSummary=visitSummaries.ElementAt(4)
-                },
-                new MedicalReferral()
-                {
-                    Id=5,
-                    IssueDate=now.AddDays(-22),
-                    ExpireDate=now.AddDays(-15).AddMonths(3),
-                    IssuedBy=MedicalWorkers.ElementAt(26),
-                    IssuedTo=patient,
-                    PrimaryMedicalService=PrimaryMedicalServices[32],
-                },
-                new MedicalReferral()
-                {
-                    Id=6,
-                    IssueDate=now.AddDays(-23),
-                    ExpireDate=now.AddDays(-15).AddMonths(3),
-                    IssuedBy=MedicalWorkers.ElementAt(5),
-                    IssuedTo=patient,
-                    PrimaryMedicalService=PrimaryMedicalServices[23],
-                    //VisitSummary=visitSummaries.ElementAt(6)
-                },
-                new MedicalReferral()
-                {
-                    Id=7,
-                    IssueDate=now.AddDays(-24),
-                    ExpireDate=now.AddDays(-15).AddMonths(3),
-                    IssuedBy=MedicalWorkers.ElementAt(26),
-                    IssuedTo=patient,
-                    PrimaryMedicalService=PrimaryMedicalServices[33],
-                    //VisitSummary=visitSummaries.ElementAt(7)
-                },
-                new MedicalReferral()
-                {
-                    Id=8,
-                    IssueDate=now.AddDays(-24),
-                    ExpireDate=now.AddDays(-15).AddMonths(3),
-                    IssuedBy=MedicalWorkers.ElementAt(26),
-                    IssuedTo=patient,
-                    PrimaryMedicalService=PrimaryMedicalServices[34],
-                    MinorMedicalService=MedicalServices[7],
-                    //VisitSummary=visitSummaries.ElementAt(7)
-                },
-                new MedicalReferral()
-                {
-                    Id=9,
-                    IssueDate=now.AddDays(-24),
-                    ExpireDate=now.AddDays(-15).AddMonths(3),
-                    IssuedBy=MedicalWorkers.ElementAt(26),
-                    IssuedTo=patient,
-                    PrimaryMedicalService=PrimaryMedicalServices[34],
-                    MinorMedicalService=MedicalServices[8],
-                    //VisitSummary=visitSummaries.ElementAt(7)
-                },
-                new MedicalReferral()
-                {
-                    Id=10,
-                    IssueDate=now.AddDays(-24),
-                    ExpireDate=now.AddDays(-15).AddMonths(3),
-                    IssuedBy=MedicalWorkers.ElementAt(26),
-                    IssuedTo=patient,
-                    PrimaryMedicalService=PrimaryMedicalServices[34],
-                    MinorMedicalService=MedicalServices[9],
-                    //VisitSummary=visitSummaries.ElementAt(7)
-                },
-
-                //new ExaminationReferral()
-                //{
-                //    Id=8,
-                //    IssueDate=now.AddDays(-28),
-                //    ExpireDate=now.AddDays(-15).AddMonths(3),
-                //    IssuedBy=MedicalWorkers.ElementAt(10),
-                //    IssuedTo=patient,
-                //    MedicalService=MedicalServices[8],
-                //    //VisitSummary=visitSummaries.ElementAt(9)
-
-                //},
-                //new ExaminationReferral()
-                //{
-                //    Id=9,
-                //    IssueDate=now.AddDays(0),
-                //    ExpireDate=now.AddDays(-15).AddMonths(3),
-                //    IssuedBy=MedicalWorkers.ElementAt(10),
-                //    IssuedTo=patient,
-                //    //MedicalService=MedicalServices[10],
-
-                //},
-                //new ExaminationReferral()
-                //{
-                //    Id=10,
-                //    IssueDate=now.AddDays(-2),
-                //    ExpireDate=now.AddDays(-2).AddMonths(3),
-                //    IssuedBy=MedicalWorkers.ElementAt(10),
-                //    IssuedTo=patient,
-                //    //MedicalService=MedicalServices[10],
-                //},
-            };
+            List<MedicalTestResult> medicalTestResults = GetSomeMedicalTestResults();
+            List<Recommendation> recommendations = GetSomeRecommendations();
+            List<MedicalReferral> referrals = GetDummyMedicalReferrals(patient, now);
 
             List<Visit> patientHistoricalVisits = new List<Visit>()
             {
@@ -3656,6 +3869,235 @@ namespace Asklepios.Data.InMemoryContexts
 
             return patient;
         }
+
+        private static List<MedicalReferral> GetDummyMedicalReferrals(Patient patient, DateTimeOffset now)
+        {
+            List<MedicalReferral> referrals = new List<MedicalReferral>()
+            {
+                new MedicalReferral()
+                {
+                    Id=1,
+                    IssueDate=now.AddDays(-15),
+                    ExpireDate=now.AddDays(-15).AddMonths(3),
+                    IssuedBy=MedicalWorkers.ElementAt(1),
+                    IssuedTo=patient,
+                    PrimaryMedicalService=PrimaryMedicalServices[7],
+                    MinorMedicalService=MedicalServices[0],
+                    //VisitSummary=visitSummaries.ElementAt(0)
+                },
+                new MedicalReferral()
+                {
+                    Id=2,
+                    IssueDate=now.AddDays(-18),
+                    ExpireDate=now.AddDays(-15).AddMonths(3),
+                    IssuedBy=MedicalWorkers.ElementAt(2),
+                    IssuedTo=patient,
+                    PrimaryMedicalService=PrimaryMedicalServices[7],
+                    MinorMedicalService=MedicalServices[1],
+                    //VisitSummary=visitSummaries.ElementAt(1)
+                },
+                new MedicalReferral()
+                {
+                    Id=3,
+                    IssueDate=now.AddDays(-20),
+                    ExpireDate=now.AddDays(-15).AddMonths(3),
+                    IssuedBy=MedicalWorkers.ElementAt(3),
+                    IssuedTo=patient,
+                    PrimaryMedicalService=PrimaryMedicalServices[0],
+                    MinorMedicalService=MedicalServices[3],
+                    //VisitSummary=visitSummaries.ElementAt(2)
+                },
+                new MedicalReferral()
+                {
+                    Id=4,
+                    IssueDate=now.AddDays(-21),
+                    ExpireDate=now.AddDays(-15).AddMonths(3),
+                    IssuedBy=MedicalWorkers.ElementAt(4),
+                    IssuedTo=patient,
+                    PrimaryMedicalService=PrimaryMedicalServices[0],
+                    MinorMedicalService=MedicalServices[4],
+                    //VisitSummary=visitSummaries.ElementAt(4)
+                },
+                new MedicalReferral()
+                {
+                    Id=5,
+                    IssueDate=now.AddDays(-22),
+                    ExpireDate=now.AddDays(-15).AddMonths(3),
+                    IssuedBy=MedicalWorkers.ElementAt(26),
+                    IssuedTo=patient,
+                    PrimaryMedicalService=PrimaryMedicalServices[32],
+                },
+                new MedicalReferral()
+                {
+                    Id=6,
+                    IssueDate=now.AddDays(-23),
+                    ExpireDate=now.AddDays(-15).AddMonths(3),
+                    IssuedBy=MedicalWorkers.ElementAt(5),
+                    IssuedTo=patient,
+                    PrimaryMedicalService=PrimaryMedicalServices[23],
+                    //VisitSummary=visitSummaries.ElementAt(6)
+                },
+                new MedicalReferral()
+                {
+                    Id=7,
+                    IssueDate=now.AddDays(-24),
+                    ExpireDate=now.AddDays(-15).AddMonths(3),
+                    IssuedBy=MedicalWorkers.ElementAt(26),
+                    IssuedTo=patient,
+                    PrimaryMedicalService=PrimaryMedicalServices[33],
+                    //VisitSummary=visitSummaries.ElementAt(7)
+                },
+                new MedicalReferral()
+                {
+                    Id=8,
+                    IssueDate=now.AddDays(-24),
+                    ExpireDate=now.AddDays(-15).AddMonths(3),
+                    IssuedBy=MedicalWorkers.ElementAt(26),
+                    IssuedTo=patient,
+                    PrimaryMedicalService=PrimaryMedicalServices[34],
+                    MinorMedicalService=MedicalServices[7],
+                    //VisitSummary=visitSummaries.ElementAt(7)
+                },
+                new MedicalReferral()
+                {
+                    Id=9,
+                    IssueDate=now.AddDays(-24),
+                    ExpireDate=now.AddDays(-15).AddMonths(3),
+                    IssuedBy=MedicalWorkers.ElementAt(26),
+                    IssuedTo=patient,
+                    PrimaryMedicalService=PrimaryMedicalServices[34],
+                    MinorMedicalService=MedicalServices[8],
+                    //VisitSummary=visitSummaries.ElementAt(7)
+                },
+                new MedicalReferral()
+                {
+                    Id=10,
+                    IssueDate=now.AddDays(-24),
+                    ExpireDate=now.AddDays(-15).AddMonths(3),
+                    IssuedBy=MedicalWorkers.ElementAt(26),
+                    IssuedTo=patient,
+                    PrimaryMedicalService=PrimaryMedicalServices[34],
+                    MinorMedicalService=MedicalServices[9],
+                    //VisitSummary=visitSummaries.ElementAt(7)
+                },
+
+                //new ExaminationReferral()
+                //{
+                //    Id=8,
+                //    IssueDate=now.AddDays(-28),
+                //    ExpireDate=now.AddDays(-15).AddMonths(3),
+                //    IssuedBy=MedicalWorkers.ElementAt(10),
+                //    IssuedTo=patient,
+                //    MedicalService=MedicalServices[8],
+                //    //VisitSummary=visitSummaries.ElementAt(9)
+
+                //},
+                //new ExaminationReferral()
+                //{
+                //    Id=9,
+                //    IssueDate=now.AddDays(0),
+                //    ExpireDate=now.AddDays(-15).AddMonths(3),
+                //    IssuedBy=MedicalWorkers.ElementAt(10),
+                //    IssuedTo=patient,
+                //    //MedicalService=MedicalServices[10],
+
+                //},
+                //new ExaminationReferral()
+                //{
+                //    Id=10,
+                //    IssueDate=now.AddDays(-2),
+                //    ExpireDate=now.AddDays(-2).AddMonths(3),
+                //    IssuedBy=MedicalWorkers.ElementAt(10),
+                //    IssuedTo=patient,
+                //    //MedicalService=MedicalServices[10],
+                //},
+            };
+            return referrals;
+        }
+
+        private static List<Recommendation> GetSomeRecommendations()
+        {
+            return new List<Recommendation>()
+            {
+                new Recommendation()
+                {
+                    Id=2,
+                    Title="Chroniczne zmęczenie, tycie, badania kontrolne",
+                    Description="Proszę wdrożyć dietę nisko-tłuszczową o nisko-cukrową oraz wykonać zlecone badania krwii i moczu"
+                },
+
+                new Recommendation()
+                {
+                    Id=1,
+                    Title="Cukrzyca - podejrzenie",
+                    Description="Proszę ograniczyć spożywanie słodkich napojów, słodyczy. Proszę zrobić badanie krwi.",
+                },
+                new Recommendation()
+                {
+                    Id=3,
+                    Title="Podejrzenie miażdzycy i wysokiego cholesterolu",
+                    Description="Proszę wdrożyć niskotłuszczową dietę. Wysokie ciśnienie 160/100, podejrzenie miażdzycy oraz podwyższonego cholesterolu."
+                },
+                new Recommendation()
+                {
+                    Id=4,
+                    Title="Szybkie męczenie u wysportowanej osoby",
+                    Description="Proszę unikać w najblizszym czasie dużego wysiłku oraz wykonać badanie ekg"
+                },
+                new Recommendation()
+                {
+                    Id=5,
+                    Title="Zmiany skórne typowe dla łuszczycy",
+                    Description="Proszę stosować belosalic na zmiany skórne."
+                },
+
+            };
+        }
+
+        private static List<MedicalTestResult> GetSomeMedicalTestResults()
+        {
+            List<MedicalTestResult> medicalTestResults = new List<MedicalTestResult>()
+            {
+                new MedicalTestResult()
+                {
+                    Descritpion="Wyniki rozszerzonych badań krwi",
+                    MedicalService=MedicalServices[8],
+                    PdfDocument= Properties.Resources.Badania_krwi_i_moczu                ,  //new PdfSharpCore.Pdf.PdfDocument( new MemoryStream( Properties.Resources.Badania_krwi_i_moczu                )),
+                    Id=1,
+                },
+                new MedicalTestResult()
+                {
+                    Id=2,
+                    Descritpion="Wyniki podstawowych badań krwi",
+                    MedicalService=MedicalServices[7],
+                    PdfDocument= Properties.Resources.badania_krwi,// new PdfSharpCore.Pdf.PdfDocument( new MemoryStream( Properties.Resources.badania_krwi                ))
+                },
+                new MedicalTestResult()
+                {
+                    Id=3,
+                    Descritpion="Wyniki badań cholesterolu",
+                    MedicalService=MedicalServices[50],
+                    PdfDocument=Properties.Resources.cholesterol,//  new PdfSharpCore.Pdf.PdfDocument( new MemoryStream( Properties.Resources.cholesterol ))
+                },
+                new MedicalTestResult()
+                {
+                    Id=4,
+                    Descritpion="Wyniki ekg serca",
+                    MedicalService=MedicalServices[0],
+                    PdfDocument=Properties.Resources.ekg,//  new PdfSharpCore.Pdf.PdfDocument( new MemoryStream( Properties.Resources.ekg))
+                },
+                new MedicalTestResult()
+                {
+                    Id=5,
+                    Descritpion="RTG nadgarstka z trzech stron",
+                    MedicalService=MedicalServices[86],//wybrać ekg serca
+                    PdfDocument=Properties.Resources.ekg,//new PdfSharpCore.Pdf.PdfDocument(new MemoryStream(Properties.Resources.ekg)),
+                }
+
+            };
+            return medicalTestResults;
+        }
+
         //        VisitSummary="Pacjent skarży się na swędzenie skóry, mam lekką nadwagę, bywa śpiący po większym posiłku. W rodzinie są cukrzycy. Podejrzenie cykrzycy, zlecone badania"
 
         public static IEnumerable<MedicalService> GetMedicalServices()

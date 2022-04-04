@@ -8,18 +8,21 @@ namespace Asklepios.Web.Areas.MedicalWorkerArea.Models
 {
     public class HistoricalVisitsViewModel
     {
-        public List<Visit> HistoricalVisits { get; set; }
-        //public List<Visit> 
-        public  List<Visit> ForthcomingVisits(int number)
+        public MedicalWorker MedicalWorker { get; set; }
+
+
+        public HistoricalVisitsViewModel(MedicalWorker medicalWorker)
         {
-            if (HistoricalVisits.Count<number)
+            MedicalWorker = medicalWorker;
+        }
+
+        public List<Visit> HistoricalVisits 
+        {
+            get
             {
-                return HistoricalVisits.OrderBy(c => c.DateTimeSince).ToList();
+                return MedicalWorker.PastVisits;
             }
-            else
-            {
-                return HistoricalVisits.OrderBy(c => c.DateTimeSince).Take(number).ToList();
-            }
+            
         }
         
 
