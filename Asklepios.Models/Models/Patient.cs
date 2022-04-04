@@ -108,7 +108,7 @@ namespace Asklepios.Core.Models
         {
             get
             {
-                List<Prescription> prescs = HistoricalVisits?.Where(c => c.Prescription!=null).Select(c=>c.Prescription).ToList();
+                List<Prescription>? prescs = HistoricalVisits?.Where(c => c.Prescription!=null).Select(c=>c.Prescription).ToList();
                 //List<Prescription> prescs = HistoricalVisits.Where(c => c.VisitSummary?.Prescription != null).Select(c => c.VisitSummary.Prescription).ToList();
                 return prescs;
             }          

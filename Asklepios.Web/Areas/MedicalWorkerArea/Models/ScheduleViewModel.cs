@@ -8,18 +8,22 @@ namespace Asklepios.Web.Areas.MedicalWorkerArea.Models
 {
     public class ScheduleViewModel
     {
-        public List<Visit> AllForthcomingVisits { get; set; }
-        //public List<Visit> 
+        public MedicalWorker MedicalWorker { get; set; }
+        //public List<Visit> AllForthcomingVisits { get; set; }
         public  List<Visit> ForthcomingVisits(int number)
         {
-            if (AllForthcomingVisits.Count<number)
+            if (MedicalWorker.FutureVisits.Count<number)
             {
-                return AllForthcomingVisits.OrderBy(c => c.DateTimeSince).ToList();
+                return MedicalWorker.FutureVisits.OrderBy(c => c.DateTimeSince).ToList();
             }
             else
             {
-                return AllForthcomingVisits.OrderBy(c => c.DateTimeSince).Take(number).ToList();
+                return MedicalWorker.FutureVisits.OrderBy(c => c.DateTimeSince).Take(number).ToList();
             }
+        }
+        public      ScheduleViewModel(MedicalWorker medicalWorker)
+        {
+            MedicalWorker = medicalWorker;
         }
         
 

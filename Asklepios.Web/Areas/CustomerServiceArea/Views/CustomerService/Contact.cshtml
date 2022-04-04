@@ -12,8 +12,8 @@
             </select>*@
             @Html.DropDownListFor(a => a.Subject, new[]
 {
-        new SelectListItem() {Text = "Zgłoszenie błędu na portalu pracownika"},
-        new SelectListItem() {Text = "Propozycja usprawnień portalu pracownika" },
+        new SelectListItem() {Text = "Zgłoszenie błędu w module pracownika obsługi klienta"},
+        new SelectListItem() {Text = "Propozycja usprawnień w module pracownika obsługi klienta" },
         new SelectListItem() {Text = "Inne..." },
         }, "Wybierz temat...", new { @class = "form-control" })
             <span asp-validation-for="Subject" type="text" class="text-danger"></span>

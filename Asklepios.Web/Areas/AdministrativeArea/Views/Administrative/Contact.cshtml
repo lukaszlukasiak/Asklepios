@@ -8,10 +8,8 @@
             <label for="inputState">Temat</label>
             @Html.DropDownListFor(a => a.Subject, new[]
 {
-        new SelectListItem() {Text = "Zgłoszenie błędu na portalu pacjenta"},
-        new SelectListItem() {Text = "Propozycja usprawnień portalu pacjenta" },
-        new SelectListItem() {Text = "Opinia na temat usług" },
-        new SelectListItem() {Text = "Zapytanie dotyczące usług medycznych" },
+        new SelectListItem() {Text = "Zgłoszenie błędu w module administracyjnym"},
+        new SelectListItem() {Text = "Propozycja usprawnień w module administracyjnym" },
         new SelectListItem() {Text = "Inne..." },
         }, "Wybierz temat...", new { @class = "form-control" })
             <span asp-validation-for="Subject" type="text" class="text-danger"></span>

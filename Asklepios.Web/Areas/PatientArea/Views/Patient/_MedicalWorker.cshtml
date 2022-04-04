@@ -34,7 +34,7 @@
             }
         </div>
 
-        <div class="d-flex p-2 pt-3 m-auto flex-grow-1 flex-fill" style="min-width:400px;text-align:center">
+        <div class="d-flex p-2 pt-3 m-auto flex-grow-1 flex-fill ItemCellContent" style="text-align:center">
             <div class="d-flex flex-column flex-grow-1">
                 <a asp-area="PatientArea" asp-controller="Patient" asp-action="MedicalWorkerDetails" asp-route-id="@Model.MedicalWorker.Id" class="btn btn-primary btn-icon-split ">
                     <span class="icon text-white-50 left" style="text-align:left;float:left">
@@ -55,15 +55,6 @@
                     @*<input asp-for="SelectedServiceId" style="visibility:collapse; height:0px" value="@Model.Visit.PrimaryService.Id.ToString()" />*@
 
                 </form>
-
-                @*<a asp-area="PatientArea" asp-controller="Patient" asp-action="BookVisit" class="btn btn-primary btn-icon-split mt-3">
-            <span class="icon text-white-50">
-                <i class="fas fa-book"></i>
-            </span>
-            <span class="text">Zarezerwuj wizytę</span>
-        </a>*@
-                @*style="align-items: flex-start;display:block; padding-left:50px;"
-        style="text-align:left; align-content:baseline; align-items:flex-start"*@
             </div>
         </div>
     </div>

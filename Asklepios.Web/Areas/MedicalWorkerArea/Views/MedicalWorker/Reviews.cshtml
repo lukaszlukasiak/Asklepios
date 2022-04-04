@@ -1,8 +1,10 @@
-﻿@*
-    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
-*@
-@{
-}
-<h1 style="margin-top:200px;">
-    pracownik medyczny kontroler
+﻿@model Asklepios.Web.Areas.MedicalWorkerArea.Models.ReviewsViewModel
+
+<h1 style="text-align:center">
+    Recenzje
 </h1>
+
+@foreach (var loc in Model.MedicalWorker.VisitReviews)
+{
+    <partial name="_Location" model="loc" />
+}
