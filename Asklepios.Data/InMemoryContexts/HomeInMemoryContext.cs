@@ -17,6 +17,7 @@ namespace Asklepios.Data.InMemoryContexts
             {
                 PatientMockDB.SetData();
             }
+            //PatientMockDB.GetMedicalServices()
             _locations = PatientMockDB.GetAllLocations();
 
             //_locations = new List<Location>()
@@ -168,7 +169,7 @@ namespace Asklepios.Data.InMemoryContexts
         public User LogIn(User user)
         {
             List<User> users = PatientMockDB.Users;
-            users = users.Where(c => c.UserType == user.UserType).ToList();
+            users = users.Where(c => c.UserType == user.UserType)?.Where(d=>d.WorkerModuleType==user.WorkerModuleType).ToList();
             string emailAddressUpper = user.EmailAddress.ToUpper();
             User user1 = users.Where(c => c.EmailAddress.ToUpper() == emailAddressUpper).FirstOrDefault();
             if (user1==null)
