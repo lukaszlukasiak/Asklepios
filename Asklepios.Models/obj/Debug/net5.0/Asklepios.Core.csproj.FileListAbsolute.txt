@@ -22,3 +22,15 @@ C:\Users\lukas\source\repos\Asklepios8\Asklepios.Models\obj\Debug\net5.0\Asklepi
 C:\Users\lukas\source\repos\Asklepios8\Asklepios.Models\obj\Debug\net5.0\ref\Asklepios.Core.dll
 C:\Users\lukas\source\repos\Asklepios8\Asklepios.Models\obj\Debug\net5.0\Asklepios.Core.pdb
 C:\Users\lukas\source\repos\Asklepios8\Asklepios.Models\obj\Debug\net5.0\Asklepios.Core.csproj.AssemblyReference.cache
+C:\Users\Lukasz\source\repos\Asklepios2\Asklepios.Models\obj\Debug\net5.0\Asklepios.Core.dll
+C:\Users\Lukasz\source\repos\Asklepios2\Asklepios.Models\obj\Debug\net5.0\ref\Asklepios.Core.dll
+C:\Users\Lukasz\source\repos\Asklepios2\Asklepios.Models\obj\Debug\net5.0\Asklepios.Core.pdb
+C:\Users\Lukasz\source\repos\Asklepios2\Asklepios.Models\bin\Debug\net5.0\Asklepios.Core.deps.json
+C:\Users\Lukasz\source\repos\Asklepios2\Asklepios.Models\bin\Debug\net5.0\Asklepios.Core.dll
+C:\Users\Lukasz\source\repos\Asklepios2\Asklepios.Models\bin\Debug\net5.0\ref\Asklepios.Core.dll
+C:\Users\Lukasz\source\repos\Asklepios2\Asklepios.Models\bin\Debug\net5.0\Asklepios.Core.pdb
+C:\Users\Lukasz\source\repos\Asklepios2\Asklepios.Models\obj\Debug\net5.0\Asklepios.Core.csproj.AssemblyReference.cache
+C:\Users\Lukasz\source\repos\Asklepios2\Asklepios.Models\obj\Debug\net5.0\Asklepios.Core.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\Lukasz\source\repos\Asklepios2\Asklepios.Models\obj\Debug\net5.0\Asklepios.Core.AssemblyInfoInputs.cache
+C:\Users\Lukasz\source\repos\Asklepios2\Asklepios.Models\obj\Debug\net5.0\Asklepios.Core.AssemblyInfo.cs
+C:\Users\Lukasz\source\repos\Asklepios2\Asklepios.Models\obj\Debug\net5.0\Asklepios.Core.csproj.CoreCompileInputs.cache
