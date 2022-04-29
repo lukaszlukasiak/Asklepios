@@ -1037,7 +1037,6 @@ C:\Users\lukas\source\repos\Asklepios8\Asklepios.Web\obj\Debug\net5.0\Razor\Area
 C:\Users\lukas\source\repos\Asklepios8\Asklepios.Web\obj\Debug\net5.0\Razor\Areas\MedicalWorkerArea\Views\MedicalWorker\Contact.cshtml.g.cs
 C:\Users\lukas\source\repos\Asklepios8\Asklepios.Web\obj\Debug\net5.0\Razor\Areas\MedicalWorkerArea\Views\MedicalWorker\CurrentVisit.cshtml.g.cs
 C:\Users\lukas\source\repos\Asklepios8\Asklepios.Web\obj\Debug\net5.0\Razor\Areas\MedicalWorkerArea\Views\MedicalWorker\Dashboard.cshtml.g.cs
-C:\Users\lukas\source\repos\Asklepios8\Asklepios.Web\obj\Debug\net5.0\Razor\Areas\MedicalWorkerArea\Views\MedicalWorker\HistoricalVisits.cshtml.g.cs
 C:\Users\lukas\source\repos\Asklepios8\Asklepios.Web\obj\Debug\net5.0\Razor\Areas\MedicalWorkerArea\Views\MedicalWorker\Locations.cshtml.g.cs
 C:\Users\lukas\source\repos\Asklepios8\Asklepios.Web\obj\Debug\net5.0\Razor\Areas\MedicalWorkerArea\Views\MedicalWorker\Reviews.cshtml.g.cs
 C:\Users\lukas\source\repos\Asklepios8\Asklepios.Web\obj\Debug\net5.0\Razor\Areas\MedicalWorkerArea\Views\MedicalWorker\_HistoricalVisit.cshtml.g.cs
@@ -1620,3 +1619,9 @@ C:\Users\Lukasz\source\repos\Asklepios2\Asklepios.Web\obj\Debug\net5.0\Asklepios
 C:\Users\Lukasz\source\repos\Asklepios2\Asklepios.Web\obj\Debug\net5.0\Asklepios.Web.Views.pdb
 C:\Users\Lukasz\source\repos\Asklepios2\Asklepios.Web\obj\Debug\net5.0\Asklepios.Web.csproj.CopyComplete
 C:\Users\Lukasz\source\repos\Asklepios2\Asklepios.Web\obj\Debug\net5.0\Asklepios.Web.genruntimeconfig.cache
+C:\Users\lukas\source\repos\Asklepios8\Asklepios.Web\obj\Debug\net5.0\Razor\Areas\MedicalWorkerArea\Views\MedicalWorker\History.cshtml.g.cs
+C:\Users\lukas\source\repos\Asklepios8\Asklepios.Web\obj\Debug\net5.0\Razor\Areas\MedicalWorkerArea\Views\MedicalWorker\DashboardVisitDetails.cshtml.g.cs
+C:\Users\lukas\source\repos\Asklepios8\Asklepios.Web\obj\Debug\net5.0\Razor\Areas\MedicalWorkerArea\Views\MedicalWorker\PatientDetails.cshtml.g.cs
+C:\Users\lukas\source\repos\Asklepios8\Asklepios.Web\obj\Debug\net5.0\Razor\Areas\MedicalWorkerArea\Views\MedicalWorker\VisitDetails.cshtml.g.cs
+C:\Users\lukas\source\repos\Asklepios8\Asklepios.Web\obj\Debug\net5.0\Razor\Areas\MedicalWorkerArea\Views\MedicalWorker\_Medicine.cshtml.g.cs
+C:\Users\lukas\source\repos\Asklepios8\Asklepios.Web\obj\Debug\net5.0\Razor\Areas\MedicalWorkerArea\Views\MedicalWorker\MedicalWorkerDetails.cshtml.g.cs

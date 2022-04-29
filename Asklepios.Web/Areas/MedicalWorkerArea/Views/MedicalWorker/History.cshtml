@@ -1,0 +1,31 @@
+﻿@model Asklepios.Web.Areas.MedicalWorkerArea.Models.HistoricalVisitsViewModel
+@{
+    ViewData["Title"] = "View";
+}
+
+<h1 style="text-align:center">
+    Poprzednie konsultacje/badania
+</h1>
+
+@{
+    List<Visit> historicalVisits = Model.HistoricalVisits;
+
+    if (historicalVisits.Count > 0)
+    {
+
+        for (int i = 0; i < historicalVisits.Count; i++)
+        {
+            Visit visit = historicalVisits[i];
+            //Asklepios.Web.Areas.PatientArea.Models.VisitViewModel model = new Asklepios.Web.Areas.PatientArea.Models.VisitViewModel();
+            //model.Visit = visit;
+            <partial name="_HistoricalVisit" model="visit" />
+
+        }
+    }
+    else
+    {
+        <h3>Nie przeprowadziłeś jeszcze żadnej wizyty...</h3>
+    }
+
+
+}

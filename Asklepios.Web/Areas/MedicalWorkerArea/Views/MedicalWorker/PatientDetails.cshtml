@@ -1,0 +1,134 @@
+﻿@model Asklepios.Core.Models.Patient
+@{
+    //SelectList medicalPackagesList = new SelectList(Model.MedicalPackages, "Id", "Name");
+    //SelectList nfzUnits = new SelectList(Model.NFZUnits, "Id", "Description");
+    //Model.Person.HasPolishCitizenship = true;
+
+    //Asklepios.Web.Areas.AdministrativeArea.Models.ViewMode editViewMode = Asklepios.Web.Areas.AdministrativeArea.Models.ViewMode.Edit;
+    //Asklepios.Web.Areas.AdministrativeArea.Models.ViewMode removeViewMode = Asklepios.Web.Areas.AdministrativeArea.Models.ViewMode.Remove;
+}
+<div class="d-flex flex-column">
+    <div class="d-flex flex-column align-content-around  m-2">
+
+
+        <div class="d-flex flex-fill  justify-content-center mt-2" style="text-align:center">
+            <img src="@Model.Person.ImageSource" class="img-fluid" style="display: block; max-height:300px;
+        border-radius: 6px; ">
+        </div>
+    </div>
+
+    <div class="form-group d-flex  flex-wrap">
+        @*<span id="MessageSpan" asp-validation-for="User.UserName" class="text-danger"></span>*@
+
+        @*<label asp-for="User.EmailAddress" class="control-label"></label>
+            <input asp-for="User.EmailAddress" class="form-control mb-2" readonly />*@
+
+        @*<label asp-for="User.Password" class="control-label"></label>
+            <input asp-for="User.Password" class="form-control mb-2" readonly />*@
+        <div class="d-flex flex-fill align-content-xl-around form-control border-info alert-info m-2" style="width:400px">
+            <label asp-for="Person.Name" class="control-label"></label>
+            <span class="flex-grow-1 text-right">@Model.Person.Name</span>
+
+        </div>
+        <div class="d-flex flex-fill align-content-xl-around form-control border-info alert-info m-2" style="width:400px">
+            <label asp-for="Person.Surname" class="control-label"></label>
+            <span class="flex-grow-1 text-right">@Model.Person.Surname</span>
+
+        </div>
+        <div class="d-flex flex-fill align-content-xl-around form-control border-info alert-info m-2" style="width:400px">
+            <label asp-for="Person.Gender" class="control-label"></label>
+            <span class="flex-grow-1 text-right">@Model.Person.Gender.GetDescription()</span>
+
+        </div>
+        <div class="d-flex flex-fill align-content-xl-around form-control border-info alert-info m-2" style="width:400px">
+            <label asp-for="Person.DefaultAglomeration" class="control-label"></label>
+            <span class="flex-grow-1 text-right">@Model.Person.DefaultAglomeration</span>
+
+        </div>
+        <div class="d-flex flex-fill align-content-xl-around form-control border-info alert-info m-2" style="width:400px">
+            <label asp-for="Person.PhoneNumber" class="control-label"></label>
+            <span class="flex-grow-1 text-right">@Model.Person.PhoneNumber</span>
+
+        </div>
+        <div class="d-flex flex-fill align-content-xl-around form-control border-info alert-info m-2" style="width:400px">
+            <label asp-for="Person.BirthDate" class="control-label"></label>
+            <span class="flex-grow-1 text-right">@Model.Person.BirthDate.Value.Date.ToShortDateString()</span>
+
+        </div>
+        <div class="d-flex flex-fill align-content-xl-around form-control border-info alert-info m-2" style="width:400px">
+            <label asp-for="Person.PESEL" class="control-label"></label>
+            <span class="flex-grow-1 text-right">@Model.Person.PESEL</span>
+
+        </div>
+        <div class="d-flex flex-fill align-content-xl-around form-control border-info alert-info m-2" style="width:400px">
+            <label asp-for="Person.PassportNumber" class="control-label"></label>
+            <span class="flex-grow-1 text-right">@Model.Person.PassportNumber</span>
+
+        </div>
+        <div class="d-flex flex-fill align-content-xl-around form-control border-info alert-info m-2" style="width:400px">
+            <label asp-for="Person.PassportCode" class="control-label"></label>
+            <span class="flex-grow-1 text-right">@Model.Person.PassportCode</span>
+
+        </div>
+        <div class="d-flex flex-fill align-content-xl-around form-control border-info alert-info m-2" style="width:400px">
+            <label asp-for="Person.BirthDate" class="control-label"></label>
+            <span class="flex-grow-1 text-right">@Model.Person.BirthDate</span>
+
+        </div>
+        <div class="d-flex flex-fill align-content-xl-around form-control border-info alert-info m-2" style="width:400px">
+            <label asp-for="NFZUnit" class="control-label"></label>
+            <span class="flex-grow-1 text-right">@Model.NFZUnit.Description</span>
+
+        </div>
+        <div class="d-flex flex-fill align-content-xl-around form-control border-info alert-info m-2" style="width:400px">
+            <label asp-for="MedicalPackage" class="control-label"></label>
+            <span class="flex-grow-1 text-right">@Model.MedicalPackage.Name</span>
+
+        </div>
+    </div>
+
+    @{
+        if (Model.TestsResults != null)
+        {
+            <div>
+                Wyniki badań
+            </div>
+            foreach (var item in Model.TestsResults)
+            {
+
+            }
+
+        }
+    }
+    @{
+        if (Model.MedicalReferrals != null)
+        {
+            <div>
+                Skierowania
+            </div>
+            foreach (var item in Model.MedicalReferrals)
+            {
+
+            }
+
+        }
+    }
+    @{
+        if (Model.HistoricalVisits != null)
+        {
+            <div>
+                Wizyty
+            </div>
+            foreach (var item in Model.HistoricalVisits)
+            {
+
+            }
+
+        }
+    }
+
+
+</div>
+<script>
+    $('#MessageSpan').delay(5000).fadeOut(300);
+</script>

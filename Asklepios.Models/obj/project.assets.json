@@ -2,11 +2,11 @@
   "version": 3,
   "targets": {
     "net5.0": {
-      "Microsoft.AspNetCore.Http.Features/5.0.13": {
+      "Microsoft.AspNetCore.Http.Features/5.0.16": {
         "type": "package",
         "dependencies": {
           "Microsoft.Extensions.Primitives": "5.0.1",
-          "System.IO.Pipelines": "5.0.1"
+          "System.IO.Pipelines": "5.0.2"
         },
         "compile": {
           "lib/net5.0/Microsoft.AspNetCore.Http.Features.dll": {}
@@ -214,7 +214,7 @@
           "lib/net5.0/System.Diagnostics.DiagnosticSource.dll": {}
         }
       },
-      "System.IO.Pipelines/5.0.1": {
+      "System.IO.Pipelines/5.0.2": {
         "type": "package",
         "compile": {
           "ref/netcoreapp2.0/System.IO.Pipelines.dll": {}
@@ -244,10 +244,10 @@
     }
   },
   "libraries": {
-    "Microsoft.AspNetCore.Http.Features/5.0.13": {
-      "sha512": "IrvvGsGxUTahPCLEI3CoezvsCLGhK9XgY8p2Pns+X/AHK+vskXYdxNlE7LBXeYOmpfEhqd0CFwK/BzjYxvhKdQ==",
+    "Microsoft.AspNetCore.Http.Features/5.0.16": {
+      "sha512": "1QU3LxQr9F5bfmfakJ9FcAG/sOHIA3WZXIQviN+QDP1TsrWzcZ34CLO/IjauLJtO6lYJeXObpCA40lNJfqXbGQ==",
       "type": "package",
-      "path": "microsoft.aspnetcore.http.features/5.0.13",
+      "path": "microsoft.aspnetcore.http.features/5.0.16",
       "files": [
         ".nupkg.metadata",
         ".signature.p7s",
@@ -259,7 +259,7 @@
         "lib/net5.0/Microsoft.AspNetCore.Http.Features.xml",
         "lib/netstandard2.0/Microsoft.AspNetCore.Http.Features.dll",
         "lib/netstandard2.0/Microsoft.AspNetCore.Http.Features.xml",
-        "microsoft.aspnetcore.http.features.5.0.13.nupkg.sha512",
+        "microsoft.aspnetcore.http.features.5.0.16.nupkg.sha512",
         "microsoft.aspnetcore.http.features.nuspec"
       ]
     },
@@ -676,10 +676,10 @@
         "version.txt"
       ]
     },
-    "System.IO.Pipelines/5.0.1": {
-      "sha512": "qEePWsaq9LoEEIqhbGe6D5J8c9IqQOUuTzzV6wn1POlfdLkJliZY3OlB0j0f17uMWlqZYjH7txj+2YbyrIA8Yg==",
+    "System.IO.Pipelines/5.0.2": {
+      "sha512": "Iew+dfa6FFiyvWBdRmXApixRY1db+beyutpIck4SOSe0NLM8FD/7AD54MscqVLhvfSMLHO7KadjTRT7fqxOGTA==",
       "type": "package",
-      "path": "system.io.pipelines/5.0.1",
+      "path": "system.io.pipelines/5.0.2",
       "files": [
         ".nupkg.metadata",
         ".signature.p7s",
@@ -696,7 +696,7 @@
         "lib/netstandard2.0/System.IO.Pipelines.xml",
         "ref/netcoreapp2.0/System.IO.Pipelines.dll",
         "ref/netcoreapp2.0/System.IO.Pipelines.xml",
-        "system.io.pipelines.5.0.1.nupkg.sha512",
+        "system.io.pipelines.5.0.2.nupkg.sha512",
         "system.io.pipelines.nuspec",
         "useSharedDesignerContext.txt",
         "version.txt"
@@ -777,31 +777,33 @@
   },
   "projectFileDependencyGroups": {
     "net5.0": [
-      "Microsoft.AspNetCore.Http.Features >= 5.0.13",
+      "Microsoft.AspNetCore.Http.Features >= 5.0.16",
       "Microsoft.EntityFrameworkCore >= 5.0.6",
       "PdfSharpCore >= 1.2.16"
     ]
   },
   "packageFolders": {
-    "C:\\Users\\Lukasz\\.nuget\\packages\\": {},
+    "C:\\Users\\lukas\\.nuget\\packages\\": {},
     "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages": {},
-    "C:\\Program Files (x86)\\Microsoft\\Xamarin\\NuGet\\": {}
+    "C:\\Program Files (x86)\\Microsoft\\Xamarin\\NuGet\\": {},
+    "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder": {}
   },
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "C:\\Users\\Lukasz\\source\\repos\\Asklepios2\\Asklepios.Models\\Asklepios.Core.csproj",
+      "projectUniqueName": "C:\\Users\\lukas\\source\\repos\\Asklepios8\\Asklepios.Models\\Asklepios.Core.csproj",
       "projectName": "Asklepios.Core",
-      "projectPath": "C:\\Users\\Lukasz\\source\\repos\\Asklepios2\\Asklepios.Models\\Asklepios.Core.csproj",
-      "packagesPath": "C:\\Users\\Lukasz\\.nuget\\packages\\",
-      "outputPath": "C:\\Users\\Lukasz\\source\\repos\\Asklepios2\\Asklepios.Models\\obj\\",
+      "projectPath": "C:\\Users\\lukas\\source\\repos\\Asklepios8\\Asklepios.Models\\Asklepios.Core.csproj",
+      "packagesPath": "C:\\Users\\lukas\\.nuget\\packages\\",
+      "outputPath": "C:\\Users\\lukas\\source\\repos\\Asklepios8\\Asklepios.Models\\obj\\",
       "projectStyle": "PackageReference",
       "fallbackFolders": [
         "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages",
-        "C:\\Program Files (x86)\\Microsoft\\Xamarin\\NuGet\\"
+        "C:\\Program Files (x86)\\Microsoft\\Xamarin\\NuGet\\",
+        "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder"
       ],
       "configFilePaths": [
-        "C:\\Users\\Lukasz\\AppData\\Roaming\\NuGet\\NuGet.Config",
+        "C:\\Users\\lukas\\AppData\\Roaming\\NuGet\\NuGet.Config",
         "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.FallbackLocation.config",
         "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config",
         "C:\\Program Files (x86)\\NuGet\\Config\\Xamarin.Offline.config"
@@ -831,7 +833,7 @@
         "dependencies": {
           "Microsoft.AspNetCore.Http.Features": {
             "target": "Package",
-            "version": "[5.0.13, )"
+            "version": "[5.0.16, )"
           },
           "Microsoft.EntityFrameworkCore": {
             "target": "Package",

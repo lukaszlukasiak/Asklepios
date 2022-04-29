@@ -83,7 +83,7 @@ namespace Asklepios.Data.InMemoryContexts
 
         public IEnumerable<Visit> GetHistoricalVisits()
         {
-            return PatientMockDB.GetHistoricalVisits();
+            return PatientMockDB.HistoricalVisits;
         }
 
         public Location GetLocationById(long locationId)

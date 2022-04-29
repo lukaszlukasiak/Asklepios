@@ -90,7 +90,7 @@ namespace Asklepios.Web.Areas.MedicalWorkerArea.Controllers
         {
             if (_loggedUser != null)
             {
-                Visit visit = _context.GetVisitById(CurrentVisitId);
+                Visit visit = _context.GetHistoricalVisitById(CurrentVisitId);
                 CurrentVisitViewModel model = new CurrentVisitViewModel(visit);
                 return View(model);
             }
@@ -206,6 +206,52 @@ namespace Asklepios.Web.Areas.MedicalWorkerArea.Controllers
             }
 
         }
+        [HttpGet]
+        public IActionResult VisitDetails(int id)
+        {
+            if (_loggedUser != null)
+            {
+                Visit visit = _context.GetHistoricalVisitById(id);
+                //Models.LocationsViewModel model = new Models.LocationsViewModel(locations);
+                return View(visit);
+            }
+            else
+            {
+                return NotFound();
+            }
+
+        }
+        [HttpGet]
+        public IActionResult PatientDetails(int id)
+        {
+            if (_loggedUser != null)
+            {
+                Patient patient = _context.GetPatientById(id);
+                //Models.LocationsViewModel model = new Models.LocationsViewModel(locations);
+                return View(patient);
+            }
+            else
+            {
+                return NotFound();
+            }
+
+        }
+        [HttpGet]
+        public IActionResult MedicalWorkerDetails(int id)
+        {
+            if (_loggedUser != null)
+            {
+                MedicalWorker medicalWorker = _context.GetMedicalWorkerById(id);
+                //Models.LocationsViewModel model = new Models.LocationsViewModel(locations);
+                return View(medicalWorker);
+            }
+            else
+            {
+                return NotFound();
+            }
+
+        }
+
 
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
         public IActionResult Error()

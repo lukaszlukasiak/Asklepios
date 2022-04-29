@@ -1,10 +1,10 @@
 {
   "version": 2,
-  "dgSpecHash": "EvkuVppLmLo4FQia/w+piVVgTyWfsZN1A2fE/BaKiaP8R5/cQujMi/BpbvRSiStRmiJ6bVFyDm4WE5wjJpRcuQ==",
+  "dgSpecHash": "cHJNfANYqTKoIO4ws+6MbMvDKjZ5O2/8hkzbpYBDl4d37bZ205CBURyUXJb8ic8aJ/6R4Hbtx312QL2pq5WXKw==",
   "success": true,
   "projectFilePath": "C:\\Users\\lukas\\source\\repos\\Asklepios8\\Asklepios.Models\\Asklepios.Core.csproj",
   "expectedPackageFiles": [
-    "C:\\Users\\lukas\\.nuget\\packages\\microsoft.aspnetcore.http.features\\5.0.13\\microsoft.aspnetcore.http.features.5.0.13.nupkg.sha512",
+    "C:\\Users\\lukas\\.nuget\\packages\\microsoft.aspnetcore.http.features\\5.0.16\\microsoft.aspnetcore.http.features.5.0.16.nupkg.sha512",
     "C:\\Users\\lukas\\.nuget\\packages\\microsoft.entityframeworkcore\\5.0.6\\microsoft.entityframeworkcore.5.0.6.nupkg.sha512",
     "C:\\Users\\lukas\\.nuget\\packages\\microsoft.entityframeworkcore.abstractions\\5.0.6\\microsoft.entityframeworkcore.abstractions.5.0.6.nupkg.sha512",
     "C:\\Users\\lukas\\.nuget\\packages\\microsoft.entityframeworkcore.analyzers\\5.0.6\\microsoft.entityframeworkcore.analyzers.5.0.6.nupkg.sha512",
@@ -22,7 +22,7 @@
     "C:\\Users\\lukas\\.nuget\\packages\\system.collections.immutable\\5.0.0\\system.collections.immutable.5.0.0.nupkg.sha512",
     "C:\\Users\\lukas\\.nuget\\packages\\system.componentmodel.annotations\\5.0.0\\system.componentmodel.annotations.5.0.0.nupkg.sha512",
     "C:\\Users\\lukas\\.nuget\\packages\\system.diagnostics.diagnosticsource\\5.0.1\\system.diagnostics.diagnosticsource.5.0.1.nupkg.sha512",
-    "C:\\Users\\lukas\\.nuget\\packages\\system.io.pipelines\\5.0.1\\system.io.pipelines.5.0.1.nupkg.sha512",
+    "C:\\Users\\lukas\\.nuget\\packages\\system.io.pipelines\\5.0.2\\system.io.pipelines.5.0.2.nupkg.sha512",
     "C:\\Users\\lukas\\.nuget\\packages\\system.numerics.vectors\\4.5.0\\system.numerics.vectors.4.5.0.nupkg.sha512",
     "C:\\Users\\lukas\\.nuget\\packages\\system.runtime.compilerservices.unsafe\\4.7.0\\system.runtime.compilerservices.unsafe.4.7.0.nupkg.sha512"
   ],
