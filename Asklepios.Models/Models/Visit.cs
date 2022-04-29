@@ -50,9 +50,13 @@ namespace Asklepios.Core.Models
             set
             {
                 _visitReview = value;
-                _visitReview.Reviewee = MedicalWorker;
-                _visitReview.Reviewer = Patient;
-                _visitReview.Visit = this;               
+                if (value!=null)
+                {
+                    _visitReview.Reviewee = MedicalWorker;
+                    _visitReview.Reviewer = Patient;
+                    _visitReview.Visit = this;
+
+                }
             }
         }
         public bool IsBooked
@@ -144,7 +148,7 @@ namespace Asklepios.Core.Models
             MedicalServiceDiscount discount = package.ServiceDiscounts.First(c => c.MedicalService == service);
             if (discount!=null)
             {
-                price = service.StandardPrice * discount.Discount;//package.ServicesDiscounts[service];
+                price = service.StandardPrice * (1-discount.Discount);//package.ServicesDiscounts[service];
                 return price;
             }
             else
@@ -155,7 +159,7 @@ namespace Asklepios.Core.Models
         public decimal GetTotalPrice()
         {
             MedicalPackage package = Patient.MedicalPackage;
-            decimal totalPrice = decimal.MinusOne;
+            decimal totalPrice = decimal.Zero;
 
             MedicalServiceDiscount discount = package.ServiceDiscounts.First(c => c.MedicalService == PrimaryService);
 
@@ -163,7 +167,7 @@ namespace Asklepios.Core.Models
             if (discount != null)
 
             {
-                decimal price = PrimaryService.StandardPrice * discount.Discount; //package.ServicesDiscounts[PrimaryService];
+                decimal price = PrimaryService.StandardPrice * (1 - discount.Discount); //package.ServicesDiscounts[PrimaryService];
                 totalPrice += price;
             }
 
@@ -175,7 +179,7 @@ namespace Asklepios.Core.Models
                 //if (package.ServicesDiscounts.ContainsKey(PrimaryService))
                 if (discount2 != null)
                 {
-                    decimal price = service.StandardPrice * discount2.Discount;//package.ServicesDiscounts[service];
+                    decimal price = service.StandardPrice * (1 - discount.Discount);//package.ServicesDiscounts[service];
                     totalPrice += price;
                 }
             }

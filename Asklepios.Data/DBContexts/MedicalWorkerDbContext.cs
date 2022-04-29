@@ -33,12 +33,27 @@ namespace Asklepios.Data
             throw new NotImplementedException();
         }
 
+        public Patient GetPatientById(int id)
+        {
+            throw new NotImplementedException();
+        }
+
         public List<VisitReview> GetReviewsByMedicalWorkerId(long id)
         {
             throw new NotImplementedException();
         }
 
-        public Visit GetVisitById(long currentVisitId)
+        public Visit GetAvailableVisitById(long currentVisitId)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Visit GetHistoricalVisitById(long currentVisitId)
+        {
+            throw new NotImplementedException();
+        }
+
+        public MedicalWorker GetMedicalWorkerById(int id)
         {
             throw new NotImplementedException();
         }

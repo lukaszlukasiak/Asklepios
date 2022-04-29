@@ -496,7 +496,7 @@ namespace Asklepios.Data.InMemoryContexts
                     {
                         Id = startId++,
 
-                        PrimaryService = PrimaryMedicalServices[34],
+                        PrimaryService = PrimaryMedicalServices[33],
                         DateTimeSince = start.AddDays(dayOffset).AddMinutes(minutsOffset * 15),
                         DateTimeTill = start.AddDays(dayOffset).AddMinutes(minutsOffset * 15 + 15),
                         Location = Locations.ElementAt(1),
@@ -632,7 +632,7 @@ namespace Asklepios.Data.InMemoryContexts
                     Visit visit = new Visit()
                     {
                         Id = startId++,
-                        PrimaryService = PrimaryMedicalServices[34],
+                        PrimaryService = PrimaryMedicalServices[33],
                         MedicalRoom = Locations.ElementAt(0).MedicalRooms.ElementAt(1),
                         DateTimeSince = start.AddDays(dayOffset).AddMinutes(minutsOffset * 15),
                         DateTimeTill = start.AddDays(dayOffset).AddMinutes(minutsOffset * 15 + 15),
@@ -1527,7 +1527,7 @@ namespace Asklepios.Data.InMemoryContexts
 
             foreach (Patient patient in AllPatients)
             {
-                int numberOfVisits = rnd.Next(0, 10);
+                int numberOfVisits = rnd.Next(3, 15);
 
                 for (int i = 0; i < numberOfVisits; i++)
                 {
@@ -1544,11 +1544,12 @@ namespace Asklepios.Data.InMemoryContexts
                     int medicalHistoryIndex= rnd.Next(-2, medicalHistories.Count - 1); 
                     int primaryMedicalServiceIndex= rnd.Next(0, PrimaryMedicalServices.Count - 1);
                     int recommendationIndex= rnd.Next(-4, recommendations.Count - 1);
+                    int reviewIndex = rnd.Next(-1, reviews.Count - 1);
                     TimeSpan timeSpan1 = new TimeSpan(7, 0, 0);
-                    DateTimeOffset dateTime = new DateTimeOffset(now.AddDays(daysAgo).Date, timeSpan1);
+                    DateTimeOffset dateTime = new DateTimeOffset(now.AddDays(-daysAgo).Date, timeSpan1);
 
                     TimeSpan timeSpan2 = new TimeSpan(hour, quarter * 15, 0);
-                    dateTime = new DateTimeOffset(dateTime.DateTime, timeSpan2);
+                    dateTime = dateTime.Date + timeSpan2;// +timeSpan1;
                     MedicalService medicalService = PrimaryMedicalServices[primaryMedicalServiceIndex];
                     //int minorServiceIndex = -1;
                     int minorServiceIndex =minorServiceIndex = medicalService.SubServices == null ? -1 : medicalService.SubServices.Count() - 1;
@@ -1557,6 +1558,11 @@ namespace Asklepios.Data.InMemoryContexts
                     {
                         minorServiceIndex = rnd.Next(0, medicalService.SubServices == null ? -1 : medicalService.SubServices.Count() - 1);
                         minorService = medicalService.SubServices.ElementAt(minorServiceIndex);
+                    }
+                    List<MedicalService> minorServices = null;
+                    if (minorService!=null)
+                    {
+                        new List<MedicalService>() { minorService };
                     }
 
                     Location location = null;
@@ -1589,8 +1595,12 @@ namespace Asklepios.Data.InMemoryContexts
                     {
                         visitRecommendations = new List<Recommendation>() { recommendations[recommendationIndex] };
                     }
-                    
-
+                    VisitReview review = null;
+                    if (reviewIndex>=0)
+                    {
+                        review = reviews[reviewIndex];
+                    }
+                    VisitCategory visitCategory= VisitCategories.Where(c => c.PrimaryMedicalServices.Any(d => d.Id == medicalService.Id)).FirstOrDefault();
                     Visit visit = new Visit()
                     {
                         Id = ++id,
@@ -1603,11 +1613,12 @@ namespace Asklepios.Data.InMemoryContexts
                         Prescription=prescription,
                         Recommendations= visitRecommendations,
                         PrimaryService = medicalService,
-
-                        VisitCategory = VisitCategories.Where(c=> c.PrimaryMedicalServices.Any(d => d.Id == medicalService.Id)).FirstOrDefault(),
+                        
+                        VisitCategory = visitCategory,
                         Patient=patient,
                         MedicalWorker=MedicalWorkers[medicalWorkerIndex],
-                        MinorMedicalServices= new List<MedicalService>() { minorService },
+                        MinorMedicalServices= minorServices,
+                        VisitReview=review
                     };
                     historicalVisits.Add(visit);
                 }
@@ -1994,7 +2005,7 @@ namespace Asklepios.Data.InMemoryContexts
                         Facilities=new List<string>(){"15 gabinetów ogólno-konsultacyjnych", "Gabinet zabiegowy", "2 gabinety stomatologiczne", "Gabinet higieny jamy ustnej", "Gabinet diagnostyki obrazowej"},
                         Id=4,
                         Name="Ośrodek Warszawa Targówek",
-                        Services=new List<MedicalService>(){ PrimaryMedicalServices[30],PrimaryMedicalServices[31],PrimaryMedicalServices[32],PrimaryMedicalServices[33],PrimaryMedicalServices[34],PrimaryMedicalServices[5],PrimaryMedicalServices[6],PrimaryMedicalServices[7],PrimaryMedicalServices[8] ,PrimaryMedicalServices[9],PrimaryMedicalServices[0] },
+                        Services=new List<MedicalService>(){ PrimaryMedicalServices[30],PrimaryMedicalServices[31],PrimaryMedicalServices[32],PrimaryMedicalServices[33],PrimaryMedicalServices[33],PrimaryMedicalServices[5],PrimaryMedicalServices[6],PrimaryMedicalServices[7],PrimaryMedicalServices[8] ,PrimaryMedicalServices[9],PrimaryMedicalServices[0] },
 
                         //Services=new List<string>(){"Interna", "Ginekologia", "Pediatria", "Diagnostyka obrazowa", "Stomatologia", "Higiena jamy ustnej", "Dermatologia", "Ortopedia", "Neurochirurgia"},
                         //VoivodeshipType=Core.Enums.VoivodeshipType.mazowieckie,
@@ -2073,7 +2084,7 @@ namespace Asklepios.Data.InMemoryContexts
                         Facilities=new List<string>(){"15 gabinetów ogólno-konsultacyjnych", "Gabinet zabiegowy", "2 gabinety stomatologiczne", "Gabinet higieny jamy ustnej", "Gabinet diagnostyki obrazowej"},
                         Id=8,
                         Name="Ośrodek Wrocław Szczytnicka",
-                                                Services=new List<MedicalService>(){ PrimaryMedicalServices[15],PrimaryMedicalServices[31],PrimaryMedicalServices[32],PrimaryMedicalServices[33],PrimaryMedicalServices[34],PrimaryMedicalServices[0],PrimaryMedicalServices[1],PrimaryMedicalServices[2],PrimaryMedicalServices[3] ,PrimaryMedicalServices[4],PrimaryMedicalServices[5] },
+                                                Services=new List<MedicalService>(){ PrimaryMedicalServices[15],PrimaryMedicalServices[31],PrimaryMedicalServices[32],PrimaryMedicalServices[33],PrimaryMedicalServices[0],PrimaryMedicalServices[1],PrimaryMedicalServices[2],PrimaryMedicalServices[3] ,PrimaryMedicalServices[4],PrimaryMedicalServices[5] },
 
                         //Services=new List<string>(){"Interna", "Ginekologia", "Pediatria", "Diagnostyka obrazowa", "Stomatologia", "Higiena jamy ustnej", "Dermatologia", "Ortopedia"},
                         //VoivodeshipType=Core.Enums.VoivodeshipType.pomorskie,
@@ -2956,7 +2967,7 @@ namespace Asklepios.Data.InMemoryContexts
                     IsCurrentlyHired=true,VisitReviews=visitRatings1,
                     MedicalServices=new List<MedicalService>()
                     {
-                        PrimaryMedicalServices[26],PrimaryMedicalServices[34]
+                        PrimaryMedicalServices[26],PrimaryMedicalServices[33]
                     }
 
                 },
@@ -2972,7 +2983,7 @@ namespace Asklepios.Data.InMemoryContexts
                     IsCurrentlyHired=true,VisitReviews=visitRatings1,
                     MedicalServices=new List<MedicalService>()
                     {
-                        PrimaryMedicalServices[26],PrimaryMedicalServices[34]
+                        PrimaryMedicalServices[26],PrimaryMedicalServices[33]
                     }
 
                 },
@@ -3162,7 +3173,7 @@ namespace Asklepios.Data.InMemoryContexts
                     IsCurrentlyHired=true,VisitReviews=visitRatings1,
                     MedicalServices=new List<MedicalService>()
                     {
-                        PrimaryMedicalServices[26],PrimaryMedicalServices[34]
+                        PrimaryMedicalServices[26],PrimaryMedicalServices[33]
                     }
 
                 },
@@ -3194,7 +3205,7 @@ namespace Asklepios.Data.InMemoryContexts
                     IsCurrentlyHired=true,VisitReviews=visitRatings1,
                     MedicalServices=new List<MedicalService>()
                     {
-                        PrimaryMedicalServices[34],PrimaryMedicalServices[26]
+                        PrimaryMedicalServices[33],PrimaryMedicalServices[26]
                     }
 
                 },
@@ -3274,7 +3285,7 @@ namespace Asklepios.Data.InMemoryContexts
                     IsCurrentlyHired=true,VisitReviews=visitRatings1,
                         MedicalServices=new List<MedicalService>()
                     {
-                        PrimaryMedicalServices[31],PrimaryMedicalServices[32],PrimaryMedicalServices[33]
+                        PrimaryMedicalServices[31],PrimaryMedicalServices[32],PrimaryMedicalServices[30]
                     }
 
                 },
@@ -3306,7 +3317,7 @@ namespace Asklepios.Data.InMemoryContexts
                     IsCurrentlyHired=true,VisitReviews=visitRatings1,
                     MedicalServices=new List<MedicalService>()
                     {
-                        PrimaryMedicalServices[26],PrimaryMedicalServices[34]
+                        PrimaryMedicalServices[26],PrimaryMedicalServices[33]
                     }
 
                 },
@@ -3364,7 +3375,7 @@ namespace Asklepios.Data.InMemoryContexts
                     IsCurrentlyHired=true,VisitReviews=visitRatings1,
                     MedicalServices=new List<MedicalService>()
                     {
-                        PrimaryMedicalServices[31],PrimaryMedicalServices[32],PrimaryMedicalServices[33]
+                        PrimaryMedicalServices[31],PrimaryMedicalServices[32],PrimaryMedicalServices[30]
                     }
                 },
                 new Doctor(Persons[66],"UHJKSAD51321")
@@ -3434,7 +3445,7 @@ namespace Asklepios.Data.InMemoryContexts
                     MedicalServices=new List<MedicalService>()
                     {
                         PrimaryMedicalServices[26],
-                        PrimaryMedicalServices[34]
+                        PrimaryMedicalServices[33]
                     }
                 },
                 new DentalHygienist(Persons[71],"JHDAS4564231")
@@ -3449,7 +3460,7 @@ namespace Asklepios.Data.InMemoryContexts
                     MedicalServices=new List<MedicalService>()
                     {
                         PrimaryMedicalServices[26],
-                        PrimaryMedicalServices[34]
+                        PrimaryMedicalServices[33]
                     }
                 },
                 new DentalHygienist(Persons[72],"HAISDAS465462")
@@ -3748,7 +3759,7 @@ namespace Asklepios.Data.InMemoryContexts
                 new Visit()
                 {
                     Id=8,
-                    PrimaryService=PrimaryMedicalServices[34],
+                    PrimaryService=PrimaryMedicalServices[33],
                     MinorMedicalServices=new List<MedicalService>(){ MedicalServices[7],MedicalServices[9]},
                     MedicalRoom=Locations.ElementAt(0).MedicalRooms.ElementAt(1),
                     DateTimeSince=dateTimeOffset.AddDays(-10),
@@ -3822,7 +3833,7 @@ namespace Asklepios.Data.InMemoryContexts
                 new Visit()
                 {
                     Id=11,
-                    PrimaryService=PrimaryMedicalServices[34],
+                    PrimaryService=PrimaryMedicalServices[33],
                     MinorMedicalServices=new List<MedicalService>(){ MedicalServices[14], MedicalServices[15] },
                     DateTimeSince=dateTimeOffset.AddDays(14),
                     DateTimeTill=dateTimeOffset.AddDays(14).AddMinutes(15),
@@ -3952,7 +3963,7 @@ namespace Asklepios.Data.InMemoryContexts
                     ExpireDate=now.AddDays(-15).AddMonths(3),
                     IssuedBy=MedicalWorkers.ElementAt(26),
                     IssuedTo=patient,
-                    PrimaryMedicalService=PrimaryMedicalServices[34],
+                    PrimaryMedicalService=PrimaryMedicalServices[33],
                     MinorMedicalService=MedicalServices[7],
                     //VisitSummary=visitSummaries.ElementAt(7)
                 },
@@ -3963,7 +3974,7 @@ namespace Asklepios.Data.InMemoryContexts
                     ExpireDate=now.AddDays(-15).AddMonths(3),
                     IssuedBy=MedicalWorkers.ElementAt(26),
                     IssuedTo=patient,
-                    PrimaryMedicalService=PrimaryMedicalServices[34],
+                    PrimaryMedicalService=PrimaryMedicalServices[33],
                     MinorMedicalService=MedicalServices[8],
                     //VisitSummary=visitSummaries.ElementAt(7)
                 },
@@ -3974,7 +3985,7 @@ namespace Asklepios.Data.InMemoryContexts
                     ExpireDate=now.AddDays(-15).AddMonths(3),
                     IssuedBy=MedicalWorkers.ElementAt(26),
                     IssuedTo=patient,
-                    PrimaryMedicalService=PrimaryMedicalServices[34],
+                    PrimaryMedicalService=PrimaryMedicalServices[33],
                     MinorMedicalService=MedicalServices[9],
                     //VisitSummary=visitSummaries.ElementAt(7)
                 },
@@ -4227,7 +4238,7 @@ namespace Asklepios.Data.InMemoryContexts
                 new MedicalService(){Id=1,Name="USG",Description="USG", StandardPrice=200, IsPrimaryService=true, RequireRefferal=true},
                 new MedicalService(){Id=2,Name="RTG",Description="RTG", StandardPrice=200, IsPrimaryService=true, RequireRefferal=true},
                 new MedicalService(){Id=3,Name="Rezonans magnetyczny",Description="Rezonans magnetyczny", StandardPrice=200, IsPrimaryService=true, RequireRefferal=true},
-                new MedicalService(){Id=73,Name="Medycyna pracy",Description="Medycyna pracy", StandardPrice=200, IsPrimaryService=true, RequireRefferal=true},
+                //new MedicalService(){Id=73,Name="Medycyna pracy",Description="Medycyna pracy", StandardPrice=200, IsPrimaryService=true, RequireRefferal=true},
 
                 new MedicalService(){Id=30,Name="Masaż leczniczy",Description="Masaż leczniczy", StandardPrice=300, IsPrimaryService=true, RequireRefferal=true},
                 new MedicalService(){Id=31,Name="Zajęcia rehabilitacyjne",Description="Zajęcia rehabilitacyjne", StandardPrice=300, IsPrimaryService=true, RequireRefferal=true},
@@ -4288,8 +4299,8 @@ namespace Asklepios.Data.InMemoryContexts
                 new VisitCategory() { Id = 2, CategoryName = "E-konsultacje", PrimaryMedicalServices = new List<MedicalService>(PrimaryMedicalServices.GetRange(0, 20)) { } },
                 new VisitCategory() { Id = 3, CategoryName = "Stomatologia", PrimaryMedicalServices = new List<MedicalService>(PrimaryMedicalServices.GetRange(20, 6)) { } },
                 new VisitCategory() { Id = 4, CategoryName = "Diagnostyka obrazowa ", PrimaryMedicalServices = new List<MedicalService>(PrimaryMedicalServices.GetRange(27, 3)) { } },
-                new VisitCategory() { Id = 5, CategoryName = "Fizjoterapia", PrimaryMedicalServices = new List<MedicalService>(PrimaryMedicalServices.GetRange(31, 3)) { } },
-                new VisitCategory() { Id = 6, CategoryName = "Gabinet zabiegowy", PrimaryMedicalServices = new List<MedicalService>() { PrimaryMedicalServices[26], PrimaryMedicalServices[34] } },
+                new VisitCategory() { Id = 5, CategoryName = "Fizjoterapia", PrimaryMedicalServices = new List<MedicalService>(PrimaryMedicalServices.GetRange(30, 3)) { } },
+                new VisitCategory() { Id = 6, CategoryName = "Gabinet zabiegowy", PrimaryMedicalServices = new List<MedicalService>() { PrimaryMedicalServices[26], PrimaryMedicalServices[33] } },
             };
             //categories[0].PrimaryMedicalServices.Add(MedicalServices[0]);
             return categories;
@@ -5423,7 +5434,7 @@ namespace Asklepios.Data.InMemoryContexts
 
         public static Visit GetHistoricalVisitById(long id)
         {
-            Visit visit = CurrentPatient.HistoricalVisits.Where(c => c.Id == id).FirstOrDefault();
+            Visit visit = HistoricalVisits.Where(c => c.Id == id).FirstOrDefault();
             return visit;
         }
     }

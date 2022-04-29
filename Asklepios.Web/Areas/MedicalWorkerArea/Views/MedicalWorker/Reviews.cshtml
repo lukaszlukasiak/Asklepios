@@ -3,8 +3,15 @@
 <h1 style="text-align:center">
     Recenzje
 </h1>
-
-@foreach (var loc in Model.MedicalWorker.VisitReviews)
+@if (Model.MedicalWorker.VisitReviews.Count == 0)
 {
-    <partial name="_Location" model="loc" />
+    <h3>Brak wystawionych recenzji...</h3>
+}
+else
+{
+    @foreach (var loc in Model.MedicalWorker.VisitReviews)
+    {
+        <partial name="_MedicalReview" model="loc" />
+    }
+
 }

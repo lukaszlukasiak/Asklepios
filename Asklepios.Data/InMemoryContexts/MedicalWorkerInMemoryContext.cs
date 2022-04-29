@@ -30,7 +30,7 @@ namespace Asklepios.Data.InMemoryContexts
         public MedicalWorker GetMedicalWorkerByUserId(long personId)
         {
             List<MedicalWorker> medicalWorkers = PatientMockDB.GetMedicalWorkers().ToList();
-            MedicalWorker medicalWorker = medicalWorkers.Where(c=>c.Person.Id==personId).FirstOrDefault();
+            MedicalWorker medicalWorker = medicalWorkers.Where(c => c.Person.Id == personId).FirstOrDefault();
             return medicalWorker;
         }
 
@@ -39,10 +39,16 @@ namespace Asklepios.Data.InMemoryContexts
             throw new NotImplementedException();
         }
 
+        public Patient GetPatientById(int id)
+        {
+            Patient patient = PatientMockDB.GetPatientById(id);
+            return patient;
+        }
+
         public List<VisitReview> GetReviewsByMedicalWorkerId(long id)
         {
             List<Visit> visits = GetHistoricalVisitsByMedicalWorkerId(id);
-            if (visits!=null)
+            if (visits != null)
             {
                 return visits.Where(c => c.VisitReview != null).Select(c => c.VisitReview).ToList();
             }
@@ -52,10 +58,22 @@ namespace Asklepios.Data.InMemoryContexts
             }
         }
 
-        public Visit GetVisitById(long currentVisitId)
+        public Visit GetAvailableVisitById(long currentVisitId)
         {
             Visit visit = PatientMockDB.GetAvailableVisitById(currentVisitId);
             return visit;
+        }
+        public Visit GetHistoricalVisitById(long currentVisitId)
+        {
+            Visit visit = PatientMockDB.GetHistoricalVisitById(currentVisitId);
+            return visit;
+        }
+
+        public MedicalWorker GetMedicalWorkerById(int id)
+        {
+            List<MedicalWorker> medicalWorkers = PatientMockDB.GetMedicalWorkers().ToList();
+            MedicalWorker medicalWorker = medicalWorkers.Where(c => c.Id == id).FirstOrDefault();
+            return medicalWorker;
         }
     }
 }

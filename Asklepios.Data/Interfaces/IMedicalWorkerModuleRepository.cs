@@ -11,10 +11,13 @@ namespace Asklepios.Data.Interfaces
     {
         MedicalWorker GetMedicalWorkerData();
         MedicalWorker GetMedicalWorkerByUserId(long personId);
-        Visit GetVisitById(long currentVisitId);
+        Visit GetAvailableVisitById(long currentVisitId);
         List<Visit> GetFutureVisitsByMedicalWorkerId(long id);
         List<Visit> GetHistoricalVisitsByMedicalWorkerId(long id);
         List<Location> GetLocations();
         List<VisitReview> GetReviewsByMedicalWorkerId(long id);
+        Patient GetPatientById(int id);
+        Visit GetHistoricalVisitById(long currentVisitId);
+        MedicalWorker GetMedicalWorkerById(int id);
     }
 }
