@@ -4,33 +4,56 @@
 }
 
 <h1 style="text-align:center">
-    Poprzednie konsultacje/badania
+    Nadchodzące konsultacje/badania
 </h1>
+<form class="form my-2" asp-action="Schedule" method="post">
+
+    <label asp-for="SelectedDate" class="control-label"></label>
+    <input asp-for="SelectedDate" class="form-control mb-2">
+    <span asp-validation-for="SelectedDate" class="text-danger"></span>
+
+    <div class="form-group d-flex flex-column mt-2">
+        <button id="btnSubmit" type="submit" class="btn btn-primary btn-icon-split d-flex">
+            <span class="icon text-white-50 left" style="text-align:left;float:left">
+                <i class="fas fa-search"></i>
+            </span>
+            <span class="text" style="float: left">Wyszukaj</span>
+        </button>
+    </div>
+</form>
 
 @{
-    List<Visit> historicalVisits = Model.ForthcomingVisits(10);
+    IEnumerable<IGrouping<DateTime, Visit>> futureVisits = Model.ForthcomingVisits;
 
-    if (historicalVisits.Count > 0)
+    if (futureVisits.Count() > 0)
     {
 
-        for (int i = 0; i < historicalVisits.Count; i++)
+        for (int i = 0; i < futureVisits.Count(); i++)
         {
-            Visit visit = historicalVisits[i];
-            Asklepios.Web.Areas.PatientArea.Models.VisitViewModel model = new Asklepios.Web.Areas.PatientArea.Models.VisitViewModel();
-            model.Visit = visit;
-            <partial name="_HistoricalVisit" model="model" />
+            IGrouping<DateTime, Visit> grouping = futureVisits.ElementAt(i);
+            <h4 style="text-align:center">
+                @grouping.Key.Date.Date.ToString("d")
+            </h4> //for (int i = 0; i < item.Count(); i++)
 
+            foreach (var item in grouping)
+            {
+                Visit visit = item;
+                Asklepios.Web.Areas.PatientArea.Models.VisitViewModel model = new Asklepios.Web.Areas.PatientArea.Models.VisitViewModel();
+                model.Visit = visit;
+                <partial name="_FutureVisit" model="visit" />
+
+            }
         }
     }
     else
     {
-        <h3>Nie byłeś jeszcze na żadnej wizycie u nas...</h3>
-        <a asp-area="PatientArea" asp-controller="Patient" asp-action="BookVisit" class="btn btn-primary btn-icon-split mt-3">
-            <span class="icon text-white-50">
-                <i class="fas fa-book"></i>
-            </span>
-            <span class="text">Zarezerwuj wizytę</span>
-        </a>
+        <h3>Brak zaplanowanych wizyt...</h3>
+        @*<a asp-area="PatientArea" asp-controller="Patient" asp-action="BookVisit" class="btn btn-primary btn-icon-split mt-3">
+                <span class="icon text-white-50">
+                    <i class="fas fa-book"></i>
+                </span>
+                <span class="text">Zarezerwuj wizytę</span>
+            </a>*@
     }
 
 

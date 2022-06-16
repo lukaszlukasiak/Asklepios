@@ -42,7 +42,7 @@
         </div>
         <div class="d-flex flex-fill align-content-xl-around form-control border-info alert-info m-2" style="width:400px">
             <label asp-for="Person.DefaultAglomeration" class="control-label"></label>
-            <span class="flex-grow-1 text-right">@Model.Person.DefaultAglomeration</span>
+            <span class="flex-grow-1 text-right">@Model.Person.DefaultAglomeration.Value.GetDescription()</span>
 
         </div>
         <div class="d-flex flex-fill align-content-xl-around form-control border-info alert-info m-2" style="width:400px">
@@ -52,7 +52,7 @@
         </div>
         <div class="d-flex flex-fill align-content-xl-around form-control border-info alert-info m-2" style="width:400px">
             <label asp-for="Person.BirthDate" class="control-label"></label>
-            <span class="flex-grow-1 text-right">@Model.Person.BirthDate.Value.Date.ToShortDateString()</span>
+            <span class="flex-grow-1 text-right">@Model.Person.BirthDate.Value.Date.ToString("dd.MM.yyyy")</span>
 
         </div>
         <div class="d-flex flex-fill align-content-xl-around form-control border-info alert-info m-2" style="width:400px">
@@ -63,16 +63,14 @@
         <div class="d-flex flex-fill align-content-xl-around form-control border-info alert-info m-2" style="width:400px">
             <label asp-for="Person.PassportNumber" class="control-label"></label>
             <span class="flex-grow-1 text-right">@Model.Person.PassportNumber</span>
-
         </div>
         <div class="d-flex flex-fill align-content-xl-around form-control border-info alert-info m-2" style="width:400px">
             <label asp-for="Person.PassportCode" class="control-label"></label>
             <span class="flex-grow-1 text-right">@Model.Person.PassportCode</span>
-
         </div>
         <div class="d-flex flex-fill align-content-xl-around form-control border-info alert-info m-2" style="width:400px">
-            <label asp-for="Person.BirthDate" class="control-label"></label>
-            <span class="flex-grow-1 text-right">@Model.Person.BirthDate</span>
+            <label asp-for="User.EmailAddress" class="control-label"></label>
+            <span class="flex-grow-1 text-right">@Model.User.EmailAddress</span>
 
         </div>
         <div class="d-flex flex-fill align-content-xl-around form-control border-info alert-info m-2" style="width:400px">
@@ -86,49 +84,66 @@
 
         </div>
     </div>
+</div>
 
-    @{
-        if (Model.TestsResults != null)
+@{
+    if (Model.TestsResults != null && Model.TestsResults.Count > 0)
+    {
+        <h2 class="text-center">
+            Wyniki badań
+        </h2>
+        foreach (var item in Model.TestsResults)
         {
-            <div>
-                Wyniki badań
-            </div>
-            foreach (var item in Model.TestsResults)
-            {
-
-            }
+            <partial name="_TestResult" model="item" />
 
         }
-    }
-    @{
-        if (Model.MedicalReferrals != null)
-        {
-            <div>
-                Skierowania
-            </div>
-            foreach (var item in Model.MedicalReferrals)
-            {
 
-            }
+    }
+}
+@{
+    if (Model.MedicalReferrals != null)
+    {
+        <h2 class="text-center">
+            Skierowania
+        </h2>
+        foreach (var item in Model.MedicalReferrals)
+        {
+            <partial name="_MedicalReferral" model="item" />
 
         }
+
     }
-    @{
-        if (Model.HistoricalVisits != null)
+}
+@{
+    if (Model.Prescriptions != null)
+    {
+        <h2 class="text-center">
+            Recepty
+        </h2>
+        foreach (var item in Model.Prescriptions)
         {
-            <div>
-                Wizyty
-            </div>
+            <partial name="_Prescription" model="item" />
+
+        }
+
+    }
+}
+
+@{
+    if (Model.HistoricalVisits != null)
+    {
+        <h2 class="text-center">
+            Wizyty
+            </h2>
             foreach (var item in Model.HistoricalVisits)
             {
+                <partial name="_HistoricalVisitPatient" model="item" />
 
             }
-
         }
-    }
+}
 
 
-</div>
 <script>
     $('#MessageSpan').delay(5000).fadeOut(300);
 </script>

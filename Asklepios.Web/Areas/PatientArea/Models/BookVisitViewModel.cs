@@ -34,7 +34,14 @@ namespace Asklepios.Web.Areas.PatientArea.Models
         {
             get
             {
-                return FilteredVisits.Count / ItemsPerPage;
+                if (FilteredVisits!=null)
+                {
+                    return FilteredVisits.Count / ItemsPerPage;
+                }
+                else
+                {
+                    return 0;
+                }
             }
         }
         const int ItemsPerPage = 100;

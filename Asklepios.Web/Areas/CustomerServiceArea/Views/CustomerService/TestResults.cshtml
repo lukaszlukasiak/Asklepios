@@ -6,7 +6,7 @@
     List<Asklepios.Core.Models.MedicalTestResult> results = null;
     if (Model.SelectedPatient.TestsResults != null)
     {
-        results = Model.SelectedPatient.TestsResults.Where(c => c.PdfDocument != null).ToList();
+        results = Model.SelectedPatient.TestsResults.Where(c => c.Document != null).ToList();
     }
 
     if (results!=null)

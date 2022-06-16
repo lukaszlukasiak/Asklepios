@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -46,8 +47,24 @@ namespace Asklepios.Core.Models
         public bool HasBeenUsed { get; set; }
         public MedicalWorker IssuedBy { get; set; }
         public Patient IssuedTo { get; set; }
+        [Display(Name = "Komentarz")]
+        [DataType(DataType.Text)]
+        public string Comment { get; set; }
+        public Visit _visitUsed;
+        public Visit VisitWhenUsed
+        {
+            get
+            {
+                return _visitUsed;
+            }
+            set
+            {
+                _visit = value;
+            }
+        }
+
         public Visit _visit;
-        public Visit Visit 
+        public Visit VisitWhenIssued 
         {
             get
             {

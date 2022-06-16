@@ -1,6 +1,8 @@
 ﻿using Asklepios.Core.Enums;
+using Microsoft.AspNetCore.Http;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Text;
 
@@ -11,7 +13,23 @@ namespace Asklepios.Core.Models
         public long Id { get; set; }
         public VisitCategory VisitCategory { get; set; }
         public long VisitCategoryId { get; set; }
-        public Patient Patient { get; set; }
+        public VisitStatus VisitStatus { get; set; }
+        private Patient _Patient;
+        public Patient Patient 
+        {
+            get
+            {
+                return _Patient;
+            }
+            set
+            {
+                if (value!=null)
+                {
+                    _Patient = value;
+                    VisitStatus = VisitStatus.Booked;
+                }
+            }
+        }
         public long PatientId { get; set; }
         public MedicalWorker MedicalWorker { get; set; }
         public long MedicalWorkerId { get; set; }
@@ -34,12 +52,118 @@ namespace Asklepios.Core.Models
             set
             {
                 _medicalTestResult = value;
-                _medicalTestResult.ExamDate = DateTimeOffset.Now;
+                if (_medicalTestResult!=null)
+                {
+                    _medicalTestResult.ExamDate = DateTimeOffset.Now;
+                }
             }
         }
-        public List<Recommendation> Recommendations { get; set; }
-        public Prescription Prescription { get; set; }
-        public List<MedicalReferral> ExaminationReferrals { get; set; }
+        public IFormFile ImageFile { get; set; }
+        public string ImageFilePath { get; set; }
+        public string ImageSource
+        {
+            get
+            {
+                if (ImageFile != null)
+                {
+                    if (ImageFile.Length > 0)
+                    {
+                        using (var ms = new MemoryStream())
+                        {
+                            ImageFile.CopyTo(ms);
+                            var fileBytes = ms.ToArray();
+                            string s = Convert.ToBase64String(fileBytes);
+
+
+                            return string.Format("data:image/jpg;base64,{0}", s);
+                            // act on the Base64 data
+                        }
+                    }
+
+                }
+                return ImageFilePath;
+            }
+        }
+        private List<Recommendation> _recommendations;
+        public List<Recommendation> Recommendations 
+        {
+            get
+            {
+                return _recommendations;
+            }
+            set
+            {
+                _recommendations = value;
+                if (_recommendations!=null)
+                {
+                    foreach (var item in _recommendations)
+                    {
+                        item.Visit = this;
+                    }
+                }              
+            }
+        }
+        private Prescription _prescription;
+        public Prescription Prescription 
+        { 
+            get
+            {
+                return _prescription;
+            }
+            set
+            {
+                _prescription = value;
+                if (_prescription!=null)
+                {
+                    _prescription.Visit = this;
+                }
+                
+            }
+        }
+        private MedicalReferral _usedExaminationReferral;
+        public MedicalReferral UsedExaminationReferral
+        {
+            get
+            {
+                return _usedExaminationReferral;
+            }
+            set
+            {
+                _usedExaminationReferral = value;
+                if (_usedExaminationReferral != null)
+                {
+                    foreach (var item in _examinationReferrals)
+                    {
+                        item.VisitWhenIssued = this;
+                        //item.IssuedBy = this.MedicalWorker;
+                        //item.IssuedTo = this.Patient;
+                    }
+                }
+            }
+        }
+
+
+        private List<MedicalReferral> _examinationReferrals;
+        public List<MedicalReferral> ExaminationReferrals 
+        { 
+            get
+            {
+                return _examinationReferrals;
+            }
+            set
+            {
+                _examinationReferrals = value;
+                if (_examinationReferrals!=null)
+                {
+                    foreach (var item in _examinationReferrals)
+                    {
+                        item.VisitWhenIssued = this;
+                        //item.IssuedBy = this.MedicalWorker;
+                        //item.IssuedTo = this.Patient;
+                    }
+                }              
+            }
+        }
         public VisitReview _visitReview;
         public VisitReview VisitReview 
         {
@@ -59,20 +183,20 @@ namespace Asklepios.Core.Models
                 }
             }
         }
-        public bool IsBooked
-        {
-            get
-            {
-                if (Patient!=null)
-                {
-                    return true;
-                }
-                else
-                {
-                    return false;
-                }
-            }
-        }
+        //public bool IsBooked
+        //{
+        //    get
+        //    {
+        //        if (Patient!=null)
+        //        {
+        //            return true;
+        //        }
+        //        else
+        //        {
+        //            return false;
+        //        }
+        //    }
+        //}
         //public VisitSummary VisitSummary { get; set; }
         public string GetVisitDateDescription()
         {
@@ -143,46 +267,71 @@ namespace Asklepios.Core.Models
 
         public decimal GetPrice(MedicalService service)
         {
-            MedicalPackage package = Patient.MedicalPackage;
-            decimal price = decimal.MinusOne;
-            MedicalServiceDiscount discount = package.ServiceDiscounts.First(c => c.MedicalService == service);
-            if (discount!=null)
+            MedicalServiceDiscount discount = null;
+            decimal price = decimal.Zero;// service.StandardPrice;
+
+            if (VisitStatus==VisitStatus.Booked)
             {
-                price = service.StandardPrice * (1-discount.Discount);//package.ServicesDiscounts[service];
+                MedicalPackage package = Patient.MedicalPackage;
+                //price = decimal.MinusOne;
+                discount = package.ServiceDiscounts.First(c => c.MedicalService == service);
+                price = service.StandardPrice * (1 - discount.Discount);//package.ServicesDiscounts[service];
                 return price;
+
             }
             else
             {
-                return price;
+                return service.StandardPrice;
             }
         }
         public decimal GetTotalPrice()
         {
-            MedicalPackage package = Patient.MedicalPackage;
             decimal totalPrice = decimal.Zero;
 
-            MedicalServiceDiscount discount = package.ServiceDiscounts.First(c => c.MedicalService == PrimaryService);
-
-            //if (package.ServicesDiscounts.ContainsKey(PrimaryService))
-            if (discount != null)
-
+            if (VisitStatus==VisitStatus.Booked)
             {
-                decimal price = PrimaryService.StandardPrice * (1 - discount.Discount); //package.ServicesDiscounts[PrimaryService];
-                totalPrice += price;
-            }
+                MedicalPackage package = Patient.MedicalPackage;
 
-            for (int i = 0; i < MinorMedicalServices?.Count; i++)
-            {
-                MedicalService service = MinorMedicalServices[i];
-                MedicalServiceDiscount discount2 = package.ServiceDiscounts.First(c => c.MedicalService == service);
-
-                //if (package.ServicesDiscounts.ContainsKey(PrimaryService))
-                if (discount2 != null)
+                MedicalServiceDiscount discount = package.ServiceDiscounts.First(c => c.MedicalService == PrimaryService);
+                if (discount != null)
                 {
-                    decimal price = service.StandardPrice * (1 - discount.Discount);//package.ServicesDiscounts[service];
-                    totalPrice += price;
+                    decimal priceP = PrimaryService.StandardPrice * (1 - discount.Discount); //package.ServicesDiscounts[PrimaryService];
+                    totalPrice += priceP;
+                }
+                else
+                {
+                    decimal priceP = PrimaryService.StandardPrice; //package.ServicesDiscounts[PrimaryService];
+                    totalPrice += priceP;
+                }
+                for (int i = 0; i < MinorMedicalServices?.Count; i++)
+                {
+                    MedicalService service = MinorMedicalServices[i];
+                    MedicalServiceDiscount discount2 = package.ServiceDiscounts.First(c => c.MedicalService == service);
+
+                    //if (package.ServicesDiscounts.ContainsKey(PrimaryService))
+                    if (discount2 != null)
+                    {
+                        decimal price = service.StandardPrice * (1 - discount.Discount);//package.ServicesDiscounts[service];
+                        totalPrice += price;
+                    }
+                    else
+                    {
+                        totalPrice += service.StandardPrice;
+                    }
                 }
             }
+            else
+            {
+                totalPrice += PrimaryService.StandardPrice;
+
+                for (int i = 0; i < MinorMedicalServices?.Count; i++)
+                {
+                    MedicalService service = MinorMedicalServices[i];
+                    totalPrice += service.StandardPrice;
+                }
+
+            }
+
             return totalPrice;
         }
         public Visit (Location location,MedicalRoom medicalRoom,MedicalWorker medicalWorker,VisitCategory visitCategory,MedicalService medicalService,DateTimeOffset start, DateTimeOffset end)
@@ -194,10 +343,14 @@ namespace Asklepios.Core.Models
             PrimaryService = medicalService;
             DateTimeSince = start;
             DateTimeTill = end;
+            MinorMedicalServices = new List<MedicalService>();
+            Recommendations = new List<Recommendation>();
         }
         public Visit()
         {
-
+            MinorMedicalServices = new List<MedicalService>();
+            Recommendations = new List<Recommendation>();
+            ExaminationReferrals = new List<MedicalReferral>();
         }
     }
 

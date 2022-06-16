@@ -1,0 +1,74 @@
+﻿@model Asklepios.Core.Models.Visit
+<div class="d-flex jumbotron  flex-column" style=" padding:20px;align-content:center;position:relative">
+    <div class="d-flex mb-3 flex-wrap  align-items-center">
+        <div class="p-2     mx-auto" style="width:400px; text-align:center">
+            <div class="d-flex flex-fill flex-column" style="text-align:center">
+
+                @if (Model.VisitStatus==Asklepios.Core.Enums.VisitStatus.Booked || Model.VisitStatus == Asklepios.Core.Enums.VisitStatus.Finished)
+                {
+                    <h3 style="font-weight:900;">
+                        <a asp-action="PatientDetails" asp-controller="MedicalWorker" asp-route-id="@Model.Patient.Id">
+
+                            @Model.Patient.Person.FullName
+                        </a>
+                    </h3>
+                    <div class="d-flex align-content-center mx-auto pt-2" style="text-align:center">
+                        <img alt="@Model.Patient.Person.FullName" src="@Model.Patient.Person.ImageSource" class="mx-auto d-block" style="max-height:200px ; max-width:200px;
+        border-radius: 6px; ">
+                    </div>
+
+                }
+                else
+                {
+
+                    <h3 style="font-weight:900;">Niezarezerwowana</h3>
+                }
+
+
+            </div>
+        </div>
+        <div class="p-2 flex-grow-1 pt-3 m-auto flex-grow-1" style="width:400px;text-align:center">
+            <h5 style="font-weight:900;">
+                @Model.GetVisitDateDescription()
+            </h5>
+            <br>
+            <h5>
+                @Model.Location.Name
+            </h5>
+            <h5>
+                @Model.VisitCategory.CategoryName - @Model.PrimaryService.Name
+
+            </h5>
+            @if (Model.IsNotCompletedMedicalTest)
+            {
+                <h5>
+                    "W realizacji..."
+                </h5>
+            }
+        </div>
+        <div class="p-2 pt-3 m-auto flex-grow-1" style="width:400px;; text-align:center">
+            <div class="d-flex flex-column align-content-end justify-content-evenly m-auto">
+                <a asp-area="MedicalWorkerArea" asp-controller="MedicalWorker" asp-action="VisitDetails" asp-route-id="@Model.Id" class="btn btn-primary btn-icon-split ">
+                    <span class="icon text-white-50 left" style="text-align:left;float:left">
+                        <i class="fas fa-info-circle"></i>
+                    </span>
+                    <span class="text" style="float: left">Szczegóły wizyty</span>
+                </a>
+                @if (Model.VisitStatus==Asklepios.Core.Enums.VisitStatus.Booked)
+                {
+                    <form class="form d-flex flex-column mt-2" asp-action="SetAsCurrent" asp-route-id="@Model.Id" method="post">
+                        <button type="submit" class="btn btn-primary btn-icon-split ">
+                            <span class="icon text-white-50 left" style="text-align:left;float:left">
+                                <i class="fas fa-hand-holding-medical"></i>
+                            </span>
+                            <span class="text" style="float: left">Ustaw jako obecną</span>
+                        </button>
+                        @*<input asp-for="SelectedMedicalWorkerId" style="visibility:collapse; height:0px" value="@Model.MedicalWorker.Id.ToString()"/>
+                <input asp-for="SelectedServiceId" style="visibility:collapse; height:0px"value="@Model.PrimaryService.Id.ToString()"/>*@
+                    </form>
+
+                }
+            </div>
+        </div>
+    </div>
+</div>

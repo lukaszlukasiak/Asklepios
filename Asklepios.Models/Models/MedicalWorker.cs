@@ -41,6 +41,14 @@ namespace Asklepios.Core.Models
         public string FullProffesionalName => ProfessionalTitle + " " + Person.Name + " " + Person.Surname;
         public List<Visit> FutureVisits { get; set; }
         public List<Visit> PastVisits { get; set; }
+
+        public List<Visit> AllVisits
+        {
+            get
+            {
+                return FutureVisits.Union(PastVisits).ToList();
+            }
+        }
         public List<VisitReview> VisitReviews { get; set; }
         public float AverageRating
         {

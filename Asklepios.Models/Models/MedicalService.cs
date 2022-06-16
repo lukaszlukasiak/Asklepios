@@ -12,7 +12,6 @@ namespace Asklepios.Core.Models
         public string Description { get; set; }
         public bool IsPrimaryService { get; set; }
         public bool RequireRefferal { get; set; }
-        public IEnumerable< MedicalService> SubServices { get; set; }
-
+        public IList< MedicalService> SubServices { get; set; }
     }
 }
