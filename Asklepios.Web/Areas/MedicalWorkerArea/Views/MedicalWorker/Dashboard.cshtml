@@ -1,8 +1,100 @@
-﻿@*
-    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
-*@
+﻿@model Asklepios.Web.Areas.MedicalWorkerArea.Models.DashboardViewModel
 @{
+    ViewData["Title"] = "View";
 }
-<h1 style="margin-top:200px;">
-    pracownik medyczny kontroler
+
+<h1 style="text-align:center">
+    Dzisiejsze konsultacje/badania
 </h1>
+
+@{
+
+    if (Model.CurrentVisit != null)
+    {
+        <h3 style="text-align:center">
+            Obecna wizyta
+        </h3>
+        <partial name="_TodaysVisit" model="Model.CurrentVisit" />
+    }
+
+    if (Model.RestOfTodaysVisits != null)
+    {
+        <h3 style="text-align:center">
+            Wizyty do przeprowadzenia
+        </h3>
+
+        foreach (Visit item in Model.RestOfTodaysVisits)
+        {
+            <partial name="_TodaysVisit" model="item" />
+        }
+    }
+    if (Model.FinishedVisits.Count() > 0)
+    {
+        <h3 style="text-align:center">
+            Przeprowadzone wizyty
+        </h3>
+
+        foreach (Visit item in Model.FinishedVisits)
+        {
+            <partial name="_TodaysVisit" model="item" />
+
+        }
+
+    }
+    if (Model.NotHeldNoPatient.Count() > 0)
+    {
+        <h3 style="text-align:center">
+            Anulowane wizyty (nieobecny pacjent)
+        </h3>
+
+        foreach (Visit item in Model.NotHeldNoPatient)
+        {
+            <partial name="_TodaysVisit" model="item" />
+
+        }
+
+    }
+    if (Model.NotHeldOtherReason.Count() > 0)
+    {
+        <h3 style="text-align:center">
+            Anulowane wizyty (inne przyczyny)
+        </h3>
+
+        foreach (Visit item in Model.NotHeldOtherReason)
+        {
+            <partial name="_TodaysVisit" model="item" />
+
+        }
+
+    }
+
+
+
+    <!--List<Visit> visits = Model.TodayVisits;
+
+    if (visits.Count() > 0)
+    {
+
+        for (int i = 0; i < visits.Count(); i++)
+        {
+
+            Visit visit = visits[i];
+            Asklepios.Web.Areas.PatientArea.Models.VisitViewModel model = new Asklepios.Web.Areas.PatientArea.Models.VisitViewModel();
+            model.Visit = visit;
+            <partial name="_TodaysVisit" model="visit" />
+
+        }
+    }
+    else
+    {
+        <h3>Brak zaplanowanych wizyt...</h3>-->
+    @*<a asp-area="PatientArea" asp-controller="Patient" asp-action="BookVisit" class="btn btn-primary btn-icon-split mt-3">
+            <span class="icon text-white-50">
+                <i class="fas fa-book"></i>
+            </span>
+            <span class="text">Zarezerwuj wizytę</span>
+        </a>*@
+    <!--}-->
+
+
+}

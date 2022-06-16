@@ -164,6 +164,7 @@ namespace Asklepios.Data.InMemoryContexts
         public void ResignFromVisit(Visit plannedVisit, Patient patient)
         {
             plannedVisit.Patient = null;
+            plannedVisit.UsedExaminationReferral = null;
             //patient.BookedVisits.Remove(plannedVisit);
             PatientMockDB.CurrentPatient.BookedVisits.Remove(plannedVisit);
         }

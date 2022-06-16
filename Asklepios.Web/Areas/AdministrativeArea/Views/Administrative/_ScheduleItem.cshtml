@@ -41,8 +41,9 @@
                 }
             </h5>
             @{
-                if (Model.Visit.IsBooked)
+                if ( Model.Visit.VisitStatus == Asklepios.Core.Enums.VisitStatus.Booked)
                 {
+                    //Model.Visit.VisitStatus == Asklepios.Core.Enums.VisitStatus.AvailableNotBooked ||
                         <h5 style="font-weight:900;">
                             Wizyta zarezerwowana przez:
                             @Model.Visit.Patient.Person.FullName

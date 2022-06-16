@@ -98,6 +98,7 @@
     <Folder Include="Areas\HomeArea\Data\" />
     <Folder Include="Areas\MedicalWorkerArea\Data\" />
     <Folder Include="Areas\PatientArea\Data\" />
+    <Folder Include="wwwroot\MedicalTestResults\" />
   </ItemGroup>
 
   <ItemGroup>

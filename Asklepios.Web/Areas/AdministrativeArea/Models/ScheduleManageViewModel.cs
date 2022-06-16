@@ -27,7 +27,14 @@ namespace Asklepios.Web.Areas.AdministrativeArea.Models
                 }
                 else
                 {
-                    return Schedule;
+                    if (Schedule.Count < ItemsPerPage)
+                    {
+                        return Schedule;
+                    }
+                    else
+                    {
+                        return Schedule.GetRange((CurrentPageNum - 1) * ItemsPerPage, ItemsPerPage);
+                    }
                 }
             }
         }
@@ -214,7 +221,14 @@ namespace Asklepios.Web.Areas.AdministrativeArea.Models
             }
             if (IsBooked.HasValue)
             {
-                filteredVisits = filteredVisits.Where(c => c.IsBooked== IsBooked.Value).ToList();
+                if (IsBooked.Value)
+                {
+                    filteredVisits = filteredVisits.Where(c => c.VisitStatus==Core.Enums.VisitStatus.Booked).ToList();
+                }
+                else
+                {
+                    filteredVisits = filteredVisits.Where(c => c.VisitStatus == Core.Enums.VisitStatus.AvailableNotBooked).ToList();
+                }
                 if (filteredVisits == null)
                 {
                     return null;

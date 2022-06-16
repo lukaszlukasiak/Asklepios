@@ -1,8 +1,673 @@
-﻿@*
-    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
-*@
+﻿@model Asklepios.Web.Areas.MedicalWorkerArea.Models.CurrentVisitViewModel
 @{
+    SelectList availableServicesForReferrals = new SelectList(Model.MedicalServicesForReferrals, "Id", "Name");
+    //Asklepios.Web.Areas.MedicalWorkerArea.Models.SubmitMode mode;
 }
-<h1 style="margin-top:200px;">
-    pracownik medyczny kontroler
-</h1>
+<div class="d-flex jumbotron flex-column" style=" padding:20px;display:flex;align-content:center;position:relative">
+    <div class="d-flex mb-3 flex-wrap align-self-top align-items-top">
+        <div class="p-2   align-content-center align-items-center align-self-top  mx-auto " style="min-width: 400px; text-align: center">
+            <div class="d-flex flex-fill flex-column justify-content-center" style="text-align:center">
+                <h3 style="font-weight:900;">
+                    <a asp-action="MedicalWorkerDetails" asp-controller="MedicalWorker" asp-route-id="@Model.Visit.MedicalWorker.Id">
+                        @Model.Visit.MedicalWorker.FullProffesionalName
+                    </a>
+                </h3>
+                <div class="d-flex align-content-center mr-auto pt-2" style="text-align:center">
+                    <img alt="@Model.Visit.MedicalWorker.FullProffesionalName" src="@Model.Visit.MedicalWorker.Person.ImageSource" class="mx-auto d-block" style="max-width: 400px; max-height: 400px; display: block; border-radius: 6px; ">
+                </div>
+            </div>
+        </div>
+        <div class="p-2   align-content-center align-items-center align-self-top mx-auto " style="min-width:400px;  text-align:center">
+            <div class="d-flex flex-fill flex-column justify-content-center" style="text-align:center">
+                @if (Model.Visit.VisitStatus == Asklepios.Core.Enums.VisitStatus.Booked)
+                {
+                    <h3 style="font-weight:900;">
+                        <a asp-action="PatientDetails" asp-controller="MedicalWorker" asp-route-id="@Model.Visit.Patient.Id">
+                            @Model.Visit.Patient.Person.FullName
+                        </a>
+                    </h3>
+                    <div class="d-flex align-content-center mx-auto pt-2" style="text-align:center">
+                        <img alt="@Model.Visit.Patient.Person.FullName" src="@Model.Visit.Patient.Person.ImageSource" class="mx-auto d-block" style="max-width:400px;max-height:400px; display: block; border-radius: 6px; ">
+                    </div>
+                }
+                else
+                {
+                    <h3 style="font-weight:900;">
+                        Wizyta nie została jeszcze zarezerwowana
+                    </h3>
+                }
+            </div>
+        </div>
+    </div>
+    <div class="d-flex flex-column mx-2">
+        <h5> Czas i miejsce</h5>
+        <div class="border border-secondary rounded w-100 flex-grow-0 mb-3  p-3">
+            <div class="flex-column  mx-auto flex-grow-1">
+                <div>
+                    Data: @Model.Visit.GetVisitDateFullDescription()
+                </div>
+                <div>
+                    @Model.Visit.Location.Name
+                </div>
+                <div>
+                    Piętro: @Model.Visit.MedicalRoom.FloorNumber, pokój: @Model.Visit.MedicalRoom.Name
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="d-flex flex-column mx-2">
+        <h5>Usługa</h5>
+        <div class="border border-secondary rounded w-100 flex-grow-0 mb-3  p-3">
+            @*<div class="d-flex" style="margin:0px; width:200px">
+                    Kategoria: @Model.Visit.VisitCategory.CategoryName
+                </div>*@
+            <div class="d-flex flex-row align-content-around">
+                <div class="d-flex" style="margin:0px; min-width:200px">Kategoria : </div>
+                <div class="d-flex" style="margin:0px; text-align:right;width: 300px">
+                    <span class="ml-auto">@Model.Visit.VisitCategory.CategoryName</span>
+                </div>
+                <div class="d-flex ml-5" style="margin:0px; text-align:right;width:40px;">
+                    @*<button class="fa-plus hidden"/>*@
+                    @*<span style="width:400px;">@Model.Visit.GetPrice(Model.Visit.PrimaryService) PLN</span>*@
+                </div>
+            </div>
+
+            @*<br />*@
+            @*<p>Koszty</p>*@
+            <div class="font-weight-bold my-1 " style="width: 200px">Usługa główna</div>
+            <div class="d-flex flex-row">
+                <div class="d-flex" style="margin:0px; min-width:200px">@Model.Visit.PrimaryService.Name : </div>
+                <div class="d-flex" style="margin: 0px; text-align: right; width: 300px">
+                    <span class="ml-auto">@Model.Visit.GetPrice(Model.Visit.PrimaryService) PLN</span>
+                </div>
+                <div class="d-flex ml-5" style="margin:0px; text-align:right;width:40px">
+                    @*<button class="fa-plus hidden"/>*@
+                    @*<span style="width:400px;">@Model.Visit.GetPrice(Model.Visit.PrimaryService) PLN</span>*@
+                </div>
+            </div>
+            @if (Model.Visit.MinorMedicalServices?.Count > 0)
+            {
+                <div class="font-weight-bold my-1">Usługi dodatkowe</div>
+            }
+            @for (int i = 0; i < Model.Visit.MinorMedicalServices?.Count; i++)
+            {
+                MedicalService service = Model.Visit.MinorMedicalServices[i];
+                if (service != null)
+                {
+                    <div class="d-flex flex-row flex-wrap mt-1">
+                        <div style="width:200px">
+                            @service.Name : @*@Model.Visit.GetPrice(service); PLN*@
+                        </div>
+                        <div class="d-flex" style=" text-align:right;">
+                            <div style="width:300px; align-self:center">@Model.Visit.GetPrice(service) PLN</div>
+                        </div>
+
+                        <form class="form ml-5 " style="width:40px" asp-action="RemoveService" method="post">
+                            <input asp-for="VisitId" hidden />
+                            <input asp-for="ServiceToAdd" value="@service.Id" hidden />
+                            <button type="submit" class="btn btn-primary btn-icon-split    form-control " data-toggle="tooltip" data-placement="top" title="Usuń usługę">
+                                <span class="icon text-white left" style="text-align:left;float:left">
+                                    <i class="fas fa-minus"></i>
+                                </span>
+                            </button>
+                        </form>
+                    </div>
+                }
+            }
+            <div class="d-flex flex-row flex-wrap">
+                <span class="d-flex" style="margin:0px; width:200px"> </span>
+                <div style="width:300px" class="align-items-end">
+                    <hr class="ml-auto float-right" style="height:2px;width:100px;  border-width:0;color:gray;background-color:gray; ">
+                </div>
+                <div class="d-flex ml-5" style="margin:0px; text-align:right;width:40px">
+
+                </div>
+            </div>
+            <div class="d-flex flex-row mb-3">
+                <span class="d-flex font-weight-bold" style="margin:0px; width:300px">Koszt całkowity: </span>
+                @*<span class="d-flex">@Model.Visit.GetTotalPrice() PLN</span>*@
+                <div class="d-flex" style="margin:0px; text-align:right;">
+                    <span style="width:200px;">@Model.Visit.GetTotalPrice() PLN</span>
+                </div>
+                <div class="d-flex ml-5" style="margin:0px; text-align:right;width:40px">
+                </div>
+                @*<div class="ml-5"></div>*@
+            </div>
+            <hr class="mx-0 my-1" style="height:2px; border-width:0;color:gray;background-color:gray;text-align:right; ">
+            @*<br class="m-0"/>*@
+            @if (Model.AvailableMinorServices.Count > 0)
+            {
+                <div class="d-flex flex-column mt-3">
+                    <div class="font-weight-bold">
+                        Dostępne dodatkowe usługi
+                    </div>
+
+                    @for (int i = 0; i < Model.AvailableMinorServices.Count; i++)
+                    {
+                        MedicalService service = Model.AvailableMinorServices[i];
+                        <div class="d-flex flex-row mt-1 align-content-around flex-wrap mt-1">
+                            <div class="align-self-center" style="width:200px">
+                                @service.Name : @*@Model.Visit.GetPrice(service); PLN*@
+                            </div>
+                            <div class="d-flex" style=" text-align:right;">
+                                <div style="width:300px; align-self:center">@Model.Visit.GetPrice(service) PLN</div>
+                            </div>
+
+                            <div class="d-flex flex-column ml-5">
+                                <form class="form" asp-action="AddService" method="post">
+                                    <input asp-for="VisitId" hidden />
+                                    <input asp-for="ServiceToAdd" value="@service.Id" hidden />
+                                    <button type="submit" class="btn btn-primary btn-icon-split   form-control" data-toggle="tooltip" data-placement="top" title="Tooltip on top">
+                                        <span class="icon text-white left" style="text-align:left;float:left">
+                                            <i class="fas fa-plus"></i>
+                                        </span>
+                                        @*<div class="tooltip">
+                                                <span class="text tooltip-inner" style="float: left">Dodaj usługę</span>
+                                            </div>*@
+
+                                    </button>
+                                </form>
+
+                            </div>
+                        </div>
+                    }
+                </div>
+            }
+        </div>
+    </div>
+    @if (Model.Visit.UsedExaminationReferral != null)
+    {
+        <div class="d-flex flex-column mx-2">
+            <h5>Użyte skierowanie</h5>
+
+            <partial name="_MedicalReferral" model="Model.Visit.UsedExaminationReferral" />
+
+
+        </div>
+
+    }
+    <div class="d-flex flex-column mx-2">
+        <h5>Wywiad medyczny</h5>
+        <div class="border border-secondary rounded w-100 flex-grow-0 mb-3  p-3">
+            @*<label asp-for="Visit.MedicalHistory" class="control-label"></label>*@
+            <form class="form" asp-action="SaveMedicalHistory" method="post">
+                <textarea asp-for="Visit.MedicalHistory" class="form-control mb-2" TextMode="MultiLine" Rows="5"></textarea>
+                <span asp-validation-for="Visit.MedicalHistory" class="text-danger"></span>
+
+                @*<input asp-for="Visit.MedicalHistory" value="@Model.Visit.MedicalHistory" hidden />*@
+                <input asp-for="Visit.Id" value="@Model.Visit.Id" hidden />
+                <button type="submit" class="btn btn-primary btn-icon-split mt-3  form-control" data-toggle="tooltip" data-placement="top" title="Tooltip on top">
+                    <span class="icon text-white left" style="text-align:left;float:left">
+                        <i class="fas fa-save"></i>
+                    </span>
+                    <span class="text" style="float: left">Zachowaj</span>
+                </button>
+            </form>
+        </div>
+    </div>
+    <div class="d-flex flex-column mx-2">
+        <h5>Zalecenia</h5>
+        <div class="border border-secondary rounded w-100 flex-grow-0 mb-3  p-3">
+
+            @{if (Model.Visit.Recommendations.Count > 0)
+                {
+                    for (int i = 0; i < Model.Visit.Recommendations.Count; i++)
+                    {
+                        Recommendation recommendation = Model.Visit.Recommendations[i];
+                        <hr class="mr-0 my-1" style="height:2px;width:100%; border-width:0;color:gray;background-color:gray;">
+
+                        <form class="form mb-3" asp-action="DeleteRecommendation" method="post">
+
+                            <div class="d-flex flex-column">
+
+                                <input type="text" value="@recommendation.Title" class="form-control mb-2 readonly" readonly />
+                                <textarea class="form-control mb-2" TextMode="MultiLine" readonly>@recommendation.Description</textarea>
+
+                                <input asp-for="RecommendationToRemove.Id" value="@recommendation.Id" hidden />
+                                <input asp-for="Visit.Id" value="@Model.Visit.Id" hidden />
+                                <button type="submit" class="btn btn-primary btn-icon-split    form-control" data-toggle="tooltip" data-placement="top" title="Tooltip on top">
+                                    <span class="icon text-white left" style="text-align:left;float:left">
+                                        <i class="fas fa-minus"></i>
+                                    </span>
+                                    <span class="text" style="float: left">Usuń</span>
+                                </button>
+                            </div>
+
+                        </form>
+                        <hr class="mr-0 my-1" style="height:2px;width:100%; border-width:0;color:gray;background-color:gray;">
+
+                    }
+                }
+
+            }
+            @*<label asp-for="Visit.Recommendations" class="control-label"></label>*@
+            <form class="form" asp-action="AddRecommendation" method="post">
+                <div class="d-flex flex-column">
+
+                    <label asp-for="RecommendationToAdd.Title"></label>
+                    <input type="text" asp-for="RecommendationToAdd.Title" class="form-control mb-2" />
+                    <label asp-for="RecommendationToAdd.Description"></label>
+
+                    <textarea asp-for="RecommendationToAdd.Description" class="form-control mb-2" TextMode="MultiLine" Rows="5"></textarea>
+                    <span asp-validation-for="RecommendationToAdd" class="text-danger"></span>
+
+                    @*<input asp-for="RecommendationToAdd" value="@RecommendationToAdd" hidden />*@
+                    <input asp-for="Visit.Id" value="@Model.Visit.Id" hidden />
+                    <button type="submit" class="btn btn-primary btn-icon-split  mt-3  form-control" data-toggle="tooltip" data-placement="top" title="Tooltip on top">
+                        <span class="icon text-white left" style="text-align:left;float:left">
+                            <i class="fas fa-save"></i>
+                        </span>
+                        <span class="text" style="float: left">Zachowaj</span>
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+    <div class="d-flex flex-column mx-2">
+        <h5>Skierowania</h5>
+
+        <div class="border border-secondary rounded w-100 flex-grow-0 mb-3  p-3">
+
+            @if (Model.Visit.ExaminationReferrals != null && Model.Visit.ExaminationReferrals.Count > 0)
+            {
+                <div class="d-flex flex-column mx-2">
+                    <h5>Wystawione skierowania</h5>
+                    @for (int i = 0; i < Model.Visit.ExaminationReferrals.Count; i++)
+                    {
+                        MedicalReferral referral = Model.Visit.ExaminationReferrals[i];
+                        <hr class="mr-0 my-1" style="height:2px;width:100%; border-width:0;color:gray;background-color:gray;">
+
+                        <div>
+                            Usługa: @referral.PrimaryMedicalService.Name
+                        </div>
+                        @if (referral.MinorMedicalService != null)
+                        {
+                            <span>
+                                Podusługa: @referral.MinorMedicalService.Name
+                            </span>
+                        }
+                        <div>
+                            Wystawione: @referral.IssueDate.ToString("dd-MM-yyyy")
+                        </div>
+                        <div>
+                            Ważne do: @referral.ExpireDate.ToString("dd-MM-yyyy")
+                        </div>
+                        if (referral.HasBeenUsed)
+                        {<p>
+                                Skierowanie zostało wykorzystane
+                            </p>
+                        }
+                        else if (referral.HasExpired)
+                        {
+                            <p>Ważność skierowania upłynęła</p>
+                        }
+
+                        <form class="form my-2" asp-action="RemoveExaminationReferral" method="post" asp-validation-summary="ModelOnly">
+                            @*asp-action="RemoveExaminationReferral"*@
+                            <div class="d-flex flex-column">
+                                <input asp-for="Visit.Id" value="@Model.Visit.Id" hidden />
+                                <input asp-for="MedicalReferralIdToRemove" value="@referral.Id" hidden />
+
+
+                                <button type="submit" class="btn btn-primary btn-icon-split  mt-3  form-control" data-toggle="tooltip" data-placement="top" title="Tooltip on top">
+                                    <span class="icon text-white left" style="text-align:left;float:left">
+                                        <i class="fas fa-trash"></i>
+                                    </span>
+                                    <span class="text" style="float: left">Usuń skierowanie</span>
+                                </button>
+                            </div>
+                        </form>
+
+                        <hr class="mr-0 my-1" style="height:2px;width:100%; border-width:0;color:gray;background-color:gray;">
+                    }
+                </div>
+            }
+            <form class="form my-2" asp-action="CurrentVisit" method="post" asp-validation-summary="ModelOnly">
+                @{ Model.SubmitMode = Asklepios.Web.Areas.MedicalWorkerArea.Models.SubmitMode.AddReferral;}
+                @*<form class="form" asp-action="AddExaminationReferral" method="post">*@
+                <div class="d-flex flex-column">
+                    <input asp-for="Visit.Id" value="@Model.Visit.Id" hidden />
+                    <input asp-for="SubmitMode" value="@Model.SubmitMode" hidden />
+                    @*<div class="form-group">*@
+
+                    <label asp-for="MedicalServiceToAddId" class="control-label"></label>
+                    <select class="form-control  mb-2" asp-for="MedicalServiceToAddId" asp-items="availableServicesForReferrals">
+                        <option value="-1">Wybierz usługę</option>
+                    </select>
+                    <span asp-validation-for="MedicalServiceToAddId" class="text-danger"></span>
+                    @*</div>
+                        <div class="form-group">*@
+
+                    <label asp-for="MedicalReferralDaysToExpire" class="control-label"></label>
+                    <input type="number" class="form-control  mb-2" asp-for="MedicalReferralDaysToExpire" value="14" />
+                    <span asp-validation-for="MedicalReferralDaysToExpire" class="text-danger"></span>
+                    @*</div>
+                        <div class="form-group">*@
+
+                    <label asp-for="MedicalReferralToAddComment" class="control-label"></label>
+                    <input type="text" class="form-control  mb-2" asp-for="MedicalReferralToAddComment" />
+                    <span asp-validation-for="MedicalReferralToAddComment" class="text-danger"></span>
+
+                    @*</div>*@
+
+                    <button type="submit" class="btn btn-primary btn-icon-split mt-3   form-control" data-toggle="tooltip" data-placement="top" title="Tooltip on top">
+                        <span class="icon text-white left" style="text-align:left;float:left">
+                            <i class="fas fa-server"></i>
+                        </span>
+                        <span class="text" style="float: left">Wystaw skierowanie</span>
+                    </button>
+                </div>
+            </form>
+        </div>
+
+
+    </div>
+    <div class="d-flex flex-column mx-2">
+        <h5>Recepta</h5>
+
+        <div class="border border-secondary rounded w-100 flex-grow-0 mb-3  p-3">
+            @if (Model.Visit.Prescription != null)
+            {
+
+                <div class="d-flex flex-fill pt-2 flex-column">
+
+                    <div>
+                        Wystawione: @Model.Visit.Prescription.IssueDate.ToString("dd-MM-yyyy")
+                    </div>
+                    <div>
+                        Ważne do: @Model.Visit.Prescription.ExpirationDate.ToString("dd-MM-yyyy")
+                    </div>
+                    <div>
+                        Numer id recepty:
+                        <span style="font-weight:bold"> @Model.Visit.Prescription.IdentificationCode</span>
+                    </div>
+                    <p>Kod dostępu: <span style="font-weight:bold">  @Model.Visit.Prescription.AccessCode</span> </p>
+                </div>
+                <hr class="mr-0 mb-2 mt-0" style="height:2px;width:100%; border-width:0;color:gray;background-color:gray;">
+
+                <div class="d-flex flex-fill  flex-column">
+                    @*<p>*@
+                    @{
+
+                        for (int i = 0; i < Model.Visit.Prescription.IssuedMedicines.Count; i++)
+                        {
+                            IssuedMedicine item = Model.Visit.Prescription.IssuedMedicines[i];
+                            <partial name="_Medicine" model="item" />
+                            <form class="form my-2" asp-action="RemoveMedicineFromPrescription" method="post" asp-validation-summary="ModelOnly">
+                                <div class="d-flex flex-column">
+                                    <input asp-for="Visit.Id" value="@Model.Visit.Id" hidden />
+                                    <input asp-for="MedicineIdToRemove " value="@item.Id" hidden />
+
+                                    <button type="submit" class="btn btn-primary btn-icon-split  mt-3  form-control" data-toggle="tooltip" data-placement="top" title="Tooltip on top">
+                                        <span class="icon text-white left" style="text-align:left;float:left">
+                                            <i class="fas fa-plus"></i>
+                                        </span>
+                                        <span class="text" style="float: left">Usuń lek</span>
+                                    </button>
+
+                                </div>
+                            </form>
+                            <hr class="mr-0 my-1" style="height:2px;width:100%; border-width:0;color:gray;background-color:gray;">
+
+                            if (i == Model.Visit.Prescription.IssuedMedicines.Count - 1)
+                            {
+
+                            }
+                            else
+                            {
+                                <br />
+                            }
+                        }
+                    }
+                    @*</p>*@
+                </div>
+                <form class="form my-2" asp-action="CurrentVisit" method="post" asp-validation-summary="ModelOnly">
+                    @{ Model.SubmitMode = Asklepios.Web.Areas.MedicalWorkerArea.Models.SubmitMode.AddMedicineToPrescription;}
+                    <div class="d-flex flex-column">
+                        <input asp-for="Visit.Id" value="@Model.Visit.Id" hidden />
+                        <input asp-for="SubmitMode" value="@Model.SubmitMode" hidden />
+
+                        @*<div class="form-group">*@
+                        <label asp-for="IssuedMedicineToAdd.MedicineName" class="control-label"></label>
+                        <input type="text" class="form-control  mb-2" asp-for="IssuedMedicineToAdd.MedicineName" />
+                        <span asp-validation-for="IssuedMedicineToAdd.MedicineName" class="text-danger"></span>
+                        @*</div>*@
+                        @*<div class="form-group">*@
+                        <label asp-for="IssuedMedicineToAdd.PackageSize" class="control-label"></label>
+                        <input type="text" class="form-control  mb-2" asp-for="IssuedMedicineToAdd.PackageSize" />
+                        <span asp-validation-for="IssuedMedicineToAdd.PackageSize" class="text-danger"></span>
+                        @*</div>*@
+                        @*<div class="form-group">*@
+                        <label asp-for="IssuedMedicineToAdd.PaymentDiscount" class="control-label"></label>
+                        <input type="text" class="form-control  mb-2" asp-for="IssuedMedicineToAdd.PaymentDiscount" />
+                        <span asp-validation-for="IssuedMedicineToAdd.PaymentDiscount" class="text-danger"></span>
+                        @*</div>*@
+                        <button type="submit" class="btn btn-primary btn-icon-split mt-3   form-control" data-toggle="tooltip" data-placement="top" title="Tooltip on top">
+                            <span class="icon text-white left" style="text-align:left;float:left">
+                                <i class="fas fa-plus"></i>
+                            </span>
+                            <span class="text" style="float: left">Dodaj lek</span>
+                        </button>
+
+                    </div>
+                </form>
+                <hr class="mr-0 my-1" style="height:2px;width:100%; border-width:0;color:gray;background-color:gray;">
+                <form class="form mt-3" asp-action="RemovePrescription" method="post" asp-validation-summary="ModelOnly">
+                    @{ Model.SubmitMode = Asklepios.Web.Areas.MedicalWorkerArea.Models.SubmitMode.AddMedicineToPrescription;}
+                    <div class="d-flex flex-column">
+                        <input asp-for="Visit.Id" value="@Model.Visit.Id" hidden />
+                        @*<input asp-for="PrescriptionIdToRemove" value="@Model.PrescriptionIdToRemove" hidden />*@
+
+                        <button type="submit" class="btn btn-primary btn-icon-split mt-3   form-control" data-toggle="tooltip" data-placement="top" title="Tooltip on top">
+                            <span class="icon text-white left" style="text-align:left;float:left">
+                                <i class="fas fa-plus"></i>
+                            </span>
+                            <span class="text" style="float: left">Usuń receptę</span>
+                        </button>
+
+                    </div>
+                </form>
+
+            }
+            else
+            {
+                <form class="form my-2" asp-action="CurrentVisit" method="post" asp-validation-summary="ModelOnly">
+                    @{ Model.SubmitMode = Asklepios.Web.Areas.MedicalWorkerArea.Models.SubmitMode.AddPrescription;}
+                    <div class="d-flex flex-column">
+                        <input asp-for="Visit.Id" value="@Model.Visit.Id" hidden />
+                        <input asp-for="SubmitMode" value="@Model.SubmitMode" hidden />
+                        @*<div class="form-group">*@
+                        <label asp-for="PrescriptionToAdd.AccessCode" class="control-label"></label>
+                        <input type="tel" class="form-control  mb-2" asp-for="PrescriptionToAdd.AccessCode" />
+                        <span asp-validation-for="PrescriptionToAdd.AccessCode" class="text-danger"></span>
+                        @*</div>
+                            <div class="form-group">*@
+                        <label asp-for="PrescriptionToAdd.IdentificationCode" class="control-label"></label>
+                        <input type="text" class="form-control  mb-2" asp-for="PrescriptionToAdd.IdentificationCode" />
+                        <span asp-validation-for="PrescriptionToAdd.IdentificationCode" class="text-danger"></span>
+                        @*</div>
+                            <div class="form-group">*@
+                        <label asp-for="PrescriptionDaysToExpire" class="control-label"></label>
+                        <input type="number" class="form-control  mb-2" asp-for="PrescriptionDaysToExpire" value="30" />
+                        <span asp-validation-for="PrescriptionDaysToExpire" class="text-danger"></span>
+                        @*</div>
+
+                            <div class="form-group">*@
+                        <label asp-for="IssuedMedicineToAdd.MedicineName" class="control-label"></label>
+                        <input type="text" class="form-control  mb-2" asp-for="IssuedMedicineToAdd.MedicineName" />
+                        <span asp-validation-for="IssuedMedicineToAdd.MedicineName" class="text-danger"></span>
+                        @*</div>
+                            <div class="form-group">*@
+                        <label asp-for="IssuedMedicineToAdd.PackageSize" class="control-label"></label>
+                        <input type="text" class="form-control  mb-2" asp-for="IssuedMedicineToAdd.PackageSize" />
+                        <span asp-validation-for="IssuedMedicineToAdd.PackageSize" class="text-danger"></span>
+                        @*</div>
+                            <div class="form-group">*@
+                        <label asp-for="IssuedMedicineToAdd.PaymentDiscount" class="control-label"></label>
+                        <input type="number" inputmode="numeric" class="form-control  mb-2" asp-for="IssuedMedicineToAdd.PaymentDiscount" />
+                        <span asp-validation-for="IssuedMedicineToAdd.PaymentDiscount" class="text-danger"></span>
+                        @*</div>*@
+
+                        <button type="submit" class="btn btn-primary btn-icon-split mt-3    form-control" data-toggle="tooltip" data-placement="top" title="Tooltip on top">
+                            <span class="icon text-white left" style="text-align:left;float:left">
+                                <i class="fas fa-server"></i>
+                            </span>
+                            <span class="text" style="float: left">Wystaw receptę</span>
+                        </button>
+                    </div>
+                </form>
+            }
+
+        </div>
+
+    </div>
+    <div class="d-flex flex-column mx-2">
+        <h5>Wyniki badań</h5>
+        @{
+            List<MedicalService> services = null;
+            if (Model.Visit.MinorMedicalServices.Count > 0)
+            {
+                services = Model.Visit.MinorMedicalServices.Union(new List<MedicalService>() { Model.Visit.PrimaryService }).ToList();
+
+            }
+            else
+            {
+                services = new List<MedicalService>() { Model.Visit.PrimaryService };
+            }
+            SelectList availableServicesForTest = new SelectList(services, "Id", "Name");
+
+        }
+        <div class="border border-secondary rounded w-100 flex-grow-0 mb-3  p-3">
+            @if (Model.Visit.MedicalResult != null)
+            {
+
+                <div class="d-flex  m-auto flex-grow-1" style="width:400px;text-align:center">
+                    <div class="d-flex flex-fill pt-2 flex-column">
+                        <h2>
+                            Badanie: @Model.Visit.MedicalResult.MedicalService.Name
+                        </h2>
+
+                        <div>
+                            Wykonane: @Model.Visit.MedicalResult.ExamDate.ToString("dd-MM-yyyy")
+                        </div>
+                        @*<a class="btn btn-primary btn-icon-split mt-3 form-control" asp-area="MedicalWorkerArea" asp-controller="MedicalWorker" asp-action="DownloadFile" asp-route-id="@Model.Visit.MedicalResult.Id">
+                                <span class="icon text-white">
+                                    <i class="fas fa-download"></i>
+                                </span>
+                                <span class="text">Wyniki</span>
+                            </a>*@
+                    </div>
+                </div>
+                <form class="form" method="post" asp-area="MedicalWorkerArea" asp-controller="MedicalWorker" asp-action="DownloadTestResults" asp-route-id="@Model.Visit.MedicalResult.Id">
+                    <button type="submit" class="btn btn-primary btn-icon-split form-control w-100 mt-3">
+                        <span class="icon text-white left" style="text-align:left;float:left">
+                            <i class="fas fa-file-download"></i>
+                        </span>
+                        <span class="text" style="float: left">Wyniki</span>
+                    </button>
+                </form>
+                <form class="form" method="post" asp-area="MedicalWorkerArea" asp-controller="MedicalWorker" asp-action="RemoveTestResult" asp-route-id="@Model.Visit.MedicalResult.Id">
+                    <input type="text" class="form-control  mb-2" asp-for="MedicalTestFileIdToRemove" value="@Model.Visit.MedicalResult.Id" hidden />
+
+                    <button type="submit" class="btn btn-primary btn-icon-split form-control w-100 mt-3">
+                        <span class="icon text-white left" style="text-align:left;float:left">
+                            <i class="fas fa-trash"></i>
+                        </span>
+                        <span class="text" style="float: left">Usuń wyniki</span>
+                    </button>
+                </form>
+            }
+            else
+            {
+        <form class="form" asp-action="CurrentVisit" method="post" enctype="multipart/form-data">
+            @{ Model.SubmitMode = Asklepios.Web.Areas.MedicalWorkerArea.Models.SubmitMode.AddTestRestult;}
+
+            <input asp-for="Visit.Id" hidden />
+            <input asp-for="SubmitMode" value="@Model.SubmitMode" hidden />
+
+            <label asp-for="MedicalTestServiceId" class="control-label"></label>
+            <select class="form-control  mb-2" asp-for="MedicalTestServiceId" asp-items="availableServicesForTest">
+                <option value="-1">Wybierz usługę</option>
+            </select>
+            <span asp-validation-for="MedicalTestServiceId" class="text-danger"></span>
+
+            <div class="d-flex flex-column">
+                <label asp-for="MedicalTestDescription" class="control-label"></label>
+                <input type="text" class="form-control  mb-2" asp-for="MedicalTestDescription" />
+                <span asp-validation-for="MedicalTestDescription" class="text-danger"></span>
+            </div>
+
+            <div class="d-flex flex-column">
+                @*<span id="MessageSpan" asp-validation-for="User.UserName" class="text-danger"></span>*@
+
+                <label asp-for="MedicalTestFile" class="control-label"></label>
+                <input asp-for="MedicalTestFile" accept="image/*" class="form-control-file btn btn-secondary" style="text-align:center" />
+                @*<input asp-for="ImageFile" type="file" class="form-control-file" >*@
+
+                <span asp-validation-for="MedicalTestFile" class="text-danger"></span>
+
+                <div class="d-flex flex-column mt-3 mb-0 pb-0">
+                    <button id="btnSubmit" type="submit" class="btn btn-primary btn-icon-split d-flex">
+                        <span class="icon text-white left" style="text-align:left;float:left">
+                            <i class="fas fa-plus-square"></i>
+                        </span>
+                        <span class="text" style="float: left">Dodaj</span>
+                    </button>
+                </div>
+
+                @*<button id="btnSubmit" type="submit" class="btn btn-primary w-100 mt-2">Dodaj</button>*@
+
+            </div>
+        </form>
+
+            }
+        </div>
+
+    </div>
+    <div class="d-flex flex-column mx-2">
+        <h5>Finalizacja</h5>
+
+        <div class="border border-secondary rounded w-100 flex-grow-0 mb-3  p-3">
+
+            <form class="form d-flex flex-column" asp-action="SetAsCompleted" method="post">
+                <input asp-for="VisitId" hidden />
+                @*<input asp-for="Visit.MedicalHistory" hidden />
+                    <input asp-for="Visit.Recommendations" hidden />*@
+
+                <button type="submit" class="btn btn-primary btn-icon-split    form-control">
+                    <span class="icon text-white left" style="text-align:left;float:left">
+                        <i class="fas fa-flag-checkered"></i>
+                    </span>
+                    <span class="text" style="float: left">Oznacz wizytę jako zakończoną</span>
+                </button>
+            </form>
+            <form class="form  d-flex flex-column mt-2" asp-action="SetAsCancelledNoPatient" method="post">
+                <input asp-for="VisitId" hidden />
+                @*<input asp-for="Visit.MedicalHistory" hidden />
+                    <input asp-for="Visit.Recommendations" hidden />*@
+
+                <button type="submit" class="btn btn-primary btn-icon-split    form-control">
+                    <span class="icon text-white left" style="text-align:left;float:left">
+                        <i class="fas fa-user-slash"></i>
+                    </span>
+                    <span class="text" style="float: left">Anulowana (nieobecny pacjent)</span>
+                </button>
+            </form>
+            <form class="form  d-flex mt-2 flex-column" asp-action="SetAsCancelledOther" method="post">
+                <input asp-for="VisitId" hidden />
+                @*<input asp-for="Visit.MedicalHistory" hidden />
+                    <input asp-for="Visit.Recommendations" hidden />*@
+
+                <button type="submit" class="btn btn-primary btn-icon-split    form-control">
+                    <span class="icon text-white left" style="text-align:left;float:left">
+                        <i class="fas fa-comment-slash"></i>
+                    </span>
+                    <span class="text" style="float: left">Anulowana (inna przyczyna)</span>
+                </button>
+            </form>
+
+
+        </div>
+    </div>
+</div>

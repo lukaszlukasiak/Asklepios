@@ -2,15 +2,27 @@
 
 using PdfSharpCore.Pdf;
 using System;
+using System.ComponentModel.DataAnnotations;
 
 namespace Asklepios.Core.Models
 {
     public  class MedicalTestResult
     {
         public long Id { get; set; }
-        public string Descritpion { get; set; }
+        [Display(Name = "Opis badania")]
+        [Required(ErrorMessage = "Proszę wprowadzić opis/zakres badania")]
+        [DataType(DataType.Text)]
+
+
+        public string Description { get; set; }
         public MedicalService MedicalService { get; set; }
-        public byte[] PdfDocument { get; set; }
+        //private byte[] _document;
+        public byte[] Document 
+        {
+            get;
+            set;
+        }
+        public string DocumentPath { get; set; }
         //public VisitSummary VisitSummary { get; set; }
         public MedicalWorker MedicalWorker { get; set; }
         public DateTimeOffset ExamDate { get; set; }

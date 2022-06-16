@@ -42,8 +42,6 @@ namespace Asklepios.Web.Areas.PatientArea.Controllers
                     User user = JsonConvert.DeserializeObject<User>((string)TempData["User"]);
                     _loggedUser = user;
                     _selectedPatient = _context.GetPatientByUserId(_loggedUser.PersonId);
-
-                    // User user = TempData["User"] as User;
                 }
 
             }
@@ -148,7 +146,7 @@ namespace Asklepios.Web.Areas.PatientArea.Controllers
                             if (referral != null)
                             {
                                 referral.HasBeenUsed = true;
-                                referral.Visit = visit;
+                                referral.VisitWhenUsed = visit;
                                 patient.BookVisit(visit);
 
                                 _context.UpdateReferral(referral);
@@ -444,7 +442,7 @@ namespace Asklepios.Web.Areas.PatientArea.Controllers
             {
 
                 Patient patient = _context.CurrentPatient;
-                PatientArea.Models.PatientViewModel viewModel = new Models.PatientViewModel(patient);
+                PatientArea.Models.PatientViewModel viewModel = new PatientViewModel(patient);
                 return View(viewModel);
             }
             else
@@ -556,6 +554,10 @@ namespace Asklepios.Web.Areas.PatientArea.Controllers
                     {
 
                         newVisit.Patient = _selectedPatient;
+                        if (visitToReschedule.UsedExaminationReferral!=null)
+                        {
+                            newVisit.UsedExaminationReferral = visitToReschedule.UsedExaminationReferral;
+                        }
                         _context.BookVisit(_selectedPatient, newVisit);
                         _context.ResignFromVisit(visitToReschedule, _selectedPatient);
                         return RedirectToAction("PlannedVisits", "Patient", new { area = "PatientArea" });
@@ -629,7 +631,7 @@ namespace Asklepios.Web.Areas.PatientArea.Controllers
                     //PdfSharpCore.Pdf.PdfDocument pdf = _context.CurrentPatient.TestsResults.Where(c => c.Id == idL).FirstOrDefault().PdfDocument;
 
                     //Read the File data into Byte Array.
-                    byte[] bytes = _context.CurrentPatient.TestsResults.Where(c => c.Id == idL).FirstOrDefault()?.PdfDocument;//pdf.  System.IO.File.ReadAllBytes(pdf);
+                    byte[] bytes = _context.CurrentPatient.TestsResults.Where(c => c.Id == idL).FirstOrDefault()?.Document;//pdf.  System.IO.File.ReadAllBytes(pdf);
 
                     //Send the File to Download.
                     return File(bytes, "application/octet-stream", "results.pdf");

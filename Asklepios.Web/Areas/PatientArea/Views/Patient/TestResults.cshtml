@@ -6,7 +6,7 @@
     List<Asklepios.Core.Models.MedicalTestResult> results = null;
     if (Model.Patient.TestsResults != null)
     {
-        results = Model.Patient.TestsResults.Where(c => c.PdfDocument != null).ToList();
+        results = Model.Patient.TestsResults.Where(c => c.Document != null).ToList();
     }
 
     if (results!=null)
@@ -22,7 +22,6 @@
     {
         <h1>Brak wyników badań</h1>
     }
-
 }
 
 

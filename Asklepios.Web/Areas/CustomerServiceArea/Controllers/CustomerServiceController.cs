@@ -163,7 +163,7 @@ namespace Asklepios.Web.Areas.CustomerServiceArea.Controllers
                             if (referral != null)
                             {
                                 referral.HasBeenUsed = true;
-                                referral.Visit = visit;
+                                referral.VisitWhenIssued = visit;
                                 patient.BookVisit(visit);
 
                                 _context.UpdateReferral(referral);
@@ -532,7 +532,7 @@ namespace Asklepios.Web.Areas.CustomerServiceArea.Controllers
                 //Build the File Path.
                 if (long.TryParse(id, out long idL))
                 {
-                    byte[] bytes = _context.CurrentPatient.TestsResults.Where(c => c.Id == idL).FirstOrDefault()?.PdfDocument;//pdf.  System.IO.File.ReadAllBytes(pdf);
+                    byte[] bytes = _context.CurrentPatient.TestsResults.Where(c => c.Id == idL).FirstOrDefault()?.Document;//pdf.  System.IO.File.ReadAllBytes(pdf);
 
                     //Send the File to Download.
                     return File(bytes, "application/octet-stream", "results.pdf");
