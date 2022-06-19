@@ -12,6 +12,7 @@ namespace Asklepios.Web.Areas.CustomerServiceArea.Models
         public long SelectedNewVisitId { get; set; }
         public Visit SelectedNewVisit { get; set; }
         public Patient SelectedPatient { get; set; }
+        public string UserName { get;set; }
 
         public RescheduleVisitSelectNewViewModel()
         {

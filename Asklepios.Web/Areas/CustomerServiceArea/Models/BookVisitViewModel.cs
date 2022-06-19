@@ -147,6 +147,11 @@ namespace Asklepios.Web.Areas.CustomerServiceArea.Models
         public List<MedicalService> AllMedicalServices { get; internal set; }
         public List<Location> AllLocations { get; internal set; }
         public Patient SelectedPatient { get; set; }
+        public string UserName 
+        {
+            get ; 
+            set ; 
+        }
 
         private List<Visit> FilterVisits()
         {

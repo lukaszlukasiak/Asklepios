@@ -1,0 +1,63 @@
+﻿@model Asklepios.Core.Models.User
+@{
+    //SelectList medicalPackagesList = new SelectList(Model.MedicalPackages, "Id", "Name");
+    //SelectList nfzUnits = new SelectList(Model.NFZUnits, "Id", "Description");
+    //Model.Person.HasPolishCitizenship = true;
+
+    //Asklepios.Web.Areas.AdministrativeArea.Models.ViewMode editViewMode = Asklepios.Web.Areas.AdministrativeArea.Models.ViewMode.Edit;
+    //Asklepios.Web.Areas.AdministrativeArea.Models.ViewMode removeViewMode = Asklepios.Web.Areas.AdministrativeArea.Models.ViewMode.Remove;
+}
+<div class="d-flex flex-column">
+
+    <div class="form-group d-flex flex-column">
+
+        <label asp-for="WorkerModuleType" class="control-label"></label>
+        <input asp-for="WorkerModuleType.GetDescription()" class="form-control mb-2" readonly />
+
+        <label asp-for="Person.Name" class="control-label"></label>
+        <input asp-for="Person.Name" class="form-control mb-2" readonly />
+
+        <label asp-for="Person.Surname" class="control-label"></label>
+        <input asp-for="Person.Surname" class="form-control mb-2" readonly />
+
+        <label asp-for="Person.Gender" class="control-label"></label>
+        <input class="form-control  mb-2" asp-for="Person.Gender" readonly />
+
+        <label asp-for="Person.PhoneNumber" class="control-label"></label>
+        <input asp-for="Person.PhoneNumber" class="form-control mb-2" readonly />
+
+
+        <label asp-for="Person.DefaultAglomeration" class="control-label"></label>
+        @*<input class="form-control  mb-2" asp-for="Person.DefaultAglomeration" readonly />*@
+        <label asp-for="EmailAddress" class="control-label"></label>
+        <input asp-for="EmailAddress" class="form-control mb-2" readonly />
+
+
+        <label asp-for="Person.BirthDate" class="control-label"></label>
+        <input asp-for="Person.BirthDate" class="form-control mb-2" readonly />
+
+        <div class="d-flex flex-row">
+            <label asp-for="Person.HasPolishCitizenship"></label>
+            <input type="checkbox" asp-for="Person.HasPolishCitizenship" class="custom-control ml-2 " style="height:20px;width:20px" readonly />
+        </div>
+
+        <label asp-for="Person.PESEL" class="control-label"></label>
+        <input asp-for="Person.PESEL" class="form-control mb-2" readonly />
+
+        <label asp-for="Person.PassportNumber" class="control-label"></label>
+        <input asp-for="Person.PassportNumber" class="form-control mb-2" readonly />
+
+        <label asp-for="Person.PassportCode" class="control-label"></label>
+        <input asp-for="Person.PassportCode" class="form-control mb-2" readonly />
+
+        <label asp-for="Person.ImageFile" class="control-label"></label>
+
+        <div class="d-flex flex-fill  justify-content-center mt-2" style="text-align:center">
+            <img src="@Model.Person.ImageSource" class="img-fluid" style="display: block; max-height:300px;
+        border-radius: 6px; ">
+        </div>
+
+
+    </div>
+
+</div>

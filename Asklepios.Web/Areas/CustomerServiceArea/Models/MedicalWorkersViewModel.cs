@@ -10,6 +10,7 @@ namespace Asklepios.Web.Areas.CustomerServiceArea.Models
     {
         public List<MedicalWorker> MedicalWorkers { get; set; }
         public Patient SelectedPatient { get; set; }
+        public string UserName { get;set; }
 
         public MedicalWorkersViewModel(Patient patient, List<MedicalWorker> medicalWorkers)
         {

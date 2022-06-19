@@ -145,6 +145,7 @@ namespace Asklepios.Web.Areas.CustomerServiceArea.Models
 
         public IEnumerable<MedicalService> MedicalServices { get; internal set; }
         public Patient SelectedPatient { get; set; }
+        public string UserName { get;set; }
 
         private List<Visit> FilterVisits()
         {

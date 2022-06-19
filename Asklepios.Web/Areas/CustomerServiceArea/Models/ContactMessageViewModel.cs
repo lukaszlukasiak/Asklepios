@@ -41,6 +41,7 @@ namespace Asklepios.Web.Areas.CustomerServiceArea.Models
         }
         public AlertMessageType AlertMessageType { get; set; }
         public Patient SelectedPatient { get; set; }
+        public string UserName { get;set; }
 
         public ContactMessageViewModel()
         {

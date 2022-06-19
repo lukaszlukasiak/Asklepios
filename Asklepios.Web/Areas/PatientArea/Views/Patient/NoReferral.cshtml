@@ -1,9 +1,9 @@
-﻿@model Asklepios.Core.Models.Visit
+﻿@model Asklepios.Web.Areas.PatientArea.Models.VisitViewModel
 @{
     ViewData["Title"] = "View";
 }
 
-<partial name="_AvailableVisit" model="@Model" />
+<partial name="_AvailableVisit" model="@Model.Visit" />
 
 
 <div class="messages" style="text-align: center ">

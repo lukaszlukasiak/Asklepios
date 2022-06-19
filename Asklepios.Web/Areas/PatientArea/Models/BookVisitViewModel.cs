@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace Asklepios.Web.Areas.PatientArea.Models
 {
-    public class BookVisitViewModel:SearchViewModel
+    public class BookVisitViewModel:SearchViewModel, IBaseViewModel
     {
         public List<Visit> AllVisitsList { get; set; }
         public List<MedicalService> AllMedicalServices { get; set; }
@@ -120,6 +120,9 @@ namespace Asklepios.Web.Areas.PatientArea.Models
                 }
             }
         }
+
+        public string UserName { get; set; }
+        public List<Notification> Notifications { get; set; }
 
         private List<Visit> FilterVisits()
         {

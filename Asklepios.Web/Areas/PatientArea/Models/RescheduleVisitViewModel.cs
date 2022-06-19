@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Asklepios.Web.Areas.PatientArea.Models
 {
-    public class RescheduleVisitViewModel
+    public class RescheduleVisitViewModel: IBaseViewModel
     {
         public List<Visit> AllVisitsList { get; set; }
         public List<Visit> _filteredVisits;
@@ -53,6 +53,7 @@ namespace Asklepios.Web.Areas.PatientArea.Models
         const int ItemsPerPage = 100;
 
         public bool NoReferral { get; set; }
+        public string UserName { get; set; }
 
         public RescheduleVisitViewModel()
         {
@@ -144,6 +145,7 @@ namespace Asklepios.Web.Areas.PatientArea.Models
         }
 
         public IEnumerable<MedicalService> MedicalServices { get; internal set; }
+        public List<Notification> Notifications { get; set; }
 
         private List<Visit> FilterVisits()
         {

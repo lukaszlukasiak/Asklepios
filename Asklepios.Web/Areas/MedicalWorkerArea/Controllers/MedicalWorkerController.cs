@@ -1,4 +1,5 @@
-﻿using Asklepios.Core.Models;
+﻿using Asklepios.Core.Enums;
+using Asklepios.Core.Models;
 using Asklepios.Data.Interfaces;
 using Asklepios.Web.Areas.CustomerServiceArea.Models;
 using Asklepios.Web.Areas.MedicalWorkerArea.Models;
@@ -63,7 +64,9 @@ namespace Asklepios.Web.Areas.MedicalWorkerArea.Controllers
                 {
                     User user = JsonConvert.DeserializeObject<User>((string)TempData["User"]);
                     _loggedUser = user;
-                    _medicalWorker = _context.GetMedicalWorkerByUserId(_loggedUser.PersonId);
+                    _loggedUser.Person = _context.GetPersonById(_loggedUser.PersonId);
+                    _medicalWorker = _context.GetMedicalWorkerByPersonId(_loggedUser.Id);
+                    ViewData["UserName"] = _loggedUser.Person.FullName;
                 }
             }
             else
@@ -140,6 +143,19 @@ namespace Asklepios.Web.Areas.MedicalWorkerArea.Controllers
             }
 
         }
+        public IActionResult UserProfile()
+        {
+            if (_loggedUser != null)
+            {
+                //MedicalWorker medicalWorker = _context.GetMedicalWorkerByUserId(User.);
+                return View(_medicalWorker);
+            }
+            else
+            {
+                return NotFound();
+            }
+        }
+
         [HttpPost]
         public IActionResult CurrentVisit(CurrentVisitViewModel model)
         {
@@ -575,11 +591,25 @@ namespace Asklepios.Web.Areas.MedicalWorkerArea.Controllers
                 if (visit != null)
                 {
                     visit.VisitStatus = Core.Enums.VisitStatus.Finished;
+                    if (visit.MedicalResult!=null)
+                    {
+                        _context.AddNotification(visit.MedicalResult.Id,NotificationType.TestResult,visit.Patient.Id, DateTimeOffset.Now, visit.Id);
+                    }
+                    if (visit.Prescription!=null)
+                    {
+                        _context.AddNotification(visit.Prescription.Id, NotificationType.Prescription, visit.Patient.Id, DateTimeOffset.Now, visit.Id);
+                    }
+                    if (visit.ExaminationReferrals!=null)
+                    {
+                        foreach (MedicalReferral item in visit.ExaminationReferrals)
+                        {
+                            _context.AddNotification(item.Id, NotificationType.MedicalReferral, visit.Patient.Id, DateTimeOffset.Now, visit.Id);
+                        }
+                    }
                     CurrentVisitId = -1;
                     return RedirectToAction("Dashboard");
                 }
                 return NotFound();
-
             }
             else
             {

@@ -55,6 +55,7 @@ namespace Asklepios.Data.InMemoryContexts
         public static List<Prescription> Prescriptions { get; set; }
         public static List<IssuedMedicine> IssuedMedicines { get; set; }
         public static List<MedicalTestResult> MedicalTestResults { get; set; }
+        public static List<Notification> Notifications { get; set; }
         private static List<User> _users;
         public static List<User> Users
         {
@@ -92,6 +93,7 @@ namespace Asklepios.Data.InMemoryContexts
             IsCreated = true;
             Persons = GetAllPersons();
             Users = GetAllUsers();
+            Notifications = new List<Notification>();
             //Rooms = GetMedicalRooms().ToList();
             NfzUnits = GetNFZUnits().ToList();
             MedicalServices = GetMedicalServices().ToList();
@@ -1662,6 +1664,7 @@ namespace Asklepios.Data.InMemoryContexts
                         MinorMedicalServices = minorServices,
                         VisitReview = review
                     };
+                    AddNotificationsOrNot(visit);
                     historicalVisits.Add(visit);
                 }
             }
@@ -1692,6 +1695,75 @@ namespace Asklepios.Data.InMemoryContexts
 
             return historicalVisits;
 
+        }
+
+        private static void AddNotificationsOrNot(Visit visit)
+        {
+            if (visit.MedicalResult!=null)
+            {
+                Notification notification = new Notification();
+                notification.DateTimeAdded = DateTimeOffset.Now;
+                notification.EventObject = visit.MedicalResult;
+                notification.EventObjectId = visit.MedicalResult.Id;
+                notification.NotificationType = Core.Enums.NotificationType.TestResult;
+                notification.Patient = visit.Patient;
+                notification.PatientId = visit.Patient.Id;
+                notification.VisitId = visit.Id;
+                if (Notifications?.Count>0)
+                {
+                    notification.Id = Notifications.Max(c => c.Id) + 1;
+                }
+                else
+                {
+                    notification.Id = 1;
+                }
+                Notifications.Add(notification);
+            }
+            if (visit.Prescription!=null)
+            {
+                Notification notification = new Notification();
+                notification.DateTimeAdded = DateTimeOffset.Now;
+                notification.EventObject = visit.Prescription;
+                notification.EventObjectId = visit.Prescription.Id;
+                notification.NotificationType = Core.Enums.NotificationType.Prescription;
+                notification.Patient = visit.Patient;
+                notification.PatientId = visit.Patient.Id;
+                notification.VisitId = visit.Id;
+
+                if (Notifications?.Count > 0)
+                {
+                    notification.Id = Notifications.Max(c => c.Id) + 1;
+                }
+                else
+                {
+                    notification.Id = 1;
+                }
+                Notifications.Add(notification);
+            }
+            if (visit.ExaminationReferrals != null)
+            {
+                foreach (MedicalReferral item in visit.ExaminationReferrals)
+                {
+                    Notification notification = new Notification();
+                    notification.DateTimeAdded = DateTimeOffset.Now;
+                    notification.EventObject = item;
+                    notification.EventObjectId = item.Id;
+                    notification.NotificationType = Core.Enums.NotificationType.MedicalReferral;
+                    notification.Patient = visit.Patient;
+                    notification.PatientId = visit.Patient.Id;
+                    notification.VisitId = visit.Id;
+
+                    if (Notifications?.Count > 0)
+                    {
+                        notification.Id = Notifications.Max(c => c.Id) + 1;
+                    }
+                    else
+                    {
+                        notification.Id = 1;
+                    }
+                    Notifications.Add(notification);
+                }
+            }
         }
 
         private static List<string> GetDummyMedicalHistories()

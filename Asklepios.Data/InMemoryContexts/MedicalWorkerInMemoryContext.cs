@@ -1,4 +1,5 @@
-﻿using Asklepios.Core.Models;
+﻿using Asklepios.Core.Enums;
+using Asklepios.Core.Models;
 using Asklepios.Data.Interfaces;
 using Microsoft.AspNetCore.Http;
 using System;
@@ -27,7 +28,7 @@ namespace Asklepios.Data.InMemoryContexts
             return PatientMockDB.Locations;
         }
 
-        public MedicalWorker GetMedicalWorkerByUserId(long personId)
+        public MedicalWorker GetMedicalWorkerByPersonId(long personId)
         {
             List<MedicalWorker> medicalWorkers = PatientMockDB.GetMedicalWorkers().ToList();
             MedicalWorker medicalWorker = medicalWorkers.Where(c => c.Person.Id == personId).FirstOrDefault();
@@ -284,6 +285,23 @@ namespace Asklepios.Data.InMemoryContexts
                 }
             }
             //MedicalTestResult medicalTestResult=
+        }
+
+        public Person GetPersonById(long personId)
+        {
+            Person person = PatientMockDB.Persons.First(c => c.Id == personId);
+            return person;
+        }
+
+        public void AddNotification(long id1, NotificationType testResult, long id2, DateTimeOffset dateTimeOffset, long visitId)
+        {
+            Notification notification = new Notification();
+            notification.EventObjectId = id1;
+            notification.PatientId = id2;
+            notification.VisitId = visitId;
+            notification.Id = PatientMockDB.Notifications.Max(c => c.Id) + 1;
+            notification.DateTimeAdded = dateTimeOffset;
+            PatientMockDB.Notifications.Add(notification);
         }
 
         //public void AddPrescription(Recommendation recommendationToAdd)
