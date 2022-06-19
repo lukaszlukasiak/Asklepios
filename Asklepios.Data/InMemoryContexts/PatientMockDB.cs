@@ -310,7 +310,7 @@ namespace Asklepios.Data.InMemoryContexts
             {
                 File.Delete(documentPath);
             }
-           
+
         }
 
         internal static void UpdateMedicalPackage(MedicalPackage newPackage, MedicalPackage oldPackage)
@@ -416,6 +416,8 @@ namespace Asklepios.Data.InMemoryContexts
             int dayOffset = -1;
             DateTimeOffset start = new DateTimeOffset(dateTimeOffset.Year, dateTimeOffset.Month, dateTimeOffset.Day, 8, 0, 0, new TimeSpan(0, 0, 0)).AddDays(0);
             long startId = 100;
+            int locationsNumber = Locations.Count;
+
             for (int i = 0; i <= 7; i++)
             {
                 dayOffset++;
@@ -430,1046 +432,1121 @@ namespace Asklepios.Data.InMemoryContexts
 
                 int minutsOffset = -1;
 
-                for (int j = 0; j < 12; j++)
+                //int servicesCounter = medicalWorker.MedicalServices.Where(c => c.IsPrimaryService).Count();
+                //int serviceIndex = (servicesCounter-1) % (i+1);
+                //MedicalService service = medicalWorker.MedicalServices.Where(c => c.IsPrimaryService).ToList().ElementAt(serviceIndex);
+                //List<VisitCategory> categories = VisitCategories.Where(c => c.PrimaryMedicalServices.Any(d => d.Id == service.Id)).ToList();
+                //VisitCategory visitCategory = categories[categories.Count % (i + 1)];
+
+                //VisitCategory visitCategory = VisitCategories.Where(c => c.PrimaryMedicalServices.Any(d => d.Id == service.Id)).FirstOrDefault();
+
+                //List<VisitCategory> categories = VisitCategories.Where(c => c.PrimaryMedicalServices.Any(d => d.Id == medicalService.Id)).ToList();
+                for (int j = 0; j < MedicalWorkers.Count; j++)
                 {
-                    minutsOffset++;
-                    Visit visit = new Visit()
+                    minutsOffset = -1;
+                    MedicalWorker medicalWorker = MedicalWorkers.ElementAt(j);
+
+                    int servicesCounter = medicalWorker.MedicalServices.Where(c => c.IsPrimaryService).Count();
+                    int serviceIndex = (servicesCounter - 1) % (i + 1);
+                    MedicalService service = medicalWorker.MedicalServices.Where(c => c.IsPrimaryService).ToList().ElementAt(serviceIndex);
+                    List<VisitCategory> categories = VisitCategories.Where(c => c.PrimaryMedicalServices.Any(d => d.Id == service.Id)).ToList();
+                    VisitCategory visitCategory = categories[(categories.Count-1) % (i + 1)];
+                    Location location = Locations.ElementAt((locationsNumber -1)% (j + 1));
+                    int roomsCounter = location.MedicalRooms.Count;
+                    MedicalRoom room = location.MedicalRooms.ElementAt((roomsCounter-1) % (j + 1));
+
+                    for (int m = 0; m < 12; m++)
                     {
-                        Id = startId++,
-                        PrimaryService = PrimaryMedicalServices[0],
-                        DateTimeSince = start.AddDays(dayOffset).AddMinutes(minutsOffset * 15),
-                        DateTimeTill = start.AddDays(dayOffset).AddMinutes(minutsOffset * 15 + 15),
-                        Location = Locations.ElementAt(3),
-                        MedicalRoom = Locations.ElementAt(3).MedicalRooms.ElementAt(4),
-                        MedicalWorker = MedicalWorkers.ElementAt(36),
-                        VisitCategory = VisitCategories.ElementAt(0),
-                    };
-                    availableVisits.Add(visit);
-                }
-                minutsOffset = -1;
-
-                for (int j = 0; j < 12; j++)
-                {
-                    minutsOffset++;
-                    Visit visit = new Visit()
-                    {
-                        Id = startId++,
-
-                        PrimaryService = PrimaryMedicalServices[9],
-                        DateTimeSince = start.AddDays(dayOffset).AddMinutes(minutsOffset * 15),
-                        DateTimeTill = start.AddDays(dayOffset).AddMinutes(minutsOffset * 15 + 15),
-                        Location = Locations.ElementAt(1),
-                        MedicalRoom = Locations.ElementAt(1).MedicalRooms.ElementAt(6),
-                        MedicalWorker = MedicalWorkers.ElementAt(34),
-                        VisitCategory = VisitCategories.ElementAt(1),
-                    };
-                    availableVisits.Add(visit);
-                }
-                minutsOffset = -1;
-
-                for (int j = 0; j < 12; j++)
-                {
-                    minutsOffset++;
-                    Visit visit = new Visit()
-                    {
-                        Id = startId++,
-
-                        PrimaryService = PrimaryMedicalServices[23],
-                        DateTimeSince = start.AddDays(dayOffset).AddMinutes(minutsOffset * 15),
-                        DateTimeTill = start.AddDays(dayOffset).AddMinutes(minutsOffset * 15 + 15),
-                        Location = Locations.ElementAt(1),
-                        MedicalRoom = Locations.ElementAt(1).MedicalRooms.ElementAt(3),
-                        MedicalWorker = MedicalWorkers.ElementAt(12),
-                        VisitCategory = VisitCategories.ElementAt(2),
-                    };
-                    availableVisits.Add(visit);
-                }
-                minutsOffset = -1;
-
-                for (int j = 0; j < 12; j++)
-                {
-                    minutsOffset++;
-                    Visit visit = new Visit()
-                    {
-                        Id = startId++,
-
-                        PrimaryService = PrimaryMedicalServices[3],
-                        DateTimeSince = start.AddDays(dayOffset).AddMinutes(minutsOffset * 15),
-                        DateTimeTill = start.AddDays(dayOffset).AddMinutes(minutsOffset * 15 + 15),
-                        Location = Locations.ElementAt(5),
-                        MedicalRoom = Locations.ElementAt(5).MedicalRooms.ElementAt(3),
-                        MedicalWorker = MedicalWorkers.ElementAt(37),
-                        VisitCategory = VisitCategories.ElementAt(0),
-                    };
-                    availableVisits.Add(visit);
-                }
-                minutsOffset = -1;
-
-
-                for (int j = 0; j < 12; j++)
-                {
-                    minutsOffset++;
-                    Visit visit = new Visit()
-                    {
-                        Id = startId++,
-
-                        PrimaryService = PrimaryMedicalServices[28],
-                        DateTimeSince = start.AddDays(dayOffset).AddMinutes(minutsOffset * 15),
-                        DateTimeTill = start.AddDays(dayOffset).AddMinutes(minutsOffset * 15 + 15),
-                        Location = Locations.ElementAt(1),
-                        MedicalRoom = Locations.ElementAt(1).MedicalRooms.ElementAt(3),
-                        MedicalWorker = MedicalWorkers.ElementAt(55),
-                        VisitCategory = VisitCategories.ElementAt(3),
-                    };
-                    availableVisits.Add(visit);
-                }
-                minutsOffset = -1;
-
-
-
-                for (int j = 0; j < 12; j++)
-                {
-                    minutsOffset++;
-                    Visit visit = new Visit()
-                    {
-                        Id = startId++,
-
-                        PrimaryService = PrimaryMedicalServices[33],
-                        DateTimeSince = start.AddDays(dayOffset).AddMinutes(minutsOffset * 15),
-                        DateTimeTill = start.AddDays(dayOffset).AddMinutes(minutsOffset * 15 + 15),
-                        Location = Locations.ElementAt(1),
-                        MedicalRoom = Locations.ElementAt(1).MedicalRooms.ElementAt(1),
-                        MedicalWorker = MedicalWorkers.ElementAt(61),
-                        VisitCategory = VisitCategories.ElementAt(5),
-                    };
-                    availableVisits.Add(visit);
-                }
-                minutsOffset = -1;
-
-                for (int j = 0; j < 12; j++)
-                {
-                    minutsOffset++;
-
-                    Visit visit = new Visit()
-                    {
-                        Id = startId++,
-                        PrimaryService = PrimaryMedicalServices[9],
-                        MedicalRoom = Locations.ElementAt(0).MedicalRooms.ElementAt(0),
-                        DateTimeSince = start.AddDays(dayOffset).AddMinutes(minutsOffset * 15),
-                        DateTimeTill = start.AddDays(dayOffset).AddMinutes(minutsOffset * 15 + 15),
-                        Location = Locations.ElementAt(0),
-                        MedicalWorker = MedicalWorkers.ElementAt(50),
-                        VisitCategory = VisitCategories.ElementAt(0),
-                    };
-                    availableVisits.Add(visit);
-                }
-                minutsOffset = -1;
-
-                for (int j = 0; j < 12; j++)
-                {
-                    minutsOffset++;
-
-                    Visit visit = new Visit()
-                    {
-                        Id = startId++,
-                        PrimaryService = PrimaryMedicalServices[7],
-                        DateTimeSince = start.AddDays(dayOffset).AddMinutes(minutsOffset * 15),
-                        DateTimeTill = start.AddDays(dayOffset).AddMinutes(minutsOffset * 15 + 15),
-                        Location = Locations.ElementAt(0),
-                        MedicalRoom = Locations.ElementAt(0).MedicalRooms.ElementAt(1),
-                        MedicalWorker = MedicalWorkers.ElementAt(29),
-                        VisitCategory = VisitCategories.ElementAt(0),
-                    };
-                    availableVisits.Add(visit);
+                        minutsOffset++;
+                        Visit visit = new Visit()
+                        {
+                            Id = startId++,
+                            PrimaryService = service,// PrimaryMedicalServices[0],
+                            DateTimeSince = start.AddDays(dayOffset).AddMinutes(minutsOffset * 15),
+                            DateTimeTill = start.AddDays(dayOffset).AddMinutes(minutsOffset * 15 + 15),
+                            Location = location,
+                            MedicalRoom = room,
+                            MedicalWorker = medicalWorker,//MedicalWorkers.ElementAt(36),
+                            VisitCategory = visitCategory//VisitCategories.ElementAt(0),
+                        };
+                        availableVisits.Add(visit);
+                    }
 
                 }
-                minutsOffset = -1;
-
-                for (int j = 0; j < 12; j++)
-                {
-                    minutsOffset++;
-
-                    Visit visit = new Visit()
-                    {
-                        Id = startId++,
-                        PrimaryService = PrimaryMedicalServices[1],
-                        MedicalRoom = Locations.ElementAt(0).MedicalRooms.ElementAt(0),
-                        DateTimeSince = start.AddDays(dayOffset).AddMinutes(minutsOffset * 15),
-                        DateTimeTill = start.AddDays(dayOffset).AddMinutes(minutsOffset * 15 + 15),
-                        Location = Locations.ElementAt(0),
-                        MedicalWorker = MedicalWorkers.ElementAt(0),
-                        VisitCategory = VisitCategories.ElementAt(0),
-                    };
-                    availableVisits.Add(visit);
-
-                }
-                minutsOffset = -1;
-
-                for (int j = 0; j < 12; j++)
-                {
-                    minutsOffset++;
-
-                    Visit visit = new Visit()
-                    {
-                        Id = startId++,
-                        PrimaryService = PrimaryMedicalServices[28],
-                        MedicalRoom = Locations.ElementAt(0).MedicalRooms.ElementAt(0),
-                        DateTimeSince = start.AddDays(dayOffset).AddMinutes(minutsOffset * 15),
-                        DateTimeTill = start.AddDays(dayOffset).AddMinutes(minutsOffset * 15 + 15),
-                        Location = Locations.ElementAt(0),
-                        MedicalWorker = MedicalWorkers.ElementAt(51),
-                        VisitCategory = VisitCategories.ElementAt(3),
-                    };
-                    availableVisits.Add(visit);
-                }
-                minutsOffset = -1;
-
-                for (int j = 0; j < 12; j++)
-                {
-                    minutsOffset++;
-
-                    Visit visit = new Visit()
-                    {
-                        Id = startId++,
-                        PrimaryService = PrimaryMedicalServices[6],
-                        MedicalRoom = Locations.ElementAt(0).MedicalRooms.ElementAt(0),
-                        DateTimeSince = start.AddDays(dayOffset).AddMinutes(minutsOffset * 15),
-                        DateTimeTill = start.AddDays(dayOffset).AddMinutes(minutsOffset * 15 + 15),
-                        Location = Locations.ElementAt(0),
-                        MedicalWorker = MedicalWorkers.ElementAt(26),
-                        VisitCategory = VisitCategories.ElementAt(0),
-                    };
-                    availableVisits.Add(visit);
-                }
-                minutsOffset = -1;
-
-                for (int j = 0; j < 12; j++)
-                {
-                    minutsOffset++;
-
-                    Visit visit = new()
-                    {
-                        Id = startId++,
-                        PrimaryService = PrimaryMedicalServices[32],
-                        MedicalRoom = Locations.ElementAt(0).MedicalRooms.ElementAt(0),
-                        DateTimeSince = start.AddDays(dayOffset).AddMinutes(minutsOffset * 15),
-                        DateTimeTill = start.AddDays(dayOffset).AddMinutes(minutsOffset * 15 + 15),
-                        Location = Locations.ElementAt(0),
-                        MedicalWorker = MedicalWorkers.ElementAt(3),
-                        VisitCategory = VisitCategories.ElementAt(4),
-                    };
-                    availableVisits.Add(visit);
-                }
-                minutsOffset = -1;
-
-
-                for (int j = 0; j < 12; j++)
-                {
-                    minutsOffset++;
-
-                    Visit visit = new Visit()
-                    {
-                        Id = startId++,
-                        PrimaryService = PrimaryMedicalServices[33],
-                        MedicalRoom = Locations.ElementAt(0).MedicalRooms.ElementAt(1),
-                        DateTimeSince = start.AddDays(dayOffset).AddMinutes(minutsOffset * 15),
-                        DateTimeTill = start.AddDays(dayOffset).AddMinutes(minutsOffset * 15 + 15),
-                        Location = Locations.ElementAt(3),
-                        MedicalWorker = MedicalWorkers.ElementAt(39),
-                        VisitCategory = VisitCategories.ElementAt(5),
-
-                    };
-                    availableVisits.Add(visit);
-                }
-                //interna
-                for (int j = 0; j < 12; j++)
-                {
-                    minutsOffset++;
-
-                    Visit visit = new Visit()
-                    {
-                        Id = startId++,
-                        PrimaryService = PrimaryMedicalServices[2],
-                        MedicalRoom = Locations.ElementAt(0).MedicalRooms.ElementAt(1),
-                        DateTimeSince = start.AddDays(dayOffset).AddMinutes(minutsOffset * 15),
-                        DateTimeTill = start.AddDays(dayOffset).AddMinutes(minutsOffset * 15 + 15),
-                        Location = Locations.ElementAt(3),
-                        MedicalWorker = MedicalWorkers.ElementAt(35),
-                        VisitCategory = VisitCategories.ElementAt(1),
-                    };
-                    availableVisits.Add(visit);
-                }
-                for (int j = 0; j < 12; j++)
-                {
-                    minutsOffset++;
-
-                    Visit visit = new Visit()
-                    {
-                        Id = startId++,
-                        PrimaryService = PrimaryMedicalServices[2],
-                        MedicalRoom = Locations.ElementAt(7).MedicalRooms.ElementAt(4),
-                        DateTimeSince = start.AddDays(dayOffset).AddMinutes(minutsOffset * 15),
-                        DateTimeTill = start.AddDays(dayOffset).AddMinutes(minutsOffset * 15 + 15),
-                        Location = Locations.ElementAt(7),
-                        MedicalWorker = MedicalWorkers.ElementAt(44),
-                        VisitCategory = VisitCategories.ElementAt(0),
-                    };
-                    availableVisits.Add(visit);
-                }
-                //
-
-
-                for (int j = 0; j < 12; j++)
-                {
-                    minutsOffset++;
-
-                    Visit visit = new Visit()
-                    {
-                        Id = startId++,
-                        PrimaryService = PrimaryMedicalServices[4],
-                        MedicalRoom = Locations.ElementAt(3).MedicalRooms.ElementAt(6),
-                        DateTimeSince = start.AddDays(dayOffset).AddMinutes(minutsOffset * 15),
-                        DateTimeTill = start.AddDays(dayOffset).AddMinutes(minutsOffset * 15 + 15),
-                        Location = Locations.ElementAt(3),
-                        MedicalWorker = MedicalWorkers.ElementAt(8),
-                        VisitCategory = VisitCategories.ElementAt(0),
-                    };
-                    availableVisits.Add(visit);
-                }
-                for (int j = 0; j < 12; j++)
-                {
-                    minutsOffset++;
-
-                    Visit visit = new Visit()
-                    {
-                        Id = startId++,
-                        PrimaryService = PrimaryMedicalServices[5],
-                        MedicalRoom = Locations.ElementAt(6).MedicalRooms.ElementAt(2),
-                        DateTimeSince = start.AddDays(dayOffset).AddMinutes(minutsOffset * 15),
-                        DateTimeTill = start.AddDays(dayOffset).AddMinutes(minutsOffset * 15 + 15),
-                        Location = Locations.ElementAt(6),
-                        MedicalWorker = MedicalWorkers.ElementAt(4),
-                        VisitCategory = VisitCategories.ElementAt(0),
-                    };
-                    availableVisits.Add(visit);
-                }
-                //okulistyczna
-                for (int j = 0; j < 8; j++)
-                {
-                    minutsOffset++;
-
-                    Visit visit = new Visit()
-                    {
-                        Id = startId++,
-                        PrimaryService = PrimaryMedicalServices[8],
-                        MedicalRoom = Locations.ElementAt(7).MedicalRooms.ElementAt(7),
-                        DateTimeSince = start.AddDays(dayOffset).AddMinutes(60 + (minutsOffset * 15)),
-                        DateTimeTill = start.AddDays(dayOffset).AddMinutes(60 + (minutsOffset * 15) + 15),
-                        Location = Locations.ElementAt(7),
-                        MedicalWorker = MedicalWorkers.ElementAt(15),
-                        VisitCategory = VisitCategories.ElementAt(0),
-                    };
-                    availableVisits.Add(visit);
-                }
-                for (int j = 0; j < 10; j++)
-                {
-                    minutsOffset++;
-
-                    Visit visit = new Visit()
-                    {
-                        Id = startId++,
-                        PrimaryService = PrimaryMedicalServices[8],
-                        MedicalRoom = Locations.ElementAt(8).MedicalRooms.ElementAt(7),
-                        DateTimeSince = start.AddDays(dayOffset).AddMinutes(90 + (minutsOffset * 15)),
-                        DateTimeTill = start.AddDays(dayOffset).AddMinutes(90 + (minutsOffset * 15) + 15),
-                        Location = Locations.ElementAt(8),
-                        MedicalWorker = MedicalWorkers.ElementAt(31),
-                        VisitCategory = VisitCategories.ElementAt(0),
-                    };
-                    availableVisits.Add(visit);
-                }
-                //endokrynologia
-                for (int j = 0; j < 10; j++)
-                {
-                    minutsOffset++;
-
-                    Visit visit = new Visit()
-                    {
-                        Id = startId++,
-                        PrimaryService = PrimaryMedicalServices[10],
-                        MedicalRoom = Locations.ElementAt(8).MedicalRooms.ElementAt(9),
-                        DateTimeSince = start.AddDays(dayOffset).AddMinutes(90 + (minutsOffset * 15)),
-                        DateTimeTill = start.AddDays(dayOffset).AddMinutes(90 + (minutsOffset * 15) + 15),
-                        Location = Locations.ElementAt(8),
-                        MedicalWorker = MedicalWorkers.ElementAt(43),
-                        VisitCategory = VisitCategories.ElementAt(1),
-                    };
-                    availableVisits.Add(visit);
-                }
-                for (int j = 0; j < 10; j++)
-                {
-                    minutsOffset++;
-
-                    Visit visit = new Visit()
-                    {
-                        Id = startId++,
-                        PrimaryService = PrimaryMedicalServices[10],
-                        MedicalRoom = Locations.ElementAt(0).MedicalRooms.ElementAt(9),
-                        DateTimeSince = start.AddDays(dayOffset).AddMinutes(90 + (minutsOffset * 15)),
-                        DateTimeTill = start.AddDays(dayOffset).AddMinutes(90 + (minutsOffset * 15) + 15),
-                        Location = Locations.ElementAt(0),
-                        MedicalWorker = MedicalWorkers.ElementAt(48),
-                        VisitCategory = VisitCategories.ElementAt(0),
-                    };
-                    availableVisits.Add(visit);
-                }
-                //chirurgia ogólna  // chirurdzy 16-19, kolejno
-                for (int j = 0; j < 10; j++)
-                {
-                    minutsOffset++;
-
-                    Visit visit = new Visit()
-                    {
-                        Id = startId++,
-                        PrimaryService = PrimaryMedicalServices[11],
-                        MedicalRoom = Locations.ElementAt(1).MedicalRooms.ElementAt(2),
-                        DateTimeSince = start.AddDays(dayOffset).AddMinutes((minutsOffset * 15)),
-                        DateTimeTill = start.AddDays(dayOffset).AddMinutes((minutsOffset * 15) + 15),
-                        Location = Locations.ElementAt(1),
-                        MedicalWorker = MedicalWorkers.ElementAt(30),
-                        VisitCategory = VisitCategories.ElementAt(0),
-                    };
-                    availableVisits.Add(visit);
-                }
-                for (int j = 0; j < 10; j++)
-                {
-                    minutsOffset++;
-
-                    Visit visit = new Visit()
-                    {
-                        Id = startId++,
-                        PrimaryService = PrimaryMedicalServices[12],
-                        MedicalRoom = Locations.ElementAt(1).MedicalRooms.ElementAt(2),
-                        DateTimeSince = start.AddDays(dayOffset).AddMinutes(180 + (minutsOffset * 15)),
-                        DateTimeTill = start.AddDays(dayOffset).AddMinutes(180 + (minutsOffset * 15) + 15),
-                        Location = Locations.ElementAt(1),
-                        MedicalWorker = MedicalWorkers.ElementAt(30),
-                        VisitCategory = VisitCategories.ElementAt(0),
-                    };
-                    availableVisits.Add(visit);
-                }
-                for (int j = 0; j < 10; j++)
-                {
-                    minutsOffset++;
-
-                    Visit visit = new Visit()
-                    {
-                        Id = startId++,
-                        PrimaryService = PrimaryMedicalServices[11],
-                        MedicalRoom = Locations.ElementAt(3).MedicalRooms.ElementAt(3),
-                        DateTimeSince = start.AddDays(dayOffset).AddMinutes((minutsOffset * 15)),
-                        DateTimeTill = start.AddDays(dayOffset).AddMinutes((minutsOffset * 15) + 15),
-                        Location = Locations.ElementAt(3),
-                        MedicalWorker = MedicalWorkers.ElementAt(16),
-                        VisitCategory = VisitCategories.ElementAt(0),
-                    };
-                    availableVisits.Add(visit);
-                }
-                for (int j = 0; j < 10; j++)
-                {
-                    minutsOffset++;
-
-                    Visit visit = new Visit()
-                    {
-                        Id = startId++,
-                        PrimaryService = PrimaryMedicalServices[12],
-                        MedicalRoom = Locations.ElementAt(3).MedicalRooms.ElementAt(3),
-                        DateTimeSince = start.AddDays(dayOffset).AddMinutes(180 + (minutsOffset * 15)),
-                        DateTimeTill = start.AddDays(dayOffset).AddMinutes(180 + (minutsOffset * 15) + 15),
-                        Location = Locations.ElementAt(3),
-                        MedicalWorker = MedicalWorkers.ElementAt(16),
-                        VisitCategory = VisitCategories.ElementAt(0),
-                    };
-                    availableVisits.Add(visit);
-                }
-
-                for (int j = 0; j < 24; j++)
-                {
-                    minutsOffset++;
-
-                    Visit visit = new Visit()
-                    {
-                        Id = startId++,
-                        PrimaryService = PrimaryMedicalServices[13],
-                        MedicalRoom = Locations.ElementAt(1).MedicalRooms.ElementAt(3),
-                        DateTimeSince = start.AddDays(dayOffset).AddMinutes(180 + (minutsOffset * 15)),
-                        DateTimeTill = start.AddDays(dayOffset).AddMinutes(180 + (minutsOffset * 15) + 15),
-                        Location = Locations.ElementAt(1),
-                        MedicalWorker = MedicalWorkers.ElementAt(17),
-                        VisitCategory = VisitCategories.ElementAt(0),
-                    };
-                    availableVisits.Add(visit);
-                }
-                for (int j = 0; j < 24; j++)
-                {
-                    minutsOffset++;
-
-                    Visit visit = new Visit()
-                    {
-                        Id = startId++,
-                        PrimaryService = PrimaryMedicalServices[14],
-                        MedicalRoom = Locations.ElementAt(2).MedicalRooms.ElementAt(3),
-                        DateTimeSince = start.AddDays(dayOffset).AddMinutes(180 + (minutsOffset * 15)),
-                        DateTimeTill = start.AddDays(dayOffset).AddMinutes(180 + (minutsOffset * 15) + 15),
-                        Location = Locations.ElementAt(2),
-                        MedicalWorker = MedicalWorkers.ElementAt(18),
-                        VisitCategory = VisitCategories.ElementAt(0),
-                    };
-                    availableVisits.Add(visit);
-                }
-                for (int j = 0; j < 24; j++)
-                {
-                    minutsOffset++;
-
-                    Visit visit = new Visit()
-                    {
-                        Id = startId++,
-                        PrimaryService = PrimaryMedicalServices[15],
-                        MedicalRoom = Locations.ElementAt(4).MedicalRooms.ElementAt(3),
-                        DateTimeSince = start.AddDays(dayOffset).AddMinutes(180 + (minutsOffset * 15)),
-                        DateTimeTill = start.AddDays(dayOffset).AddMinutes(180 + (minutsOffset * 15) + 15),
-                        Location = Locations.ElementAt(4),
-                        MedicalWorker = MedicalWorkers.ElementAt(19),
-                        VisitCategory = VisitCategories.ElementAt(0),
-                    };
-                    availableVisits.Add(visit);
-                }
-
-
-                //laryngologia
-                for (int j = 0; j < 12; j++)
-                {
-                    minutsOffset++;
-                    Visit visit = new Visit()
-                    {
-                        Id = startId++,
-
-                        PrimaryService = PrimaryMedicalServices[16],
-                        DateTimeSince = start.AddDays(dayOffset).AddMinutes(minutsOffset * 15),
-                        DateTimeTill = start.AddDays(dayOffset).AddMinutes(minutsOffset * 15 + 15),
-                        Location = Locations.ElementAt(4),
-                        MedicalRoom = Locations.ElementAt(5).MedicalRooms.ElementAt(2),
-                        MedicalWorker = MedicalWorkers.ElementAt(20),
-                        VisitCategory = VisitCategories.ElementAt(0),
-                    };
-                    availableVisits.Add(visit);
-                }
-                minutsOffset = -1;
-
-                for (int j = 0; j < 12; j++)
-                {
-                    minutsOffset++;
-                    Visit visit = new Visit()
-                    {
-                        Id = startId++,
-
-                        PrimaryService = PrimaryMedicalServices[16],
-                        DateTimeSince = start.AddDays(dayOffset).AddMinutes(minutsOffset * 15),
-                        DateTimeTill = start.AddDays(dayOffset).AddMinutes(minutsOffset * 15 + 15),
-                        Location = Locations.ElementAt(6),
-                        MedicalRoom = Locations.ElementAt(6).MedicalRooms.ElementAt(6),
-                        MedicalWorker = MedicalWorkers.ElementAt(64),
-                        VisitCategory = VisitCategories.ElementAt(0),
-                    };
-                    availableVisits.Add(visit);
-                }
-                minutsOffset = -1;
-
-                //neurologia
-
-                for (int j = 0; j < 12; j++)
-                {
-                    minutsOffset++;
-                    Visit visit = new Visit()
-                    {
-                        Id = startId++,
-
-                        PrimaryService = PrimaryMedicalServices[17],
-                        DateTimeSince = start.AddDays(dayOffset).AddMinutes(minutsOffset * 15),
-                        DateTimeTill = start.AddDays(dayOffset).AddMinutes(minutsOffset * 15 + 15),
-                        Location = Locations.ElementAt(6),
-                        MedicalRoom = Locations.ElementAt(6).MedicalRooms.ElementAt(7),
-                        MedicalWorker = MedicalWorkers.ElementAt(21),
-                        VisitCategory = VisitCategories.ElementAt(0),
-                    };
-                    availableVisits.Add(visit);
-                }
-                minutsOffset = -1;
-                //urologia
-
-                for (int j = 0; j < 12; j++)
-                {
-                    minutsOffset++;
-                    Visit visit = new Visit()
-                    {
-                        Id = startId++,
-
-                        PrimaryService = PrimaryMedicalServices[18],
-                        DateTimeSince = start.AddDays(dayOffset).AddMinutes(minutsOffset * 15),
-                        DateTimeTill = start.AddDays(dayOffset).AddMinutes(minutsOffset * 15 + 15),
-                        Location = Locations.ElementAt(6),
-                        MedicalRoom = Locations.ElementAt(6).MedicalRooms.ElementAt(8),
-                        MedicalWorker = MedicalWorkers.ElementAt(22),
-                        VisitCategory = VisitCategories.ElementAt(0),
-                    };
-                    availableVisits.Add(visit);
-                }
-                minutsOffset = -1;
-                //stomatologia zachowawcza
-                for (int j = 0; j < 12; j++)
-                {
-                    minutsOffset++;
-                    Visit visit = new Visit()
-                    {
-                        Id = startId++,
-
-                        PrimaryService = PrimaryMedicalServices[20],
-                        DateTimeSince = start.AddDays(dayOffset).AddMinutes(minutsOffset * 30),
-                        DateTimeTill = start.AddDays(dayOffset).AddMinutes(minutsOffset * 30 + 30),
-                        Location = Locations.ElementAt(4),
-                        MedicalRoom = Locations.ElementAt(5).MedicalRooms.ElementAt(1),
-                        MedicalWorker = MedicalWorkers.ElementAt(5),
-                        VisitCategory = VisitCategories.ElementAt(2),
-                    };
-                    availableVisits.Add(visit);
-                }
-                minutsOffset = -1;
-
-                for (int j = 0; j < 12; j++)
-                {
-                    minutsOffset++;
-
-                    Visit visit = new Visit()
-                    {
-                        Id = startId++,
-                        PrimaryService = PrimaryMedicalServices[20],
-                        MinorMedicalServices = new List<MedicalService>() { MedicalServices[48], MedicalServices[49], MedicalServices[52] },
-                        MedicalRoom = Locations.ElementAt(0).MedicalRooms.ElementAt(1),
-                        DateTimeSince = start.AddDays(dayOffset).AddMinutes(minutsOffset * 30),
-                        DateTimeTill = start.AddDays(dayOffset).AddMinutes(minutsOffset * 30 + 30),
-                        Location = Locations.ElementAt(0),
-                        MedicalWorker = MedicalWorkers.ElementAt(63),
-                        VisitCategory = VisitCategories.ElementAt(2),
-                    };
-                    availableVisits.Add(visit);
-                }
-                minutsOffset = -1;
-
-                //ortodoncja
-                for (int j = 0; j < 12; j++)
-                {
-                    minutsOffset++;
-                    Visit visit = new Visit()
-                    {
-                        Id = startId++,
-                        PrimaryService = PrimaryMedicalServices[21],
-                        DateTimeSince = start.AddDays(dayOffset).AddMinutes(minutsOffset * 30),
-                        DateTimeTill = start.AddDays(dayOffset).AddMinutes(minutsOffset * 30 + 30),
-                        Location = Locations.ElementAt(7),
-                        MedicalRoom = Locations.ElementAt(7).MedicalRooms.ElementAt(8),
-                        MedicalWorker = MedicalWorkers.ElementAt(63),
-                        VisitCategory = VisitCategories.ElementAt(2),
-                    };
-                    availableVisits.Add(visit);
-                }
-                minutsOffset = -1;
-
-                for (int j = 0; j < 12; j++)
-                {
-                    minutsOffset++;
-                    Visit visit = new Visit()
-                    {
-                        Id = startId++,
-                        PrimaryService = PrimaryMedicalServices[21],
-                        DateTimeSince = start.AddDays(dayOffset).AddMinutes(minutsOffset * 30),
-                        DateTimeTill = start.AddDays(dayOffset).AddMinutes(minutsOffset * 30 + 30),
-                        Location = Locations.ElementAt(8),
-                        MedicalRoom = Locations.ElementAt(8).MedicalRooms.ElementAt(8),
-                        MedicalWorker = MedicalWorkers.ElementAt(42),
-                        VisitCategory = VisitCategories.ElementAt(2),
-                    };
-                    availableVisits.Add(visit);
-                }
-                minutsOffset = -1;
-                //chiruriga sotmatologiczna
-                for (int j = 0; j < 12; j++)
-                {
-                    minutsOffset++;
-                    Visit visit = new Visit()
-                    {
-                        Id = startId++,
-                        PrimaryService = PrimaryMedicalServices[22],
-                        DateTimeSince = start.AddDays(dayOffset).AddMinutes(minutsOffset * 30),
-                        DateTimeTill = start.AddDays(dayOffset).AddMinutes(minutsOffset * 30 + 30),
-                        Location = Locations.ElementAt(0),
-                        MedicalRoom = Locations.ElementAt(0).MedicalRooms.ElementAt(10),
-                        MedicalWorker = MedicalWorkers.ElementAt(9),
-                        VisitCategory = VisitCategories.ElementAt(2),
-                    };
-                    availableVisits.Add(visit);
-                }
-                minutsOffset = -1;
-
-                //protetyka
-                for (int j = 0; j < 16; j++)
-                {
-                    minutsOffset++;
-                    Visit visit = new Visit()
-                    {
-                        Id = startId++,
-                        PrimaryService = PrimaryMedicalServices[24],
-                        DateTimeSince = start.AddDays(dayOffset).AddMinutes(minutsOffset * 30),
-                        DateTimeTill = start.AddDays(dayOffset).AddMinutes(minutsOffset * 30 + 30),
-                        Location = Locations.ElementAt(0),
-                        MedicalRoom = Locations.ElementAt(0).MedicalRooms.ElementAt(11),
-                        MedicalWorker = MedicalWorkers.ElementAt(24),
-                        VisitCategory = VisitCategories.ElementAt(2),
-                    };
-                    availableVisits.Add(visit);
-                }
-                minutsOffset = -1;
-
-                //higiena
-
-                for (int j = 0; j < 12; j++)
-                {
-                    minutsOffset++;
-                    Visit visit = new Visit()
-                    {
-                        Id = startId++,
-                        PrimaryService = PrimaryMedicalServices[25],
-                        DateTimeSince = start.AddDays(dayOffset).AddMinutes(minutsOffset * 30),
-                        DateTimeTill = start.AddDays(dayOffset).AddMinutes(minutsOffset * 30 + 30),
-                        Location = Locations.ElementAt(1),
-                        MedicalRoom = Locations.ElementAt(1).MedicalRooms.ElementAt(11),
-                        MedicalWorker = MedicalWorkers.ElementAt(33),
-                        VisitCategory = VisitCategories.ElementAt(2),
-                    };
-                    availableVisits.Add(visit);
-                }
-                minutsOffset = -1;
-
-                for (int j = 0; j < 12; j++)
-                {
-                    minutsOffset++;
-                    Visit visit = new Visit()
-                    {
-                        Id = startId++,
-                        PrimaryService = PrimaryMedicalServices[25],
-                        DateTimeSince = start.AddDays(dayOffset).AddMinutes(minutsOffset * 30),
-                        DateTimeTill = start.AddDays(dayOffset).AddMinutes(minutsOffset * 30 + 30),
-                        Location = Locations.ElementAt(2),
-                        MedicalRoom = Locations.ElementAt(2).MedicalRooms.ElementAt(11),
-                        MedicalWorker = MedicalWorkers.ElementAt(46),
-                        VisitCategory = VisitCategories.ElementAt(2),
-                    };
-                    availableVisits.Add(visit);
-                }
-                minutsOffset = -1;
-
-                //usg
-
-                for (int j = 0; j < 12; j++)
-                {
-                    minutsOffset++;
-                    Visit visit = new Visit()
-                    {
-                        Id = startId++,
-                        PrimaryService = PrimaryMedicalServices[27],
-                        DateTimeSince = start.AddDays(dayOffset).AddMinutes(minutsOffset * 15),
-                        DateTimeTill = start.AddDays(dayOffset).AddMinutes(minutsOffset * 15 + 15),
-                        Location = Locations.ElementAt(8),
-                        MedicalRoom = Locations.ElementAt(8).MedicalRooms.ElementAt(11),
-                        MedicalWorker = MedicalWorkers.ElementAt(26),
-                        VisitCategory = VisitCategories.ElementAt(3),
-                    };
-                    availableVisits.Add(visit);
-                }
-                minutsOffset = -1;
-                //rezonans magnetyczny
-
-                for (int j = 0; j < 12; j++)
-                {
-                    minutsOffset++;
-                    Visit visit = new Visit()
-                    {
-                        Id = startId++,
-                        PrimaryService = PrimaryMedicalServices[29],
-                        DateTimeSince = start.AddDays(dayOffset).AddMinutes(minutsOffset * 15),
-                        DateTimeTill = start.AddDays(dayOffset).AddMinutes(minutsOffset * 15 + 15),
-                        Location = Locations.ElementAt(8),
-                        MedicalRoom = Locations.ElementAt(8).MedicalRooms.ElementAt(5),
-                        MedicalWorker = MedicalWorkers.ElementAt(68),
-                        VisitCategory = VisitCategories.ElementAt(3),
-                    };
-                    availableVisits.Add(visit);
-                }
-                minutsOffset = -1;
-
-                for (int j = 0; j < 12; j++)
-                {
-                    minutsOffset++;
-                    Visit visit = new Visit()
-                    {
-                        Id = startId++,
-                        PrimaryService = PrimaryMedicalServices[29],
-                        DateTimeSince = start.AddDays(dayOffset).AddMinutes(minutsOffset * 15),
-                        DateTimeTill = start.AddDays(dayOffset).AddMinutes(minutsOffset * 15 + 15),
-                        Location = Locations.ElementAt(2),
-                        MedicalRoom = Locations.ElementAt(2).MedicalRooms.ElementAt(9),
-                        MedicalWorker = MedicalWorkers.ElementAt(62),
-                        VisitCategory = VisitCategories.ElementAt(3),
-                    };
-                    availableVisits.Add(visit);
-                }
-                minutsOffset = -1;
-
-                //fizjo :  masaż + fizykoterapia
-
-                for (int j = 0; j < 12; j++)
-                {
-                    minutsOffset++;
-                    Visit visit = new Visit()
-                    {
-                        Id = startId++,
-                        PrimaryService = PrimaryMedicalServices[31],
-                        DateTimeSince = start.AddDays(dayOffset).AddMinutes(minutsOffset * 15),
-                        DateTimeTill = start.AddDays(dayOffset).AddMinutes(minutsOffset * 15 + 15),
-                        Location = Locations.ElementAt(2),
-                        MedicalRoom = Locations.ElementAt(2).MedicalRooms.ElementAt(5),
-                        MedicalWorker = MedicalWorkers.ElementAt(62),
-                        VisitCategory = VisitCategories.ElementAt(3),
-                    };
-                    availableVisits.Add(visit);
-                }
-                minutsOffset = -1;
-
-                //gabinet zab: 1 labo, 2 szczepienia
-                for (int j = 0; j < 10; j++)
-                {
-                    minutsOffset++;
-                    Visit visit = new Visit()
-                    {
-                        Id = startId++,
-
-                        PrimaryService = PrimaryMedicalServices[31],
-                        DateTimeSince = start.AddDays(dayOffset).AddMinutes(minutsOffset * 30),
-                        DateTimeTill = start.AddDays(dayOffset).AddMinutes(minutsOffset * 30 + 30),
-                        Location = Locations.ElementAt(0),
-                        MedicalRoom = Locations.ElementAt(0).MedicalRooms.ElementAt(11),
-                        MedicalWorker = MedicalWorkers.ElementAt(2),
-                        VisitCategory = VisitCategories.ElementAt(4),
-                    };
-                    availableVisits.Add(visit);
-                }
-                minutsOffset = -1;
-
-                for (int j = 0; j < 12; j++)
-                {
-                    minutsOffset++;
-                    Visit visit = new Visit()
-                    {
-                        Id = startId++,
-
-                        PrimaryService = PrimaryMedicalServices[32],
-                        DateTimeSince = start.AddDays(dayOffset).AddMinutes(minutsOffset * 15),
-                        DateTimeTill = start.AddDays(dayOffset).AddMinutes(minutsOffset * 15 + 15),
-                        Location = Locations.ElementAt(1),
-                        MedicalRoom = Locations.ElementAt(1).MedicalRooms.ElementAt(9),
-                        MedicalWorker = MedicalWorkers.ElementAt(3),
-                        VisitCategory = VisitCategories.ElementAt(4),
-                    };
-                    availableVisits.Add(visit);
-                }
-                minutsOffset = -1;
-
-
-                for (int j = 0; j < 12; j++)
-                {
-                    minutsOffset++;
-                    Visit visit = new Visit()
-                    {
-                        Id = startId++,
-
-                        PrimaryService = PrimaryMedicalServices[32],
-                        DateTimeSince = start.AddDays(dayOffset).AddMinutes(minutsOffset * 15),
-                        DateTimeTill = start.AddDays(dayOffset).AddMinutes(minutsOffset * 15 + 15),
-                        Location = Locations.ElementAt(2),
-                        MedicalRoom = Locations.ElementAt(2).MedicalRooms.ElementAt(6),
-                        MedicalWorker = MedicalWorkers.ElementAt(25),
-                        VisitCategory = VisitCategories.ElementAt(4),
-                    };
-                    availableVisits.Add(visit);
-                }
-                minutsOffset = -1;
-
-
-                for (int j = 0; j < 12; j++)
-                {
-                    minutsOffset++;
-                    Visit visit = new Visit()
-                    {
-                        Id = startId++,
-
-                        PrimaryService = PrimaryMedicalServices[33],
-                        DateTimeSince = start.AddDays(dayOffset).AddMinutes(minutsOffset * 15),
-                        DateTimeTill = start.AddDays(dayOffset).AddMinutes(minutsOffset * 15 + 15),
-                        Location = Locations.ElementAt(3),
-                        MedicalRoom = Locations.ElementAt(3).MedicalRooms.ElementAt(3),
-                        MedicalWorker = MedicalWorkers.ElementAt(59),
-                        VisitCategory = VisitCategories.ElementAt(4),
-                    };
-                    availableVisits.Add(visit);
-                }
-                minutsOffset = -1;
-
-
-                for (int j = 0; j < 12; j++)
-                {
-                    minutsOffset++;
-                    Visit visit = new Visit()
-                    {
-                        Id = startId++,
-
-                        PrimaryService = PrimaryMedicalServices[33],
-                        DateTimeSince = start.AddDays(dayOffset).AddMinutes(minutsOffset * 15),
-                        DateTimeTill = start.AddDays(dayOffset).AddMinutes(minutsOffset * 15 + 15),
-                        Location = Locations.ElementAt(4),
-                        MedicalRoom = Locations.ElementAt(4).MedicalRooms.ElementAt(11),
-                        MedicalWorker = MedicalWorkers.ElementAt(65),
-                        VisitCategory = VisitCategories.ElementAt(4),
-                    };
-                    availableVisits.Add(visit);
-                }
-                minutsOffset = -1;
-
-                //gabinet pielegniarski
-                //szczepienia
-
-
-                //39,40,52,61,
-
-                for (int j = 0; j < 12; j++)
-                {
-                    minutsOffset++;
-                    Visit visit = new Visit()
-                    {
-                        Id = startId++,
-
-                        PrimaryService = PrimaryMedicalServices[26],
-                        DateTimeSince = start.AddDays(dayOffset).AddMinutes(minutsOffset * 10),
-                        DateTimeTill = start.AddDays(dayOffset).AddMinutes(minutsOffset * 10 + 10),
-                        Location = Locations.ElementAt(2),
-                        MedicalRoom = Locations.ElementAt(5).MedicalRooms.ElementAt(2),
-                        MedicalWorker = MedicalWorkers.ElementAt(39),
-                        VisitCategory = VisitCategories.ElementAt(4),
-                    };
-                    availableVisits.Add(visit);
-                }
-                minutsOffset = -1;
-
-                for (int j = 0; j < 12; j++)
-                {
-                    minutsOffset++;
-                    Visit visit = new Visit()
-                    {
-                        Id = startId++,
-
-                        PrimaryService = PrimaryMedicalServices[26],
-                        DateTimeSince = start.AddDays(dayOffset).AddMinutes(minutsOffset * 10),
-                        DateTimeTill = start.AddDays(dayOffset).AddMinutes(minutsOffset * 10 + 10),
-                        Location = Locations.ElementAt(2),
-                        MedicalRoom = Locations.ElementAt(5).MedicalRooms.ElementAt(2),
-                        MedicalWorker = MedicalWorkers.ElementAt(39),
-                        VisitCategory = VisitCategories.ElementAt(4),
-                    };
-                    availableVisits.Add(visit);
-                }
-                minutsOffset = -1;
-
-                for (int j = 0; j < 12; j++)
-                {
-                    minutsOffset++;
-                    Visit visit = new Visit()
-                    {
-                        Id = startId++,
-
-                        PrimaryService = PrimaryMedicalServices[26],
-                        DateTimeSince = start.AddDays(dayOffset).AddMinutes(minutsOffset * 10),
-                        DateTimeTill = start.AddDays(dayOffset).AddMinutes(minutsOffset * 10 + 10),
-                        Location = Locations.ElementAt(2),
-                        MedicalRoom = Locations.ElementAt(5).MedicalRooms.ElementAt(2),
-                        MedicalWorker = MedicalWorkers.ElementAt(39),
-                        VisitCategory = VisitCategories.ElementAt(4),
-                    };
-                    availableVisits.Add(visit);
-                }
-                minutsOffset = -1;
-                for (int j = 0; j < 12; j++)
-                {
-                    minutsOffset++;
-                    Visit visit = new Visit()
-                    {
-                        Id = startId++,
-
-                        PrimaryService = PrimaryMedicalServices[26],
-                        DateTimeSince = start.AddDays(dayOffset).AddMinutes(minutsOffset * 10),
-                        DateTimeTill = start.AddDays(dayOffset).AddMinutes(minutsOffset * 10 + 10),
-                        Location = Locations.ElementAt(2),
-                        MedicalRoom = Locations.ElementAt(5).MedicalRooms.ElementAt(2),
-                        MedicalWorker = MedicalWorkers.ElementAt(39),
-                        VisitCategory = VisitCategories.ElementAt(4),
-                    };
-                    availableVisits.Add(visit);
-                }
-                minutsOffset = -1;
-                for (int j = 0; j < 12; j++)
-                {
-                    minutsOffset++;
-                    Visit visit = new Visit()
-                    {
-                        Id = startId++,
-
-                        PrimaryService = PrimaryMedicalServices[26],
-                        DateTimeSince = start.AddDays(dayOffset).AddMinutes(minutsOffset * 10),
-                        DateTimeTill = start.AddDays(dayOffset).AddMinutes(minutsOffset * 10 + 10),
-                        Location = Locations.ElementAt(2),
-                        MedicalRoom = Locations.ElementAt(5).MedicalRooms.ElementAt(2),
-                        MedicalWorker = MedicalWorkers.ElementAt(39),
-                        VisitCategory = VisitCategories.ElementAt(4),
-                    };
-                    availableVisits.Add(visit);
-                }
-                minutsOffset = -1;
-
-                for (int j = 0; j < 12; j++)
-                {
-                    minutsOffset++;
-                    Visit visit = new Visit()
-                    {
-                        Id = startId++,
-
-                        PrimaryService = PrimaryMedicalServices[26],
-                        DateTimeSince = start.AddDays(dayOffset).AddMinutes(minutsOffset * 10),
-                        DateTimeTill = start.AddDays(dayOffset).AddMinutes(minutsOffset * 10 + 10),
-                        Location = Locations.ElementAt(2),
-                        MedicalRoom = Locations.ElementAt(5).MedicalRooms.ElementAt(2),
-                        MedicalWorker = MedicalWorkers.ElementAt(39),
-                        VisitCategory = VisitCategories.ElementAt(4),
-                    };
-                    availableVisits.Add(visit);
-                }
-                minutsOffset = -1;
+
+                //for (int j = 0; j < 12; j++)
+                //{
+                //    minutsOffset++;
+                //    Visit visit = new Visit()
+                //    {
+                //        Id = startId++,
+                //        PrimaryService = service,// PrimaryMedicalServices[0],
+                //        DateTimeSince = start.AddDays(dayOffset).AddMinutes(minutsOffset * 15),
+                //        DateTimeTill = start.AddDays(dayOffset).AddMinutes(minutsOffset * 15 + 15),
+                //        Location = Locations.ElementAt(3),
+                //        MedicalRoom = Locations.ElementAt(3).MedicalRooms.ElementAt(4),
+                //        MedicalWorker = medicalWorker,//MedicalWorkers.ElementAt(36),
+                //        VisitCategory = visitCategory//VisitCategories.ElementAt(0),
+                //    };
+                //    availableVisits.Add(visit);
+                //}
+                //minutsOffset = -1;
+
+                //medicalWorker = MedicalWorkers.ElementAt(34);
+                //servicesCounter = medicalWorker.MedicalServices.Where(c => c.IsPrimaryService).Count();
+                //serviceIndex = (servicesCounter - 1) % (i + 1);
+                //service = medicalWorker.MedicalServices.Where(c => c.IsPrimaryService).ToList().ElementAt(serviceIndex);
+                //categories = VisitCategories.Where(c => c.PrimaryMedicalServices.Any(d => d.Id == service.Id)).ToList();
+                //visitCategory = categories[categories.Count % (i + 1)];
+
+                //for (int j = 0; j < 12; j++)
+                //{
+                //    minutsOffset++;
+                //    Visit visit = new Visit()
+                //    {
+                //        Id = startId++,
+
+                //        PrimaryService = service,
+                //        DateTimeSince = start.AddDays(dayOffset).AddMinutes(minutsOffset * 15),
+                //        DateTimeTill = start.AddDays(dayOffset).AddMinutes(minutsOffset * 15 + 15),
+                //        Location = Locations.ElementAt(1),
+                //        MedicalRoom = Locations.ElementAt(1).MedicalRooms.ElementAt(6),
+                //        MedicalWorker = medicalWorker,
+                //        VisitCategory = visitCategory,
+                //    };
+                //    availableVisits.Add(visit);
+                //}
+                //minutsOffset = -1;
+
+                //medicalWorker = MedicalWorkers.ElementAt(12);
+                //servicesCounter = medicalWorker.MedicalServices.Where(c => c.IsPrimaryService).Count();
+                //serviceIndex = (servicesCounter - 1) % (i + 1);
+                //service = medicalWorker.MedicalServices.Where(c => c.IsPrimaryService).ToList().ElementAt(serviceIndex);
+                //categories = VisitCategories.Where(c => c.PrimaryMedicalServices.Any(d => d.Id == service.Id)).ToList();
+                //visitCategory = categories[categories.Count % (i + 1)];
+
+                //for (int j = 0; j < 12; j++)
+                //{
+                //    minutsOffset++;
+                //    Visit visit = new Visit()
+                //    {
+                //        Id = startId++,
+
+                //        PrimaryService = PrimaryMedicalServices[23],
+                //        DateTimeSince = start.AddDays(dayOffset).AddMinutes(minutsOffset * 15),
+                //        DateTimeTill = start.AddDays(dayOffset).AddMinutes(minutsOffset * 15 + 15),
+                //        Location = Locations.ElementAt(1),
+                //        MedicalRoom = Locations.ElementAt(1).MedicalRooms.ElementAt(3),
+                //        MedicalWorker = MedicalWorkers.ElementAt(12),
+                //        VisitCategory = VisitCategories.ElementAt(2),
+                //    };
+                //    availableVisits.Add(visit);
+                //}
+                //minutsOffset = -1;
+
+                //medicalWorker = MedicalWorkers.ElementAt(37);
+                //servicesCounter = medicalWorker.MedicalServices.Where(c => c.IsPrimaryService).Count();
+                //serviceIndex = (servicesCounter - 1) % (i + 1);
+                //service = medicalWorker.MedicalServices.Where(c => c.IsPrimaryService).ToList().ElementAt(serviceIndex);
+                //categories = VisitCategories.Where(c => c.PrimaryMedicalServices.Any(d => d.Id == service.Id)).ToList();
+                //visitCategory = categories[categories.Count % (i + 1)];
+
+                //for (int j = 0; j < 12; j++)
+                //{
+                //    minutsOffset++;
+                //    Visit visit = new Visit()
+                //    {
+                //        Id = startId++,
+
+                //        PrimaryService = PrimaryMedicalServices[3],
+                //        DateTimeSince = start.AddDays(dayOffset).AddMinutes(minutsOffset * 15),
+                //        DateTimeTill = start.AddDays(dayOffset).AddMinutes(minutsOffset * 15 + 15),
+                //        Location = Locations.ElementAt(5),
+                //        MedicalRoom = Locations.ElementAt(5).MedicalRooms.ElementAt(3),
+                //        MedicalWorker = MedicalWorkers.ElementAt(37),
+                //        VisitCategory = VisitCategories.ElementAt(0),
+                //    };
+                //    availableVisits.Add(visit);
+                //}
+                //minutsOffset = -1;
+
+                //medicalWorker = MedicalWorkers.ElementAt(55);
+                //servicesCounter = medicalWorker.MedicalServices.Where(c => c.IsPrimaryService).Count();
+                //serviceIndex = (servicesCounter - 1) % (i + 1);
+                //service = medicalWorker.MedicalServices.Where(c => c.IsPrimaryService).ToList().ElementAt(serviceIndex);
+                //categories = VisitCategories.Where(c => c.PrimaryMedicalServices.Any(d => d.Id == service.Id)).ToList();
+                //visitCategory = categories[categories.Count % (i + 1)];
+
+                //for (int j = 0; j < 12; j++)
+                //{
+                //    minutsOffset++;
+                //    Visit visit = new Visit()
+                //    {
+                //        Id = startId++,
+
+                //        PrimaryService = PrimaryMedicalServices[28],
+                //        DateTimeSince = start.AddDays(dayOffset).AddMinutes(minutsOffset * 15),
+                //        DateTimeTill = start.AddDays(dayOffset).AddMinutes(minutsOffset * 15 + 15),
+                //        Location = Locations.ElementAt(1),
+                //        MedicalRoom = Locations.ElementAt(1).MedicalRooms.ElementAt(3),
+                //        MedicalWorker = MedicalWorkers.ElementAt(55),
+                //        VisitCategory = VisitCategories.ElementAt(3),
+                //    };
+                //    availableVisits.Add(visit);
+                //}
+                //minutsOffset = -1;
+
+                //medicalWorker = MedicalWorkers.ElementAt(61);
+                //servicesCounter = medicalWorker.MedicalServices.Where(c => c.IsPrimaryService).Count();
+                //serviceIndex = (servicesCounter - 1) % (i + 1);
+                //service = medicalWorker.MedicalServices.Where(c => c.IsPrimaryService).ToList().ElementAt(serviceIndex);
+                //categories = VisitCategories.Where(c => c.PrimaryMedicalServices.Any(d => d.Id == service.Id)).ToList();
+                //visitCategory = categories[categories.Count % (i + 1)];
+
+
+                //for (int j = 0; j < 12; j++)
+                //{
+                //    minutsOffset++;
+                //    Visit visit = new Visit()
+                //    {
+                //        Id = startId++,
+
+                //        PrimaryService = PrimaryMedicalServices[33],
+                //        DateTimeSince = start.AddDays(dayOffset).AddMinutes(minutsOffset * 15),
+                //        DateTimeTill = start.AddDays(dayOffset).AddMinutes(minutsOffset * 15 + 15),
+                //        Location = Locations.ElementAt(1),
+                //        MedicalRoom = Locations.ElementAt(1).MedicalRooms.ElementAt(1),
+                //        MedicalWorker = MedicalWorkers.ElementAt(61),
+                //        VisitCategory = VisitCategories.ElementAt(5),
+                //    };
+                //    availableVisits.Add(visit);
+                //}
+                //minutsOffset = -1;
+
+                //for (int j = 0; j < 12; j++)
+                //{
+                //    minutsOffset++;
+
+                //    Visit visit = new Visit()
+                //    {
+                //        Id = startId++,
+                //        PrimaryService = PrimaryMedicalServices[9],
+                //        MedicalRoom = Locations.ElementAt(0).MedicalRooms.ElementAt(0),
+                //        DateTimeSince = start.AddDays(dayOffset).AddMinutes(minutsOffset * 15),
+                //        DateTimeTill = start.AddDays(dayOffset).AddMinutes(minutsOffset * 15 + 15),
+                //        Location = Locations.ElementAt(0),
+                //        MedicalWorker = MedicalWorkers.ElementAt(50),
+                //        VisitCategory = VisitCategories.ElementAt(0),
+                //    };
+                //    availableVisits.Add(visit);
+                //}
+                //minutsOffset = -1;
+
+                //for (int j = 0; j < 12; j++)
+                //{
+                //    minutsOffset++;
+
+                //    Visit visit = new Visit()
+                //    {
+                //        Id = startId++,
+                //        PrimaryService = PrimaryMedicalServices[7],
+                //        DateTimeSince = start.AddDays(dayOffset).AddMinutes(minutsOffset * 15),
+                //        DateTimeTill = start.AddDays(dayOffset).AddMinutes(minutsOffset * 15 + 15),
+                //        Location = Locations.ElementAt(0),
+                //        MedicalRoom = Locations.ElementAt(0).MedicalRooms.ElementAt(1),
+                //        MedicalWorker = MedicalWorkers.ElementAt(29),
+                //        VisitCategory = VisitCategories.ElementAt(0),
+                //    };
+                //    availableVisits.Add(visit);
+
+                //}
+                //minutsOffset = -1;
+
+                //for (int j = 0; j < 12; j++)
+                //{
+                //    minutsOffset++;
+
+                //    Visit visit = new Visit()
+                //    {
+                //        Id = startId++,
+                //        PrimaryService = PrimaryMedicalServices[1],
+                //        MedicalRoom = Locations.ElementAt(0).MedicalRooms.ElementAt(0),
+                //        DateTimeSince = start.AddDays(dayOffset).AddMinutes(minutsOffset * 15),
+                //        DateTimeTill = start.AddDays(dayOffset).AddMinutes(minutsOffset * 15 + 15),
+                //        Location = Locations.ElementAt(0),
+                //        MedicalWorker = MedicalWorkers.ElementAt(0),
+                //        VisitCategory = VisitCategories.ElementAt(0),
+                //    };
+                //    availableVisits.Add(visit);
+
+                //}
+                //minutsOffset = -1;
+
+                //for (int j = 0; j < 12; j++)
+                //{
+                //    minutsOffset++;
+
+                //    Visit visit = new Visit()
+                //    {
+                //        Id = startId++,
+                //        PrimaryService = PrimaryMedicalServices[28],
+                //        MedicalRoom = Locations.ElementAt(0).MedicalRooms.ElementAt(0),
+                //        DateTimeSince = start.AddDays(dayOffset).AddMinutes(minutsOffset * 15),
+                //        DateTimeTill = start.AddDays(dayOffset).AddMinutes(minutsOffset * 15 + 15),
+                //        Location = Locations.ElementAt(0),
+                //        MedicalWorker = MedicalWorkers.ElementAt(51),
+                //        VisitCategory = VisitCategories.ElementAt(3),
+                //    };
+                //    availableVisits.Add(visit);
+                //}
+                //minutsOffset = -1;
+
+                //for (int j = 0; j < 12; j++)
+                //{
+                //    minutsOffset++;
+
+                //    Visit visit = new Visit()
+                //    {
+                //        Id = startId++,
+                //        PrimaryService = PrimaryMedicalServices[6],
+                //        MedicalRoom = Locations.ElementAt(0).MedicalRooms.ElementAt(0),
+                //        DateTimeSince = start.AddDays(dayOffset).AddMinutes(minutsOffset * 15),
+                //        DateTimeTill = start.AddDays(dayOffset).AddMinutes(minutsOffset * 15 + 15),
+                //        Location = Locations.ElementAt(0),
+                //        MedicalWorker = MedicalWorkers.ElementAt(26),
+                //        VisitCategory = VisitCategories.ElementAt(0),
+                //    };
+                //    availableVisits.Add(visit);
+                //}
+                //minutsOffset = -1;
+
+                //for (int j = 0; j < 12; j++)
+                //{
+                //    minutsOffset++;
+
+                //    Visit visit = new()
+                //    {
+                //        Id = startId++,
+                //        PrimaryService = PrimaryMedicalServices[32],
+                //        MedicalRoom = Locations.ElementAt(0).MedicalRooms.ElementAt(0),
+                //        DateTimeSince = start.AddDays(dayOffset).AddMinutes(minutsOffset * 15),
+                //        DateTimeTill = start.AddDays(dayOffset).AddMinutes(minutsOffset * 15 + 15),
+                //        Location = Locations.ElementAt(0),
+                //        MedicalWorker = MedicalWorkers.ElementAt(3),
+                //        VisitCategory = VisitCategories.ElementAt(4),
+                //    };
+                //    availableVisits.Add(visit);
+                //}
+                //minutsOffset = -1;
+
+
+                //for (int j = 0; j < 12; j++)
+                //{
+                //    minutsOffset++;
+
+                //    Visit visit = new Visit()
+                //    {
+                //        Id = startId++,
+                //        PrimaryService = PrimaryMedicalServices[33],
+                //        MedicalRoom = Locations.ElementAt(0).MedicalRooms.ElementAt(1),
+                //        DateTimeSince = start.AddDays(dayOffset).AddMinutes(minutsOffset * 15),
+                //        DateTimeTill = start.AddDays(dayOffset).AddMinutes(minutsOffset * 15 + 15),
+                //        Location = Locations.ElementAt(3),
+                //        MedicalWorker = MedicalWorkers.ElementAt(39),
+                //        VisitCategory = VisitCategories.ElementAt(5),
+
+                //    };
+                //    availableVisits.Add(visit);
+                //}
+                ////interna
+                //for (int j = 0; j < 12; j++)
+                //{
+                //    minutsOffset++;
+
+                //    Visit visit = new Visit()
+                //    {
+                //        Id = startId++,
+                //        PrimaryService = PrimaryMedicalServices[2],
+                //        MedicalRoom = Locations.ElementAt(0).MedicalRooms.ElementAt(1),
+                //        DateTimeSince = start.AddDays(dayOffset).AddMinutes(minutsOffset * 15),
+                //        DateTimeTill = start.AddDays(dayOffset).AddMinutes(minutsOffset * 15 + 15),
+                //        Location = Locations.ElementAt(3),
+                //        MedicalWorker = MedicalWorkers.ElementAt(35),
+                //        VisitCategory = VisitCategories.ElementAt(1),
+                //    };
+                //    availableVisits.Add(visit);
+                //}
+                //for (int j = 0; j < 12; j++)
+                //{
+                //    minutsOffset++;
+
+                //    Visit visit = new Visit()
+                //    {
+                //        Id = startId++,
+                //        PrimaryService = PrimaryMedicalServices[2],
+                //        MedicalRoom = Locations.ElementAt(7).MedicalRooms.ElementAt(4),
+                //        DateTimeSince = start.AddDays(dayOffset).AddMinutes(minutsOffset * 15),
+                //        DateTimeTill = start.AddDays(dayOffset).AddMinutes(minutsOffset * 15 + 15),
+                //        Location = Locations.ElementAt(7),
+                //        MedicalWorker = MedicalWorkers.ElementAt(44),
+                //        VisitCategory = VisitCategories.ElementAt(0),
+                //    };
+                //    availableVisits.Add(visit);
+                //}
+                ////
+
+
+                //for (int j = 0; j < 12; j++)
+                //{
+                //    minutsOffset++;
+
+                //    Visit visit = new Visit()
+                //    {
+                //        Id = startId++,
+                //        PrimaryService = PrimaryMedicalServices[4],
+                //        MedicalRoom = Locations.ElementAt(3).MedicalRooms.ElementAt(6),
+                //        DateTimeSince = start.AddDays(dayOffset).AddMinutes(minutsOffset * 15),
+                //        DateTimeTill = start.AddDays(dayOffset).AddMinutes(minutsOffset * 15 + 15),
+                //        Location = Locations.ElementAt(3),
+                //        MedicalWorker = MedicalWorkers.ElementAt(8),
+                //        VisitCategory = VisitCategories.ElementAt(0),
+                //    };
+                //    availableVisits.Add(visit);
+                //}
+                //for (int j = 0; j < 12; j++)
+                //{
+                //    minutsOffset++;
+
+                //    Visit visit = new Visit()
+                //    {
+                //        Id = startId++,
+                //        PrimaryService = PrimaryMedicalServices[5],
+                //        MedicalRoom = Locations.ElementAt(6).MedicalRooms.ElementAt(2),
+                //        DateTimeSince = start.AddDays(dayOffset).AddMinutes(minutsOffset * 15),
+                //        DateTimeTill = start.AddDays(dayOffset).AddMinutes(minutsOffset * 15 + 15),
+                //        Location = Locations.ElementAt(6),
+                //        MedicalWorker = MedicalWorkers.ElementAt(4),
+                //        VisitCategory = VisitCategories.ElementAt(0),
+                //    };
+                //    availableVisits.Add(visit);
+                //}
+                ////okulistyczna
+                //for (int j = 0; j < 8; j++)
+                //{
+                //    minutsOffset++;
+
+                //    Visit visit = new Visit()
+                //    {
+                //        Id = startId++,
+                //        PrimaryService = PrimaryMedicalServices[8],
+                //        MedicalRoom = Locations.ElementAt(7).MedicalRooms.ElementAt(7),
+                //        DateTimeSince = start.AddDays(dayOffset).AddMinutes(60 + (minutsOffset * 15)),
+                //        DateTimeTill = start.AddDays(dayOffset).AddMinutes(60 + (minutsOffset * 15) + 15),
+                //        Location = Locations.ElementAt(7),
+                //        MedicalWorker = MedicalWorkers.ElementAt(15),
+                //        VisitCategory = VisitCategories.ElementAt(0),
+                //    };
+                //    availableVisits.Add(visit);
+                //}
+                //for (int j = 0; j < 10; j++)
+                //{
+                //    minutsOffset++;
+
+                //    Visit visit = new Visit()
+                //    {
+                //        Id = startId++,
+                //        PrimaryService = PrimaryMedicalServices[8],
+                //        MedicalRoom = Locations.ElementAt(8).MedicalRooms.ElementAt(7),
+                //        DateTimeSince = start.AddDays(dayOffset).AddMinutes(90 + (minutsOffset * 15)),
+                //        DateTimeTill = start.AddDays(dayOffset).AddMinutes(90 + (minutsOffset * 15) + 15),
+                //        Location = Locations.ElementAt(8),
+                //        MedicalWorker = MedicalWorkers.ElementAt(31),
+                //        VisitCategory = VisitCategories.ElementAt(0),
+                //    };
+                //    availableVisits.Add(visit);
+                //}
+                ////endokrynologia
+                //for (int j = 0; j < 10; j++)
+                //{
+                //    minutsOffset++;
+
+                //    Visit visit = new Visit()
+                //    {
+                //        Id = startId++,
+                //        PrimaryService = PrimaryMedicalServices[10],
+                //        MedicalRoom = Locations.ElementAt(8).MedicalRooms.ElementAt(9),
+                //        DateTimeSince = start.AddDays(dayOffset).AddMinutes(90 + (minutsOffset * 15)),
+                //        DateTimeTill = start.AddDays(dayOffset).AddMinutes(90 + (minutsOffset * 15) + 15),
+                //        Location = Locations.ElementAt(8),
+                //        MedicalWorker = MedicalWorkers.ElementAt(43),
+                //        VisitCategory = VisitCategories.ElementAt(1),
+                //    };
+                //    availableVisits.Add(visit);
+                //}
+                //for (int j = 0; j < 10; j++)
+                //{
+                //    minutsOffset++;
+
+                //    Visit visit = new Visit()
+                //    {
+                //        Id = startId++,
+                //        PrimaryService = PrimaryMedicalServices[10],
+                //        MedicalRoom = Locations.ElementAt(0).MedicalRooms.ElementAt(9),
+                //        DateTimeSince = start.AddDays(dayOffset).AddMinutes(90 + (minutsOffset * 15)),
+                //        DateTimeTill = start.AddDays(dayOffset).AddMinutes(90 + (minutsOffset * 15) + 15),
+                //        Location = Locations.ElementAt(0),
+                //        MedicalWorker = MedicalWorkers.ElementAt(48),
+                //        VisitCategory = VisitCategories.ElementAt(0),
+                //    };
+                //    availableVisits.Add(visit);
+                //}
+                ////chirurgia ogólna  // chirurdzy 16-19, kolejno
+                //for (int j = 0; j < 10; j++)
+                //{
+                //    minutsOffset++;
+
+                //    Visit visit = new Visit()
+                //    {
+                //        Id = startId++,
+                //        PrimaryService = PrimaryMedicalServices[11],
+                //        MedicalRoom = Locations.ElementAt(1).MedicalRooms.ElementAt(2),
+                //        DateTimeSince = start.AddDays(dayOffset).AddMinutes((minutsOffset * 15)),
+                //        DateTimeTill = start.AddDays(dayOffset).AddMinutes((minutsOffset * 15) + 15),
+                //        Location = Locations.ElementAt(1),
+                //        MedicalWorker = MedicalWorkers.ElementAt(30),
+                //        VisitCategory = VisitCategories.ElementAt(0),
+                //    };
+                //    availableVisits.Add(visit);
+                //}
+                //for (int j = 0; j < 10; j++)
+                //{
+                //    minutsOffset++;
+
+                //    Visit visit = new Visit()
+                //    {
+                //        Id = startId++,
+                //        PrimaryService = PrimaryMedicalServices[12],
+                //        MedicalRoom = Locations.ElementAt(1).MedicalRooms.ElementAt(2),
+                //        DateTimeSince = start.AddDays(dayOffset).AddMinutes(180 + (minutsOffset * 15)),
+                //        DateTimeTill = start.AddDays(dayOffset).AddMinutes(180 + (minutsOffset * 15) + 15),
+                //        Location = Locations.ElementAt(1),
+                //        MedicalWorker = MedicalWorkers.ElementAt(30),
+                //        VisitCategory = VisitCategories.ElementAt(0),
+                //    };
+                //    availableVisits.Add(visit);
+                //}
+                //for (int j = 0; j < 10; j++)
+                //{
+                //    minutsOffset++;
+
+                //    Visit visit = new Visit()
+                //    {
+                //        Id = startId++,
+                //        PrimaryService = PrimaryMedicalServices[11],
+                //        MedicalRoom = Locations.ElementAt(3).MedicalRooms.ElementAt(3),
+                //        DateTimeSince = start.AddDays(dayOffset).AddMinutes((minutsOffset * 15)),
+                //        DateTimeTill = start.AddDays(dayOffset).AddMinutes((minutsOffset * 15) + 15),
+                //        Location = Locations.ElementAt(3),
+                //        MedicalWorker = MedicalWorkers.ElementAt(16),
+                //        VisitCategory = VisitCategories.ElementAt(0),
+                //    };
+                //    availableVisits.Add(visit);
+                //}
+                //for (int j = 0; j < 10; j++)
+                //{
+                //    minutsOffset++;
+
+                //    Visit visit = new Visit()
+                //    {
+                //        Id = startId++,
+                //        PrimaryService = PrimaryMedicalServices[12],
+                //        MedicalRoom = Locations.ElementAt(3).MedicalRooms.ElementAt(3),
+                //        DateTimeSince = start.AddDays(dayOffset).AddMinutes(180 + (minutsOffset * 15)),
+                //        DateTimeTill = start.AddDays(dayOffset).AddMinutes(180 + (minutsOffset * 15) + 15),
+                //        Location = Locations.ElementAt(3),
+                //        MedicalWorker = MedicalWorkers.ElementAt(16),
+                //        VisitCategory = VisitCategories.ElementAt(0),
+                //    };
+                //    availableVisits.Add(visit);
+                //}
+
+                //for (int j = 0; j < 24; j++)
+                //{
+                //    minutsOffset++;
+
+                //    Visit visit = new Visit()
+                //    {
+                //        Id = startId++,
+                //        PrimaryService = PrimaryMedicalServices[13],
+                //        MedicalRoom = Locations.ElementAt(1).MedicalRooms.ElementAt(3),
+                //        DateTimeSince = start.AddDays(dayOffset).AddMinutes(180 + (minutsOffset * 15)),
+                //        DateTimeTill = start.AddDays(dayOffset).AddMinutes(180 + (minutsOffset * 15) + 15),
+                //        Location = Locations.ElementAt(1),
+                //        MedicalWorker = MedicalWorkers.ElementAt(17),
+                //        VisitCategory = VisitCategories.ElementAt(0),
+                //    };
+                //    availableVisits.Add(visit);
+                //}
+                //for (int j = 0; j < 24; j++)
+                //{
+                //    minutsOffset++;
+
+                //    Visit visit = new Visit()
+                //    {
+                //        Id = startId++,
+                //        PrimaryService = PrimaryMedicalServices[14],
+                //        MedicalRoom = Locations.ElementAt(2).MedicalRooms.ElementAt(3),
+                //        DateTimeSince = start.AddDays(dayOffset).AddMinutes(180 + (minutsOffset * 15)),
+                //        DateTimeTill = start.AddDays(dayOffset).AddMinutes(180 + (minutsOffset * 15) + 15),
+                //        Location = Locations.ElementAt(2),
+                //        MedicalWorker = MedicalWorkers.ElementAt(18),
+                //        VisitCategory = VisitCategories.ElementAt(0),
+                //    };
+                //    availableVisits.Add(visit);
+                //}
+                //for (int j = 0; j < 24; j++)
+                //{
+                //    minutsOffset++;
+
+                //    Visit visit = new Visit()
+                //    {
+                //        Id = startId++,
+                //        PrimaryService = PrimaryMedicalServices[15],
+                //        MedicalRoom = Locations.ElementAt(4).MedicalRooms.ElementAt(3),
+                //        DateTimeSince = start.AddDays(dayOffset).AddMinutes(180 + (minutsOffset * 15)),
+                //        DateTimeTill = start.AddDays(dayOffset).AddMinutes(180 + (minutsOffset * 15) + 15),
+                //        Location = Locations.ElementAt(4),
+                //        MedicalWorker = MedicalWorkers.ElementAt(19),
+                //        VisitCategory = VisitCategories.ElementAt(0),
+                //    };
+                //    availableVisits.Add(visit);
+                //}
+
+
+                ////laryngologia
+                //for (int j = 0; j < 12; j++)
+                //{
+                //    minutsOffset++;
+                //    Visit visit = new Visit()
+                //    {
+                //        Id = startId++,
+
+                //        PrimaryService = PrimaryMedicalServices[16],
+                //        DateTimeSince = start.AddDays(dayOffset).AddMinutes(minutsOffset * 15),
+                //        DateTimeTill = start.AddDays(dayOffset).AddMinutes(minutsOffset * 15 + 15),
+                //        Location = Locations.ElementAt(4),
+                //        MedicalRoom = Locations.ElementAt(5).MedicalRooms.ElementAt(2),
+                //        MedicalWorker = MedicalWorkers.ElementAt(20),
+                //        VisitCategory = VisitCategories.ElementAt(0),
+                //    };
+                //    availableVisits.Add(visit);
+                //}
+                //minutsOffset = -1;
+
+                //for (int j = 0; j < 12; j++)
+                //{
+                //    minutsOffset++;
+                //    Visit visit = new Visit()
+                //    {
+                //        Id = startId++,
+
+                //        PrimaryService = PrimaryMedicalServices[16],
+                //        DateTimeSince = start.AddDays(dayOffset).AddMinutes(minutsOffset * 15),
+                //        DateTimeTill = start.AddDays(dayOffset).AddMinutes(minutsOffset * 15 + 15),
+                //        Location = Locations.ElementAt(6),
+                //        MedicalRoom = Locations.ElementAt(6).MedicalRooms.ElementAt(6),
+                //        MedicalWorker = MedicalWorkers.ElementAt(64),
+                //        VisitCategory = VisitCategories.ElementAt(0),
+                //    };
+                //    availableVisits.Add(visit);
+                //}
+                //minutsOffset = -1;
+
+                ////neurologia
+
+                //for (int j = 0; j < 12; j++)
+                //{
+                //    minutsOffset++;
+                //    Visit visit = new Visit()
+                //    {
+                //        Id = startId++,
+
+                //        PrimaryService = PrimaryMedicalServices[17],
+                //        DateTimeSince = start.AddDays(dayOffset).AddMinutes(minutsOffset * 15),
+                //        DateTimeTill = start.AddDays(dayOffset).AddMinutes(minutsOffset * 15 + 15),
+                //        Location = Locations.ElementAt(6),
+                //        MedicalRoom = Locations.ElementAt(6).MedicalRooms.ElementAt(7),
+                //        MedicalWorker = MedicalWorkers.ElementAt(21),
+                //        VisitCategory = VisitCategories.ElementAt(0),
+                //    };
+                //    availableVisits.Add(visit);
+                //}
+                //minutsOffset = -1;
+                ////urologia
+
+                //for (int j = 0; j < 12; j++)
+                //{
+                //    minutsOffset++;
+                //    Visit visit = new Visit()
+                //    {
+                //        Id = startId++,
+
+                //        PrimaryService = PrimaryMedicalServices[18],
+                //        DateTimeSince = start.AddDays(dayOffset).AddMinutes(minutsOffset * 15),
+                //        DateTimeTill = start.AddDays(dayOffset).AddMinutes(minutsOffset * 15 + 15),
+                //        Location = Locations.ElementAt(6),
+                //        MedicalRoom = Locations.ElementAt(6).MedicalRooms.ElementAt(8),
+                //        MedicalWorker = MedicalWorkers.ElementAt(22),
+                //        VisitCategory = VisitCategories.ElementAt(0),
+                //    };
+                //    availableVisits.Add(visit);
+                //}
+                //minutsOffset = -1;
+                ////stomatologia zachowawcza
+                //for (int j = 0; j < 12; j++)
+                //{
+                //    minutsOffset++;
+                //    Visit visit = new Visit()
+                //    {
+                //        Id = startId++,
+
+                //        PrimaryService = PrimaryMedicalServices[20],
+                //        DateTimeSince = start.AddDays(dayOffset).AddMinutes(minutsOffset * 30),
+                //        DateTimeTill = start.AddDays(dayOffset).AddMinutes(minutsOffset * 30 + 30),
+                //        Location = Locations.ElementAt(4),
+                //        MedicalRoom = Locations.ElementAt(5).MedicalRooms.ElementAt(1),
+                //        MedicalWorker = MedicalWorkers.ElementAt(5),
+                //        VisitCategory = VisitCategories.ElementAt(2),
+                //    };
+                //    availableVisits.Add(visit);
+                //}
+                //minutsOffset = -1;
+
+                //for (int j = 0; j < 12; j++)
+                //{
+                //    minutsOffset++;
+
+                //    Visit visit = new Visit()
+                //    {
+                //        Id = startId++,
+                //        PrimaryService = PrimaryMedicalServices[20],
+                //        MinorMedicalServices = new List<MedicalService>() { MedicalServices[48], MedicalServices[49], MedicalServices[52] },
+                //        MedicalRoom = Locations.ElementAt(0).MedicalRooms.ElementAt(1),
+                //        DateTimeSince = start.AddDays(dayOffset).AddMinutes(minutsOffset * 30),
+                //        DateTimeTill = start.AddDays(dayOffset).AddMinutes(minutsOffset * 30 + 30),
+                //        Location = Locations.ElementAt(0),
+                //        MedicalWorker = MedicalWorkers.ElementAt(63),
+                //        VisitCategory = VisitCategories.ElementAt(2),
+                //    };
+                //    availableVisits.Add(visit);
+                //}
+                //minutsOffset = -1;
+
+                ////ortodoncja
+                //for (int j = 0; j < 12; j++)
+                //{
+                //    minutsOffset++;
+                //    Visit visit = new Visit()
+                //    {
+                //        Id = startId++,
+                //        PrimaryService = PrimaryMedicalServices[21],
+                //        DateTimeSince = start.AddDays(dayOffset).AddMinutes(minutsOffset * 30),
+                //        DateTimeTill = start.AddDays(dayOffset).AddMinutes(minutsOffset * 30 + 30),
+                //        Location = Locations.ElementAt(7),
+                //        MedicalRoom = Locations.ElementAt(7).MedicalRooms.ElementAt(8),
+                //        MedicalWorker = MedicalWorkers.ElementAt(63),
+                //        VisitCategory = VisitCategories.ElementAt(2),
+                //    };
+                //    availableVisits.Add(visit);
+                //}
+                //minutsOffset = -1;
+
+                //for (int j = 0; j < 12; j++)
+                //{
+                //    minutsOffset++;
+                //    Visit visit = new Visit()
+                //    {
+                //        Id = startId++,
+                //        PrimaryService = PrimaryMedicalServices[21],
+                //        DateTimeSince = start.AddDays(dayOffset).AddMinutes(minutsOffset * 30),
+                //        DateTimeTill = start.AddDays(dayOffset).AddMinutes(minutsOffset * 30 + 30),
+                //        Location = Locations.ElementAt(8),
+                //        MedicalRoom = Locations.ElementAt(8).MedicalRooms.ElementAt(8),
+                //        MedicalWorker = MedicalWorkers.ElementAt(42),
+                //        VisitCategory = VisitCategories.ElementAt(2),
+                //    };
+                //    availableVisits.Add(visit);
+                //}
+                //minutsOffset = -1;
+                ////chiruriga sotmatologiczna
+                //for (int j = 0; j < 12; j++)
+                //{
+                //    minutsOffset++;
+                //    Visit visit = new Visit()
+                //    {
+                //        Id = startId++,
+                //        PrimaryService = PrimaryMedicalServices[22],
+                //        DateTimeSince = start.AddDays(dayOffset).AddMinutes(minutsOffset * 30),
+                //        DateTimeTill = start.AddDays(dayOffset).AddMinutes(minutsOffset * 30 + 30),
+                //        Location = Locations.ElementAt(0),
+                //        MedicalRoom = Locations.ElementAt(0).MedicalRooms.ElementAt(10),
+                //        MedicalWorker = MedicalWorkers.ElementAt(9),
+                //        VisitCategory = VisitCategories.ElementAt(2),
+                //    };
+                //    availableVisits.Add(visit);
+                //}
+                //minutsOffset = -1;
+
+                ////protetyka
+                //for (int j = 0; j < 16; j++)
+                //{
+                //    minutsOffset++;
+                //    Visit visit = new Visit()
+                //    {
+                //        Id = startId++,
+                //        PrimaryService = PrimaryMedicalServices[24],
+                //        DateTimeSince = start.AddDays(dayOffset).AddMinutes(minutsOffset * 30),
+                //        DateTimeTill = start.AddDays(dayOffset).AddMinutes(minutsOffset * 30 + 30),
+                //        Location = Locations.ElementAt(0),
+                //        MedicalRoom = Locations.ElementAt(0).MedicalRooms.ElementAt(11),
+                //        MedicalWorker = MedicalWorkers.ElementAt(24),
+                //        VisitCategory = VisitCategories.ElementAt(2),
+                //    };
+                //    availableVisits.Add(visit);
+                //}
+                //minutsOffset = -1;
+
+                ////higiena
+
+                //for (int j = 0; j < 12; j++)
+                //{
+                //    minutsOffset++;
+                //    Visit visit = new Visit()
+                //    {
+                //        Id = startId++,
+                //        PrimaryService = PrimaryMedicalServices[25],
+                //        DateTimeSince = start.AddDays(dayOffset).AddMinutes(minutsOffset * 30),
+                //        DateTimeTill = start.AddDays(dayOffset).AddMinutes(minutsOffset * 30 + 30),
+                //        Location = Locations.ElementAt(1),
+                //        MedicalRoom = Locations.ElementAt(1).MedicalRooms.ElementAt(11),
+                //        MedicalWorker = MedicalWorkers.ElementAt(33),
+                //        VisitCategory = VisitCategories.ElementAt(2),
+                //    };
+                //    availableVisits.Add(visit);
+                //}
+                //minutsOffset = -1;
+
+                //for (int j = 0; j < 12; j++)
+                //{
+                //    minutsOffset++;
+                //    Visit visit = new Visit()
+                //    {
+                //        Id = startId++,
+                //        PrimaryService = PrimaryMedicalServices[25],
+                //        DateTimeSince = start.AddDays(dayOffset).AddMinutes(minutsOffset * 30),
+                //        DateTimeTill = start.AddDays(dayOffset).AddMinutes(minutsOffset * 30 + 30),
+                //        Location = Locations.ElementAt(2),
+                //        MedicalRoom = Locations.ElementAt(2).MedicalRooms.ElementAt(11),
+                //        MedicalWorker = MedicalWorkers.ElementAt(46),
+                //        VisitCategory = VisitCategories.ElementAt(2),
+                //    };
+                //    availableVisits.Add(visit);
+                //}
+                //minutsOffset = -1;
+
+                ////usg
+
+                //for (int j = 0; j < 12; j++)
+                //{
+                //    minutsOffset++;
+                //    Visit visit = new Visit()
+                //    {
+                //        Id = startId++,
+                //        PrimaryService = PrimaryMedicalServices[27],
+                //        DateTimeSince = start.AddDays(dayOffset).AddMinutes(minutsOffset * 15),
+                //        DateTimeTill = start.AddDays(dayOffset).AddMinutes(minutsOffset * 15 + 15),
+                //        Location = Locations.ElementAt(8),
+                //        MedicalRoom = Locations.ElementAt(8).MedicalRooms.ElementAt(11),
+                //        MedicalWorker = MedicalWorkers.ElementAt(26),
+                //        VisitCategory = VisitCategories.ElementAt(3),
+                //    };
+                //    availableVisits.Add(visit);
+                //}
+                //minutsOffset = -1;
+                ////rezonans magnetyczny
+
+                //for (int j = 0; j < 12; j++)
+                //{
+                //    minutsOffset++;
+                //    Visit visit = new Visit()
+                //    {
+                //        Id = startId++,
+                //        PrimaryService = PrimaryMedicalServices[29],
+                //        DateTimeSince = start.AddDays(dayOffset).AddMinutes(minutsOffset * 15),
+                //        DateTimeTill = start.AddDays(dayOffset).AddMinutes(minutsOffset * 15 + 15),
+                //        Location = Locations.ElementAt(8),
+                //        MedicalRoom = Locations.ElementAt(8).MedicalRooms.ElementAt(5),
+                //        MedicalWorker = MedicalWorkers.ElementAt(68),
+                //        VisitCategory = VisitCategories.ElementAt(3),
+                //    };
+                //    availableVisits.Add(visit);
+                //}
+                //minutsOffset = -1;
+
+                //for (int j = 0; j < 12; j++)
+                //{
+                //    minutsOffset++;
+                //    Visit visit = new Visit()
+                //    {
+                //        Id = startId++,
+                //        PrimaryService = PrimaryMedicalServices[29],
+                //        DateTimeSince = start.AddDays(dayOffset).AddMinutes(minutsOffset * 15),
+                //        DateTimeTill = start.AddDays(dayOffset).AddMinutes(minutsOffset * 15 + 15),
+                //        Location = Locations.ElementAt(2),
+                //        MedicalRoom = Locations.ElementAt(2).MedicalRooms.ElementAt(9),
+                //        MedicalWorker = MedicalWorkers.ElementAt(62),
+                //        VisitCategory = VisitCategories.ElementAt(3),
+                //    };
+                //    availableVisits.Add(visit);
+                //}
+                //minutsOffset = -1;
+
+                ////fizjo :  masaż + fizykoterapia
+
+                //for (int j = 0; j < 12; j++)
+                //{
+                //    minutsOffset++;
+                //    Visit visit = new Visit()
+                //    {
+                //        Id = startId++,
+                //        PrimaryService = PrimaryMedicalServices[31],
+                //        DateTimeSince = start.AddDays(dayOffset).AddMinutes(minutsOffset * 15),
+                //        DateTimeTill = start.AddDays(dayOffset).AddMinutes(minutsOffset * 15 + 15),
+                //        Location = Locations.ElementAt(2),
+                //        MedicalRoom = Locations.ElementAt(2).MedicalRooms.ElementAt(5),
+                //        MedicalWorker = MedicalWorkers.ElementAt(62),
+                //        VisitCategory = VisitCategories.ElementAt(3),
+                //    };
+                //    availableVisits.Add(visit);
+                //}
+                //minutsOffset = -1;
+
+                ////gabinet zab: 1 labo, 2 szczepienia
+                //for (int j = 0; j < 10; j++)
+                //{
+                //    minutsOffset++;
+                //    Visit visit = new Visit()
+                //    {
+                //        Id = startId++,
+
+                //        PrimaryService = PrimaryMedicalServices[31],
+                //        DateTimeSince = start.AddDays(dayOffset).AddMinutes(minutsOffset * 30),
+                //        DateTimeTill = start.AddDays(dayOffset).AddMinutes(minutsOffset * 30 + 30),
+                //        Location = Locations.ElementAt(0),
+                //        MedicalRoom = Locations.ElementAt(0).MedicalRooms.ElementAt(11),
+                //        MedicalWorker = MedicalWorkers.ElementAt(2),
+                //        VisitCategory = VisitCategories.ElementAt(4),
+                //    };
+                //    availableVisits.Add(visit);
+                //}
+                //minutsOffset = -1;
+
+                //for (int j = 0; j < 12; j++)
+                //{
+                //    minutsOffset++;
+                //    Visit visit = new Visit()
+                //    {
+                //        Id = startId++,
+
+                //        PrimaryService = PrimaryMedicalServices[32],
+                //        DateTimeSince = start.AddDays(dayOffset).AddMinutes(minutsOffset * 15),
+                //        DateTimeTill = start.AddDays(dayOffset).AddMinutes(minutsOffset * 15 + 15),
+                //        Location = Locations.ElementAt(1),
+                //        MedicalRoom = Locations.ElementAt(1).MedicalRooms.ElementAt(9),
+                //        MedicalWorker = MedicalWorkers.ElementAt(3),
+                //        VisitCategory = VisitCategories.ElementAt(4),
+                //    };
+                //    availableVisits.Add(visit);
+                //}
+                //minutsOffset = -1;
+
+
+                //for (int j = 0; j < 12; j++)
+                //{
+                //    minutsOffset++;
+                //    Visit visit = new Visit()
+                //    {
+                //        Id = startId++,
+
+                //        PrimaryService = PrimaryMedicalServices[32],
+                //        DateTimeSince = start.AddDays(dayOffset).AddMinutes(minutsOffset * 15),
+                //        DateTimeTill = start.AddDays(dayOffset).AddMinutes(minutsOffset * 15 + 15),
+                //        Location = Locations.ElementAt(2),
+                //        MedicalRoom = Locations.ElementAt(2).MedicalRooms.ElementAt(6),
+                //        MedicalWorker = MedicalWorkers.ElementAt(25),
+                //        VisitCategory = VisitCategories.ElementAt(4),
+                //    };
+                //    availableVisits.Add(visit);
+                //}
+                //minutsOffset = -1;
+
+
+                //for (int j = 0; j < 12; j++)
+                //{
+                //    minutsOffset++;
+                //    Visit visit = new Visit()
+                //    {
+                //        Id = startId++,
+
+                //        PrimaryService = PrimaryMedicalServices[33],
+                //        DateTimeSince = start.AddDays(dayOffset).AddMinutes(minutsOffset * 15),
+                //        DateTimeTill = start.AddDays(dayOffset).AddMinutes(minutsOffset * 15 + 15),
+                //        Location = Locations.ElementAt(3),
+                //        MedicalRoom = Locations.ElementAt(3).MedicalRooms.ElementAt(3),
+                //        MedicalWorker = MedicalWorkers.ElementAt(59),
+                //        VisitCategory = VisitCategories.ElementAt(4),
+                //    };
+                //    availableVisits.Add(visit);
+                //}
+                //minutsOffset = -1;
+
+
+                //for (int j = 0; j < 12; j++)
+                //{
+                //    minutsOffset++;
+                //    Visit visit = new Visit()
+                //    {
+                //        Id = startId++,
+
+                //        PrimaryService = PrimaryMedicalServices[33],
+                //        DateTimeSince = start.AddDays(dayOffset).AddMinutes(minutsOffset * 15),
+                //        DateTimeTill = start.AddDays(dayOffset).AddMinutes(minutsOffset * 15 + 15),
+                //        Location = Locations.ElementAt(4),
+                //        MedicalRoom = Locations.ElementAt(4).MedicalRooms.ElementAt(11),
+                //        MedicalWorker = MedicalWorkers.ElementAt(65),
+                //        VisitCategory = VisitCategories.ElementAt(4),
+                //    };
+                //    availableVisits.Add(visit);
+                //}
+                //minutsOffset = -1;
+
+                ////gabinet pielegniarski
+                ////szczepienia
+
+
+                ////39,40,52,61,
+
+                //for (int j = 0; j < 12; j++)
+                //{
+                //    minutsOffset++;
+                //    Visit visit = new Visit()
+                //    {
+                //        Id = startId++,
+
+                //        PrimaryService = PrimaryMedicalServices[26],
+                //        DateTimeSince = start.AddDays(dayOffset).AddMinutes(minutsOffset * 10),
+                //        DateTimeTill = start.AddDays(dayOffset).AddMinutes(minutsOffset * 10 + 10),
+                //        Location = Locations.ElementAt(2),
+                //        MedicalRoom = Locations.ElementAt(5).MedicalRooms.ElementAt(2),
+                //        MedicalWorker = MedicalWorkers.ElementAt(39),
+                //        VisitCategory = VisitCategories.ElementAt(4),
+                //    };
+                //    availableVisits.Add(visit);
+                //}
+                //minutsOffset = -1;
+
+                //for (int j = 0; j < 12; j++)
+                //{
+                //    minutsOffset++;
+                //    Visit visit = new Visit()
+                //    {
+                //        Id = startId++,
+
+                //        PrimaryService = PrimaryMedicalServices[26],
+                //        DateTimeSince = start.AddDays(dayOffset).AddMinutes(minutsOffset * 10),
+                //        DateTimeTill = start.AddDays(dayOffset).AddMinutes(minutsOffset * 10 + 10),
+                //        Location = Locations.ElementAt(2),
+                //        MedicalRoom = Locations.ElementAt(5).MedicalRooms.ElementAt(2),
+                //        MedicalWorker = MedicalWorkers.ElementAt(39),
+                //        VisitCategory = VisitCategories.ElementAt(4),
+                //    };
+                //    availableVisits.Add(visit);
+                //}
+                //minutsOffset = -1;
+
+                //for (int j = 0; j < 12; j++)
+                //{
+                //    minutsOffset++;
+                //    Visit visit = new Visit()
+                //    {
+                //        Id = startId++,
+
+                //        PrimaryService = PrimaryMedicalServices[26],
+                //        DateTimeSince = start.AddDays(dayOffset).AddMinutes(minutsOffset * 10),
+                //        DateTimeTill = start.AddDays(dayOffset).AddMinutes(minutsOffset * 10 + 10),
+                //        Location = Locations.ElementAt(2),
+                //        MedicalRoom = Locations.ElementAt(5).MedicalRooms.ElementAt(2),
+                //        MedicalWorker = MedicalWorkers.ElementAt(39),
+                //        VisitCategory = VisitCategories.ElementAt(4),
+                //    };
+                //    availableVisits.Add(visit);
+                //}
+                //minutsOffset = -1;
+                //for (int j = 0; j < 12; j++)
+                //{
+                //    minutsOffset++;
+                //    Visit visit = new Visit()
+                //    {
+                //        Id = startId++,
+
+                //        PrimaryService = PrimaryMedicalServices[26],
+                //        DateTimeSince = start.AddDays(dayOffset).AddMinutes(minutsOffset * 10),
+                //        DateTimeTill = start.AddDays(dayOffset).AddMinutes(minutsOffset * 10 + 10),
+                //        Location = Locations.ElementAt(2),
+                //        MedicalRoom = Locations.ElementAt(5).MedicalRooms.ElementAt(2),
+                //        MedicalWorker = MedicalWorkers.ElementAt(39),
+                //        VisitCategory = VisitCategories.ElementAt(4),
+                //    };
+                //    availableVisits.Add(visit);
+                //}
+                //minutsOffset = -1;
+                //for (int j = 0; j < 12; j++)
+                //{
+                //    minutsOffset++;
+                //    Visit visit = new Visit()
+                //    {
+                //        Id = startId++,
+
+                //        PrimaryService = PrimaryMedicalServices[26],
+                //        DateTimeSince = start.AddDays(dayOffset).AddMinutes(minutsOffset * 10),
+                //        DateTimeTill = start.AddDays(dayOffset).AddMinutes(minutsOffset * 10 + 10),
+                //        Location = Locations.ElementAt(2),
+                //        MedicalRoom = Locations.ElementAt(5).MedicalRooms.ElementAt(2),
+                //        MedicalWorker = MedicalWorkers.ElementAt(39),
+                //        VisitCategory = VisitCategories.ElementAt(4),
+                //    };
+                //    availableVisits.Add(visit);
+                //}
+                //minutsOffset = -1;
+
+                //for (int j = 0; j < 12; j++)
+                //{
+                //    minutsOffset++;
+                //    Visit visit = new Visit()
+                //    {
+                //        Id = startId++,
+
+                //        PrimaryService = PrimaryMedicalServices[26],
+                //        DateTimeSince = start.AddDays(dayOffset).AddMinutes(minutsOffset * 10),
+                //        DateTimeTill = start.AddDays(dayOffset).AddMinutes(minutsOffset * 10 + 10),
+                //        Location = Locations.ElementAt(2),
+                //        MedicalRoom = Locations.ElementAt(5).MedicalRooms.ElementAt(2),
+                //        MedicalWorker = MedicalWorkers.ElementAt(39),
+                //        VisitCategory = VisitCategories.ElementAt(4),
+                //    };
+                //    availableVisits.Add(visit);
+                //}
+                //minutsOffset = -1;
 
 
             }
@@ -1573,6 +1650,8 @@ namespace Asklepios.Data.InMemoryContexts
                 for (int i = 0; i < numberOfVisits; i++)
                 {
                     int medicalWorkerIndex = rnd.Next(0, MedicalWorkers.Count - 1);
+                    MedicalWorker medicalWorker = MedicalWorkers[medicalWorkerIndex];
+                    int primaryServicesCounter = medicalWorker.MedicalServices.Where(c => c.IsPrimaryService).Count();
 
                     int daysAgo = rnd.Next(0, 100);
                     int hour = rnd.Next(0, 12);
@@ -1583,7 +1662,7 @@ namespace Asklepios.Data.InMemoryContexts
                     int prescriptionIndex = rnd.Next(-5, Prescriptions.Count - 1);
                     int referralsIndex = rnd.Next(-10, referrals.Count - 1);
                     int medicalHistoryIndex = rnd.Next(-2, medicalHistories.Count - 1);
-                    int primaryMedicalServiceIndex = rnd.Next(0, PrimaryMedicalServices.Count - 1);
+                    int primaryMedicalServiceIndex = rnd.Next(0, primaryServicesCounter - 1);
                     int recommendationIndex = rnd.Next(-4, Recommendations.Count - 1);
                     int reviewIndex = rnd.Next(-1, reviews.Count - 1);
                     int reviewDaysOffset = rnd.Next(1, 15);
@@ -1592,9 +1671,9 @@ namespace Asklepios.Data.InMemoryContexts
 
                     TimeSpan timeSpan2 = new TimeSpan(hour, quarter * 15, 0);
                     dateTime = dateTime.Date + timeSpan2;// +timeSpan1;
-                    MedicalService medicalService = PrimaryMedicalServices[primaryMedicalServiceIndex];
+                    MedicalService medicalService = medicalWorker.MedicalServices.Where(c => c.IsPrimaryService).ElementAt(primaryMedicalServiceIndex);// PrimaryMedicalServices[primaryMedicalServiceIndex];
                     //int minorServiceIndex = -1;
-                    int minorServiceIndex = minorServiceIndex = medicalService.SubServices == null ? -1 : medicalService.SubServices.Count() - 1;
+                    int minorServiceIndex = medicalService.SubServices == null ? -1 : medicalService.SubServices.Count() - 1;
                     MedicalService minorService = null;
                     if (minorServiceIndex >= 0)
                     {
@@ -1648,7 +1727,7 @@ namespace Asklepios.Data.InMemoryContexts
                     {
                         Id = ++id,
                         Patient = patient,
-                        MedicalWorker = MedicalWorkers[medicalWorkerIndex],
+                        MedicalWorker = medicalWorker,
 
                         DateTimeSince = dateTime,
                         DateTimeTill = dateTime.AddMinutes(15),
@@ -1699,7 +1778,7 @@ namespace Asklepios.Data.InMemoryContexts
 
         private static void AddNotificationsOrNot(Visit visit)
         {
-            if (visit.MedicalResult!=null)
+            if (visit.MedicalResult != null)
             {
                 Notification notification = new Notification();
                 notification.DateTimeAdded = DateTimeOffset.Now;
@@ -1709,7 +1788,7 @@ namespace Asklepios.Data.InMemoryContexts
                 notification.Patient = visit.Patient;
                 notification.PatientId = visit.Patient.Id;
                 notification.VisitId = visit.Id;
-                if (Notifications?.Count>0)
+                if (Notifications?.Count > 0)
                 {
                     notification.Id = Notifications.Max(c => c.Id) + 1;
                 }
@@ -1719,7 +1798,7 @@ namespace Asklepios.Data.InMemoryContexts
                 }
                 Notifications.Add(notification);
             }
-            if (visit.Prescription!=null)
+            if (visit.Prescription != null)
             {
                 Notification notification = new Notification();
                 notification.DateTimeAdded = DateTimeOffset.Now;
@@ -1987,7 +2066,7 @@ namespace Asklepios.Data.InMemoryContexts
                                         IdentificationCode="u5y4fg654h6fds54gdfs56g46df",
 
                     IssuedMedicines = new List<IssuedMedicine>(IssuedMedicines.GetRange(3,3)),
-                    
+
                 },
                 new Prescription()
                 {
@@ -3821,7 +3900,7 @@ namespace Asklepios.Data.InMemoryContexts
 
 
             };
-            
+
             //List<Recommendation> recommendations = GetSomeRecommendations();
             List<MedicalReferral> referrals = GetDummyMedicalReferrals(patient, now);
 

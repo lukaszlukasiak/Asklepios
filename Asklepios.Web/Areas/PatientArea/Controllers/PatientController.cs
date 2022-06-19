@@ -104,7 +104,7 @@ namespace Asklepios.Web.Areas.PatientArea.Controllers
                 model.UserName = _loggedUser.Person.FullName;
                 model.Notifications = _context.GetNotificationsByPatientId(_selectedPatient.Id);
 
-                return View(_selectedPatient);
+                return View(model);
             }
             else
             {
