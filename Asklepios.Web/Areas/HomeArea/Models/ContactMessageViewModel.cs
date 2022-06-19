@@ -46,7 +46,7 @@ namespace Asklepios.Web.Areas.HomeArea.Models
             }
         }
         public AlertMessageType AlertMessageType { get; set; }
-        public Patient SelectedPatient { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
+        public Patient SelectedPatient { get; set; }
         public string UserName { get;set; }
         public List<Notification> Notifications { get; set; }
 
