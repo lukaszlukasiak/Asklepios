@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Asklepios.Web.Areas.PatientArea.Models
 {
-    public class PatientViewModel
+    public class PatientViewModel:IBaseViewModel
     {
         public PatientViewModel(Patient patient)
         {
@@ -14,6 +14,9 @@ namespace Asklepios.Web.Areas.PatientArea.Models
         }
 
         public Patient Patient { get; set; }
+        public string UserName { get; set; }
+        public List<Notification> Notifications { get; set; }
+
         //public List<Visit> DashboardItems 
         //{ 
         //    get
@@ -24,7 +27,7 @@ namespace Asklepios.Web.Areas.PatientArea.Models
 
         //        return items;
         //    }
-            
+
         //}
         //private IEnumerable<object> GetMedicalResults(int numberOfResults = 3)
         //{

@@ -36,6 +36,10 @@ namespace Asklepios.Data.Interfaces
         void UpdateVisit(Visit visit);
         void ResignFromVisit(Visit plannedVisit, Patient patient);
         void BookVisit(Patient selectedPatient, Visit selectedVisit);
+        List<Notification> GetNotificationsByPatientId(long id);
+        List<Visit> GetHistoricalVisitsByPatientId(long id);
+        List<Visit> GetBookedVisitsByPatientId(long id);
+        Notification GetNotificationById(long id);
         //IEnumerable<MedicalRoom> GetMedicalRooms();
         //MedicalRoom GetMedicalRoomById();
 

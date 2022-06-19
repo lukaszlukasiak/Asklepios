@@ -36,6 +36,8 @@ namespace Asklepios.Core.Models
         [Display(Name = "Czy zatrudniony obecnie")]
 
         public bool IsCurrentlyHired { get; set; }
+        [Display(Name = "Tytuł zawodowy")]
+
         public abstract string ProfessionalTitle { get; }
         //public abstract string FullProffesionalName { get; }
         public string FullProffesionalName => ProfessionalTitle + " " + Person.Name + " " + Person.Surname;

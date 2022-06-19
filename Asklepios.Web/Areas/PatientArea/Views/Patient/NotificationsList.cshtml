@@ -1,0 +1,17 @@
+﻿@model Asklepios.Web.Areas.PatientArea.Models.VisitViewModel
+@{
+    ViewData["Title"] = "View";
+    List<Notification> notifications = Model.Notifications.OrderBy(c => c.DateTimeAdded).ToList();
+
+}
+
+<h1 style="text-align:center">Lista powiadomień</h1>
+
+@for (int i = 0; i < notifications.Count; i++)
+{
+    Notification not = Model.Notifications[i];
+    Asklepios.Web.Areas.PatientArea.Models.MedicalWorkerViewModel model = new Asklepios.Web.Areas.PatientArea.Models.MedicalWorkerViewModel();
+    //model.Notifications = not;
+    <partial name="_Notification" model="not" />
+
+}

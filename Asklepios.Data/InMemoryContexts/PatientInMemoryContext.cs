@@ -181,5 +181,29 @@ namespace Asklepios.Data.InMemoryContexts
             Patient patient = PatientMockDB.AllPatients.Where(c => c.User.Id == userId).FirstOrDefault();
             return patient;
         }
+
+        public List<Notification> GetNotificationsByPatientId(long id)
+        {
+            List<Notification> notifications = PatientMockDB.Notifications.Where(c => c.PatientId == id).ToList();
+            return notifications;
+        }
+
+        public List<Visit> GetHistoricalVisitsByPatientId(long id)
+        {
+            List<Visit> visits= PatientMockDB.HistoricalVisits.Where(c => c.Patient.Id == id).ToList();
+            return visits;
+        }
+
+        public List<Visit> GetBookedVisitsByPatientId(long id)
+        {
+            List<Visit> visits= PatientMockDB.BookedVisits.Where(c => c.Patient.Id == id).ToList();
+            return visits;
+        }
+
+        public Notification GetNotificationById(long id)
+        {
+            Notification notification = PatientMockDB.Notifications.Where(c => c.Id == id).FirstOrDefault();
+            return notification;
+        }
     }
 }

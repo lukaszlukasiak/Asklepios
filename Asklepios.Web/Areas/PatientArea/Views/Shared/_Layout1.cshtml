@@ -1,4 +1,6 @@
-﻿<!DOCTYPE html>
+﻿@model IBaseViewModel
+
+<!DOCTYPE html>
 <html lang="en">
 
 <head>
@@ -208,7 +210,15 @@
                                data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                 <i class="fas fa-bell fa-fw"></i>
                                 <!-- Counter - Alerts -->
-                                <span class="badge badge-danger badge-counter">3+</span>
+                                @if (Model.Notifications.Count(c=>c.IsRead==false) > 3)
+                                {
+                                    <span class="badge badge-danger badge-counter">3+</span>
+
+                                }
+                                else
+                                {
+                                    <span class="badge badge-danger badge-counter">@Model.Notifications.Count(c=>c.IsRead==false)</span>
+                                }
                             </a>
                             <!-- Dropdown - Alerts -->
                             <div class="dropdown-list dropdown-menu dropdown-menu-right shadow animated--grow-in"
@@ -216,64 +226,108 @@
                                 <h6 class="dropdown-header">
                                     Centrum powiadomień
                                 </h6>
-                                <a class="dropdown-item d-flex align-items-center" href="#">
-                                    <div class="mr-3">
-                                        <div class="icon-circle bg-primary">
-                                            <i class="fas fa-file-alt text-white"></i>
+                                @if (Model.Notifications == null)
+                                {
+                                    <a class="dropdown-item d-flex align-items-center" href="#">
+                                        <div class="mr-3">
+                                            <div class="icon-circle bg-warning">
+                                                <i class="fas fa-exclamation-triangle text-white"></i>
+                                            </div>
                                         </div>
-                                    </div>
-                                    <div>
-                                        <div class="small text-gray-500">22.09.2021, 15:37</div>
-                                        <span class="font-weight-bold">Nowe skierowanie!</span>
-                                    </div>
-                                </a>
-                                <a class="dropdown-item d-flex align-items-center" href="#">
-                                    <div class="mr-3">
-                                        <div class="icon-circle bg-success">
-                                            <i class="fas fa-donate text-white"></i>
+                                        <div>
+                                            <div class="small text-gray-500">10.09.2021, 8:35</div>
+                                            Brak powiadomień!
                                         </div>
-                                    </div>
-                                    <div>
-                                        <div class="small text-gray-500">17.09.2021, 11:11</div>
-                                        Wyniki badania zostały opublikowane!
-                                    </div>
-                                </a>
-                                <a class="dropdown-item d-flex align-items-center" href="#">
-                                    <div class="mr-3">
-                                        <div class="icon-circle bg-warning">
-                                            <i class="fas fa-exclamation-triangle text-white"></i>
+                                    </a>
+                                }
+                                else
+                                {
+                                    List<Notification> notifications = Model.Notifications.OrderBy(c => c.DateTimeAdded).ToList();
+                                    foreach (Notification item in Model.Notifications.Take(3))
+                                    {
+                                        <a class="dropdown-item d-flex align-items-center" asp-action="SetNotificationAsReadDetails" asp-controller="Patient" asp-area="PatientArea" asp-route-id="@item.Id">
+                                            <div class="mr-3">
+                                                <div class="icon-circle bg-primary">
+                                                    <i class="fas fa-file-alt text-white"></i>
+                                                </div>
+                                            </div>
+                                            <div>
+                                                <div class="small text-gray-500">22.09.2021, 15:37</div>
+                                                @if (item.IsRead)
+                                                {
+                                                    <span class="font-weight-normal">@item.Description!</span>
+
+                                                }
+                                                else
+                                                {
+                                                    <span class="font-weight-bold">@item.Description!</span>
+
+                                                }
+                                            </div>
+                                        </a>
+                                    }
+                                    <a class="dropdown-item text-center small text-gray-500" asp-action="NotificationsList" asp-controller="Patient" asp-area="PatientArea">Pokaż wszystkie powiadomienia!</a>
+
+                                }
+
+
+
+                                @*<a class="dropdown-item d-flex align-items-center" href="#">
+                                        <div class="mr-3">
+                                            <div class="icon-circle bg-primary">
+                                                <i class="fas fa-file-alt text-white"></i>
+                                            </div>
                                         </div>
-                                    </div>
-                                    <div>
-                                        <div class="small text-gray-500">10.09.2021, 8:35</div>
-                                        Nowa recepta!
-                                    </div>
-                                </a>
-                                <a class="dropdown-item text-center small text-gray-500" href="#">Pokaż wszystkie powiadomienia!</a>
+                                        <div>
+                                            <div class="small text-gray-500">22.09.2021, 15:37</div>
+                                            <span class="font-weight-bold">Nowe skierowanie!</span>
+                                        </div>
+                                    </a>
+                                    <a class="dropdown-item d-flex align-items-center" href="#">
+                                        <div class="mr-3">
+                                            <div class="icon-circle bg-success">
+                                                <i class="fas fa-donate text-white"></i>
+                                            </div>
+                                        </div>
+                                        <div>
+                                            <div class="small text-gray-500">17.09.2021, 11:11</div>
+                                            Wyniki badania zostały opublikowane!
+                                        </div>
+                                    </a>
+                                    <a class="dropdown-item d-flex align-items-center" href="#">
+                                        <div class="mr-3">
+                                            <div class="icon-circle bg-warning">
+                                                <i class="fas fa-exclamation-triangle text-white"></i>
+                                            </div>
+                                        </div>
+                                        <div>
+                                            <div class="small text-gray-500">10.09.2021, 8:35</div>
+                                            Nowa recepta!
+                                        </div>
+                                    </a>*@
                             </div>
                         </li>
 
                         <div class="topbar-divider d-none d-sm-block"></div>
-
                         <!-- Nav Item - User Information -->
                         <li class="nav-item dropdown no-arrow">
                             <a class="nav-link dropdown-toggle" id="userDropdown" role="button"
                                data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                <span class="mr-2 d-none d-lg-inline">Łukasz Łukasiak</span>
+                                <span class="mr-2 d-none d-lg-inline">@Model.UserName</span>
                                 <i class="fas fa-user-cog"></i>
 
                             </a>
                             <!-- Dropdown - User Information -->
                             <div class="dropdown-menu dropdown-menu-right shadow animated--grow-in"
                                  aria-labelledby="userDropdown">
-                                <a class="dropdown-item" href="#">
+                                <a class="dropdown-item" asp-action="UserProfile" asp-controller="Patient" asp-area="PatientArea">
                                     <i class="fas fa-user fa-sm fa-fw mr-2 text-gray-400"></i>
                                     Profil
                                 </a>
-                                <a class="dropdown-item" href="#">
-                                    <i class="fas fa-cogs fa-sm fa-fw mr-2 text-gray-400"></i>
-                                    Ustawienia
-                                </a>
+                                @*<a class="dropdown-item" href="#">
+                                        <i class="fas fa-cogs fa-sm fa-fw mr-2 text-gray-400"></i>
+                                        Ustawienia
+                                    </a>*@
                                 <div class="dropdown-divider"></div>
                                 <a class="dropdown-item" href="#" data-toggle="modal" data-target="#logoutModal">
                                     <i class="fas fa-sign-out-alt fa-sm fa-fw mr-2 text-gray-400"></i>

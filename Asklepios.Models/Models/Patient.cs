@@ -136,7 +136,8 @@ namespace Asklepios.Core.Models
                 return false;
             }
         }
-
+        public List<Notification> Notifications 
+        { get; set; }
         public void BookVisit(Visit visit)
         {
             visit.Patient = this;

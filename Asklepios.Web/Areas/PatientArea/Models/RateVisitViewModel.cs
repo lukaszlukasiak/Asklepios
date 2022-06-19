@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace Asklepios.Web.Areas.PatientArea.Models
 {
-    public class RateVisitViewModel
+    public class RateVisitViewModel: IBaseViewModel
     {
         [Required(ErrorMessage = "Proszę wybrać ocenę")]
         public string AtmosphereRate { get; set;  }
@@ -19,6 +19,7 @@ namespace Asklepios.Web.Areas.PatientArea.Models
         public string Description { get; set; }
         public MedicalWorker MedicalWorker { get; set; }
         public long VisitId { get; set; }
+        public string UserName { get; set; }
 
         public bool IsDataProper
         {
@@ -35,6 +36,8 @@ namespace Asklepios.Web.Areas.PatientArea.Models
                 }
             }
         }
+
+        public List<Notification> Notifications { get; set; }
 
         internal VisitReview GetVisitReview()
         {

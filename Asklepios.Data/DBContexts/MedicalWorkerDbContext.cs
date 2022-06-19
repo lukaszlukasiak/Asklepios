@@ -4,6 +4,7 @@ using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using Microsoft.AspNetCore.Http;
+using Asklepios.Core.Enums;
 
 namespace Asklepios.Data
 {
@@ -24,7 +25,7 @@ namespace Asklepios.Data
             throw new NotImplementedException();
         }
 
-        public MedicalWorker GetMedicalWorkerByUserId(long personId)
+        public MedicalWorker GetMedicalWorkerByPersonId(long personId)
         {
             throw new NotImplementedException();
         }
@@ -165,6 +166,16 @@ namespace Asklepios.Data
         }
 
         public void RemoveTestResult(long id, long id1, string webRootPath)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Person GetPersonById(long personId)
+        {
+            throw new NotImplementedException();
+        }
+
+        public void AddNotification(long id1, NotificationType testResult, long id2, DateTimeOffset now, long visitId)
         {
             throw new NotImplementedException();
         }

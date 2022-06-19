@@ -1,4 +1,5 @@
 ﻿using Asklepios.Core.Models;
+using Asklepios.Web.Areas.PatientArea.Models;
 using Asklepios.Web.Enums;
 using System;
 using System.Collections.Generic;
@@ -8,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace Asklepios.Web.Areas.HomeArea.Models
 {
-    public class ContactMessageViewModel
+    public class ContactMessageViewModel:IBaseViewModel
     {
         [Required(ErrorMessage = "Proszę podaj swoje imię i nazwisko")]
         [Display(Name = "Imię i nazwisko")]
@@ -45,16 +46,22 @@ namespace Asklepios.Web.Areas.HomeArea.Models
             }
         }
         public AlertMessageType AlertMessageType { get; set; }
+        public Patient SelectedPatient { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
+        public string UserName { get;set; }
+        public List<Notification> Notifications { get; set; }
+
         public ContactMessageViewModel()
         {
             UserType = Core.Enums.UserType.Guest;
         }
-        public ContactMessageViewModel(Core.Models.Patient patient )
+        public ContactMessageViewModel(Core.Models.Patient patient, string fullName)
         {
             UserType = Core.Enums.UserType.Patient;
             ContactName = patient.Person.FullName;
             ContactEMailAddress = patient.User.EmailAddress;
             UserId = patient.Id;
+            UserName = fullName;
+            
         }
         public ContactMessageViewModel(Core.Models.MedicalWorker worker)
         {

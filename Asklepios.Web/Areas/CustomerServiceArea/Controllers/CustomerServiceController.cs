@@ -37,6 +37,19 @@ namespace Asklepios.Web.Areas.CustomerServiceArea.Controllers
         {
             _context = context;
         }
+        public IActionResult UserProfile()
+        {
+            if (_loggedUser != null)
+            {
+
+                return View(User);
+
+            }
+            else
+            {
+                return NotFound();
+            }
+        }
         [HttpPost]
         public IActionResult Index(SelectPatientViewModel model)
         {

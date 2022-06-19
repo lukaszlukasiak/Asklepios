@@ -7,8 +7,10 @@ using System.Threading.Tasks;
 
 namespace Asklepios.Web.Areas.PatientArea.Models
 {
-    public class MedicalWorkerViewModel:SearchViewModel
+    public class MedicalWorkerViewModel:SearchViewModel, IBaseViewModel
     {
         public MedicalWorker MedicalWorker { get; set; }
+        public string UserName { get; set; }
+        public List<Notification> Notifications { get; set; }
     }
 }

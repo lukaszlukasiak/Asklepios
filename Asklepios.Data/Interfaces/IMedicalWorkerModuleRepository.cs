@@ -1,4 +1,5 @@
-﻿using Asklepios.Core.Models;
+﻿using Asklepios.Core.Enums;
+using Asklepios.Core.Models;
 using Microsoft.AspNetCore.Http;
 using System;
 using System.Collections.Generic;
@@ -11,7 +12,7 @@ namespace Asklepios.Data.Interfaces
     public interface IMedicalWorkerModuleRepository
     {
         MedicalWorker GetMedicalWorkerData();
-        MedicalWorker GetMedicalWorkerByUserId(long personId);
+        MedicalWorker GetMedicalWorkerByPersonId(long personId);
         Visit GetAvailableVisitById(long currentVisitId);
         List<Visit> GetFutureVisitsByMedicalWorkerId(long id);
         List<Visit> GetHistoricalVisitsByMedicalWorkerId(long id);
@@ -39,5 +40,7 @@ namespace Asklepios.Data.Interfaces
         void UpdateTestResultFile(IFormFile medicalTestFile, Visit visit, string webRootPath);
         byte[] GetDocument(string documentPath, string webRootPath);
         void RemoveTestResult(long id, long id1, string webRootPath);
+        Person GetPersonById(long personId);
+        void AddNotification(long id1, NotificationType testResult, long id2, DateTimeOffset now,long visitId);
     }
 }

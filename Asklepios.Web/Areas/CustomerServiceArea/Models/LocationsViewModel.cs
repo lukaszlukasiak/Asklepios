@@ -10,6 +10,7 @@ namespace Asklepios.Web.Areas.CustomerServiceArea.Models
     {
         public List<Asklepios.Core.Models.Location> Locations { get; set; }
         public Patient SelectedPatient { get; set; }
+        public string UserName { get; set; }
 
         public LocationsViewModel(Patient patient, List<Asklepios.Core.Models.Location> locations)
         {

@@ -868,6 +868,20 @@ namespace Asklepios.Web.Areas.AdministrativeArea.Controllers
                 return NotFound();
             }
         }
+        public IActionResult UserProfile()
+        {
+            if (_loggedUser != null)
+            {
+                
+                return View(User);
+
+            }
+            else
+            {
+                return NotFound();
+            }
+        }
+
         [HttpPost]
         [ResponseCache(CacheProfileName = "NoCaching")]
         public IActionResult LocationItemEdit(LocationsManageViewModel model)

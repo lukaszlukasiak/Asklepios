@@ -8,7 +8,7 @@
                     <a asp-action="MedicalWorkerDetails" asp-controller="Patient" asp-route-id="@Model.Visit.MedicalWorker.Id">
 
                         @Model.Visit.MedicalWorker.FullProffesionalName
-                        </a>
+                    </a>
                 </h3>
                 <div class="d-flex align-content-center mr-auto pt-2" style="text-align:center">
                     <img alt="@Model.Visit.MedicalWorker.FullProffesionalName" src="@Model.Visit.MedicalWorker.Person.ImageSource" class="mx-auto d-block" style="display: block; max-height:50% ; max-width:50%;
@@ -55,9 +55,16 @@
                 <p>Koszt całkowity: @Model.Visit.GetTotalPrice() PLN</p>
             </h5>
         </div>
-        @if (Model.Visit.VisitReview != null)
-        {
-            <div class="d-flex flex-column flex-fill flex-grow-1 m-auto" style="min-width: 400px; text-align: center">
+    </div>
+    <div></div>
+    @if (Model.Visit.VisitReview != null)
+    {
+        <div class="d-flex flex-column mx-2">
+            <h5>Recenzja</h5>
+
+            <partial name="_MedicalReview" model="@Model.Visit.VisitReview" />
+        </div>
+        @*<div class="d-flex flex-column flex-fill flex-grow-1 m-auto" style="min-width: 400px; text-align: center">
                 <div class="d-flex flex-column">
                     <p>
                         Atmosfera:
@@ -75,29 +82,28 @@
                         @Model.Visit.VisitReview.ShortDescription
                     </p>
                 </div>
-            </div>
-        }
-    </div>
-    @if (Model.Visit.ExaminationReferrals != null)
-    {
-        <div class="d-flex flex-column mx-2">
-            <h5>Wystawione skierowania</h5>
-            @for (int i = 0; i < Model.Visit.ExaminationReferrals.Count; i++)
-            {
-                <div class="border border-secondary rounded w-100 flex-grow-0 mb-2  p-3">
-                    @{ 
-                        MedicalReferral referral = Model.Visit.ExaminationReferrals[i];
+            </div>*@
+    }
+@if (Model.Visit.ExaminationReferrals != null)
+{
+    <div class="d-flex flex-column mx-2">
+        <h5>Wystawione skierowania</h5>
+        @for (int i = 0; i < Model.Visit.ExaminationReferrals.Count; i++)
+        {
+            <div class="border border-secondary rounded w-100 flex-grow-0 mb-2  p-3">
+                @{
+                    MedicalReferral referral = Model.Visit.ExaminationReferrals[i];
 
                     <div>
                         Usługa: @referral.PrimaryMedicalService.Name
                     </div>
-                        @if (referral.MinorMedicalService!=null)
-                        {
-                <span>
-                    Podusługa: @referral.MinorMedicalService.Name
-                </span>
+                    @if (referral.MinorMedicalService != null)
+                    {
+                        <span>
+                            Podusługa: @referral.MinorMedicalService.Name
+                        </span>
 
-                        }
+                    }
 
                     <div>
                         Wystawione: @referral.IssueDate.ToString("dd-MM-yyyy")
@@ -105,101 +111,105 @@
                     <div>
                         Ważne do: @referral.ExpireDate.ToString("dd-MM-yyyy")
                     </div>
-                        if (referral.HasBeenUsed)
-                        {<p>
-                        Skierowanie zostało wykorzystane
-                    </p>
-                        }
-                        else if (referral.HasExpired)
-                        {
-                    <p>Ważność skierowania upłynęła</p>
-                            }
-                        }
-
-                </div>
-
-            }
-        </div>
-    }
-                        @if (Model.Visit.Prescription !=null)
-                        {
-<div class="d-flex flex-column mx-2">
-    <h5>Recepta</h5>
-
-    <div class="border border-secondary rounded w-100 flex-grow-0 mb-2  p-3">
-
-        <div class="d-flex flex-fill pt-2 flex-column">
-
-            <div>
-                Wystawione: @Model.Visit.Prescription.IssueDate.ToString("dd-MM-yyyy")
-            </div>
-            <div>
-                Ważne do: @Model.Visit.Prescription.ExpirationDate.ToString("dd-MM-yyyy")
-            </div>
-            <div>
-                Numer id recepty:
-                <span style="font-weight:bold"> @Model.Visit.Prescription.IdentificationCode</span>
-            </div>
-            <p>Kod dostępu: <span style="font-weight:bold">  @Model.Visit.Prescription.AccessCode</span> </p>
-        </div>
-        <div class="d-flex flex-fill  flex-column">
-
-            <p>
-                @{
-                    for (int i = 0; i < Model.Visit.Prescription.IssuedMedicines.Count; i++)
+                    if (referral.HasBeenUsed)
+                    {<p>
+                            Skierowanie zostało wykorzystane
+                        </p>
+                    }
+                    else if (referral.HasExpired)
                     {
-                        IssuedMedicine item = Model.Visit.Prescription.IssuedMedicines[i];
-                        <partial name="_Medicine" model="item" />
-                        if (i == Model.Visit.Prescription.IssuedMedicines.Count - 1)
-                        {
-
-                        }
-                        else
-                        {
-                            <br />
-                        }
+                        <p>Ważność skierowania upłynęła</p>
                     }
                 }
-            </p>
+
+            </div>
+
+        }
+    </div>
+}
+@if (Model.Visit.Prescription != null)
+{
+    <div class="d-flex flex-column m-2">
+        <h5>Recepta</h5>
+
+        <div class="border border-secondary rounded w-100 flex-grow-0 mb-2  p-3">
+
+            <div class="d-flex flex-fill pt-2 flex-column">
+
+                <div>
+                    Wystawione: @Model.Visit.Prescription.IssueDate.ToString("dd-MM-yyyy")
+                </div>
+                <div>
+                    Ważne do: @Model.Visit.Prescription.ExpirationDate.ToString("dd-MM-yyyy")
+                </div>
+                <div>
+                    Numer id recepty:
+                    <span style="font-weight:bold"> @Model.Visit.Prescription.IdentificationCode</span>
+                </div>
+                <p>Kod dostępu: <span style="font-weight:bold">  @Model.Visit.Prescription.AccessCode</span> </p>
+            </div>
+            <div class="d-flex flex-fill  flex-column">
+
+                <p>
+                    @{
+                        for (int i = 0; i < Model.Visit.Prescription.IssuedMedicines.Count; i++)
+                        {
+                            IssuedMedicine item = Model.Visit.Prescription.IssuedMedicines[i];
+                            <partial name="_Medicine" model="item" />
+                            if (i == Model.Visit.Prescription.IssuedMedicines.Count - 1)
+                            {
+
+                            }
+                            else
+                            {
+                                <br />
+                            }
+                        }
+                    }
+                </p>
+            </div>
         </div>
     </div>
-</div>
-    }
-    <div>
-        <div class="d-flex flex-column">
+}
+<div>
+    <div class="d-flex flex-column">
 
-            @*<a asp-area="PatientArea" asp-controller="Patient" asp-action="BookVisit" class="btn btn-primary btn-icon-split  flex-grow-1 m-2">
+        @*<a asp-area="PatientArea" asp-controller="Patient" asp-action="BookVisit" class="btn btn-primary btn-icon-split  flex-grow-1 m-2">
+                <span class="icon text-white-50">
+                    <i class="fas fa-book"></i>
+                </span>
+                <span class="text">Zarezerwuj ponownie</span>
+            </a>*@<!--<a asp-area="PatientArea" asp-controller="Patient" asp-action="BookVisit" class="btn btn-primary btn-icon-split  flex-grow-1 m-2">
             <span class="icon text-white-50">
                 <i class="fas fa-book"></i>
             </span>
-            <span class="text">Zarezerwuj ponownie</span>
-        </a>*@
-            <form class="form d-flex flex-column m-2" asp-action="BookVisitConditions" method="post">
-                <!--@Html.TextBoxFor(m => m.SelectedServiceId, new { @class = "form-control " })--> @*, @style = "visibility:hidden;height:0px"*@
-                <button type="submit" class="btn btn-primary btn-icon-split d-flex">
-                    <span class="icon text-white-50 left" style="text-align:left;float:left">
-                        <i class="fas fa-address-book"></i>
-                    </span>
-                    <span class="text" style="float: left">Zarezerwuj ponownie</span>
-                </button>
-                @*@Html.TextBoxFor(m => m.SelectedMedicalWorkerId, new { @class = "form-control ", @style = "visibility:hidden;height:0px" },)*@
-                <input asp-for="SelectedMedicalWorkerId" style="visibility:collapse; height:0px" value="@Model.Visit.MedicalWorker.Id.ToString()" />
-                <input asp-for="SelectedServiceId" style="visibility:collapse; height:0px" value="@Model.Visit.PrimaryService.Id.ToString()" />
+            <span class="text"></span>
+        </a>-->
+        <form class="form d-flex flex-column m-2" asp-action="BookVisitConditions" method="post">
+            <!--@Html.TextBoxFor(m => m.SelectedServiceId, new { @class = "form-control " })--> @*, @style = "visibility:hidden;height:0px"*@
+            <button type="submit" class="btn btn-primary btn-icon-split d-flex">
+                <span class="icon text-white-50 left" style="text-align:left;float:left">
+                    <i class="fas fa-address-book"></i>
+                </span>
+                <span class="text" style="float: left">Zarezerwuj ponownie</span>
+            </button>
+            @*@Html.TextBoxFor(m => m.SelectedMedicalWorkerId, new { @class = "form-control ", @style = "visibility:hidden;height:0px" },)*@
+            <input asp-for="SelectedMedicalWorkerId" style="visibility:collapse; height:0px" value="@Model.Visit.MedicalWorker.Id.ToString()" />
+            <input asp-for="SelectedServiceId" style="visibility:collapse; height:0px" value="@Model.Visit.PrimaryService.Id.ToString()" />
 
-            </form>
-
-        </div>
-        @if (Model.Visit.VisitReview == null)
-        {
-            <div class="d-flex">
-                <a asp-area="PatientArea" asp-controller="Patient" asp-action="RateVisit" asp-route-id="@Model.Visit.Id" class="btn btn-primary btn-icon-split flex-grow-1 m-2">
-                    <span class="icon text-white-50 left" style="text-align:left;float:left">
-                        <i class="fas fa-address-book"></i>
-                    </span>
-                    <span class="text" style="float: left">Oceń wizytę</span>
-                </a>
-            </div>
-        }
+        </form>
 
     </div>
+    @if (Model.Visit.VisitReview == null)
+    {
+        <div class="d-flex">
+            <a asp-area="PatientArea" asp-controller="Patient" asp-action="RateVisit" asp-route-id="@Model.Visit.Id" class="btn btn-primary btn-icon-split flex-grow-1 m-2">
+                <span class="icon text-white-50 left" style="text-align:left;float:left">
+                    <i class="fas fa-address-book"></i>
+                </span>
+                <span class="text" style="float: left">Oceń wizytę</span>
+            </a>
+        </div>
+    }
+
 </div>
