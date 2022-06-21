@@ -6,7 +6,7 @@ using System.ComponentModel.DataAnnotations;
 
 namespace Asklepios.Core.Models
 {
-    public  class MedicalTestResult
+    public  class MedicalTestResult:ICloneable
     {
         public long Id { get; set; }
         [Display(Name = "Opis badania")]
@@ -28,6 +28,7 @@ namespace Asklepios.Core.Models
         public DateTimeOffset ExamDate { get; set; }
         public DateTimeOffset UploadDate { get; set; }
         public Patient Patient { get; set; }
+        public long VisitId { get; set; }
         public Visit _visit;
         public Visit Visit
         {
@@ -47,5 +48,16 @@ namespace Asklepios.Core.Models
         {
 
         }
+        public object Clone()
+        {
+            return this.MemberwiseClone();
+        }
+
+        //public MedicalTestResult(MedicalTestResult result, long id)
+        //{
+        //    this = result.MemberwiseClone();
+
+        //}
+
     }
 }

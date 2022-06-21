@@ -34,12 +34,14 @@ namespace Asklepios.Data.Interfaces
         void UpdateReferral(MedicalReferral referral);
         Patient GetPatientByUserId(long personId);
         void UpdateVisit(Visit visit);
-        void ResignFromVisit(Visit plannedVisit, Patient patient);
         void BookVisit(Patient selectedPatient, Visit selectedVisit);
         List<Notification> GetNotificationsByPatientId(long id);
         List<Visit> GetHistoricalVisitsByPatientId(long id);
         List<Visit> GetBookedVisitsByPatientId(long id);
         Notification GetNotificationById(long id);
+        void ResignFromVisit(long id);
+        //void ResignFromVisit(Visit plannedVisit, Patient patient);
+
         //IEnumerable<MedicalRoom> GetMedicalRooms();
         //MedicalRoom GetMedicalRoomById();
 

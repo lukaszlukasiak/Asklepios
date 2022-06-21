@@ -1652,19 +1652,19 @@ namespace Asklepios.Data.InMemoryContexts
                     int medicalWorkerIndex = rnd.Next(0, MedicalWorkers.Count - 1);
                     MedicalWorker medicalWorker = MedicalWorkers[medicalWorkerIndex];
                     int primaryServicesCounter = medicalWorker.MedicalServices.Where(c => c.IsPrimaryService).Count();
-
+                    int testResultIndex = rnd.Next(-MedicalTestResults.Count, MedicalTestResults.Count - 1);
                     int daysAgo = rnd.Next(0, 100);
                     int hour = rnd.Next(0, 12);
                     int quarter = rnd.Next(0, 3);
                     int medicalLocationIndex = rnd.Next(0, Locations.Count - 1);
                     int roomIndex = rnd.Next(0, Locations[medicalLocationIndex].MedicalRooms.Count - 1);
-                    int medicalReviewIndex = rnd.Next(-10, reviews.Count - 1);
-                    int prescriptionIndex = rnd.Next(-5, Prescriptions.Count - 1);
-                    int referralsIndex = rnd.Next(-10, referrals.Count - 1);
+                    //int medicalReviewIndex = rnd.Next(-reviews.Count, reviews.Count - 1);
+                    int prescriptionIndex = rnd.Next(-Prescriptions.Count, Prescriptions.Count - 1);
+                    int referralsIndex = rnd.Next(-referrals.Count, referrals.Count - 1);
                     int medicalHistoryIndex = rnd.Next(-2, medicalHistories.Count - 1);
                     int primaryMedicalServiceIndex = rnd.Next(0, primaryServicesCounter - 1);
                     int recommendationIndex = rnd.Next(-4, Recommendations.Count - 1);
-                    int reviewIndex = rnd.Next(-1, reviews.Count - 1);
+                    int reviewIndex = rnd.Next(-reviews.Count, reviews.Count - 1);
                     int reviewDaysOffset = rnd.Next(1, 15);
                     TimeSpan timeSpan1 = new TimeSpan(7, 0, 0);
                     DateTimeOffset dateTime = new DateTimeOffset(now.AddDays(-daysAgo).Date, timeSpan1);
@@ -1722,6 +1722,15 @@ namespace Asklepios.Data.InMemoryContexts
                         review = reviews[reviewIndex];
                         review.ReviewDate = dateTime.AddDays(reviewDaysOffset);
                     }
+                    MedicalTestResult testResult = null;
+                    if (testResultIndex>=0)
+                    {
+                        testResult = (MedicalTestResult)MedicalTestResults[testResultIndex].Clone();
+                        testResult.MedicalWorker = medicalWorker;
+                        testResult.Id = MedicalTestResults.Max(c => c.Id) + 1;
+                        testResult.MedicalService = medicalService;
+                        MedicalTestResults.Add(testResult);
+                    }
                     VisitCategory visitCategory = VisitCategories.Where(c => c.PrimaryMedicalServices.Any(d => d.Id == medicalService.Id)).FirstOrDefault();
                     Visit visit = new Visit()
                     {
@@ -1738,7 +1747,7 @@ namespace Asklepios.Data.InMemoryContexts
                         Prescription = prescription,
                         Recommendations = visitRecommendations,
                         PrimaryService = medicalService,
-
+                        MedicalResult = testResult,
                         VisitCategory = visitCategory,
                         MinorMedicalServices = minorServices,
                         VisitReview = review
@@ -3737,10 +3746,6 @@ namespace Asklepios.Data.InMemoryContexts
                         PrimaryMedicalServices[25]
                     }
                 },
-
-
-                //usg
-
 
             };
             return MedicalWorkers;

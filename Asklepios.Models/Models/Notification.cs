@@ -55,24 +55,25 @@ namespace Asklepios.Core.Models
         public long VisitId { get; set; }
         public Visit Visit
         {
-            get
-            {
-                switch (NotificationType)
-                {
-                    case NotificationType.Prescription:
-                        Prescription prescription = EventObject as Prescription;
-                        return prescription.Visit;
-                    case NotificationType.TestResult:
-                        MedicalTestResult testResult = EventObject as MedicalTestResult;
-                        return testResult.Visit;
-                    case NotificationType.MedicalReferral:
-                        MedicalReferral referral  = EventObject as MedicalReferral;
-                        return referral.VisitWhenIssued;
-                    default:
-                        break;
-                }
-                return null;
-            }
+            //get
+            //{
+            //    switch (NotificationType)
+            //    {
+            //        case NotificationType.Prescription:
+            //            Prescription prescription = EventObject as Prescription;
+            //            return prescription.Visit;
+            //        case NotificationType.TestResult:
+            //            MedicalTestResult testResult = EventObject as MedicalTestResult;
+            //            return testResult.Visit;
+            //        case NotificationType.MedicalReferral:
+            //            MedicalReferral referral  = EventObject as MedicalReferral;
+            //            return referral.VisitWhenIssued;
+            //        default:
+            //            break;
+            //    }
+            //    return null;
+            //}
+            get;set;
         }
         public long EventObjectId 
         {
