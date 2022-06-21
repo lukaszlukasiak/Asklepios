@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace Asklepios.Web.Areas.AdministrativeArea.Models
 {
-    public class ScheduleManageViewModel:ISearchVisit
+    public class ScheduleManageViewModel:ISearchVisit,IBaseViewModel
     {
         public List<Visit> Schedule { get; set; }
         public List<MedicalRoom> MedicalRooms { get; set; }
@@ -107,6 +107,7 @@ namespace Asklepios.Web.Areas.AdministrativeArea.Models
 
         public int ItemsPerPage { get; private set; } = 100;
         public int CurrentPageNum { get; private set; } = 1;
+        public string UserName { get; set; }
 
         //public void SetSearchOptions(ISearchVisit iSearch)
         //{

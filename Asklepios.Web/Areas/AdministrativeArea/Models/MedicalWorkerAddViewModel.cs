@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace Asklepios.Web.Areas.AdministrativeArea.Models
 {
-    public class MedicalWorkerAddViewModel
+    public class MedicalWorkerAddViewModel:IBaseViewModel
     {
         public string ErrorMessage { get; set; }
         public string SuccessMessage { get; set; }
@@ -39,6 +39,8 @@ namespace Asklepios.Web.Areas.AdministrativeArea.Models
                 return false;
             }
         }
+
+        public string UserName { get; set; }
 
         internal bool CreateMedicalWorker()
         {

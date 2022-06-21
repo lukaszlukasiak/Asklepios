@@ -1,4 +1,4 @@
-﻿@model Asklepios.Core.Models.Patient
+﻿@model Asklepios.Web.Areas.MedicalWorkerArea.Models.PatientViewModel
 @{
     //SelectList medicalPackagesList = new SelectList(Model.MedicalPackages, "Id", "Name");
     //SelectList nfzUnits = new SelectList(Model.NFZUnits, "Id", "Description");
@@ -12,7 +12,7 @@
 
 
         <div class="d-flex flex-fill  justify-content-center mt-2" style="text-align:center">
-            <img src="@Model.Person.ImageSource" class="img-fluid" style="display: block; max-height:300px;
+            <img src="@Model.Patient.Person.ImageSource" class="img-fluid" style="display: block; max-height:300px;
         border-radius: 6px; ">
         </div>
     </div>
@@ -26,73 +26,73 @@
         @*<label asp-for="User.Password" class="control-label"></label>
             <input asp-for="User.Password" class="form-control mb-2" readonly />*@
         <div class="d-flex flex-fill align-content-xl-around form-control border-info alert-info m-2" style="width:400px">
-            <label asp-for="Person.Name" class="control-label"></label>
-            <span class="flex-grow-1 text-right">@Model.Person.Name</span>
+            <label asp-for="Patient.Person.Name" class="control-label"></label>
+            <span class="flex-grow-1 text-right">@Model.Patient.Person.Name</span>
 
         </div>
         <div class="d-flex flex-fill align-content-xl-around form-control border-info alert-info m-2" style="width:400px">
-            <label asp-for="Person.Surname" class="control-label"></label>
-            <span class="flex-grow-1 text-right">@Model.Person.Surname</span>
+            <label asp-for="Patient.Person.Surname" class="control-label"></label>
+            <span class="flex-grow-1 text-right">@Model.Patient.Person.Surname</span>
 
         </div>
         <div class="d-flex flex-fill align-content-xl-around form-control border-info alert-info m-2" style="width:400px">
-            <label asp-for="Person.Gender" class="control-label"></label>
-            <span class="flex-grow-1 text-right">@Model.Person.Gender.GetDescription()</span>
+            <label asp-for="Patient.Person.Gender" class="control-label"></label>
+            <span class="flex-grow-1 text-right">@Model.Patient.Person.Gender.GetDescription()</span>
 
         </div>
         <div class="d-flex flex-fill align-content-xl-around form-control border-info alert-info m-2" style="width:400px">
-            <label asp-for="Person.DefaultAglomeration" class="control-label"></label>
-            <span class="flex-grow-1 text-right">@Model.Person.DefaultAglomeration.Value.GetDescription()</span>
+            <label asp-for="Patient.Person.DefaultAglomeration" class="control-label"></label>
+            <span class="flex-grow-1 text-right">@Model.Patient.Person.DefaultAglomeration.Value.GetDescription()</span>
 
         </div>
         <div class="d-flex flex-fill align-content-xl-around form-control border-info alert-info m-2" style="width:400px">
-            <label asp-for="Person.PhoneNumber" class="control-label"></label>
-            <span class="flex-grow-1 text-right">@Model.Person.PhoneNumber</span>
+            <label asp-for="Patient.Person.PhoneNumber" class="control-label"></label>
+            <span class="flex-grow-1 text-right">@Model.Patient.Person.PhoneNumber</span>
 
         </div>
         <div class="d-flex flex-fill align-content-xl-around form-control border-info alert-info m-2" style="width:400px">
-            <label asp-for="Person.BirthDate" class="control-label"></label>
-            <span class="flex-grow-1 text-right">@Model.Person.BirthDate.Value.Date.ToString("dd.MM.yyyy")</span>
+            <label asp-for="Patient.Person.BirthDate" class="control-label"></label>
+            <span class="flex-grow-1 text-right">@Model.Patient.Person.BirthDate.Value.Date.ToString("dd.MM.yyyy")</span>
 
         </div>
         <div class="d-flex flex-fill align-content-xl-around form-control border-info alert-info m-2" style="width:400px">
-            <label asp-for="Person.PESEL" class="control-label"></label>
-            <span class="flex-grow-1 text-right">@Model.Person.PESEL</span>
+            <label asp-for="Patient.Person.PESEL" class="control-label"></label>
+            <span class="flex-grow-1 text-right">@Model.Patient.Person.PESEL</span>
 
         </div>
         <div class="d-flex flex-fill align-content-xl-around form-control border-info alert-info m-2" style="width:400px">
-            <label asp-for="Person.PassportNumber" class="control-label"></label>
-            <span class="flex-grow-1 text-right">@Model.Person.PassportNumber</span>
+            <label asp-for="Patient.Person.PassportNumber" class="control-label"></label>
+            <span class="flex-grow-1 text-right">@Model.Patient.Person.PassportNumber</span>
         </div>
         <div class="d-flex flex-fill align-content-xl-around form-control border-info alert-info m-2" style="width:400px">
-            <label asp-for="Person.PassportCode" class="control-label"></label>
-            <span class="flex-grow-1 text-right">@Model.Person.PassportCode</span>
+            <label asp-for="Patient.Person.PassportCode" class="control-label"></label>
+            <span class="flex-grow-1 text-right">@Model.Patient.Person.PassportCode</span>
         </div>
         <div class="d-flex flex-fill align-content-xl-around form-control border-info alert-info m-2" style="width:400px">
-            <label asp-for="User.EmailAddress" class="control-label"></label>
-            <span class="flex-grow-1 text-right">@Model.User.EmailAddress</span>
+            <label asp-for="Patient.User.EmailAddress" class="control-label"></label>
+            <span class="flex-grow-1 text-right">@Model.Patient.User.EmailAddress</span>
 
         </div>
         <div class="d-flex flex-fill align-content-xl-around form-control border-info alert-info m-2" style="width:400px">
-            <label asp-for="NFZUnit" class="control-label"></label>
-            <span class="flex-grow-1 text-right">@Model.NFZUnit.Description</span>
+            <label asp-for="Patient.NFZUnit" class="control-label"></label>
+            <span class="flex-grow-1 text-right">@Model.Patient.NFZUnit.Description</span>
 
         </div>
         <div class="d-flex flex-fill align-content-xl-around form-control border-info alert-info m-2" style="width:400px">
-            <label asp-for="MedicalPackage" class="control-label"></label>
-            <span class="flex-grow-1 text-right">@Model.MedicalPackage.Name</span>
+            <label asp-for="Patient.MedicalPackage" class="control-label"></label>
+            <span class="flex-grow-1 text-right">@Model.Patient.MedicalPackage.Name</span>
 
         </div>
     </div>
 </div>
 
 @{
-    if (Model.TestsResults != null && Model.TestsResults.Count > 0)
+    if (Model.Patient.TestsResults != null && Model.Patient.TestsResults.Count > 0)
     {
         <h2 class="text-center">
             Wyniki badań
         </h2>
-        foreach (var item in Model.TestsResults)
+        foreach (var item in Model.Patient.TestsResults)
         {
             <partial name="_TestResult" model="item" />
 
@@ -101,12 +101,12 @@
     }
 }
 @{
-    if (Model.MedicalReferrals != null)
+    if (Model.Patient.MedicalReferrals != null)
     {
         <h2 class="text-center">
             Skierowania
         </h2>
-        foreach (var item in Model.MedicalReferrals)
+        foreach (var item in Model.Patient.MedicalReferrals)
         {
             <partial name="_MedicalReferral" model="item" />
 
@@ -115,12 +115,12 @@
     }
 }
 @{
-    if (Model.Prescriptions != null)
+    if (Model.Patient.Prescriptions != null)
     {
         <h2 class="text-center">
             Recepty
         </h2>
-        foreach (var item in Model.Prescriptions)
+        foreach (var item in Model.Patient.Prescriptions)
         {
             <partial name="_Prescription" model="item" />
 
@@ -130,12 +130,12 @@
 }
 
 @{
-    if (Model.HistoricalVisits != null)
+    if (Model.Patient.HistoricalVisits != null)
     {
         <h2 class="text-center">
             Wizyty
             </h2>
-            foreach (var item in Model.HistoricalVisits)
+            foreach (var item in Model.Patient.HistoricalVisits)
             {
                 <partial name="_HistoricalVisitPatient" model="item" />
 

@@ -41,7 +41,7 @@ namespace Asklepios.Web.Areas.PatientArea.Controllers
                 {
                     User user = JsonConvert.DeserializeObject<User>((string)TempData["User"]);
                     _loggedUser = user;
-                    _selectedPatient = _context.GetPatientByUserId(_loggedUser.PersonId);
+                    _selectedPatient = _context.GetPatientByUserId(_loggedUser.Id);
                     _loggedUser.Person = _selectedPatient.Person;
 
                 }

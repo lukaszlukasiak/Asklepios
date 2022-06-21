@@ -10,13 +10,9 @@
 <div class="d-flex flex-column">
 
     <div class="form-group d-flex flex-column">
-        @*<span id="MessageSpan" asp-validation-for="User.UserName" class="text-danger"></span>*@
 
         <label asp-for="Patient.User.EmailAddress" class="control-label"></label>
         <input asp-for="Patient.User.EmailAddress" class="form-control mb-2" readonly />
-
-        @*<label asp-for="CurrentPatient.User.Password" class="control-label"></label>
-            <input asp-for="CurrentPatient.User.Password" class="form-control mb-2" readonly />*@
 
         <label asp-for="Patient.Person.Name" class="control-label"></label>
         <input asp-for="Patient.Person.Name" class="form-control mb-2" readonly />
@@ -25,15 +21,13 @@
         <input asp-for="Patient.Person.Surname" class="form-control mb-2" readonly />
 
         <label asp-for="Patient.Person.Gender" class="control-label"></label>
-        <input class="form-control  mb-2" asp-for="Patient.Person.Gender" readonly />
+        <input class="form-control  mb-2" value="@Model.Patient.Person.Gender.GetDescription()" readonly />
 
         <label asp-for="Patient.Person.PhoneNumber" class="control-label"></label>
         <input asp-for="Patient.Person.PhoneNumber" class="form-control mb-2" readonly />
 
-
         <label asp-for="Patient.Person.DefaultAglomeration" class="control-label"></label>
-        <input class="form-control  mb-2" asp-for="Patient.Person.DefaultAglomeration" readonly />
-
+        <input class="form-control  mb-2" value="@Model.Patient.Person.DefaultAglomeration.Value.GetDescription()" readonly />
 
         <label asp-for="Patient.Person.BirthDate" class="control-label"></label>
         <input asp-for="Patient.Person.BirthDate" class="form-control mb-2" readonly />
@@ -62,20 +56,20 @@
         <label asp-for="Patient.MedicalPackageId" class="control-label"></label>
         <input asp-for="Patient.MedicalPackage.Name" class="form-control mb-2" readonly />
         @*<select class="form-control  mb-2" asp-for="CurrentPatient.MedicalPackageId" asp-items="medicalPackagesList">
-                <option value="">Wybierz pakiet</option>
-            </select>*@
+            <option value="">Wybierz pakiet</option>
+        </select>*@
         @*<span asp-validation-for="CurrentPatient.MedicalPackageId" class="text-danger"></span>*@
         <label asp-for="Patient.NFZUnitId" class="control-label"></label>
         @*<select class="form-control  mb-2" asp-for="CurrentPatient.NFZUnitId" asp-items="nfzUnits">
-                <option value="">Wybierz oddział NFZ</option>
-            </select>*@
+            <option value="">Wybierz oddział NFZ</option>
+        </select>*@
         <input asp-for="Patient.NFZUnit.Description" class="form-control mb-2" readonly />
         @*<span asp-validation-for="CurrentPatient.NFZUnitId" class="text-danger"></span>*@
 
         <!--<input hidden asp-for="CurrentPatient.Id" class="form-control mb-2">-->
         @*<input hidden asp-for="ViewMode" />*@
         <!--<select hidden asp-for="ViewMode" asp-items="Html.GetEnumSelectListWithOneValue(editViewMode)">
-        </select>-->
+    </select>-->
     </div>
 
 </div>

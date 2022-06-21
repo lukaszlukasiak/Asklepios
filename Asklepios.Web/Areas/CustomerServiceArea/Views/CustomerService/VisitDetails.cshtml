@@ -1,14 +1,17 @@
-﻿@model Asklepios.Core.Models.Visit
+﻿@model Asklepios.Web.Areas.CustomerServiceArea.Models.VisitViewModel
+@{ 
+    Visit visit = Model.Visit;
+}
 
 <div class="d-flex jumbotron flex-column" style=" padding:20px;display:flex;align-content:center;position:relative">
     <div class="d-flex mb-3 flex-wrap align-self-center align-items-center">
         <div class="p-2   align-content-center align-items-center align-self-center mx-auto " style="min-width:400px; text-align:center">
             <div class="d-flex flex-fill flex-column justify-content-center" style="text-align:center">
                 <h3 style="font-weight:900;">
-                    @Model.MedicalWorker.FullProffesionalName
+                    @visit.MedicalWorker.FullProffesionalName
                 </h3>
                 <div class="d-flex align-content-center mr-auto pt-2" style="text-align:center">
-                    <img alt="@Model.MedicalWorker.FullProffesionalName" src="@Model.MedicalWorker.Person.ImageSource" class="mx-auto d-block" style="display: block; max-height:50% ; max-width:50%;
+                    <img alt="@visit.MedicalWorker.FullProffesionalName" src="@visit.MedicalWorker.Person.ImageSource" class="mx-auto d-block" style="display: block; max-height:50% ; max-width:50%;
         border-radius: 6px; ">
                 </div>
 
@@ -17,14 +20,14 @@
         <div class="p-2 flex-grow-1 pt-3 mx-auto flex-grow-1" style="min-width: 400px; text-align: center">
             <h5>
                 <p>
-                    Data: @Model.GetVisitDateFullDescription()
+                    Data: @visit.GetVisitDateFullDescription()
                 </p>
                 <br>
                 <p>
-                    @Model.Location.Name
+                    @visit.Location.Name
                 </p>
                 <p>
-                    Piętro: @Model.MedicalRoom.FloorNumber, pokój: @Model.MedicalRoom.Name
+                    Piętro: @visit.MedicalRoom.FloorNumber, pokój: @visit.MedicalRoom.Name
                 </p>
             </h5>
 
@@ -35,55 +38,55 @@
             <h5>
 
                 <p>
-                    Kategoria: @Model.VisitCategory.CategoryName
+                    Kategoria: @visit.VisitCategory.CategoryName
                 </p>
                 <p>Usługi</p>
                 <p>
-                    @Model.PrimaryService.Name : @Model.GetPrice(Model.PrimaryService); PLN
+                    @visit.PrimaryService.Name : @visit.GetPrice(visit.PrimaryService); PLN
                 </p>
 
-                @for (int i = 0; i < Model.MinorMedicalServices.Count; i++)
+                @for (int i = 0; i < visit.MinorMedicalServices.Count; i++)
                 {
-                    MedicalService service = Model.MinorMedicalServices[i];
+                    MedicalService service = visit.MinorMedicalServices[i];
                     <p>
-                        @service.Name : @Model.GetPrice(service); PLN
+                        @service.Name : @visit.GetPrice(service); PLN
                     </p>
                 }
-                <p>Koszt całkowity: @Model.GetTotalPrice() PLN</p>
+                <p>Koszt całkowity: @visit.GetTotalPrice() PLN</p>
             </h5>
         </div>
-        @if (Model.VisitReview != null)
+        @if (visit.VisitReview != null)
         {
             <div class="d-flex flex-column flex-fill flex-grow-1 m-auto" style="min-width: 400px; text-align: center">
                 <div class="d-flex flex-column">
                     <p>
                         Atmosfera:
-                        <partial name="_Stars" model="@Model.VisitReview.AtmosphereRate" />
+                        <partial name="_Stars" model="@visit.VisitReview.AtmosphereRate" />
                     </p>
                     <p>
                         Kompetencje:
-                        <partial name="_Stars" model="@Model.VisitReview.CompetenceRate" />
+                        <partial name="_Stars" model="@visit.VisitReview.CompetenceRate" />
                     </p>
                     <p>
-                        Ocena ogólna: <partial name="_Stars" model="@Model.VisitReview.GeneralRate" />
+                        Ocena ogólna: <partial name="_Stars" model="@visit.VisitReview.GeneralRate" />
                     </p>
                     <p>
                         Opis:
-                        @Model.VisitReview.ShortDescription
+                        @visit.VisitReview.ShortDescription
                     </p>
                 </div>
             </div>
         }
     </div>
-    @if (Model.ExaminationReferrals != null)
+    @if (visit.ExaminationReferrals != null)
     {
         <div class="d-flex flex-column mx-2">
             <h5>Wystawione skierowania</h5>
-            @for (int i = 0; i < Model.ExaminationReferrals.Count; i++)
+            @for (int i = 0; i < visit.ExaminationReferrals.Count; i++)
             {
                 <div class="border border-secondary rounded w-100 flex-grow-0 mb-2  p-3">
                     @{ 
-                        MedicalReferral referral = Model.ExaminationReferrals[i];
+                        MedicalReferral referral = visit.ExaminationReferrals[i];
 
                                         <div>
                                             Usługa: @referral.PrimaryMedicalService.Name
@@ -119,7 +122,7 @@
             }
         </div>
     }
-                        @if (Model.Prescription!=null)
+                        @if (visit.Prescription!=null)
                         {
 <div class="d-flex flex-column mx-2">
     <h5>Recepta</h5>
@@ -129,26 +132,26 @@
         <div class="d-flex flex-fill pt-2 flex-column">
 
             <div>
-                Wystawione: @Model.Prescription.IssueDate.ToString("dd-MM-yyyy")
+                Wystawione: @visit.Prescription.IssueDate.ToString("dd-MM-yyyy")
             </div>
             <div>
-                Ważne do: @Model.Prescription.ExpirationDate.ToString("dd-MM-yyyy")
+                Ważne do: @visit.Prescription.ExpirationDate.ToString("dd-MM-yyyy")
             </div>
             <div>
                 Numer id recepty:
-                <span style="font-weight:bold"> @Model.Prescription.IdentificationCode</span>
+                <span style="font-weight:bold"> @visit.Prescription.IdentificationCode</span>
             </div>
-            <p>Kod dostępu: <span style="font-weight:bold">  @Model.Prescription.AccessCode</span> </p>
+            <p>Kod dostępu: <span style="font-weight:bold">  @visit.Prescription.AccessCode</span> </p>
         </div>
         <div class="d-flex flex-fill  flex-column">
 
             <p>
                 @{
-                    for (int i = 0; i < Model.Prescription.IssuedMedicines.Count; i++)
+                    for (int i = 0; i < visit.Prescription.IssuedMedicines.Count; i++)
                     {
-                        IssuedMedicine item = Model.Prescription.IssuedMedicines[i];
+                        IssuedMedicine item = visit.Prescription.IssuedMedicines[i];
                         <partial name="_Medicine" model="item" />
-                        if (i == Model.Prescription.IssuedMedicines.Count - 1)
+                        if (i == visit.Prescription.IssuedMedicines.Count - 1)
                         {
 
                         }
@@ -173,10 +176,10 @@
                 <span class="text">Zarezerwuj ponownie</span>
             </a>
         </div>
-        @*@if (Model.VisitReview == null)
+        @*@if (visit.VisitReview == null)
         {
             <div class="d-flex">
-                <a asp-area="PatientArea" asp-controller="Patient" asp-action="RateVisit" asp-route-id="@Model.Id" class="btn btn-primary btn-icon-split flex-grow-1 m-2">
+                <a asp-area="PatientArea" asp-controller="Patient" asp-action="RateVisit" asp-route-id="@visit.Id" class="btn btn-primary btn-icon-split flex-grow-1 m-2">
                     <span class="icon text-white-50 left" style="text-align:left;float:left">
                         <i class="fas fa-address-book"></i>
                     </span>

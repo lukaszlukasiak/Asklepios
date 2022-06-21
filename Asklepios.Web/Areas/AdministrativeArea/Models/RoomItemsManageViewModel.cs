@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace Asklepios.Web.Areas.AdministrativeArea.Models
 {
-    public class RoomItemsManageViewModel
+    public class RoomItemsManageViewModel : IBaseViewModel
     {
         public long SelectedRoomId { get; set; }
         public MedicalRoom SelectedRoom { get; set; }
@@ -74,7 +74,6 @@ namespace Asklepios.Web.Areas.AdministrativeArea.Models
         public ViewMode ViewMode { get; set; }
         public bool IsValid { get; internal set; }
         public List<MedicalRoom> UnasignedRooms { get; set; }
-
-
+        public string UserName { get; set; }
     }
 }

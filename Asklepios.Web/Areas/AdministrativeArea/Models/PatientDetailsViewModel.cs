@@ -13,7 +13,7 @@ using Microsoft.AspNetCore.Mvc.ViewFeatures;
 
 namespace Asklepios.Web.Areas.AdministrativeArea.Models
 {
-    public class PatientDetailsViewModel:IPatientSearch
+    public class PatientDetailsViewModel:IPatientSearch,IBaseViewModel
     {
         private Patient _currentPatient;
         public Patient CurrentPatient 
@@ -112,6 +112,7 @@ namespace Asklepios.Web.Areas.AdministrativeArea.Models
             }
         }
 
+        public string UserName { get; set; }
 
         public void UpdateWithSearch(IPatientSearch search)
         {

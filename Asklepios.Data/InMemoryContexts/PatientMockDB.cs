@@ -2525,17 +2525,17 @@ namespace Asklepios.Data.InMemoryContexts
             people.Add(new Person(imagePath: "/img/persons/uk6.jpg", phoneNumber: "715747777", name: "Daria", surName: "Raszpan", id: 77, gender: Core.Enums.Gender.Female, birthDate: new DateTimeOffset(new DateTime(1984, 6, 16)), pesel: "84061632131", hasPolishCitizenship: true, passportCode: null, passportNumber: null, email: "person77@gmail.com", aglomeration: Core.Enums.Aglomeration.Bialystok));//,
 
 
-            people.Add(new Person(imagePath: "/img/persons/um7.jpg", phoneNumber: "715475577", gender: Core.Enums.Gender.Male, id: 74, birthDate: new DateTimeOffset(new DateTime(1987, 7, 8)), name: "Łukasz", surName: "Łuk", pesel: "87101010105", hasPolishCitizenship: true, passportNumber: "484654asd4a5sd4", passportCode: "PL", email: "person78@gmail.com", aglomeration: Core.Enums.Aglomeration.Warsaw));//,//główny pacjent
-            people.Add(new Person(imagePath: "/img/persons/uk1.jpg", phoneNumber: "715746772", name: "Magdalena", surName: "Bomba", id: 75, gender: Core.Enums.Gender.Female, birthDate: new DateTimeOffset(new DateTime(1974, 5, 12)), pesel: "74051256121", hasPolishCitizenship: true, passportCode: null, passportNumber: null, email: "person79@gmail.com", aglomeration: Core.Enums.Aglomeration.Cracow));//,
-            people.Add(new Person(imagePath: "/img/persons/uk2.jpg", phoneNumber: "715741778", name: "Katarzyna", surName: "Jelitko", id: 76, gender: Core.Enums.Gender.Female, birthDate: new DateTimeOffset(new DateTime(1966, 4, 8)), pesel: "66040865456", hasPolishCitizenship: true, passportCode: null, passportNumber: null, email: "person80@gmail.com", aglomeration: Core.Enums.Aglomeration.Kielce));//,
-            people.Add(new Person(imagePath: "/img/persons/um3.jpg", phoneNumber: "715741237", name: "Krzysztof", surName: "Kitka", id: 77, gender: Core.Enums.Gender.Male, birthDate: new DateTimeOffset(new DateTime(1979, 8, 5)), pesel: "79080546213", hasPolishCitizenship: true, passportCode: null, passportNumber: null, email: "person81@gmail.com", aglomeration: Core.Enums.Aglomeration.Kuyavia));//,
-            people.Add(new Person(imagePath: "/img/persons/um2.jpg", phoneNumber: "515747787", name: "Dariusz", surName: "Czapa", id: 78, gender: Core.Enums.Gender.Male, birthDate: new DateTimeOffset(new DateTime(1982, 1, 24)), pesel: "82012464695", hasPolishCitizenship: true, passportCode: null, passportNumber: null, email: "person82@gmail.com", aglomeration: Core.Enums.Aglomeration.Poznan));//,
-            people.Add(new Person(imagePath: "/img/persons/um5.jpg", phoneNumber: "415747747", name: "Tomasz", surName: "Komar", id: 79, gender: Core.Enums.Gender.Male, birthDate: new DateTimeOffset(new DateTime(1981, 6, 7)), pesel: "81060754612", hasPolishCitizenship: true, passportCode: null, passportNumber: null, email: "person83@gmail.com", aglomeration: Core.Enums.Aglomeration.Rzeszów));//,
-            people.Add(new Person(imagePath: "/img/persons/um4.jpg", phoneNumber: "315747737", name: "Arkadiusz", surName: "Patka", id: 80, gender: Core.Enums.Gender.Male, birthDate: new DateTimeOffset(new DateTime(1979, 10, 20)), pesel: "79102013465", hasPolishCitizenship: true, passportCode: null, passportNumber: null, email: "person84@gmail.com", aglomeration: Core.Enums.Aglomeration.Silesia));//,
-            people.Add(new Person(imagePath: "/img/persons/uk3.jpg", phoneNumber: "215747127", name: "Marta", surName: "Rakieta", id: 81, gender: Core.Enums.Gender.Female, birthDate: new DateTimeOffset(new DateTime(1991, 2, 12)), pesel: "91021245646", hasPolishCitizenship: true, passportCode: null, passportNumber: null, email: "person85@gmail.com", aglomeration: Core.Enums.Aglomeration.Tricity));//,
-            people.Add(new Person(imagePath: "/img/persons/uk4.jpg", phoneNumber: "715741179", name: "Ada", surName: "Ruda", id: 82, gender: Core.Enums.Gender.Female, birthDate: new DateTimeOffset(new DateTime(1994, 12, 13)), pesel: "94121321654", hasPolishCitizenship: true, passportCode: null, passportNumber: null, email: "person86@gmail.com", aglomeration: Core.Enums.Aglomeration.Warsaw));//,
-            people.Add(new Person(imagePath: "/img/persons/uk5.jpg", phoneNumber: "715747771", name: "Genowefa", surName: "Pigwa", id: 83, gender: Core.Enums.Gender.Female, birthDate: new DateTimeOffset(new DateTime(1954, 6, 13)), pesel: "54061324651", hasPolishCitizenship: true, passportCode: null, passportNumber: null, email: "person87@gmail.com", aglomeration: Core.Enums.Aglomeration.Wroclaw));//,
-            people.Add(new Person(imagePath: "/img/persons/um1.jpg", phoneNumber: "915742775", name: "Wacław", surName: "Kopytko", id: 84, gender: Core.Enums.Gender.Male, birthDate: new DateTimeOffset(new DateTime(1955, 3, 13)), pesel: "55031365494", hasPolishCitizenship: true, passportCode: null, passportNumber: null, email: "person88@gmail.com", aglomeration: Core.Enums.Aglomeration.Warsaw));//,
+            people.Add(new Person(imagePath: "/img/persons/um7.jpg", phoneNumber: "715475577", gender: Core.Enums.Gender.Male, id: 78, birthDate: new DateTimeOffset(new DateTime(1987, 7, 8)), name: "Łukasz", surName: "Łuk", pesel: "87101010105", hasPolishCitizenship: true, passportNumber: "484654asd4a5sd4", passportCode: "PL", email: "person78@gmail.com", aglomeration: Core.Enums.Aglomeration.Warsaw));//,//główny pacjent
+            people.Add(new Person(imagePath: "/img/persons/uk1.jpg", phoneNumber: "715746772", name: "Magdalena", surName: "Bomba", id: 79, gender: Core.Enums.Gender.Female, birthDate: new DateTimeOffset(new DateTime(1974, 5, 12)), pesel: "74051256121", hasPolishCitizenship: true, passportCode: null, passportNumber: null, email: "person79@gmail.com", aglomeration: Core.Enums.Aglomeration.Cracow));//,
+            people.Add(new Person(imagePath: "/img/persons/uk2.jpg", phoneNumber: "715741778", name: "Katarzyna", surName: "Jelitko", id: 80, gender: Core.Enums.Gender.Female, birthDate: new DateTimeOffset(new DateTime(1966, 4, 8)), pesel: "66040865456", hasPolishCitizenship: true, passportCode: null, passportNumber: null, email: "person80@gmail.com", aglomeration: Core.Enums.Aglomeration.Kielce));//,
+            people.Add(new Person(imagePath: "/img/persons/um3.jpg", phoneNumber: "715741237", name: "Krzysztof", surName: "Kitka", id: 81, gender: Core.Enums.Gender.Male, birthDate: new DateTimeOffset(new DateTime(1979, 8, 5)), pesel: "79080546213", hasPolishCitizenship: true, passportCode: null, passportNumber: null, email: "person81@gmail.com", aglomeration: Core.Enums.Aglomeration.Kuyavia));//,
+            people.Add(new Person(imagePath: "/img/persons/um2.jpg", phoneNumber: "515747787", name: "Dariusz", surName: "Czapa", id: 82, gender: Core.Enums.Gender.Male, birthDate: new DateTimeOffset(new DateTime(1982, 1, 24)), pesel: "82012464695", hasPolishCitizenship: true, passportCode: null, passportNumber: null, email: "person82@gmail.com", aglomeration: Core.Enums.Aglomeration.Poznan));//,
+            people.Add(new Person(imagePath: "/img/persons/um5.jpg", phoneNumber: "415747747", name: "Tomasz", surName: "Komar", id: 83, gender: Core.Enums.Gender.Male, birthDate: new DateTimeOffset(new DateTime(1981, 6, 7)), pesel: "81060754612", hasPolishCitizenship: true, passportCode: null, passportNumber: null, email: "person83@gmail.com", aglomeration: Core.Enums.Aglomeration.Rzeszów));//,
+            people.Add(new Person(imagePath: "/img/persons/um4.jpg", phoneNumber: "315747737", name: "Arkadiusz", surName: "Patka", id: 84, gender: Core.Enums.Gender.Male, birthDate: new DateTimeOffset(new DateTime(1979, 10, 20)), pesel: "79102013465", hasPolishCitizenship: true, passportCode: null, passportNumber: null, email: "person84@gmail.com", aglomeration: Core.Enums.Aglomeration.Silesia));//,
+            people.Add(new Person(imagePath: "/img/persons/uk3.jpg", phoneNumber: "215747127", name: "Marta", surName: "Rakieta", id: 85, gender: Core.Enums.Gender.Female, birthDate: new DateTimeOffset(new DateTime(1991, 2, 12)), pesel: "91021245646", hasPolishCitizenship: true, passportCode: null, passportNumber: null, email: "person85@gmail.com", aglomeration: Core.Enums.Aglomeration.Tricity));//,
+            people.Add(new Person(imagePath: "/img/persons/uk4.jpg", phoneNumber: "715741179", name: "Ada", surName: "Ruda", id: 86, gender: Core.Enums.Gender.Female, birthDate: new DateTimeOffset(new DateTime(1994, 12, 13)), pesel: "94121321654", hasPolishCitizenship: true, passportCode: null, passportNumber: null, email: "person86@gmail.com", aglomeration: Core.Enums.Aglomeration.Warsaw));//,
+            people.Add(new Person(imagePath: "/img/persons/uk5.jpg", phoneNumber: "715747771", name: "Genowefa", surName: "Pigwa", id: 87, gender: Core.Enums.Gender.Female, birthDate: new DateTimeOffset(new DateTime(1954, 6, 13)), pesel: "54061324651", hasPolishCitizenship: true, passportCode: null, passportNumber: null, email: "person87@gmail.com", aglomeration: Core.Enums.Aglomeration.Wroclaw));//,
+            people.Add(new Person(imagePath: "/img/persons/um1.jpg", phoneNumber: "915742775", name: "Wacław", surName: "Kopytko", id: 88, gender: Core.Enums.Gender.Male, birthDate: new DateTimeOffset(new DateTime(1955, 3, 13)), pesel: "55031365494", hasPolishCitizenship: true, passportCode: null, passportNumber: null, email: "person88@gmail.com", aglomeration: Core.Enums.Aglomeration.Warsaw));//,
             people.Add(new Person(imagePath: "/img/persons/uk9.jpg", phoneNumber: "500365555", name: "Agnieszka", surName: "Pielak", id: 89, gender: Core.Enums.Gender.Female, birthDate: new DateTimeOffset(new DateTime(1990, 01, 15)), pesel: "90011515676", hasPolishCitizenship: true, passportCode: null, passportNumber: null, email: "person89@gmail.com", aglomeration: Core.Enums.Aglomeration.Rzeszów));
             people.Add(new Person(imagePath: "/img/persons/uk13.jpg", phoneNumber: "430385094", name: "Monika", surName: "Krasicka", id: 90, gender: Core.Enums.Gender.Female, birthDate: new DateTimeOffset(new DateTime(1970, 01, 15)), pesel: "70011515678", hasPolishCitizenship: true, passportCode: null, passportNumber: null, email: "person90@gmail.com", aglomeration: Core.Enums.Aglomeration.Silesia));//,
             people.Add(new Person(imagePath: "/img/persons/uk14.jpg", phoneNumber: "530365915", name: "Maria", surName: "Kostacińska", id: 91, gender: Core.Enums.Gender.Female, birthDate: new DateTimeOffset(new DateTime(1988, 01, 15)), pesel: "88011515600", hasPolishCitizenship: true, passportCode: null, passportNumber: null, email: "person91@gmail.com", aglomeration: Core.Enums.Aglomeration.Tricity));//,
@@ -4731,7 +4731,7 @@ namespace Asklepios.Data.InMemoryContexts
                     EmployerNIP="7777742132152",
                     MedicalPackage=MedicalPackages[0],
                     NFZUnit=NfzUnits[10],
-                    UserId=id
+                    UserId=Persons[id].Id
 
                 },
                 new Patient (Persons[++id]                    )
@@ -4741,7 +4741,7 @@ namespace Asklepios.Data.InMemoryContexts
                     EmployerName="Coca Cola",
                     MedicalPackage=MedicalPackages[2],
                     NFZUnit=NfzUnits[5],
-                    UserId=id
+                    UserId=Persons[id].Id
 
                 },
                 new Patient (Persons[++id]                    )
@@ -4751,7 +4751,7 @@ namespace Asklepios.Data.InMemoryContexts
                     EmployerName="Apple Sp. z o.o.",
                     MedicalPackage=MedicalPackages[2],
                     NFZUnit=NfzUnits[4],
-                    UserId=id
+                    UserId=Persons[id].Id
 
                 },
                 new Patient (Persons[++id]                    )
@@ -4761,7 +4761,7 @@ namespace Asklepios.Data.InMemoryContexts
                     EmployerName="Samsung Polska",
                     MedicalPackage=MedicalPackages[3],
                     NFZUnit=NfzUnits[3],
-                    UserId=id
+                    UserId=Persons[id].Id
 
                 },
                 new Patient (Persons[++id]                    )
@@ -4771,7 +4771,7 @@ namespace Asklepios.Data.InMemoryContexts
                     EmployerName="Dell Polska S.A.",
                     MedicalPackage=MedicalPackages[0],
                     NFZUnit=NfzUnits[2],
-                    UserId=id
+                    UserId=Persons[id].Id
 
                 },
                 new Patient (Persons[++id]                    )
@@ -4781,7 +4781,7 @@ namespace Asklepios.Data.InMemoryContexts
                     EmployerName="CCC Sp. z o.o.",
                     MedicalPackage=MedicalPackages[1],
                     NFZUnit=NfzUnits[15],
-                    UserId=id
+                    UserId=Persons[id].Id
 
                 },
                 new Patient (Persons[++id]                    )
@@ -4791,7 +4791,7 @@ namespace Asklepios.Data.InMemoryContexts
                     EmployerName="Henkel S.A.",
                     MedicalPackage=MedicalPackages[2],
                     NFZUnit=NfzUnits[11],
-                    UserId=id
+                    UserId=Persons[id].Id
 
                 },
                 new Patient (Persons[++id]                    )
@@ -4801,7 +4801,7 @@ namespace Asklepios.Data.InMemoryContexts
                     EmployerName="LOT S.A.",
                     MedicalPackage=MedicalPackages[3],
                     NFZUnit=NfzUnits[10],
-                    UserId=id
+                    UserId=Persons[id].Id
 
                 },
                 new Patient (Persons[++id]                    )
@@ -4811,7 +4811,7 @@ namespace Asklepios.Data.InMemoryContexts
                     EmployerName="Alior Bank S.A.",
                     MedicalPackage=MedicalPackages[0],
                     NFZUnit=NfzUnits[12],
-                    UserId=id
+                    UserId=Persons[id].Id
 
                 },
                 new Patient (Persons[++id]                    )
@@ -4821,7 +4821,7 @@ namespace Asklepios.Data.InMemoryContexts
                     EmployerName="Nestel Polska",
                     MedicalPackage=MedicalPackages[1],
                     NFZUnit=NfzUnits[13],
-                    UserId=id
+                    UserId=Persons[id].Id
 
                 },
                 new Patient (Persons[++id]                    )
@@ -4831,7 +4831,7 @@ namespace Asklepios.Data.InMemoryContexts
                     EmployerName="Wedel sp. z o.o.",
                     MedicalPackage=MedicalPackages[2],
                     NFZUnit=NfzUnits[14],
-                    UserId=id
+                    UserId=Persons[id].Id
 
                 },
                 //new Patient (Persons[++id]                    )

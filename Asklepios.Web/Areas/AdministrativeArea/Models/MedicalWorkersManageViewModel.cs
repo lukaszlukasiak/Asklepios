@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Asklepios.Web.Areas.AdministrativeArea.Models
 {
-    public class MedicalWorkersManageViewModel
+    public class MedicalWorkersManageViewModel:IBaseViewModel
     {
         public MedicalWorker SelectedWorker { get; set; }
         public MedicalWorkerSearchOptions SearchOptions { get; set; } = new MedicalWorkerSearchOptions();
@@ -40,6 +40,7 @@ namespace Asklepios.Web.Areas.AdministrativeArea.Models
         public string SuccessMessage { get; set; }
         public string ErrorMessage { get; set; }
         public ViewMode ViewMode { get; set; }
+        public string UserName { get; set; }
 
         private List<MedicalWorker> GetFilteredWorkersList()
         {

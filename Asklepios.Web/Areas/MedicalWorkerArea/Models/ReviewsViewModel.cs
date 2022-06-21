@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Asklepios.Web.Areas.MedicalWorkerArea.Models
 {
-    public class ReviewsViewModel
+    public class ReviewsViewModel: IBaseViewModel
     {
         public ReviewsViewModel(MedicalWorker medicalWorker)
         {
@@ -17,5 +17,6 @@ namespace Asklepios.Web.Areas.MedicalWorkerArea.Models
         public MedicalWorker MedicalWorker { get; set; }
 
         public List<VisitReview> VisitReviews { get; set; }
+        public string UserName { get; set; }
     }
 }

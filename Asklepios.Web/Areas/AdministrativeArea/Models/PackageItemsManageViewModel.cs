@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace Asklepios.Web.Areas.AdministrativeArea.Models
 {
-    public class PackageItemsManageViewModel
+    public class PackageItemsManageViewModel : IBaseViewModel
     {
         [Display(Name = "Id pakietu medycznego")]
         public long SelectedPackageId { get; set; }
@@ -82,6 +82,7 @@ namespace Asklepios.Web.Areas.AdministrativeArea.Models
         //}
 
         public List<int> Vals { get; set; } //= new List<long>() { 1, 2, 3, 4, 5, 6, 7 };
+        public string UserName { get; set; }
 
         internal List<MedicalServiceDiscount> UpdateDiscountsWithInputValues()
         {
