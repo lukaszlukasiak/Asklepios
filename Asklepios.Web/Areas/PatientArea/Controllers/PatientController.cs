@@ -350,6 +350,10 @@ namespace Asklepios.Web.Areas.PatientArea.Controllers
                 //List<MedicalWorker> medicalWorkers = _context.GetMedicalWorkers().ToList();
                 model.UserName = _loggedUser.Person.FullName;
                 model.Notifications = _context.GetNotificationsByPatientId(_selectedPatient.Id);
+                foreach (Notification item in model.Notifications)
+                {
+                    item.Visit = _context.GetHistoricalVisitById(item.VisitId);
+                }
 
                 return View(model);
             }
@@ -573,6 +577,7 @@ namespace Asklepios.Web.Areas.PatientArea.Controllers
             {
 
                 //Patient patient = _context.CurrentPatient;
+                _selectedPatient.BookedVisits = _context.GetBookedVisitsByPatientId(_selectedPatient.Id);
                 PatientArea.Models.PatientViewModel model = new PatientViewModel(_selectedPatient);
                 model.UserName = _loggedUser.Person.FullName;
                 model.Notifications = _context.GetNotificationsByPatientId(_selectedPatient.Id);
@@ -596,7 +601,7 @@ namespace Asklepios.Web.Areas.PatientArea.Controllers
                     {
                         if (plannedVisit.DateTimeSince > DateTimeOffset.Now)
                         {
-                            _context.ResignFromVisit(plannedVisit, _selectedPatient);
+                            _context.ResignFromVisit(plannedVisit.Id);//, _selectedPatient);
                             return RedirectToAction("PlannedVisits", "Patient", new { area = "PatientArea" });
                         }
                         else
@@ -699,7 +704,7 @@ namespace Asklepios.Web.Areas.PatientArea.Controllers
                             newVisit.UsedExaminationReferral = visitToReschedule.UsedExaminationReferral;
                         }
                         _context.BookVisit(_selectedPatient, newVisit);
-                        _context.ResignFromVisit(visitToReschedule, _selectedPatient);
+                        _context.ResignFromVisit(visitToReschedule.Id);//, _selectedPatient);
                         return RedirectToAction("PlannedVisits", "Patient", new { area = "PatientArea" });
                     }
                     else
@@ -780,6 +785,11 @@ namespace Asklepios.Web.Areas.PatientArea.Controllers
                     PatientViewModel model = new PatientViewModel(_selectedPatient);
                     model.UserName = _loggedUser.Person.FullName;
                     model.Notifications = _context.GetNotificationsByPatientId(_selectedPatient.Id);
+                    foreach (Notification item in model.Notifications)
+                    {
+                        item.Visit = _context.GetHistoricalVisitById(item.VisitId);
+                    }
+
                     //_selectedPatient.
 
                     return View(model);

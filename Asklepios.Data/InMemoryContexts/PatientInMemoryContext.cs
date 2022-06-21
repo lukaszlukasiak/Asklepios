@@ -43,7 +43,7 @@ namespace Asklepios.Data.InMemoryContexts
             locations = GetAllLocations();
             medicalWorkers = GetMedicalWorkers();
             availableVisits = GetAvailableVisits().Where(c => c.Patient == null).ToList(); ;
-            CurrentPatient = GetPatientData();
+            //CurrentPatient = GetPatientData();
         }
 
         public Patient GetPatientData()
@@ -143,7 +143,7 @@ namespace Asklepios.Data.InMemoryContexts
 
         public void UpdateReferral(MedicalReferral referral)
         {
-            MedicalReferral refe = PatientMockDB.CurrentPatient.MedicalReferrals.Where(c => c.Id == referral.Id).FirstOrDefault();
+            MedicalReferral refe = PatientMockDB.MedicalReferrals.Where(c => c.Id == referral.Id).FirstOrDefault();
             refe = referral;
         }
 
@@ -161,19 +161,24 @@ namespace Asklepios.Data.InMemoryContexts
             return user;
         }
 
-        public void ResignFromVisit(Visit plannedVisit, Patient patient)
+        public void ResignFromVisit(long plannedVisitId)
         {
-            plannedVisit.Patient = null;
-            plannedVisit.UsedExaminationReferral = null;
+            Visit visit = PatientMockDB.FutureVisits.First(c => c.Id == plannedVisitId);
+            if (visit!=null)
+            {
+                visit.Patient = null;
+                visit.UsedExaminationReferral = null;
+                visit.VisitStatus = Core.Enums.VisitStatus.AvailableNotBooked;
+            }
             //patient.BookedVisits.Remove(plannedVisit);
-            PatientMockDB.CurrentPatient.BookedVisits.Remove(plannedVisit);
+            //PatientMockDB.BookedVisits.Remove(plannedVisit);
         }
 
         public void BookVisit(Patient selectedPatient, Visit selectedVisit)
         {
             selectedVisit.Patient = selectedPatient;
             //selectedPatient.BookedVisits.Add(selectedVisit);
-            PatientMockDB.CurrentPatient.BookedVisits.Add(selectedVisit);
+            //PatientMockDB.BookedVisits.Add(selectedVisit);
         }
 
         public Patient GetPatientByUserId(long userId)
