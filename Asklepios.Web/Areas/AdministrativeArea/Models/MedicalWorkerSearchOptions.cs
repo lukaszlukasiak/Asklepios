@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace Asklepios.Web.Areas.AdministrativeArea.Models
 {
-    public class MedicalWorkerSearchOptions
+    public class MedicalWorkerSearchOptions:IBaseViewModel
     {
         [Display(Name = "Id pracownika medycznego")]
         public long? SelectedId { get; set; }
@@ -93,5 +93,7 @@ namespace Asklepios.Web.Areas.AdministrativeArea.Models
                 return false;
             }
         }
+
+        public string UserName { get; set; }
     }
 }

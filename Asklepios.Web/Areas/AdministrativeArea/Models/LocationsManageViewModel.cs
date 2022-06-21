@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace Asklepios.Web.Areas.AdministrativeArea.Models
 {
-    public class LocationsManageViewModel
+    public class LocationsManageViewModel: IBaseViewModel
     {
         public long SelectedLocationId { get; set; }
         public Location SelectedLocation { get; set; }
@@ -27,6 +27,8 @@ namespace Asklepios.Web.Areas.AdministrativeArea.Models
         public List<long> MedicalRoomIdsCurrent { get; set; }
         public List<MedicalService> PrimaryServices { get; set; }
         public List<MedicalRoom> UnasignedRooms { get; set; }
+        public string UserName { get; set; }
+
         //[Display(Name = "List pokoi możliwych do dodania do listy pokoi danej placówki")]
         ////public List<long> SelectedUnasignedRoomIds { get; set; }
         //[Display(Name = "List pokoi obecnie przypisanych do placówki")]

@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace Asklepios.Web.Areas.MedicalWorkerArea.Models
 {
-    public class HistoricalVisitsViewModel
+    public class HistoricalVisitsViewModel: IBaseViewModel
     {
         public MedicalWorker MedicalWorker { get; set; }
 
@@ -55,6 +55,6 @@ namespace Asklepios.Web.Areas.MedicalWorkerArea.Models
         [DataType(DataType.Date)]
         [Display(Name = "Wybrany dzień")]
         public DateTime? SelectedDate { get; set; }//= DateTime.Now.Date;
-
+        public string UserName { get; set; }
     }
 }

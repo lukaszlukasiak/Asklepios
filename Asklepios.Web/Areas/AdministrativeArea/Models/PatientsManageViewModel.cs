@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace Asklepios.Web.Areas.AdministrativeArea.Models
 {
-    public class PatientsManageViewModel:IPatientSearch
+    public class PatientsManageViewModel:IPatientSearch,IBaseViewModel
     {
         public Person Person { get; set; } = new Person();
         public Patient Patient { get; set; }
@@ -113,6 +113,7 @@ namespace Asklepios.Web.Areas.AdministrativeArea.Models
         public int CurrentPageNum { get; private set; } = 1;
         public string SuccessMessage { get; set; }
         public string ErrorMessage { get; set; }
+        public string UserName { get; set; }
 
         private List<Patient> GetFilteredPatientsList()
         {

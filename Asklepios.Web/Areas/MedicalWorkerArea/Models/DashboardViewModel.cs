@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Asklepios.Web.Areas.MedicalWorkerArea.Models
 {
-    public class DashboardViewModel
+    public class DashboardViewModel: IBaseViewModel
     {
         public MedicalWorker MedicalWorker { get; set; }
         public List<Visit> TodayVisits { get; set; }
@@ -67,6 +67,8 @@ namespace Asklepios.Web.Areas.MedicalWorkerArea.Models
                 return rest;
             }
         }
+
+        public string UserName { get; set; }
 
         public DashboardViewModel(MedicalWorker medicalWorker)
         {

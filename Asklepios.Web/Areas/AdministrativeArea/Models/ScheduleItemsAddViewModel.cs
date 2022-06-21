@@ -6,7 +6,7 @@ using System.Linq;
 
 namespace Asklepios.Web.Areas.AdministrativeArea.Models
 {
-    public class ScheduleItemsAddViewModel
+    public class ScheduleItemsAddViewModel : IBaseViewModel
     {
         public List<Visit> Schedule { get; set; }
         public List<MedicalRoom> MedicalRooms { get; set; }
@@ -85,6 +85,7 @@ namespace Asklepios.Web.Areas.AdministrativeArea.Models
         }
 
         public string SuccessMessage { get; internal set; }
+        public string UserName { get; set; }
 
         public bool IsValid()
         {

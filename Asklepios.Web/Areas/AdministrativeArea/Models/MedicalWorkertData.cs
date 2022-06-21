@@ -7,7 +7,7 @@ using System.Linq;
 
 namespace Asklepios.Web.Areas.AdministrativeArea.Models
 {
-    public class MedicalWorkertData
+    public class MedicalWorkertData : IBaseViewModel
     {
         public long Id { get; set; }
         [Display(Name = "Czy zatrudniony obecnie")]
@@ -61,6 +61,8 @@ namespace Asklepios.Web.Areas.AdministrativeArea.Models
             }
         }
 
+        public string UserName { get; set; }
+
         public MedicalWorkertData()
         {
 
@@ -89,7 +91,6 @@ namespace Asklepios.Web.Areas.AdministrativeArea.Models
             }
             this.Education = medicalWorker.Education;
             this.Experience = medicalWorker.Experience;
-            //this.Image=medicalWorker.
             this.IsCurrentlyHired = medicalWorker.IsCurrentlyHired;
 
             this.MedicalServiceIds = medicalWorker.MedicalServices.Select(c => c.Id).ToArray();

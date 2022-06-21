@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace Asklepios.Web.Areas.MedicalWorkerArea.Models
 {
-    public class CurrentVisitViewModel
+    public class CurrentVisitViewModel: IBaseViewModel
     {
         private long _VisitId;
         
@@ -151,5 +151,7 @@ namespace Asklepios.Web.Areas.MedicalWorkerArea.Models
                 }
             }
         }
+
+        public string UserName { get; set; }
     }
 }

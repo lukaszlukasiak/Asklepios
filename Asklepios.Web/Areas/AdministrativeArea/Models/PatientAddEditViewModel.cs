@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace Asklepios.Web.Areas.AdministrativeArea.Models
 {
-    public class PatientAddEditViewModel
+    public class PatientAddEditViewModel : IBaseViewModel
     {
         public User User { get; set; } = new User();
         public Person Person { get; set; } = new Person();
@@ -28,5 +28,6 @@ namespace Asklepios.Web.Areas.AdministrativeArea.Models
             }
         }
 
+        public string UserName { get; set; }
     }
 }

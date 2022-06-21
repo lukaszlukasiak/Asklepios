@@ -74,6 +74,7 @@ namespace Asklepios.Web.Areas.AdministrativeArea.Controllers
             if (_loggedUser != null)
             {
                 ContactMessageViewModel model = new ContactMessageViewModel(_loggedUser);
+                model.UserName = _loggedUser.Person.FullName;
                 return View(model);
             }
             return NotFound();
@@ -99,6 +100,8 @@ namespace Asklepios.Web.Areas.AdministrativeArea.Controllers
                     model.AlertMessageType = Enums.AlertMessageType.Error;
                     ViewBag.Message = "Wystąpił błąd podczas próby wysłania wiadomości! Spróbuj jeszcze raz!";
                 }
+                model.UserName = _loggedUser.Person.FullName;
+
                 return View(model);
             }
             return NotFound();
@@ -125,36 +128,12 @@ namespace Asklepios.Web.Areas.AdministrativeArea.Controllers
                 model.MedicalWorkers = _context.GetMedicalWorkers();
                 model.PrimaryMedicalServices = _context.GetMedicalServices().Where(c => c.IsPrimaryService == true).ToList();
                 model.VisitCategories = _context.GetVisitCategories();
+                model.UserName = _loggedUser.Person.FullName;
+
                 return View(model);
             }
             return NotFound();
         }
-        //[HttpGet]
-        //public IActionResult ScheduleItemsManage(ISearchVisit searchVisit)
-        //{
-        //    if (_loggedUser != null)
-        //    {
-        //        ScheduleManageViewModel model = null;// new ScheduleManageViewModel();
-
-        //        if (TempData["ScheduleSearch"] != null)
-        //        {
-        //            model = TempData["ScheduleSearch"] as ScheduleManageViewModel;
-        //        }
-        //        else
-        //        {
-        //            model = new ScheduleManageViewModel();
-        //        }
-        //        List<Visit> visits = _context.GetAvailableVisits();
-        //        model.Schedule = visits;
-        //        model.Locations = _context.GetAllLocations();
-        //        //model.MedicalRooms=_context
-        //        model.MedicalWorkers = _context.GetMedicalWorkers();
-        //        model.PrimaryMedicalServices = _context.GetMedicalServices().Where(c => c.IsPrimaryService == true).ToList();
-        //        model.VisitCategories = _context.GetVisitCategories();
-        //        return View(model);
-        //    }
-        //    return NotFound();
-        //}
 
         [HttpPost]
         public IActionResult ScheduleItemsManage(ScheduleManageViewModel model)
@@ -191,6 +170,8 @@ namespace Asklepios.Web.Areas.AdministrativeArea.Controllers
                     List<MedicalService> categoryServices = model.VisitCategories.Where(c => c.Id == lid2).FirstOrDefault().PrimaryMedicalServices;
                     model.MedicalWorkers = model.MedicalWorkers.Where(c => c.MedicalServices.Intersect(categoryServices).Count() > 1).ToList();
                 }
+                model.UserName = _loggedUser.Person.FullName;
+
                 return View(model);
             }
             return NotFound();
@@ -210,6 +191,8 @@ namespace Asklepios.Web.Areas.AdministrativeArea.Controllers
                 model.MedicalWorkers = _context.GetMedicalWorkers();
                 model.PrimaryMedicalServices = _context.GetMedicalServices().Where(c => c.IsPrimaryService == true).ToList();
                 model.VisitCategories = _context.GetVisitCategories();
+                model.UserName = _loggedUser.Person.FullName;
+
                 return View(model);
             }
             return NotFound();
@@ -235,6 +218,7 @@ namespace Asklepios.Web.Areas.AdministrativeArea.Controllers
                         model.Locations = _context.GetAllLocations();
 
                         ScheduleItemsAddUpdateLists(model);
+                        model.UserName = _loggedUser.Person.FullName;
 
                         return View(model);
                     }
@@ -251,6 +235,7 @@ namespace Asklepios.Web.Areas.AdministrativeArea.Controllers
                     model.Locations = _context.GetAllLocations();
                     model.Guard = null;
                     ScheduleItemsAddUpdateLists(model);
+                    model.UserName = _loggedUser.Person.FullName;
 
                     return View(model);
                 }
@@ -357,6 +342,8 @@ namespace Asklepios.Web.Areas.AdministrativeArea.Controllers
                     {
                         _context.RemoveVisitById(visit1.Id);
                         ISearchVisit searchOptions = model;
+                        model.UserName = _loggedUser.Person.FullName;
+
                         return View(model);
                     }
                     else
@@ -379,7 +366,10 @@ namespace Asklepios.Web.Areas.AdministrativeArea.Controllers
             if (_loggedUser != null)
             {
                 MedicalWorker worker = _context.GetMedicalWorkers().Where(c => c.Id.ToString() == id).FirstOrDefault();
-                return View(worker);
+                MedicalWorkerViewModel model = new MedicalWorkerViewModel(worker);
+                model.UserName = _loggedUser.Person.FullName;
+
+                return View(model);
             }
             else
             {
@@ -404,6 +394,8 @@ namespace Asklepios.Web.Areas.AdministrativeArea.Controllers
                         model.User = model.SelectedWorker.User;
                         model.Person = model.SelectedWorker.Person;
                         model.MedicalWorkertData = new MedicalWorkertData(model.SelectedWorker);
+                        model.UserName = _loggedUser.Person.FullName;
+
                         return View(model);
                     }
                 }
@@ -437,6 +429,7 @@ namespace Asklepios.Web.Areas.AdministrativeArea.Controllers
                         }
 
                     }
+                    model.UserName = _loggedUser.Person.FullName;
 
                     return View(model);
                 }
@@ -462,6 +455,8 @@ namespace Asklepios.Web.Areas.AdministrativeArea.Controllers
                     {
                         _context.RemoveMedicalWorkerById(model.SelectedWorkerId);
                         model.SuccessMessage = "Pracownik medyczny został usunięty!";
+                        model.UserName = _loggedUser.Person.FullName;
+
                         return View(model);
                     }
                 }
@@ -496,6 +491,7 @@ namespace Asklepios.Web.Areas.AdministrativeArea.Controllers
                                 _context.AddMedicalWorkerObjects(model.User, model.Person, model.MedicalWorker);
 
                                 model.SuccessMessage = "Pracownik medyczny został dodany!";
+                                model.UserName = _loggedUser.Person.FullName;
 
                                 return View(model);
 
@@ -505,8 +501,7 @@ namespace Asklepios.Web.Areas.AdministrativeArea.Controllers
                     }
 
                 }
-                //List<>
-                //MedicalWorkerAddViewModel model = new MedicalWorkerAddViewModel();
+                model.UserName = _loggedUser.Person.FullName;
 
                 return View(model);
             }
@@ -525,6 +520,7 @@ namespace Asklepios.Web.Areas.AdministrativeArea.Controllers
                 //List<>
                 MedicalWorkerAddViewModel model = new MedicalWorkerAddViewModel();
                 model.PrimaryServices = _context.GetMedicalServices().Where(c => c.IsPrimaryService == true).ToList();
+                model.UserName = _loggedUser.Person.FullName;
 
                 return View(model);
             }
@@ -546,7 +542,6 @@ namespace Asklepios.Web.Areas.AdministrativeArea.Controllers
                 //model.Person.EmailAddress = model.User.UserName;
                 model.Patient.Person = model.Person;
                 model.Patient.User = model.User;
-                //model.User.  
 
                 if (model.IsValid)
                 {
@@ -562,6 +557,7 @@ namespace Asklepios.Web.Areas.AdministrativeArea.Controllers
                     _context.AddPatientObjects(model.User, model.Person, model.Patient);
 
                     model.SuccessMessage = "Pacjent został dodany!";
+                    model.UserName = _loggedUser.Person.FullName;
 
                     return View(model);
                 }
@@ -570,6 +566,7 @@ namespace Asklepios.Web.Areas.AdministrativeArea.Controllers
                     model.MedicalPackages = _context.GetMedicalPackages();
                     model.NFZUnits = _context.GetNFZUnits();
                     model.ErrorMessage = "Nie udało się dodać pacjenta!";
+                    model.UserName = _loggedUser.Person.FullName;
 
                     return View(model);
                 }
@@ -588,6 +585,7 @@ namespace Asklepios.Web.Areas.AdministrativeArea.Controllers
                 PatientAddEditViewModel model = new PatientAddEditViewModel();
                 model.MedicalPackages = _context.GetMedicalPackages();
                 model.NFZUnits = _context.GetNFZUnits();
+                model.UserName = _loggedUser.Person.FullName;
 
                 return View(model);
             }
@@ -609,6 +607,8 @@ namespace Asklepios.Web.Areas.AdministrativeArea.Controllers
                     model.CurrentPatientId = patient.Id;
                     model.MedicalPackages = _context.GetMedicalPackages();
                     model.NFZUnits = _context.GetNFZUnits();
+                    model.UserName = _loggedUser.Person.FullName;
+
                     return View(model);
                 }
                 else
@@ -645,6 +645,7 @@ namespace Asklepios.Web.Areas.AdministrativeArea.Controllers
                     else if (model.ViewMode == ViewMode.Remove)
                     {
                     }
+                    model.UserName = _loggedUser.Person.FullName;
 
                     return View(model);
                 }
@@ -718,6 +719,8 @@ namespace Asklepios.Web.Areas.AdministrativeArea.Controllers
                     PatientDetailsViewModel model = new PatientDetailsViewModel();
                     model.CurrentPatient = patient;
                     model.CurrentPatientId = patient.Id;
+                    model.UserName = _loggedUser.Person.FullName;
+
                     //model.MedicalPackages = _context.GetMedicalPackages();
                     //model.NFZUnits = _context.GetNFZUnits();
                     return View(model);
@@ -744,6 +747,8 @@ namespace Asklepios.Web.Areas.AdministrativeArea.Controllers
                     {
                         _context.RemovePatientById(model.CurrentPatientId);
                         model.SuccessMessage = "Pacjent został pomyślnie usunięty!";
+                        model.UserName = _loggedUser.Person.FullName;
+
                         return View(model);
                     }
                     model.SuccessMessage = "Podczas próby usunięcia pacjenta nastąpił nieoczekiwany błąd!";
@@ -764,15 +769,12 @@ namespace Asklepios.Web.Areas.AdministrativeArea.Controllers
 
             if (_loggedUser != null)
             {
-                //PatientsManageViewModel model = new PatientsManageViewModel();
-                //model.
-                //IPatientSearch newSearch = model;
-                //newSearch.SetSearchOptions(searchPatient);
-                //model.sets= searchPatient.;
 
                 model.NFZUnits = _context.GetNFZUnits();
                 model.MedicalPackages = _context.GetMedicalPackages();
                 model.AllPatients = _context.GetAllPatients();
+                model.UserName = _loggedUser.Person.FullName;
+
                 return View(model);
             }
             else
@@ -789,6 +791,8 @@ namespace Asklepios.Web.Areas.AdministrativeArea.Controllers
                 model.NFZUnits = _context.GetNFZUnits();
                 model.MedicalPackages = _context.GetMedicalPackages();
                 model.AllPatients = _context.GetAllPatients();
+                model.UserName = _loggedUser.Person.FullName;
+
                 return View(model);
             }
             else
@@ -797,17 +801,6 @@ namespace Asklepios.Web.Areas.AdministrativeArea.Controllers
             }
         }
 
-        //public IActionResult MedicalWorkerItemsAdd()
-        //{
-        //    if (_loggedUser != null)
-        //    {
-        //        return View();
-        //    }
-        //    else
-        //    {
-        //        return NotFound();
-        //    }
-        //}
         [HttpPost]
         public IActionResult MedicalWorkerItemsManage(MedicalWorkersManageViewModel model)
         {
@@ -815,6 +808,8 @@ namespace Asklepios.Web.Areas.AdministrativeArea.Controllers
             {
                 model.AllMedicalWorkers = _context.GetMedicalWorkers();
                 model.PrimaryServices = _context.GetMedicalServices().Where(c => c.IsPrimaryService == true).ToList();
+                model.UserName = _loggedUser.Person.FullName;
+
                 return View(model);
             }
             else
@@ -830,6 +825,8 @@ namespace Asklepios.Web.Areas.AdministrativeArea.Controllers
                 MedicalWorkersManageViewModel model = new MedicalWorkersManageViewModel();
                 model.AllMedicalWorkers = _context.GetMedicalWorkers();
                 model.PrimaryServices = _context.GetMedicalServices().Where(c => c.IsPrimaryService == true).ToList();
+                model.UserName = _loggedUser.Person.FullName;
+
                 return View(model);
             }
             else
@@ -843,6 +840,8 @@ namespace Asklepios.Web.Areas.AdministrativeArea.Controllers
             {
                 LocationsManageViewModel model = new LocationsManageViewModel();
                 model.SelectedLocationId = id;
+                model.UserName = _loggedUser.Person.FullName;
+
                 return View(model);
             }
             else
@@ -859,6 +858,7 @@ namespace Asklepios.Web.Areas.AdministrativeArea.Controllers
                 model.SelectedLocation = loc;// _context.GetLocationById(model.SelectedLocationId);
                 model.UnasignedRooms = _context.GetUnasignedRooms();
                 model.PrimaryServices = _context.GetMedicalServices().Where(c => c.IsPrimaryService == true).ToList();
+                model.UserName = _loggedUser.Person.FullName;
 
                 return View(model);
 
@@ -872,7 +872,10 @@ namespace Asklepios.Web.Areas.AdministrativeArea.Controllers
         {
             if (_loggedUser != null)
             {
-                
+                UserViewModel model = new UserViewModel();
+                model.User = _loggedUser;
+                model.UserName = _loggedUser.Person.FullName;
+
                 return View(User);
 
             }
@@ -900,6 +903,8 @@ namespace Asklepios.Web.Areas.AdministrativeArea.Controllers
 
                         model.SelectedLocation = loc;// _context.GetLocationById(model.SelectedLocationId);
                         model.UnasignedRooms = _context.GetUnasignedRooms();
+                        model.UserName = _loggedUser.Person.FullName;
+
                         return View(model);
                     }
                 }
@@ -930,11 +935,12 @@ namespace Asklepios.Web.Areas.AdministrativeArea.Controllers
                         //model.SuccessMessage = "Dane placówki zostały zaktualizowane";
                         TempData["successMessage"] = "Dane placówki zostały zaktualizowane";
                         return RedirectToAction("Temp", new { id = model.SelectedLocationId });
-                        //return View(model);
 
                     }
                     else
                     {
+                        model.UserName = _loggedUser.Person.FullName;
+
                         return View(model);
                     }
                 }
@@ -958,8 +964,8 @@ namespace Asklepios.Web.Areas.AdministrativeArea.Controllers
                     model.SuccessMessage = "Placówka została pomyślnie usunięta!";
                     TempData["successMessage"] = "Placówka została pomyślnie usunięta!";
                     _context.RemoveLocationById(model.SelectedLocationId);
-                    //return RedirectToAction("LocationItemsManage", model);
-                    return View();
+                    model.UserName = _loggedUser.Person.FullName;
+                    return View(model);
                 }
 
                 return NotFound();
@@ -985,18 +991,13 @@ namespace Asklepios.Web.Areas.AdministrativeArea.Controllers
                     {
                         _context.UpdateLocationImage(model.SelectedLocation.ImageFile, model.SelectedLocation, _hostEnvironment.WebRootPath);
                     }
-                    //_context.UpdateLocation(model.SelectedLocation, model.SelectedLocationId);
-                    //model.SuccessMessage = "Placówka została dodana";
                     TempData["successMessage"] = "Placówka została dodana";
                     _context.AddLocation(model.SelectedLocation);
-                    //model.UnasignedRooms = _context.GetUnasignedRooms();
-                    //model.PrimaryServices = _context.GetMedicalServices().Where(c => c.IsPrimaryService == true).ToList();
                     return RedirectToAction("LocationItemAdd");
-                    //return View(model);
-
                 }
                 model.UnasignedRooms = _context.GetUnasignedRooms();
                 model.PrimaryServices = _context.GetMedicalServices().Where(c => c.IsPrimaryService == true).ToList();
+                model.UserName = _loggedUser.Person.FullName;
 
                 return View(model);
             }
@@ -1014,6 +1015,8 @@ namespace Asklepios.Web.Areas.AdministrativeArea.Controllers
                 model.SelectedLocation = new Location();
                 model.UnasignedRooms = _context.GetUnasignedRooms();
                 model.PrimaryServices = _context.GetMedicalServices().Where(c => c.IsPrimaryService == true).ToList();
+                model.UserName = _loggedUser.Person.FullName;
+
                 return View(model);
             }
             else
@@ -1027,6 +1030,8 @@ namespace Asklepios.Web.Areas.AdministrativeArea.Controllers
             {
                 LocationsManageViewModel model = new LocationsManageViewModel();
                 model.AllLocations = _context.GetAllLocations();
+                model.UserName = _loggedUser.Person.FullName;
+
                 return View(model);
             }
             else
@@ -1076,9 +1081,6 @@ namespace Asklepios.Web.Areas.AdministrativeArea.Controllers
                         {
                             model.SelectedLocation = _context.GetLocationById(model.SelectedLocationId);
                         }
-                        //model.AllRooms = _context.GetAllRooms();
-                        //model.Locations = _context.GetAllLocations();
-                        //return View(model);
 
                         break;
 
@@ -1117,6 +1119,7 @@ namespace Asklepios.Web.Areas.AdministrativeArea.Controllers
                 }
                 model.AllRooms = _context.GetAllRooms();
                 model.Locations = _context.GetAllLocations();
+                model.UserName = _loggedUser.Person.FullName;
 
                 return View(model);
             }
@@ -1142,6 +1145,8 @@ namespace Asklepios.Web.Areas.AdministrativeArea.Controllers
                     return NotFound();
                 }
                 model.Locations = _context.GetAllLocations();
+                model.UserName = _loggedUser.Person.FullName;
+
                 return View(model);
             }
             else
@@ -1157,6 +1162,8 @@ namespace Asklepios.Web.Areas.AdministrativeArea.Controllers
                 RoomItemsManageViewModel model = new RoomItemsManageViewModel();
                 //model.AllRooms = _context.GetAllRooms();
                 model.Locations = _context.GetAllLocations();
+                model.UserName = _loggedUser.Person.FullName;
+
                 return View(model);
             }
             else
@@ -1175,6 +1182,8 @@ namespace Asklepios.Web.Areas.AdministrativeArea.Controllers
                     if (room != null)
                     {
                         model.Locations = _context.GetAllLocations();
+                        model.UserName = _loggedUser.Person.FullName;
+
                         return View(model);
                     }
                 }
@@ -1200,6 +1209,8 @@ namespace Asklepios.Web.Areas.AdministrativeArea.Controllers
                         {
                             model.SelectedRoom.LocationId = model.SelectedRoom.Location.Id;
                         }
+                        model.UserName = _loggedUser.Person.FullName;
+
                         return View(model);
                     }
                 }
@@ -1214,6 +1225,8 @@ namespace Asklepios.Web.Areas.AdministrativeArea.Controllers
                         _context.UpdateRoom(model.SelectedRoom);
                         model.Locations = _context.GetAllLocations();
                         TempData[SUCCESS_MESSAGE] = "Dane gabinetu zostały pomyślnie zaktualizowane!";
+                        model.UserName = _loggedUser.Person.FullName;
+
                         return View(model);
                     }
                 }
@@ -1232,6 +1245,8 @@ namespace Asklepios.Web.Areas.AdministrativeArea.Controllers
                 RoomItemsManageViewModel model = new RoomItemsManageViewModel();
                 model.AllRooms = _context.GetAllRooms();
                 model.Locations = _context.GetAllLocations();
+                model.UserName = _loggedUser.Person.FullName;
+
                 return View(model);
             }
             else
@@ -1245,6 +1260,7 @@ namespace Asklepios.Web.Areas.AdministrativeArea.Controllers
             {
                 PackageItemsManageViewModel model = new PackageItemsManageViewModel();
                 model.MedicalServices = _context.GetMedicalServices();
+                model.UserName = _loggedUser.Person.FullName;
 
                 return View(model);
             }
@@ -1270,6 +1286,7 @@ namespace Asklepios.Web.Areas.AdministrativeArea.Controllers
                 {
                     TempData[ERROR_MESSAGE] = "Pakiet nie został dodany! Popraw dane!";
                 }
+                model.UserName = _loggedUser.Person.FullName;
 
                 return View(model);
             }
@@ -1320,7 +1337,7 @@ namespace Asklepios.Web.Areas.AdministrativeArea.Controllers
                     }
 
                 }
-                //model.MedicalServices = _context.GetMedicalServices();
+                model.UserName = _loggedUser.Person.FullName;
 
                 return View(model);
             }
@@ -1341,6 +1358,8 @@ namespace Asklepios.Web.Areas.AdministrativeArea.Controllers
                     MedicalPackage package = _context.GetMedicalPackageById(model.SelectedPackage.Id);
                     TempData[SUCCESS_MESSAGE] = "Pakiet medyczny został pomyślnie usunięty!";
                     _context.RemoveMedicalPackageById(model.SelectedPackage.Id);
+                    model.UserName = _loggedUser.Person.FullName;
+
                     return View();
                 }
 
@@ -1363,6 +1382,7 @@ namespace Asklepios.Web.Areas.AdministrativeArea.Controllers
                 //PackageItemsManageViewModel model = new PackageItemsManageViewModel();
                 model.MedicalPackages = _context.GetMedicalPackages();
                 model.MedicalServices = _context.GetMedicalServices();
+                model.UserName = _loggedUser.Person.FullName;
 
                 return View(model);
             }
@@ -1379,6 +1399,7 @@ namespace Asklepios.Web.Areas.AdministrativeArea.Controllers
                 PackageItemsManageViewModel model = new PackageItemsManageViewModel();
                 model.MedicalPackages = _context.GetMedicalPackages();
                 model.MedicalServices = _context.GetMedicalServices();
+                model.UserName = _loggedUser.Person.FullName;
 
                 return View(model);
             }

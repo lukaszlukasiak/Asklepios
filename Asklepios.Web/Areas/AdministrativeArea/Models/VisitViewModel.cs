@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace Asklepios.Web.Areas.AdministrativeArea.Models
 {
-    public class VisitViewModel: ISearchVisit
+    public class VisitViewModel: ISearchVisit,IBaseViewModel
     {
         public Visit Visit { get; set; }
         [DataType(DataType.Date)]
@@ -34,6 +34,6 @@ namespace Asklepios.Web.Areas.AdministrativeArea.Models
         [Display(Name = "Kategoria wizyty")]
 
         public string SelectedVisitCategoryId { get; set; }
-
+        public string UserName { get; set; }
     }
 }
