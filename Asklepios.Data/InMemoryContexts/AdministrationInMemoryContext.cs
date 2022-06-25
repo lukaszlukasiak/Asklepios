@@ -438,5 +438,10 @@ namespace Asklepios.Data.InMemoryContexts
                 PatientMockDB.UpdateMedicalPackage(newPackage, oldPackage);
             }
         }
+
+        public List<Visit> GetFutureVisits()
+        {
+            return PatientMockDB.FutureVisits;
+        }
     }
 }

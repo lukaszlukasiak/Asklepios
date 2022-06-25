@@ -23,7 +23,7 @@ namespace Asklepios.Web.Areas.CustomerServiceArea.Models
 
         public string PhoneNumber { get; set; }
         [Required(ErrorMessage = "Proszę wprowadź temat wiadomości")]
-        [StringLength(50)]
+        [StringLength(100, ErrorMessage ="Temat wiadomości powinien mieć maksymalnie 100 znaków!")]
 
         public string Subject { get; set; }
         [Required(ErrorMessage = "Proszę wprowadź wiadomość")]

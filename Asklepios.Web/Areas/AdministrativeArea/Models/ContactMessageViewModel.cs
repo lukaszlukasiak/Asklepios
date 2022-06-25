@@ -5,7 +5,7 @@ using System.ComponentModel.DataAnnotations;
 
 namespace Asklepios.Web.Areas.AdministrativeArea.Models 
 {
-    public class ContactMessageViewModel : IContactViewModel, IBaseViewModel
+    public class ContactMessageViewModel : ContactViewModel, IBaseViewModel
     {
     //    [Required(ErrorMessage = "Proszę podaj swoje imię i nazwisko")]
     //    [Display(Name = "Imię i nazwisko")]

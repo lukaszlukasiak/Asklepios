@@ -41,7 +41,7 @@ namespace Asklepios.Web.Areas.CustomerServiceArea.Models
 
             if (!String.IsNullOrWhiteSpace(SelectedName))
             {
-                filteredPatients = filteredPatients.Where(c => c.Person.Name == SelectedName).ToList();
+                filteredPatients = filteredPatients.Where(c => c.Person.Name.Contains(SelectedName)).ToList();
                 if (filteredPatients == null)
                 {
                     return null;
@@ -49,7 +49,7 @@ namespace Asklepios.Web.Areas.CustomerServiceArea.Models
             }
             if (!String.IsNullOrWhiteSpace(SelectedSurname))
             {
-                filteredPatients = filteredPatients.Where(c => c.Person.Surname == SelectedSurname).ToList();
+                filteredPatients = filteredPatients.Where(c => c.Person.Surname.Contains(SelectedSurname)).ToList();
                 if (filteredPatients == null)
                 {
                     return null;
@@ -57,7 +57,7 @@ namespace Asklepios.Web.Areas.CustomerServiceArea.Models
             }
             if (!String.IsNullOrWhiteSpace(SelectedPESEL))
             {
-                filteredPatients = filteredPatients.Where(c => c.Person.PESEL == SelectedPESEL).ToList();
+                filteredPatients = filteredPatients.Where(c => c.Person.PESEL.Contains(SelectedPESEL)).ToList();
                 if (filteredPatients == null)
                 {
                     return null;
@@ -65,7 +65,7 @@ namespace Asklepios.Web.Areas.CustomerServiceArea.Models
             }
             if (!String.IsNullOrWhiteSpace(SelectedPassportNumber))
             {
-                filteredPatients = filteredPatients.Where(c => c.Person.PassportNumber == SelectedPassportNumber).ToList();
+                filteredPatients = filteredPatients.Where(c => c.Person.PassportNumber.Contains(SelectedPassportNumber)).ToList();
             }
             return filteredPatients;
         }

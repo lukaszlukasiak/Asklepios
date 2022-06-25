@@ -49,7 +49,15 @@ namespace Asklepios.Web.Areas.CustomerServiceArea.Models
         {
             get
             {
-                return FilteredVisits.Count / ItemsPerPage;
+                List<Visit> visits = FilteredVisits;
+                if (visits == null)
+                {
+                    return 0;
+                }
+                else
+                {
+                    return FilteredVisits.Count / ItemsPerPage;
+                }              
             }
         }
         const int ItemsPerPage = 100;
@@ -133,8 +141,8 @@ namespace Asklepios.Web.Areas.CustomerServiceArea.Models
                 }
             }
         }
-        public string SelectedPrimaryServiceId
-        { get; set; }
+        //public string SelectedPrimaryServiceId
+        //{ get; set; }
         //public string SelectedVisitCategoryId
         //{ get; set; }
 
@@ -196,9 +204,9 @@ namespace Asklepios.Web.Areas.CustomerServiceArea.Models
                    
                 }
             }
-            if (SelectedPrimaryServiceId != null)
+            if (SelectedServiceId != null)
             {
-                if (long.TryParse(SelectedPrimaryServiceId, out long lid))
+                if (long.TryParse(SelectedServiceId, out long lid))
                 {
                     if (lid>0)
                     {

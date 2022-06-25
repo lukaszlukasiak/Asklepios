@@ -1,5 +1,5 @@
 ﻿@model Asklepios.Web.Areas.CustomerServiceArea.Models.VisitViewModel
-@{ 
+@{
     Visit visit = Model.Visit;
 }
 
@@ -48,9 +48,13 @@
                 @for (int i = 0; i < visit.MinorMedicalServices.Count; i++)
                 {
                     MedicalService service = visit.MinorMedicalServices[i];
-                    <p>
-                        @service.Name : @visit.GetPrice(service); PLN
-                    </p>
+                    if (service != null)
+                    {
+                        <p>
+                            @service.Name : @visit.GetPrice(service); PLN
+                        </p>
+
+                    }
                 }
                 <p>Koszt całkowity: @visit.GetTotalPrice() PLN</p>
             </h5>
@@ -85,108 +89,113 @@
             @for (int i = 0; i < visit.ExaminationReferrals.Count; i++)
             {
                 <div class="border border-secondary rounded w-100 flex-grow-0 mb-2  p-3">
-                    @{ 
+                    @{
                         MedicalReferral referral = visit.ExaminationReferrals[i];
 
-                                        <div>
-                                            Usługa: @referral.PrimaryMedicalService.Name
-                                            @if (referral.MinorMedicalService != null)
-                                            {
-                                                <span>
-                                                    Podusługa: @referral.MinorMedicalService.Name
-                                                </span>
+                        <div>
+                            Usługa: @referral.PrimaryMedicalService.Name
+                            @if (referral.MinorMedicalService != null)
+                            {
+                                <span>
+                                    Podusługa: @referral.MinorMedicalService.Name
+                                </span>
 
-                                            }
+                            }
 
-                                        </div>
+                        </div>
 
-                    <div>
-                        Wystawione: @referral.IssueDate.ToString("dd-MM-yyyy")
-                    </div>
-                    <div>
-                        Ważne do: @referral.ExpireDate.ToString("dd-MM-yyyy")
-                    </div>
+                        <div>
+                            Wystawione: @referral.IssueDate.ToString("dd-MM-yyyy")
+                        </div>
+                        <div>
+                            Ważne do: @referral.ExpireDate.ToString("dd-MM-yyyy")
+                        </div>
                         if (referral.HasBeenUsed)
                         {<p>
-                        Skierowanie zostało wykorzystane
-                    </p>
+                                Skierowanie zostało wykorzystane
+                            </p>
                         }
                         else if (referral.HasExpired)
                         {
-                    <p>Ważność skierowania upłynęła</p>
-                            }
+                            <p>Ważność skierowania upłynęła</p>
                         }
+                    }
 
                 </div>
 
             }
         </div>
     }
-                        @if (visit.Prescription!=null)
-                        {
-<div class="d-flex flex-column mx-2">
-    <h5>Recepta</h5>
+    @if (visit.Prescription != null)
+    {
+        <div class="d-flex flex-column mx-2">
+            <h5>Recepta</h5>
 
-    <div class="border border-secondary rounded w-100 flex-grow-0 mb-2  p-3">
+            <div class="border border-secondary rounded w-100 flex-grow-0 mb-2  p-3">
 
-        <div class="d-flex flex-fill pt-2 flex-column">
+                <div class="d-flex flex-fill pt-2 flex-column">
 
-            <div>
-                Wystawione: @visit.Prescription.IssueDate.ToString("dd-MM-yyyy")
-            </div>
-            <div>
-                Ważne do: @visit.Prescription.ExpirationDate.ToString("dd-MM-yyyy")
-            </div>
-            <div>
-                Numer id recepty:
-                <span style="font-weight:bold"> @visit.Prescription.IdentificationCode</span>
-            </div>
-            <p>Kod dostępu: <span style="font-weight:bold">  @visit.Prescription.AccessCode</span> </p>
-        </div>
-        <div class="d-flex flex-fill  flex-column">
+                    <div>
+                        Wystawione: @visit.Prescription.IssueDate.ToString("dd-MM-yyyy")
+                    </div>
+                    <div>
+                        Ważne do: @visit.Prescription.ExpirationDate.ToString("dd-MM-yyyy")
+                    </div>
+                    <div>
+                        Numer id recepty:
+                        <span style="font-weight:bold"> @visit.Prescription.IdentificationCode</span>
+                    </div>
+                    <p>Kod dostępu: <span style="font-weight:bold">  @visit.Prescription.AccessCode</span> </p>
+                </div>
+                <div class="d-flex flex-fill  flex-column">
 
-            <p>
-                @{
-                    for (int i = 0; i < visit.Prescription.IssuedMedicines.Count; i++)
-                    {
-                        IssuedMedicine item = visit.Prescription.IssuedMedicines[i];
-                        <partial name="_Medicine" model="item" />
-                        if (i == visit.Prescription.IssuedMedicines.Count - 1)
-                        {
+                    <p>
+                        @{
+                            for (int i = 0; i < visit.Prescription.IssuedMedicines.Count; i++)
+                            {
+                                IssuedMedicine item = visit.Prescription.IssuedMedicines[i];
+                                <partial name="_Medicine" model="item" />
+                                if (i == visit.Prescription.IssuedMedicines.Count - 1)
+                                {
 
+                                }
+                                else
+                                {
+                                    <br />
+                                }
+                            }
                         }
-                        else
-                        {
-                            <br />
-                        }
-                    }
-                }
-            </p>
+                    </p>
+                </div>
+            </div>
         </div>
-    </div>
-</div>
     }
-    <div>
-        <div class="d-flex">
+        <div class="d-flex flex-column mx-2">
+            <form class="d-flex flex-column" asp-controller="CustomerService" asp-action="BookVisit" asp-area="CustomerServiceArea">
 
-            <a asp-area="PatientArea" asp-controller="Patient" asp-action="BookVisit" class="btn btn-primary btn-icon-split  flex-grow-1 m-2">
-                <span class="icon text-white-50">
-                    <i class="fas fa-book"></i>
-                </span>
-                <span class="text">Zarezerwuj ponownie</span>
-            </a>
+                <input asp-for="SelectedCategoryId" value="@Model.Visit.VisitCategoryId" hidden />
+                <input asp-for="SelectedServiceId" value="@Model.Visit.PrimaryServiceId" hidden />
+                <input asp-for="SelectedMedicalWorkerId" value="@Model.Visit.MedicalWorkerId" hidden />
+
+                <button type="submit"   class="btn btn-primary btn-icon-split  form-control">
+                    <span class="icon text-white-50">
+                        <i class="fas fa-book"></i>
+                    </span>
+                    <span class="text">Zarezerwuj ponownie</span>
+                </button>
+            </form>
+
         </div>
         @*@if (visit.VisitReview == null)
-        {
-            <div class="d-flex">
-                <a asp-area="PatientArea" asp-controller="Patient" asp-action="RateVisit" asp-route-id="@visit.Id" class="btn btn-primary btn-icon-split flex-grow-1 m-2">
-                    <span class="icon text-white-50 left" style="text-align:left;float:left">
-                        <i class="fas fa-address-book"></i>
-                    </span>
-                    <span class="text" style="float: left">Oceń wizytę</span>
-                </a>
-            </div>
-        }*@
+            {
+                <div class="d-flex">
+                    <a asp-area="PatientArea" asp-controller="Patient" asp-action="RateVisit" asp-route-id="@visit.Id" class="btn btn-primary btn-icon-split flex-grow-1 m-2">
+                        <span class="icon text-white-50 left" style="text-align:left;float:left">
+                            <i class="fas fa-address-book"></i>
+                        </span>
+                        <span class="text" style="float: left">Oceń wizytę</span>
+                    </a>
+                </div>
+            }*@
 
     </div>
-</div>

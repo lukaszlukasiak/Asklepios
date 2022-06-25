@@ -79,8 +79,23 @@ namespace Asklepios.Web.ServiceClasses
                 return false;
             }
         }
+        internal static bool CreateAndSendMail(Areas.MedicalWorkerArea.Models.ContactMessageViewModel modelP)
+        {
+            try
+            {
+                ContactViewModel model = modelP as ContactViewModel;
+                MimeMessage mimeMessage = CreateMail(model);
+                SendEMail(mimeMessage);
+                return true;
+            }
+            catch (Exception e)
+            {
 
-        internal static bool CreateAndSendMail(IContactViewModel model)
+                return false;
+            }
+        }
+
+        internal static bool CreateAndSendMail(ContactViewModel model)
         {
             try
             {
@@ -95,7 +110,7 @@ namespace Asklepios.Web.ServiceClasses
             }
         }
 
-        private static MimeMessage CreateMail(IContactViewModel model)
+        private static MimeMessage CreateMail(ContactViewModel model)
         {
             var email = new MimeMessage();
             email.From.Add(MailboxAddress.Parse(MAIL_ADDRESS));

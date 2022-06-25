@@ -52,5 +52,6 @@ namespace Asklepios.Data.Interfaces
         void AddMedicalPackage(MedicalPackage newPackage);
         void RemoveMedicalPackageById(long selectedPackageId);
         void UpdateMedicalPackage(MedicalPackage newPackage);
+        List<Visit> GetFutureVisits();
     }
 }

@@ -93,7 +93,7 @@ namespace Asklepios.Web.Areas.MedicalWorkerArea.Models
         [Display(Name = "Okres ważności skierowania (w dniach)")]
         [Required(ErrorMessage = "Proszę wprowadzić okres ważności skierowania w dniach")]
         [DataType(DataType.Text)]
-        [Range(7,365)]
+        [Range(7,365, ErrorMessage ="Ważność skierowania musi wynosić między 7 oraz 365 dni")]
         public int MedicalReferralDaysToExpire { get; set; }
         public bool IsMedicalReferralAddingOK
         {
@@ -133,7 +133,7 @@ namespace Asklepios.Web.Areas.MedicalWorkerArea.Models
                 {
                     return null;
                 }
-                if (Visit.PrimaryService?.SubServices.Count()>0)
+                if (Visit.PrimaryService?.SubServices?.Count()>0)
                 {
                     if (Visit.MinorMedicalServices!=null)
                     {

@@ -81,9 +81,14 @@
                 </button>
             </div>
 
-            @*<button id="btnSubmit" type="submit" class="btn btn-primary w-100 mt-2" onmousedown="RemoveGuard()" onkeydown="RemoveGuard()">Dodaj</button>*@
+            <button id="btnSubmit" type="submit" class="btn btn-primary w-100 mt-2"  hidden>Dodaj</button>
         </div>
+
     </form>
+    @*<form class="form mt-2" asp-action="ScheduleItemsAddUpdateLists" method="post">
+        <button id="btnUpdateLists" type="submit" class="btn btn-primary w-100 mt-2" onmousedown="RemoveGuard()" onkeydown="RemoveGuard()">Dodaj</button>
+
+    </form>*@
     @{
         if (!string.IsNullOrWhiteSpace(Model.SuccessMessage))
         {
@@ -102,32 +107,32 @@
             </div>
         }
     }
-<form class="form " asp-action="ScheduleItemsAdd" method="get">
+    <form class="form " asp-action="ScheduleItemsAdd" method="get">
 
-    <div class="form-group d-flex flex-column">
-        <button id="btnAdd" type="submit" class="btn btn-primary btn-icon-split d-flex" onmousedown="RemoveGuard()" onkeydown="RemoveGuard()">
-            <span class="icon text-white-50 left" style="text-align:left;float:left">
-                <i class="fas fa-chalkboard"></i>
-            </span>
-            <span class="text" style="float: left">Zresetuj formularz</span>
-        </button>
-    </div>
-</form>
+        <div class="form-group d-flex flex-column">
+            <button id="btnAdd" type="submit" class="btn btn-primary btn-icon-split d-flex" )">
+                <span class="icon text-white-50 left" style="text-align:left;float:left">
+                    <i class="fas fa-chalkboard"></i>
+                </span>
+                <span class="text" style="float: left">Zresetuj formularz</span>
+            </button>
+        </div>
+    </form>
 
-        <script type="text/javascript">
+    <script type="text/javascript">
 
-            function Refresh() {
+        function Refresh() {
 
-                document.getElementById('btnSubmit').click();
-            }
-            function AddGuard() {
-                document.getElementById('Guard').value = '1';
-            }
-            function RemoveGuard() {
-                document.getElementById('Guard').value = '';
-            }
+            document.getElementById('btnSubmit').click();
+        }
+        function AddGuard() {
+            document.getElementById('Guard').value = '1';
+        }
+        function RemoveGuard() {
+            document.getElementById('Guard').value = '';
+        }
 
-        </script>
+    </script>
 
 </div>
 

@@ -35,12 +35,16 @@ namespace Asklepios.Core.Models
         public long MedicalWorkerId { get; set; }
         public DateTimeOffset DateTimeSince { get; set; }
         public DateTimeOffset DateTimeTill { get; set; }
+        public List<long> MinorMedicalServicesIds { get; set; }
         public List<MedicalService> MinorMedicalServices { get; set; }
         public MedicalService PrimaryService { get; set; }
         public long PrimaryServiceId { get; set; }
         public Location Location { get; set; }
+        public long LocationId { get; set; }
         public MedicalRoom MedicalRoom { get; set; }
+        public long MedicalRoomId { get; set; }
         public string MedicalHistory { get; set; }
+        public long MedicalResultId { get; set; }
         private MedicalTestResult _medicalTestResult;
 
         public MedicalTestResult MedicalResult 
@@ -55,6 +59,7 @@ namespace Asklepios.Core.Models
                 if (_medicalTestResult!=null)
                 {
                     _medicalTestResult.ExamDate = DateTimeOffset.Now;
+                    MedicalResultId = _medicalTestResult.Id;
                 }
             }
         }
@@ -100,9 +105,12 @@ namespace Asklepios.Core.Models
                     {
                         item.Visit = this;
                     }
+                    RecommendationIds = Recommendations.Select(c => c.Id).ToList();
                 }              
             }
         }
+        public List<long> RecommendationIds { get; set; }
+
         private Prescription _prescription;
         public Prescription Prescription 
         { 
@@ -116,10 +124,12 @@ namespace Asklepios.Core.Models
                 if (_prescription!=null)
                 {
                     _prescription.Visit = this;
+                    PrescriptionId = _prescription.Id;
                 }
                 
             }
         }
+        public long PrescriptionId { get; set; }
         private MedicalReferral _usedExaminationReferral;
         public MedicalReferral UsedExaminationReferral
         {
@@ -132,16 +142,18 @@ namespace Asklepios.Core.Models
                 _usedExaminationReferral = value;
                 if (_usedExaminationReferral != null)
                 {
-                    foreach (var item in _examinationReferrals)
-                    {
-                        item.VisitWhenIssued = this;
-                        //item.IssuedBy = this.MedicalWorker;
-                        //item.IssuedTo = this.Patient;
-                    }
+                    //foreach (var item in _examinationReferrals)
+                    //{
+                    _usedExaminationReferral.VisitWhenIssued = this;
+                    //item.VisitWhenIssued = this;
+                    //item.IssuedBy = this.MedicalWorker;
+                    //item.IssuedTo = this.Patient;
+                    //}
+                    UsedExaminationReferralId = _usedExaminationReferral.Id;
                 }
             }
         }
-
+        public long UsedExaminationReferralId { get; set; }
 
         private List<MedicalReferral> _examinationReferrals;
         public List<MedicalReferral> ExaminationReferrals 
@@ -161,9 +173,11 @@ namespace Asklepios.Core.Models
                         //item.IssuedBy = this.MedicalWorker;
                         //item.IssuedTo = this.Patient;
                     }
+                    ExaminatinoReferralsIds = _examinationReferrals.Select(c => c.Id).ToList();
                 }              
             }
         }
+        public List<long> ExaminatinoReferralsIds { get; set; }
         public VisitReview _visitReview;
         public VisitReview VisitReview 
         {
@@ -179,10 +193,14 @@ namespace Asklepios.Core.Models
                     _visitReview.Reviewee = MedicalWorker;
                     _visitReview.Reviewer = Patient;
                     _visitReview.Visit = this;
-
+                }
+                if (_visitReview!=null)
+                {
+                    VisitReviewId = _visitReview.Id;
                 }
             }
         }
+        public long VisitReviewId { get; set; }
         //public bool IsBooked
         //{
         //    get
@@ -292,7 +310,7 @@ namespace Asklepios.Core.Models
             {
                 MedicalPackage package = Patient.MedicalPackage;
 
-                MedicalServiceDiscount discount = package.ServiceDiscounts.First(c => c.MedicalService == PrimaryService);
+                MedicalServiceDiscount discount = package.ServiceDiscounts.First(c => c.MedicalService.Id == PrimaryService.Id);
                 if (discount != null)
                 {
                     decimal priceP = PrimaryService.StandardPrice * (1 - discount.Discount); //package.ServicesDiscounts[PrimaryService];
@@ -306,7 +324,11 @@ namespace Asklepios.Core.Models
                 for (int i = 0; i < MinorMedicalServices?.Count; i++)
                 {
                     MedicalService service = MinorMedicalServices[i];
-                    MedicalServiceDiscount discount2 = package.ServiceDiscounts.First(c => c.MedicalService == service);
+                    if (service==null)
+                    {
+                        continue;
+                    }
+                    MedicalServiceDiscount discount2 = package.ServiceDiscounts.First(c => c.MedicalService.Id == service.Id);
 
                     //if (package.ServicesDiscounts.ContainsKey(PrimaryService))
                     if (discount2 != null)
@@ -337,10 +359,15 @@ namespace Asklepios.Core.Models
         public Visit (Location location,MedicalRoom medicalRoom,MedicalWorker medicalWorker,VisitCategory visitCategory,MedicalService medicalService,DateTimeOffset start, DateTimeOffset end)
         {
             Location = location;
+            LocationId = location.Id;
             MedicalRoom = medicalRoom;
+            MedicalRoomId = medicalRoom.Id;
             MedicalWorker = medicalWorker;
+            MedicalWorkerId = medicalWorker.Id;
             VisitCategory = visitCategory;
+            VisitCategoryId = visitCategory.Id;
             PrimaryService = medicalService;
+            PrimaryServiceId = medicalService.Id;
             DateTimeSince = start;
             DateTimeTill = end;
             MinorMedicalServices = new List<MedicalService>();

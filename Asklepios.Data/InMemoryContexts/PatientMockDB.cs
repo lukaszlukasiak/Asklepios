@@ -124,6 +124,8 @@ namespace Asklepios.Data.InMemoryContexts
                 {
                     int number = (333 * i % AvailableVisits.Count);
                     AvailableVisits.ElementAt(number).Patient = patient;
+                    AvailableVisits.ElementAt(number).PatientId = patient.Id;
+
                 }
             }
 
@@ -137,6 +139,7 @@ namespace Asklepios.Data.InMemoryContexts
 
                     int number = (333 * i % BookedVisits.Count);
                     BookedVisits.ElementAt(number).Patient = AllPatients.ElementAt(pNumber % AllPatients.Count);
+                    BookedVisits.ElementAt(number).PatientId = AllPatients.ElementAt(pNumber % AllPatients.Count).Id;
                 }
             }
         }
@@ -272,6 +275,8 @@ namespace Asklepios.Data.InMemoryContexts
                 new User() { Id = ++id, Password = "PasswordAdmin2", EmailAddress = "ad2@asklepios.com", UserType = Core.Enums.UserType.Employee, WorkerModuleType = Core.Enums.WorkerModuleType.AdministrativeWorkerModule, PersonId = id },
 
                 //patients
+                new User() { Id = ++id, Password = "PasswordPatient" + (++pid).ToString(), EmailAddress = "patient" + pid.ToString() + "@asklepios.com", UserType = Core.Enums.UserType.Patient, WorkerModuleType = null, PersonId = id },
+                new User() { Id = ++id, Password = "PasswordPatient" + (++pid).ToString(), EmailAddress = "patient" + pid.ToString() + "@asklepios.com", UserType = Core.Enums.UserType.Patient, WorkerModuleType = null, PersonId = id },
                 new User() { Id = ++id, Password = "PasswordPatient" + (++pid).ToString(), EmailAddress = "patient" + pid.ToString() + "@asklepios.com", UserType = Core.Enums.UserType.Patient, WorkerModuleType = null, PersonId = id },
                 new User() { Id = ++id, Password = "PasswordPatient" + (++pid).ToString(), EmailAddress = "patient" + pid.ToString() + "@asklepios.com", UserType = Core.Enums.UserType.Patient, WorkerModuleType = null, PersonId = id },
                 new User() { Id = ++id, Password = "PasswordPatient" + (++pid).ToString(), EmailAddress = "patient" + pid.ToString() + "@asklepios.com", UserType = Core.Enums.UserType.Patient, WorkerModuleType = null, PersonId = id },
@@ -462,9 +467,12 @@ namespace Asklepios.Data.InMemoryContexts
                         {
                             Id = startId++,
                             PrimaryService = service,// PrimaryMedicalServices[0],
+                            PrimaryServiceId=service.Id,
                             DateTimeSince = start.AddDays(dayOffset).AddMinutes(minutsOffset * 15),
+
                             DateTimeTill = start.AddDays(dayOffset).AddMinutes(minutsOffset * 15 + 15),
                             Location = location,
+                            
                             MedicalRoom = room,
                             MedicalWorker = medicalWorker,//MedicalWorkers.ElementAt(36),
                             VisitCategory = visitCategory//VisitCategories.ElementAt(0),
@@ -1628,7 +1636,7 @@ namespace Asklepios.Data.InMemoryContexts
             return user;
         }
 
-        public static IEnumerable<Visit> GetHistoricalVisits()
+        private static IEnumerable<Visit> GetHistoricalVisits()
         {
             DateTimeOffset dateTimeOffset = new DateTimeOffset(DateTime.Now);
             DateTimeOffset now = DateTime.Now;
@@ -1672,19 +1680,25 @@ namespace Asklepios.Data.InMemoryContexts
                     TimeSpan timeSpan2 = new TimeSpan(hour, quarter * 15, 0);
                     dateTime = dateTime.Date + timeSpan2;// +timeSpan1;
                     MedicalService medicalService = medicalWorker.MedicalServices.Where(c => c.IsPrimaryService).ElementAt(primaryMedicalServiceIndex);// PrimaryMedicalServices[primaryMedicalServiceIndex];
+                    long medicalServiceId = medicalService.Id;
                     //int minorServiceIndex = -1;
                     int minorServiceIndex = medicalService.SubServices == null ? -1 : medicalService.SubServices.Count() - 1;
                     MedicalService minorService = null;
+                    List<long> minorMedicalServicesIds = null;//= 
+
                     if (minorServiceIndex >= 0)
                     {
                         minorServiceIndex = rnd.Next(0, medicalService.SubServices == null ? -1 : medicalService.SubServices.Count() - 1);
                         minorService = medicalService.SubServices.ElementAt(minorServiceIndex);
+                        minorMedicalServicesIds = new List<long>() { minorService.Id };
+
                     }
-                    List<MedicalService> minorServices = null;
-                    if (minorService != null)
-                    {
-                        new List<MedicalService>() { minorService };
-                    }
+                    //List<MedicalService> minorServices = null;
+                    //if (minorService != null)
+                    //{
+                    //    new List<MedicalService>() { minorService };
+                    //    minorMedicalServicesIds= new List<long>() { minorService.Id };
+                    //}
 
                     Location location = null;
                     if (medicalLocationIndex >= 0)
@@ -1697,9 +1711,11 @@ namespace Asklepios.Data.InMemoryContexts
                         medicalRoom = location.MedicalRooms[roomIndex];
                     }
                     List<MedicalReferral> examinationReferrals = null;
+                    List<long> examinationReferralsIds = null;
                     if (referralsIndex >= 0)
                     {
                         examinationReferrals = new List<MedicalReferral>() { referrals[referralsIndex] };
+                        examinationReferralsIds = examinationReferrals.Select(c => c.Id).ToList();
                     }
                     string history = null;
                     if (medicalHistoryIndex >= 0)
@@ -1707,50 +1723,74 @@ namespace Asklepios.Data.InMemoryContexts
                         history = medicalHistories[medicalHistoryIndex];
                     }
                     Prescription prescription = null;
+                    long prescriptionId = -1;
                     if (prescriptionIndex >= 0)
                     {
                         prescription = Prescriptions[prescriptionIndex];
+                        prescriptionId = prescription.Id;
                     }
                     List<Recommendation> visitRecommendations = null;
+                    List<long> visitRecommendationsIds = null;
                     if (recommendationIndex >= 0)
                     {
                         visitRecommendations = new List<Recommendation>() { Recommendations[recommendationIndex] };
+                        visitRecommendationsIds = visitRecommendations.Select(c => c.Id).ToList();
                     }
                     VisitReview review = null;
+                    long reviewId = -1;
                     if (reviewIndex >= 0)
                     {
                         review = reviews[reviewIndex];
                         review.ReviewDate = dateTime.AddDays(reviewDaysOffset);
+                        reviewId = review.Id;
                     }
                     MedicalTestResult testResult = null;
+                    long testResultId = -1;
                     if (testResultIndex>=0)
                     {
                         testResult = (MedicalTestResult)MedicalTestResults[testResultIndex].Clone();
                         testResult.MedicalWorker = medicalWorker;
                         testResult.Id = MedicalTestResults.Max(c => c.Id) + 1;
                         testResult.MedicalService = medicalService;
+                        testResultId = testResult.Id;
                         MedicalTestResults.Add(testResult);
                     }
                     VisitCategory visitCategory = VisitCategories.Where(c => c.PrimaryMedicalServices.Any(d => d.Id == medicalService.Id)).FirstOrDefault();
+                    long visitCategoryId = -1;
+                    if (visitCategory!=null)
+                    {
+                        visitCategoryId = visitCategory.Id;
+                    }
                     Visit visit = new Visit()
                     {
                         Id = ++id,
                         Patient = patient,
+                        PatientId=patient.Id,
                         MedicalWorker = medicalWorker,
-
+                        MedicalWorkerId=medicalWorker.Id,
                         DateTimeSince = dateTime,
                         DateTimeTill = dateTime.AddMinutes(15),
                         Location = Locations[medicalLocationIndex],
+                        LocationId= Locations[medicalLocationIndex].Id,
                         MedicalRoom = medicalRoom,
+                        MedicalRoomId=medicalRoom.Id,
                         ExaminationReferrals = examinationReferrals,
+                        ExaminatinoReferralsIds= examinationReferralsIds,
                         MedicalHistory = history,
                         Prescription = prescription,
+                        PrescriptionId=prescriptionId,
                         Recommendations = visitRecommendations,
+                        RecommendationIds= visitRecommendationsIds,
                         PrimaryService = medicalService,
+                        PrimaryServiceId=medicalServiceId,
                         MedicalResult = testResult,
+                        MedicalResultId= testResultId,
                         VisitCategory = visitCategory,
-                        MinorMedicalServices = minorServices,
-                        VisitReview = review
+                        VisitCategoryId= visitCategoryId,
+                        MinorMedicalServices = new List<MedicalService>() { minorService},
+                        MinorMedicalServicesIds= minorMedicalServicesIds,
+                        VisitReview = review,
+                        VisitReviewId=reviewId
                     };
                     AddNotificationsOrNot(visit);
                     historicalVisits.Add(visit);
@@ -1874,7 +1914,7 @@ namespace Asklepios.Data.InMemoryContexts
             return histories;
         }
 
-        static List<VisitReview> GetDummyMedicalReviews()
+        private static List<VisitReview> GetDummyMedicalReviews()
         {
             DateTimeOffset now = DateTime.Now;
             long id = 0;
@@ -2529,7 +2569,7 @@ namespace Asklepios.Data.InMemoryContexts
 
 
             people.Add(new Person(imagePath: "/img/persons/uk8.jpg", phoneNumber: "715747777", name: "Bożena", surName: "Raj", id: 74, gender: Core.Enums.Gender.Female, birthDate: new DateTimeOffset(new DateTime(1949, 11, 18)), pesel: "49111816546", hasPolishCitizenship: true, passportCode: null, passportNumber: null, email: "person74@gmail.com", aglomeration: Core.Enums.Aglomeration.Cracow));//,
-            people.Add(new Person(imagePath: "/img/persons/um6.jpg", phoneNumber: "715747793", name: "Fryderek", surName: "Czyż", id: 75, gender: Core.Enums.Gender.Male, birthDate: new DateTimeOffset(new DateTime(1976, 12, 18)), pesel: "76121864984", hasPolishCitizenship: true, passportCode: null, passportNumber: null, email: "person75@gmail.com", aglomeration: Core.Enums.Aglomeration.Warsaw));//,
+            people.Add(new Person(imagePath: "/img/persons/um6.jpg", phoneNumber: "715747793", name: "Fryderyk", surName: "Czyż", id: 75, gender: Core.Enums.Gender.Male, birthDate: new DateTimeOffset(new DateTime(1976, 12, 18)), pesel: "76121864984", hasPolishCitizenship: true, passportCode: null, passportNumber: null, email: "person75@gmail.com", aglomeration: Core.Enums.Aglomeration.Warsaw));//,
             people.Add(new Person(imagePath: "/img/persons/uk11.jpg", phoneNumber: "715477222", name: "Monika", surName: "Zalewska", id: 76, gender: Core.Enums.Gender.Female, birthDate: new DateTimeOffset(new DateTime(1982, 9, 9)), pesel: "82090913215", hasPolishCitizenship: true, passportCode: null, passportNumber: null, email: "person76@gmail.com", aglomeration: Core.Enums.Aglomeration.Warsaw));//,
             people.Add(new Person(imagePath: "/img/persons/uk6.jpg", phoneNumber: "715747777", name: "Daria", surName: "Raszpan", id: 77, gender: Core.Enums.Gender.Female, birthDate: new DateTimeOffset(new DateTime(1984, 6, 16)), pesel: "84061632131", hasPolishCitizenship: true, passportCode: null, passportNumber: null, email: "person77@gmail.com", aglomeration: Core.Enums.Aglomeration.Bialystok));//,
 
@@ -2557,6 +2597,8 @@ namespace Asklepios.Data.InMemoryContexts
             people.Add(new Person(imagePath: "/img/persons/um11.jpg", phoneNumber: "601365563", name: "Tomasz", surName: "Oniśk", id: 98, gender: Core.Enums.Gender.Male, birthDate: new DateTimeOffset(new DateTime(1991, 01, 15)), pesel: "91011415679", hasPolishCitizenship: true, passportCode: null, passportNumber: null, email: "person98@gmail.com", aglomeration: Core.Enums.Aglomeration.Poznan));//,
             people.Add(new Person(imagePath: "/img/persons/um12.jpg", phoneNumber: "701362551", name: "Mateusz", surName: "Skorupka", id: 99, gender: Core.Enums.Gender.Male, birthDate: new DateTimeOffset(new DateTime(1996, 01, 15)), pesel: "96011215631", hasPolishCitizenship: true, passportCode: null, passportNumber: null, email: "person99@gmail.com", aglomeration: Core.Enums.Aglomeration.Poznan));//,
             people.Add(new Person(imagePath: "/img/persons/um13.jpg", phoneNumber: "401361353", name: "Robert", surName: "Krzycki", id: 100, gender: Core.Enums.Gender.Male, birthDate: new DateTimeOffset(new DateTime(1972, 01, 15)), pesel: "72011525627", hasPolishCitizenship: true, passportCode: null, passportNumber: null, email: "person100@gmail.com", aglomeration: Core.Enums.Aglomeration.Tricity));//,
+            people.Add(new Person(imagePath: "/img/persons/um14.jpg", phoneNumber: "854612314", name: "Tomasz", surName: "Janiga", id: 101, gender: Core.Enums.Gender.Male, birthDate: new DateTimeOffset(new DateTime(1997, 01, 15)), pesel: "97011215631", hasPolishCitizenship: true, passportCode: null, passportNumber: null, email: "person101@gmail.com", aglomeration: Core.Enums.Aglomeration.Poznan));//,
+            people.Add(new Person(imagePath: "/img/persons/um15.jpg", phoneNumber: "795161304", name: "Rafał", surName: "Fabisiak", id: 102, gender: Core.Enums.Gender.Male, birthDate: new DateTimeOffset(new DateTime(1988, 01, 15)), pesel: "88011525627", hasPolishCitizenship: true, passportCode: null, passportNumber: null, email: "person102@gmail.com", aglomeration: Core.Enums.Aglomeration.Warsaw));//,
                                                                                                                                                                                                                                                                                                                                                                                                                   //administrative workers
 
             //customer service workers
@@ -4596,7 +4638,7 @@ namespace Asklepios.Data.InMemoryContexts
 
         public static IEnumerable<Patient> GetAllPatients()
         {
-            int id = 72;
+            int id = 76;
             int patientId = 0;
 
             List<Patient> patients = new List<Patient>()
@@ -4823,7 +4865,7 @@ namespace Asklepios.Data.InMemoryContexts
                 {
                     Id=++patientId,
                     EmployerNIP="89461231651",
-                    EmployerName="Nestel Polska",
+                    EmployerName="Nestle Polska",
                     MedicalPackage=MedicalPackages[1],
                     NFZUnit=NfzUnits[13],
                     UserId=Persons[id].Id
