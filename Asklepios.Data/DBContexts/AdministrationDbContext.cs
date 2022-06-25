@@ -69,6 +69,11 @@ namespace Asklepios.Data
             throw new NotImplementedException();
         }
 
+        public List<Visit> GetFutureVisits()
+        {
+            throw new NotImplementedException();
+        }
+
         public Location GetLocationById(long id)
         {
             throw new NotImplementedException();

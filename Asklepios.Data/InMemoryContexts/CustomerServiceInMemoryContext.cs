@@ -71,9 +71,15 @@ namespace Asklepios.Data.InMemoryContexts
             return PatientMockDB.AvailableVisits;
         }
 
-        public Patient GetCurrentPatientData()
+        //public Patient GetCurrentPatientData()
+        //{
+        //    return PatientMockDB.CurrentPatient;
+        //}
+        public List<Visit> GetHistoricalVisitsByPatientId(long id)
         {
-            return PatientMockDB.CurrentPatient;
+            List<Visit> visits = PatientMockDB.HistoricalVisits.Where(c => c.PatientId == id).ToList();
+            return visits;
+
         }
 
         public Visit GetHistoricalVisitById(long id)
@@ -164,7 +170,7 @@ namespace Asklepios.Data.InMemoryContexts
 
         public void UpdateReferral(MedicalReferral referral)
         {
-            MedicalReferral refe = PatientMockDB.CurrentPatient.MedicalReferrals.Where(c => c.Id == referral.Id).FirstOrDefault();
+            MedicalReferral refe = PatientMockDB.MedicalReferrals.Where(c => c.Id == referral.Id).FirstOrDefault();
             refe = referral;
         }
 
@@ -177,13 +183,30 @@ namespace Asklepios.Data.InMemoryContexts
         public void ResignFromVisit(Visit plannedVisit, Patient selectedPatient)
         {
             plannedVisit.Patient = null;
-            PatientMockDB.CurrentPatient.BookedVisits.Remove(plannedVisit);
+            plannedVisit.Id = 0;
+            plannedVisit.VisitStatus = Core.Enums.VisitStatus.AvailableNotBooked;
+            //PatientMockDB.BookedVisits.Remove(plannedVisit);
         }
 
         public void BookVisit(Patient selectedPatient, Visit newVisit)
         {
             newVisit.Patient = selectedPatient;
-            PatientMockDB.CurrentPatient.BookedVisits.Add(newVisit);
+            newVisit.PatientId = selectedPatient.Id;
+            newVisit.VisitStatus = Core.Enums.VisitStatus.Booked;
+            //PatientMockDB.CurrentPatient.BookedVisits.Add(newVisit);
+        }
+
+
+        public List<Visit> GetBookedVisitsByPatientId(long id)
+        {
+            List<Visit> visits = PatientMockDB.BookedVisits.Where(c => c.PatientId == id).ToList();
+            return visits;
+
+        }
+
+        public List<MedicalReferral> GetMedicalReferralsByPatientId(long id)
+        {
+            throw new NotImplementedException();
         }
     }
 }

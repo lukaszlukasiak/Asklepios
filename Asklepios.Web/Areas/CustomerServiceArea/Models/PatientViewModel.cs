@@ -21,7 +21,7 @@ namespace Asklepios.Web.Areas.CustomerServiceArea.Models
         public List<Visit> GetCommingVisits(int numberOfVisits=3)
         {
             List<Visit> commingVisits = new List<Visit>();
-            List<Visit> visits = SelectedPatient.BookedVisits.OrderBy(c=>c.DateTimeSince).ToList();
+            List<Visit> visits = SelectedPatient.BookedVisits?.OrderBy(c=>c.DateTimeSince).ToList();
 
             if (visits.Count>0)
             {

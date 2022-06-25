@@ -1519,7 +1519,6 @@ C:\Users\lukas\source\repos\Asklepios8\Asklepios.Web\obj\Debug\net5.0\Razor\Area
 C:\Users\lukas\source\repos\Asklepios8\Asklepios.Web\obj\Debug\net5.0\Razor\Areas\CustomerServiceArea\Views\CustomerService\BookVisitConditions.cshtml.g.cs
 C:\Users\lukas\source\repos\Asklepios8\Asklepios.Web\obj\Debug\net5.0\Razor\Areas\CustomerServiceArea\Views\CustomerService\Contact.cshtml.g.cs
 C:\Users\lukas\source\repos\Asklepios8\Asklepios.Web\obj\Debug\net5.0\Razor\Areas\CustomerServiceArea\Views\CustomerService\HistoricalVisits.cshtml.g.cs
-C:\Users\lukas\source\repos\Asklepios8\Asklepios.Web\obj\Debug\net5.0\Razor\Areas\CustomerServiceArea\Views\CustomerService\Index.cshtml.g.cs
 C:\Users\lukas\source\repos\Asklepios8\Asklepios.Web\obj\Debug\net5.0\Razor\Areas\CustomerServiceArea\Views\CustomerService\Locations.cshtml.g.cs
 C:\Users\lukas\source\repos\Asklepios8\Asklepios.Web\obj\Debug\net5.0\Razor\Areas\CustomerServiceArea\Views\CustomerService\MedicalWorkerDetails.cshtml.g.cs
 C:\Users\lukas\source\repos\Asklepios8\Asklepios.Web\obj\Debug\net5.0\Razor\Areas\CustomerServiceArea\Views\CustomerService\MedicalWorkersList.cshtml.g.cs
@@ -1640,3 +1639,4 @@ C:\Users\lukas\source\repos\Asklepios8\Asklepios.Web\obj\Debug\net5.0\Asklepios.
 C:\Users\lukas\source\repos\Asklepios8\Asklepios.Web\obj\Debug\net5.0\ref\Asklepios.Web.dll
 C:\Users\lukas\source\repos\Asklepios8\Asklepios.Web\obj\Debug\net5.0\Asklepios.Web.pdb
 C:\Users\lukas\source\repos\Asklepios8\Asklepios.Web\obj\Debug\net5.0\Asklepios.Web.genruntimeconfig.cache
+C:\Users\lukas\source\repos\Asklepios8\Asklepios.Web\obj\Debug\net5.0\Razor\Areas\CustomerServiceArea\Views\CustomerService\Dashboard.cshtml.g.cs

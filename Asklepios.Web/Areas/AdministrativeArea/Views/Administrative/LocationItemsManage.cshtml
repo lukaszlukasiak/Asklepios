@@ -36,7 +36,7 @@
 @foreach (var loc in Model.AllLocations)
 {
     Model.SelectedLocation = loc;
-    <partial name="_Location" model="Model" />
+    <partial name="_Location" model="loc" />
 }
 <script>
     $('#MessageSpan').delay(5000).fadeOut(300);

@@ -38,6 +38,11 @@ namespace Asklepios.Data
             throw new NotImplementedException();
         }
 
+        public List<Visit> GetBookedVisitsByPatientId(long id)
+        {
+            throw new NotImplementedException();
+        }
+
         public Patient GetCurrentPatientData()
         {
             throw new NotImplementedException();
@@ -49,6 +54,11 @@ namespace Asklepios.Data
         }
 
         public IEnumerable<Visit> GetHistoricalVisits()
+        {
+            throw new NotImplementedException();
+        }
+
+        public List<Visit> GetHistoricalVisitsByPatientId(long id)
         {
             throw new NotImplementedException();
         }
@@ -69,6 +79,11 @@ namespace Asklepios.Data
         }
 
         public IEnumerable<MedicalPackage> GetMedicalPackages()
+        {
+            throw new NotImplementedException();
+        }
+
+        public List<MedicalReferral> GetMedicalReferralsByPatientId(long id)
         {
             throw new NotImplementedException();
         }

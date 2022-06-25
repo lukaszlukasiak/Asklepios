@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Asklepios.Web.Models
 {
-    public class IContactViewModel
+    public class ContactViewModel
     {
         [Required(ErrorMessage = "Proszę podaj swoje imię i nazwisko")]
         [Display(Name = "Imię i nazwisko")]

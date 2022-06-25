@@ -1,7 +1,7 @@
 ﻿using Asklepios.Core.Enums;
 using Asklepios.Core.Models;
 using Asklepios.Data.Interfaces;
-using Asklepios.Web.Areas.CustomerServiceArea.Models;
+//using Asklepios.Web.Areas.CustomerServiceArea.Models;
 using Asklepios.Web.Areas.MedicalWorkerArea.Models;
 using Asklepios.Web.Models;
 using Microsoft.AspNetCore.Hosting;
@@ -13,7 +13,6 @@ using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
-using System.Threading.Tasks;
 
 namespace Asklepios.Web.Areas.MedicalWorkerArea.Controllers
 {
@@ -150,7 +149,10 @@ namespace Asklepios.Web.Areas.MedicalWorkerArea.Controllers
             if (_loggedUser != null)
             {
                 //MedicalWorker medicalWorker = _context.GetMedicalWorkerByUserId(User.);
-                return View(_medicalWorker);
+                MedicalWorkerViewModel model = new MedicalWorkerViewModel();
+                model.MedicalWorker = _medicalWorker;
+                model.UserName = _loggedUser.Person.FullName;
+                return View(model);
             }
             else
             {
@@ -166,7 +168,20 @@ namespace Asklepios.Web.Areas.MedicalWorkerArea.Controllers
                 switch (model.SubmitMode)
                 {
                     case SubmitMode.AddReferral:
-                        AddExaminationReferral(model);
+                        //AddExaminationReferral(model);
+                        for (int i = ModelState.Keys.Count() - 1; i >= 0; i--)
+                        {
+                            string item = ModelState.Keys.ElementAt(i);
+                            if (item.Contains("Referral") || item.Contains("MedicalServiceToAddId"))
+                            {
+
+                            }
+                            else
+                            {
+                                //ModelState[item].ValidationState = Microsoft.AspNetCore.Mvc.ModelBinding.ModelValidationState.Valid;
+                                ModelState.Remove(item);
+                            }
+                        }
 
                         break;
                     case SubmitMode.AddPrescription:
@@ -235,8 +250,11 @@ namespace Asklepios.Web.Areas.MedicalWorkerArea.Controllers
                 switch (model.SubmitMode)
                 {
                     case SubmitMode.AddReferral:
-                        AddExaminationReferral(model);
+                        if (ModelState.IsValid)
+                        {
 
+                            AddExaminationReferral(model);
+                        }
                         break;
                     case SubmitMode.AddPrescription:
                         if (ModelState.IsValid)

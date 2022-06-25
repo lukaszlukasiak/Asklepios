@@ -21,6 +21,10 @@ namespace Asklepios.Web.Areas.AdministrativeArea.Models
         {
             get
             {
+                if (Schedule==null)
+                {
+                    return null;
+                }
                 if (IsFilterOn)
                 {
                     return GetFilteredSchedule();

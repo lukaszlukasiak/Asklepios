@@ -141,6 +141,11 @@ namespace Asklepios.Core.Models
         public void BookVisit(Visit visit)
         {
             visit.Patient = this;
+            visit.PatientId = this.Id;
+            if (BookedVisits==null)
+            {
+                BookedVisits = new List<Visit>();
+            }
             BookedVisits.Add(visit);
         }
 

@@ -9,7 +9,7 @@ namespace Asklepios.Data.Interfaces
 {
     public interface ICustomerServiceModuleRepository
     {
-        Patient GetCurrentPatientData();
+        //Patient GetCurrentPatientData();
         IEnumerable<Visit> GetAvailableVisits();
         IEnumerable<Location> GetLocations();
         IEnumerable<MedicalWorker> GetMedicalWorkers();
@@ -36,5 +36,8 @@ namespace Asklepios.Data.Interfaces
         Person GetPerson(long personId);
         void ResignFromVisit(Visit plannedVisit, Patient selectedPatient);
         void BookVisit(Patient selectedPatient, Visit newVisit);
+        List<Visit> GetHistoricalVisitsByPatientId(long id);
+        List<Visit> GetBookedVisitsByPatientId(long id);
+        List<MedicalReferral> GetMedicalReferralsByPatientId(long id);
     }
 }
