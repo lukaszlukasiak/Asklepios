@@ -1181,10 +1181,10 @@ namespace Asklepios.Web.Areas.AdministrativeArea.Controllers
                     _context.AddMedicalRoom(model.NewRoom);
                     TempData[SUCCESS_MESSAGE] = "Gabinet medyczny został pomyślnie dodany!";
                 }
-                else
-                {
-                    return NotFound();
-                }
+                //else
+                //{
+                //    return View(model);
+                //}
                 model.Locations = _context.GetAllLocations();
                 model.UserName = _loggedUser.Person.FullName;
 

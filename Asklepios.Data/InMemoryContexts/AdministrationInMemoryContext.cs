@@ -369,6 +369,7 @@ namespace Asklepios.Data.InMemoryContexts
             if (room.LocationId>0 && room.Location==null)
             {
                 room.Location = GetLocationById(room.LocationId);
+                //room.LocationId = room.Location.Id;
             }
 
             PatientMockDB.MedicalRooms.Add(room);
