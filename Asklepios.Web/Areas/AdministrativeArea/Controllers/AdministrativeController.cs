@@ -7,6 +7,8 @@ using Asklepios.Web.Models;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.ModelBinding;
+using Microsoft.AspNetCore.Mvc.Rendering;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -130,6 +132,18 @@ namespace Asklepios.Web.Areas.AdministrativeArea.Controllers
                 model.VisitCategories = _context.GetVisitCategories();
                 model.UserName = _loggedUser.Person.FullName;
 
+
+                List<PageSelect> items = new List<PageSelect>();
+                for (int i = 1; i <= model.NumberOfPages; i++)
+                {
+                    PageSelect page = new PageSelect();
+                    page.Value = i.ToString();
+                    page.Id = i;
+                    //SelectListItem item = new SelectListItem(i.ToString(), i.ToString());
+                    items.Add(page);
+                }
+                SelectList pagesList = new SelectList(items, "Id", "Value", 5);
+                ViewData["PagesList"] = pagesList;
                 return View(model);
             }
             return NotFound();
@@ -171,6 +185,23 @@ namespace Asklepios.Web.Areas.AdministrativeArea.Controllers
                     model.MedicalWorkers = model.MedicalWorkers.Where(c => c.MedicalServices.Intersect(categoryServices).Count() > 1).ToList();
                 }
                 model.UserName = _loggedUser.Person.FullName;
+
+                //List<PageSelect> items = new List<PageSelect>();
+                //for (int i = 1; i <= model.NumberOfPages; i++)
+                //{
+                //    PageSelect page = new PageSelect();
+                //    page.Value = i.ToString();
+                //    page.Id = i;
+                //    //SelectListItem item = new SelectListItem(i.ToString(), i.ToString());
+                //    items.Add(page);
+                //}
+                List<long> items = new List<long>();
+                for (int i = 1; i <= model.NumberOfPages; i++)
+                {
+                    items.Add(i);
+                }
+                SelectList pagesList = new SelectList(items,  5);
+                ViewData["PagesList"] = pagesList;
 
                 return View(model);
             }
@@ -338,14 +369,17 @@ namespace Asklepios.Web.Areas.AdministrativeArea.Controllers
             {
                 if (model.Visit != null)
                 {
-                    Visit visit1 = _context.GetAvailableVisitById(model.Visit.Id);
+                    Visit visit1 = _context.FutureVisitById(model.Visit.Id);
                     if (visit1 != null)
                     {
+                        ScheduleManageViewModel model2 = new ScheduleManageViewModel();
+                        (model2 as ISearchVisit).SetSearchOptions(model);
+
                         _context.RemoveVisitById(visit1.Id);
                         ISearchVisit searchOptions = model;
                         model.UserName = _loggedUser.Person.FullName;
 
-                        return View(model);
+                        return View(model2);
                     }
                     else
                     {
@@ -410,6 +444,13 @@ namespace Asklepios.Web.Areas.AdministrativeArea.Controllers
                         model.SelectedWorker.User.UpdateWith(model.User);
                         model.SelectedWorker.Person.UpdateWith(model.Person);
                         model.SelectedWorker.User.Person = model.SelectedWorker.Person;
+                        if (string.IsNullOrWhiteSpace( model.User.Password))
+                        {
+                            if (ModelState.ContainsKey("User.Password"))
+                            {
+                                ModelState.Remove("User.Password");
+                            }
+                        }
                         if (model.Person.IsValid)
                         {
                             if (model.SelectedWorker.User.IsValid)
@@ -1077,7 +1118,7 @@ namespace Asklepios.Web.Areas.AdministrativeArea.Controllers
                 switch (model.ViewMode)
                 {
                     case ViewMode.Read:
-                        if (model.SelectedLocationId > 0)
+                        if (model.SelectedLocationId > 0 || model.SelectedLocationId==-2)
                         {
                             model.SelectedLocation = _context.GetLocationById(model.SelectedLocationId);
                         }
@@ -1320,9 +1361,14 @@ namespace Asklepios.Web.Areas.AdministrativeArea.Controllers
                     model.MedicalServices = _context.GetMedicalServices();
 
                     model.SelectedPackage.ServiceDiscounts = package.ServiceDiscounts;
+                    for (int i = 0; i < model.SelectedPackage.ServiceDiscounts.Count; i++)
+                    {
+                        MedicalServiceDiscount item = model.SelectedPackage.ServiceDiscounts[i] ;
+                        item.MedicalServiceId = item.MedicalService.Id;
+                        item.Discount = model.Vals[i];
+                    }
                     foreach (MedicalServiceDiscount item in model.SelectedPackage.ServiceDiscounts)
                     {
-                        item.MedicalServiceId = item.MedicalService.Id;
                     }
                     //model.SelectedPackage.ServiceDiscounts = model.UpdateDiscountsWithInputValues();
 
@@ -1360,7 +1406,7 @@ namespace Asklepios.Web.Areas.AdministrativeArea.Controllers
                     _context.RemoveMedicalPackageById(model.SelectedPackage.Id);
                     model.UserName = _loggedUser.Person.FullName;
 
-                    return View();
+                    return View(model);
                 }
 
                 return NotFound();

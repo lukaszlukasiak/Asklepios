@@ -35,6 +35,35 @@ namespace Asklepios.Core.Models
         [Display(Name = "Numer paszportu")]
 
         public string PassportNumber { get; set; }
+
+        [StringLength(int.MaxValue, ErrorMessage = "Musisz podać przynajmniej jeden z numerów: PESEL albo numer paszportu", MinimumLength = 1)]
+
+        public string PESELAndPassport
+        {
+            get
+            {
+                return PESEL + PassportNumber;
+            }
+        }
+        [StringLength(int.MaxValue, ErrorMessage = "W przypadku obywatela Polski wprowadź numer PESEL", MinimumLength = 1)]
+        [Required( ErrorMessage = "W przypadku obywatela Polski wprowadź numer PESEL")]
+
+
+        public string PESELAndCitizenship
+        {
+            get
+            {
+                if (HasPolishCitizenship)
+                {
+                    return PESEL;
+                }
+                else
+                {
+                    return "P";
+                }
+            }
+        }
+
         [DataType(DataType.Text)]
         [Display(Name = "Kod kraju (w paszporcie)")]
 
@@ -55,7 +84,7 @@ namespace Asklepios.Core.Models
         [Required(ErrorMessage = "Proszę podać datę urodzenia")]
         [DataType(DataType.Date)]
         [Display(Name = "Data urodzenia")]
-
+        [CustomDateAttribute(ErrorMessage ="Pacjent musi mieć między 0 a 120 lat")]
         public DateTimeOffset? BirthDate { get; set; }
         [Display(Name = "Domyślna aglomeracja")]
         public Aglomeration? DefaultAglomeration { get; set; }

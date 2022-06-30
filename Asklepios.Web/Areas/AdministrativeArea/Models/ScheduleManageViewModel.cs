@@ -8,9 +8,10 @@ using System.Threading.Tasks;
 
 namespace Asklepios.Web.Areas.AdministrativeArea.Models
 {
-    public class ScheduleManageViewModel:ISearchVisit,IBaseViewModel
+    public class ScheduleManageViewModel : ISearchVisit, IBaseViewModel
     {
         public List<Visit> Schedule { get; set; }
+        public ViewMode ViewMode { get; set; }
         public List<MedicalRoom> MedicalRooms { get; set; }
         public List<MedicalWorker> MedicalWorkers { get; set; }
         public List<MedicalService> PrimaryMedicalServices { get; set; }
@@ -21,7 +22,7 @@ namespace Asklepios.Web.Areas.AdministrativeArea.Models
         {
             get
             {
-                if (Schedule==null)
+                if (Schedule == null)
                 {
                     return null;
                 }
@@ -37,9 +38,54 @@ namespace Asklepios.Web.Areas.AdministrativeArea.Models
                     }
                     else
                     {
-                        return Schedule.GetRange((CurrentPageNum - 1) * ItemsPerPage, ItemsPerPage);
+                        if (CurrentPageNumId<=0)
+                        {
+                            CurrentPageNumId = 1;
+                        }
+                        return Schedule.GetRange(((int)CurrentPageNumId - 1) * ItemsPerPage, ItemsPerPage);
                     }
                 }
+            }
+        }
+        public int NumberOfPages
+        {
+            get
+            {
+                if (Schedule == null)
+                {
+                    return -1;
+                }
+                int itemsNum = Schedule.Count;
+                if (itemsNum == 0)
+                {
+                    return -1;
+                }
+                int pagesNum = (int)Math.Ceiling((double)itemsNum / (double)ItemsPerPage);
+                return pagesNum;
+            }
+        }
+        public List<int> PageNums
+        {
+            get
+            {
+                if (Schedule == null)
+                {
+                    return null;
+                }
+                int itemsNum = Schedule.Count;
+                if (itemsNum == 0)
+                {
+                    return null;
+                }
+                int pagesNum = (int)Math.Ceiling((double)itemsNum / (double)ItemsPerPage);
+                List<int> pages = new List<int>();
+
+
+                for (int i = 1; i < pagesNum; i++)
+                {
+                    pages.Add(i);
+                }
+                return pages;
             }
         }
         //private DateTimeOffset? _firstVisitInitialDateTime;
@@ -110,7 +156,9 @@ namespace Asklepios.Web.Areas.AdministrativeArea.Models
         }
 
         public int ItemsPerPage { get; private set; } = 100;
-        public int CurrentPageNum { get; private set; } = 1;
+        [Display(Name = "Numer strony z wynikami")]
+
+        public long CurrentPageNumId { get;  set; } 
         public string UserName { get; set; }
 
         //public void SetSearchOptions(ISearchVisit iSearch)
@@ -209,7 +257,7 @@ namespace Asklepios.Web.Areas.AdministrativeArea.Models
             }
             if (VisitsDateFrom.HasValue)
             {
-                filteredVisits = filteredVisits.Where(c => c.DateTimeSince >=VisitsDateFrom).ToList();
+                filteredVisits = filteredVisits.Where(c => c.DateTimeSince >= VisitsDateFrom).ToList();
                 if (filteredVisits == null)
                 {
                     return null;
@@ -218,7 +266,7 @@ namespace Asklepios.Web.Areas.AdministrativeArea.Models
             }
             if (VisitsDateTo.HasValue)
             {
-                filteredVisits = filteredVisits.Where(c => c.DateTimeSince <= VisitsDateTo.Value.AddDays(1)  ).ToList();
+                filteredVisits = filteredVisits.Where(c => c.DateTimeSince <= VisitsDateTo.Value.AddDays(1)).ToList();
                 if (filteredVisits == null)
                 {
                     return null;
@@ -228,7 +276,7 @@ namespace Asklepios.Web.Areas.AdministrativeArea.Models
             {
                 if (IsBooked.Value)
                 {
-                    filteredVisits = filteredVisits.Where(c => c.VisitStatus==Core.Enums.VisitStatus.Booked).ToList();
+                    filteredVisits = filteredVisits.Where(c => c.VisitStatus == Core.Enums.VisitStatus.Booked).ToList();
                 }
                 else
                 {
@@ -247,7 +295,18 @@ namespace Asklepios.Web.Areas.AdministrativeArea.Models
             }
             else
             {
-                return filteredVisits.GetRange((CurrentPageNum - 1) * ItemsPerPage, ItemsPerPage);
+                if (CurrentPageNumId ==0)
+                {
+                    CurrentPageNumId = 1;
+                }
+                if (CurrentPageNumId* ItemsPerPage>filteredVisits.Count)
+                {
+                    int lastPage = (int)Math.Ceiling(filteredVisits.Count / (ItemsPerPage+0.0));
+                    int itemsNumber = filteredVisits.Count - (lastPage - 1) * ItemsPerPage;
+                    return filteredVisits.GetRange(((lastPage-1) * ItemsPerPage), itemsNumber);
+
+                }
+                return filteredVisits.GetRange(((int)CurrentPageNumId - 1) * ItemsPerPage, ItemsPerPage);
             }
         }
 

@@ -4,7 +4,6 @@ using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.IO;
-using System.Text;
 
 namespace Asklepios.Core.Models
 {
@@ -39,7 +38,6 @@ namespace Asklepios.Core.Models
                             return string.Format("data:image/jpg;base64,{0}", s);
                         }
                     }
-
                 }
                 return ImagePath;
             }
@@ -94,6 +92,7 @@ namespace Asklepios.Core.Models
             foreach (MedicalRoom item in MedicalRooms)
             {
                 item.Location = this;
+                item.LocationId = this.Id;
             }
         }
         public bool IsValid 
@@ -120,9 +119,7 @@ namespace Asklepios.Core.Models
                     }
                 }
                 return false;
-            }
-            
+            }           
         }
-
     }
 }

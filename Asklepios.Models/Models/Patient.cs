@@ -21,7 +21,8 @@ namespace Asklepios.Core.Models
         private long _medicalPackageId;
         [Required(ErrorMessage = "Wybierz pakiet medyczny")]
         [Display(Name = "Pakiet medyczny")]
-
+        [Range(1,long.MaxValue, ErrorMessage ="Wybierz pakiet medyczny")]
+        
         public long MedicalPackageId
         {
             get
@@ -50,6 +51,9 @@ namespace Asklepios.Core.Models
         public NFZUnit? NFZUnit { get; set; }
         [Display(Name = "Oddział NFZ")]
         private long _NFZUnitId;
+        [Display(Name = "Oddział NFZ")]
+        [Range(1, long.MaxValue, ErrorMessage = "Wybierz oddział NFZ")]
+
         public long NFZUnitId
         {
             get

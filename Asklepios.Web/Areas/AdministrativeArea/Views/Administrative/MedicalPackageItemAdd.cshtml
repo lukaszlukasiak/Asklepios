@@ -62,8 +62,8 @@
                 {
                     <div class="text-center mb-1">
                         <input disabled value="@Model.MedicalServiceDiscounts[i].MedicalService.Name" style="min-width:300px" />
-                        <input asp-for="MedicalServiceDiscounts[i].Discount" />
-                        @*<input asp-for="Vals[i]"  />*@
+                        @*<input asp-for="MedicalServiceDiscounts[i].Discount"  />*@
+                        <input asp-for="Vals[i]" min="0" max="100" />
 
                     </div>
                 }
@@ -73,9 +73,7 @@
                             <input asp-for="Vals[i]" />
                         </div>
                     }*@
-
             </div>
-
         </div>
     </div>
     <div>

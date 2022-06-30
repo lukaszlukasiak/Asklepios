@@ -406,10 +406,10 @@ namespace Asklepios.Data.InMemoryContexts
 
         internal static void RemoveVisitById(long id)
         {
-            Visit visit = AvailableVisits.Where(c => c.Id == id).FirstOrDefault();
+            Visit visit = FutureVisits.Where(c => c.Id == id).FirstOrDefault();
             if (visit != null)
             {
-                AvailableVisits.Remove(visit);
+                FutureVisits.Remove(visit);
             }
         }
 
