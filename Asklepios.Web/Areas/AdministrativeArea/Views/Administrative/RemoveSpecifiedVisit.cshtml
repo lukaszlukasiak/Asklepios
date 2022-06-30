@@ -1,0 +1,21 @@
+﻿@model Asklepios.Web.Areas.AdministrativeArea.Models.ScheduleManageViewModel
+@{
+
+    <form action="ScheduleItemsManage" method="post">
+        <input asp-for="SelectedLocationId" class="control-label" hidden />
+        <input asp-for="SelectedMedicalRoomId" class="control-label" hidden />
+        <input asp-for="SelectedVisitCategoryId" class="control-label" hidden />
+        <input asp-for="SelectedPrimaryServiceId" class="control-label" hidden />
+        <input asp-for="SelectedMedicalWorkerId" class="control-label" hidden />
+        <input asp-for="IsBooked" hidden />
+        <input asp-for="VisitsDateFrom" hidden />
+        <input asp-for="VisitsDateTo" hidden />
+        <button id="btnSubmit" type="submit">
+        </button>
+    </form>
+
+
+}
+<script>
+    document.getElementById('btnSubmit').click();
+</script>

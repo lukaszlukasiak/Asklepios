@@ -88,6 +88,9 @@
             <label asp-for="Person.PESEL" class="control-label"></label>
             <input asp-for="Person.PESEL" class="form-control mb-2">
             <span asp-validation-for="Person.PESEL" class="text-danger"></span>
+            <span asp-validation-for="Person.PESELAndPassport" class="text-danger"></span>
+            <span asp-validation-for="Person.PESELAndCitizenship" class="text-danger"></span>
+
 
             <label asp-for="Person.PassportNumber" class="control-label"></label>
             <input asp-for="Person.PassportNumber" class="form-control mb-2">
@@ -97,21 +100,22 @@
             <input asp-for="Person.PassportCode" class="form-control mb-2">
             <span asp-validation-for="Person.PassportCode" class="text-danger"></span>
 
+
             <label asp-for="Person.ImageFile" class="control-label"></label>
             <input asp-for="Person.ImageFile" accept="image/*" class="form-control-file btn btn-secondary" style="text-align:center" />
             @*<input asp-for="ImageFile" type="file" class="form-control-file" >*@
 
             <span asp-validation-for="Person.ImageFile" class="text-danger"></span>
 
-            <label asp-for="Patient.MedicalPackageId" class="control-label"></label>
+            <label asp-for="Patient.MedicalPackageId" class="control-label mt-2"></label>
             <select class="form-control  mb-2" asp-for="Patient.MedicalPackageId" asp-items="medicalPackagesList">
-                <option value="">Wybierz pakiet</option>
+                <option value="-1">Wybierz pakiet</option>
             </select>
             <span asp-validation-for="Patient.MedicalPackageId" class="text-danger"></span>
 
             <label asp-for="Patient.NFZUnitId" class="control-label"></label>
             <select class="form-control  mb-2" asp-for="Patient.NFZUnitId" asp-items="nfzUnits">
-                <option value="">Wybierz oddział NFZ</option>
+                <option value="-1">Wybierz oddział NFZ</option>
             </select>
             <span asp-validation-for="Patient.NFZUnitId" class="text-danger"></span>
 

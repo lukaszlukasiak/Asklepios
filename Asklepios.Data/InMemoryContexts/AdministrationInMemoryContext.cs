@@ -443,5 +443,10 @@ namespace Asklepios.Data.InMemoryContexts
         {
             return PatientMockDB.FutureVisits;
         }
+
+        public Visit FutureVisitById(long id)
+        {
+            return PatientMockDB.FutureVisits.Where(c => c.Id == id).FirstOrDefault();
+        }
     }
 }

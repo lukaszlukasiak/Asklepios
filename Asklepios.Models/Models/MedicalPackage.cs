@@ -34,7 +34,7 @@ namespace Asklepios.Core.Models
                         }
                         foreach (MedicalServiceDiscount discount in ServiceDiscounts)
                         {
-                            if (discount.Discount>=0 && discount.Discount<=1)
+                            if (discount.Discount>=0 && discount.Discount<=100)
                             {
 
                             }

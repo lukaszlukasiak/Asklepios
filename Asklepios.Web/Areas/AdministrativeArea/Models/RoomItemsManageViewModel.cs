@@ -39,12 +39,29 @@ namespace Asklepios.Web.Areas.AdministrativeArea.Models
         {
             get
             {
+                List<MedicalRoom> sortRooms = SortedRooms;
+                if (sortRooms==null)
+                {
+                    return null;
+                }
                 if (SelectedLocation!=null)
                 {
-                    List<MedicalRoom> sortRooms = SortedRooms;
                     List<MedicalRoom> rooms = sortRooms.Where(c => c.Location?.Id == SelectedLocation.Id).ToList();
                     return rooms;
                     //return SortedRooms.Where(c => c.Location == SelectedLocation).ToList();
+                }
+                else if (SelectedLocationId==-2)
+                {
+                    var rooms = sortRooms.Where(c => c.LocationId == 0);
+                    if (rooms == null)
+                    {
+                        return null;
+                    }
+                    else
+                    {
+                        return rooms.ToList();
+                    }
+
                 }
                 else
                 {

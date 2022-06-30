@@ -6,34 +6,34 @@ namespace Asklepios.Core.Enums
     public enum Aglomeration
     {
         [Display(Name = "Warszawska")]
-        [Description("Warszawska")]
+        [Description("Aglomeracja warszawska")]
         Warsaw,
         [Display(Name = "Poznańska")]
-        [Description("Poznańska")]
+        [Description("Aglomeracja poznańska")]
         Poznan,
         [Display(Name = "Trójmiejska")]
-        [Description("Trójmiejska")]
+        [Description("Aglomeracja trójmiejska")]
         Tricity,
         [Display(Name = "Krakowska")]
-        [Description("Krakowska")]
+        [Description("Aglomeracja krakowska")]
         Cracow,
         [Display(Name = "Wrocławska")]
-        [Description("Wrocławska")]
+        [Description("Aglomeracja wrocławska")]
         Wroclaw,
         [Display(Name = "Białostocka")]
-        [Description("Białostocka")]
+        [Description("Aglomeracja białostocka")]
         Bialystok,
         [Display(Name = "Rzeszowska")]
-        [Description("Rzeszowska")]
+        [Description("Aglomeracja rzeszowska")]
         Rzeszów,
         [Display(Name = "Kielecka")]
-        [Description("Kielecka")]
+        [Description("Aglomeracja kielecka")]
         Kielce,
         [Display(Name = "Śląska")]
-        [Description("Śląska")]
+        [Description("Aglomeracja śląska")]
         Silesia,
         [Display(Name = "Kujawska")]
-        [Description("Kujawska")]
+        [Description("Aglomeracja kujawska")]
         Kuyavia,
     }
 }

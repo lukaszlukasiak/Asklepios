@@ -73,7 +73,7 @@
                         <div class="text-center mb-1">
                             <input disabled value="@Model.SelectedPackage.ServiceDiscounts[i].MedicalService.Name" style="min-width:300px" />
                             @*<input asp-for="SelectedPackage.ServiceDiscounts[i].Discount" />*@
-                            <input asp-for="Vals[i]" />
+                            <input asp-for="Vals[i]" max="100" min="0"/>
                             @*<span class="fa-percentage"></span>*@
 
                         </div>
