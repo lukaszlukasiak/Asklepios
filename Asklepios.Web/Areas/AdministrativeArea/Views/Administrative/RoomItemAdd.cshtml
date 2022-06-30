@@ -45,7 +45,7 @@
 
         <label asp-for="NewRoom.LocationId" class="control-label"></label>
         <select class="form-control  mb-2" asp-for="NewRoom.LocationId" asp-items="locations">
-            <option value="-1">Wybierz placówkę</option>
+            <option value="0">Wybierz placówkę</option>
         </select>
         <span asp-validation-for="NewRoom.LocationId" class="text-danger"></span>
 

@@ -57,4 +57,3 @@ C:\Users\lukas\source\repos\Asklepios8\Asklepios.Data\obj\Debug\net5.0\Asklepios
 C:\Users\lukas\source\repos\Asklepios8\Asklepios.Data\obj\Debug\net5.0\ref\Asklepios.Data.dll
 C:\Users\lukas\source\repos\Asklepios8\Asklepios.Data\obj\Debug\net5.0\Asklepios.Data.pdb
 C:\Users\lukas\source\repos\Asklepios8\Asklepios.Data\obj\Debug\net5.0\Asklepios.Data.genruntimeconfig.cache
-C:\Users\lukas\source\repos\Asklepios8\Asklepios.Data\obj\Debug\net5.0\Asklepios.Data.csproj.CopyComplete
