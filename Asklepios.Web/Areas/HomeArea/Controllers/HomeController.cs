@@ -86,6 +86,10 @@ namespace Asklepios.Web.Areas.HomeArea.Controllers
         [HttpPost]
         public IActionResult LogInEmployee(LogInViewModel model)
         {
+            if (model==null)
+            {
+                return View("LogIn", model);
+            }
             long userId = model.User.Id;
             model.User.UserType = Core.Enums.UserType.Employee;
             User user = _context.LogIn(model.User);
