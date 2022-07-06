@@ -25,7 +25,7 @@ namespace Asklepios.Web.ServiceClasses
                 SendEMail(mimeMessage);
                 return true;
             }
-            catch (Exception e)
+            catch (Exception)
             {
                 
                 return false;
@@ -73,7 +73,7 @@ namespace Asklepios.Web.ServiceClasses
                 SendEMail(mimeMessage);
                 return true;
             }
-            catch (Exception e)
+            catch (Exception )
             {
 
                 return false;
@@ -88,7 +88,7 @@ namespace Asklepios.Web.ServiceClasses
                 SendEMail(mimeMessage);
                 return true;
             }
-            catch (Exception e)
+            catch (Exception )
             {
 
                 return false;
@@ -103,7 +103,7 @@ namespace Asklepios.Web.ServiceClasses
                 SendEMail(mimeMessage);
                 return true;
             }
-            catch (Exception e)
+            catch (Exception )
             {
 
                 return false;

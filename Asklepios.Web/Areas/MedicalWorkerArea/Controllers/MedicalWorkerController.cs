@@ -20,7 +20,7 @@ namespace Asklepios.Web.Areas.MedicalWorkerArea.Controllers
 
     public class MedicalWorkerController : Controller
     {
-        private readonly ILogger<MedicalWorkerController> _logger;
+        //private readonly ILogger<MedicalWorkerController> _logger;
         IWebHostEnvironment _hostEnvironment { get; set; }
 
         //public MedicalWorkerController(ILogger<MedicalWorkerController> logger)

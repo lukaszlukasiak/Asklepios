@@ -15,14 +15,14 @@ namespace Asklepios.Web.Extensions
         /// </summary>
         /// <param name="enumValue"></param>
         /// <returns></returns>
-        public static string GetDescription(this Enum enumValue)
-        {
-            return enumValue.GetType()
-                       .GetMember(enumValue.ToString())
-                       .First()
-                       .GetCustomAttribute<DescriptionAttribute>()?
-                       .Description ?? string.Empty;
-        }
+        //public static string GetDescription(this Enum enumValue)
+        //{
+        //    return enumValue.GetType()
+        //               .GetMember(enumValue.ToString())
+        //               .First()
+        //               .GetCustomAttribute<DescriptionAttribute>()?
+        //               .Description ?? string.Empty;
+        //}
 
     }
 }
