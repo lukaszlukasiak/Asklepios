@@ -404,7 +404,7 @@ namespace Asklepios.Web.Areas.PatientArea.Controllers
 
                 return RedirectToAction("VisitDetails", "Patient", new { area = "PatientArea", id = notification.VisitId });
 
-                return RedirectToAction("VisitDetails");
+               // return RedirectToAction("VisitDetails");
             }
             else
             {

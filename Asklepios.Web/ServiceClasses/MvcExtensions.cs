@@ -59,14 +59,14 @@ where TEnum : struct
             selectList.ElementAt(0).Selected = true;
             return selectList;
         }
-        public static string GetDescription(this Enum enumValue)
-        {
-            return enumValue.GetType()
-                       .GetMember(enumValue.ToString())
-                       .First()
-                       .GetCustomAttribute<DescriptionAttribute>()?
-                       .Description ?? string.Empty;
-        }
+        //public static string GetDescription(this Enum enumValue)
+        //{
+        //    return enumValue.GetType()
+        //               .GetMember(enumValue.ToString())
+        //               .First()
+        //               .GetCustomAttribute<DescriptionAttribute>()?
+        //               .Description ?? string.Empty;
+        //}
 
 
     }

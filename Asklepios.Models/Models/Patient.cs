@@ -94,7 +94,7 @@ namespace Asklepios.Core.Models
                 }
                 else
                 {
-                    return null;
+                    return new List<MedicalTestResult>() ;
                 }
             }
         }
@@ -102,19 +102,35 @@ namespace Asklepios.Core.Models
         {
             get
             {
-                List<MedicalReferral> referrals = HistoricalVisits?.Where(c => c.ExaminationReferrals != null).SelectMany(c => c.ExaminationReferrals).ToList();
-                //List<ExaminationReferral> referrals = HistoricalVisits.Where(c => c.VisitSummary?.ExaminationReferrals != null).SelectMany(c => c.VisitSummary.ExaminationReferrals).ToList();
+                if (HistoricalVisits!=null)
+                {
+                    List<MedicalReferral> referrals = HistoricalVisits.Where(c => c.ExaminationReferrals != null).SelectMany(c => c.ExaminationReferrals).ToList();
+                    //List<ExaminationReferral> referrals = HistoricalVisits.Where(c => c.VisitSummary?.ExaminationReferrals != null).SelectMany(c => c.VisitSummary.ExaminationReferrals).ToList();
 
-                return referrals;
+                    return referrals;
+
+                }
+                else
+                {
+                    return new List<MedicalReferral>();
+                }
             }
         }
         public List<Prescription> Prescriptions 
         {
             get
             {
-                List<Prescription>? prescs = HistoricalVisits?.Where(c => c.Prescription!=null).Select(c=>c.Prescription).ToList();
-                //List<Prescription> prescs = HistoricalVisits.Where(c => c.VisitSummary?.Prescription != null).Select(c => c.VisitSummary.Prescription).ToList();
-                return prescs;
+                if (HistoricalVisits!=null)
+                {
+                    List<Prescription> prescs = HistoricalVisits.Where(c => c.Prescription != null).Select(c => c.Prescription).ToList();
+                    //List<Prescription> prescs = HistoricalVisits.Where(c => c.VisitSummary?.Prescription != null).Select(c => c.VisitSummary.Prescription).ToList();
+                    return prescs;
+
+                }
+                else
+                {
+                    return new List<Prescription>();
+                }
             }          
         }
         //public List<IssuedMedicine> IssuedMedicines { get; set; }
@@ -161,10 +177,12 @@ namespace Asklepios.Core.Models
         {
             Person = person;
             PersonId = person.Id;
+            User = new User();
         }
         public Patient()
         {
-
+            Person = new Person();
+            User = new User();
         }
         
     }

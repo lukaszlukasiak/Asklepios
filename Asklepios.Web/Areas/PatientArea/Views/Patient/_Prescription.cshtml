@@ -48,7 +48,7 @@
                     @{
                         for (int i = 0; i < Model.IssuedMedicines.Count; i++)
                         {
-                            IssuedMedicine item = Model.IssuedMedicines[i];
+                            Asklepios.Core.Models.IssuedMedicine item = Model.IssuedMedicines[i];
                             <partial name="_Medicine" model="item" />
                             if (i== Model.IssuedMedicines.Count-1)
                             {

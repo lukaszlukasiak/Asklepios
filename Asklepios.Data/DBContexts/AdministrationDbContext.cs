@@ -9,6 +9,17 @@ namespace Asklepios.Data
 {
     public class AdministrationDbContext : DbContext, IAdministrationModuleRepository
     {
+        public DbSet<Patient> Patients { get; set; }
+        public DbSet<MedicalWorker> MedicalWorkers { get; set; }
+        public DbSet<Location> Locations { get; set; }
+        public DbSet<MedicalRoom> MedicalRooms { get; set; }
+        public DbSet<Visit> Visits { get; set; }
+        public DbSet<MedicalPackage> MedicalPackages{ get; set; }
+
+
+        public DbSet<User> Users { get; set; }
+        public DbSet<Person> People{ get; set; }
+
         public void AddLocation(Location location)
         {
             throw new NotImplementedException();
