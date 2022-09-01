@@ -3,6 +3,7 @@ using Asklepios.Core.Enums;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Text;
 
@@ -10,71 +11,79 @@ namespace Asklepios.Core.Models
 {
     public class Patient 
     {
-        
+        [Key]
+        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
+        [Required]
+
         public long Id { get; set; }
         [Required]
         public long PersonId { get; set; }
+        [ForeignKey("PersonId")]
         public Person Person { get; set; }
         public long UserId { get; set; }
+        [ForeignKey("UserId")]
         public User User { get; set; }
 
-        private long _medicalPackageId;
+        //private long _medicalPackageId;
         [Required(ErrorMessage = "Wybierz pakiet medyczny")]
         [Display(Name = "Pakiet medyczny")]
         [Range(1,long.MaxValue, ErrorMessage ="Wybierz pakiet medyczny")]
         
         public long MedicalPackageId
         {
-            get
-            {
-                if (_medicalPackageId <= 0)
-                {
-                    if (MedicalPackage != null)
-                    {
-                        return MedicalPackage.Id;
-                    }
-                }
-                return _medicalPackageId;
-            }
-            set
-            {
-                _medicalPackageId = value;
-            }
+            get;set;
+            //get
+            //{
+            //    if (_medicalPackageId <= 0)
+            //    {
+            //        if (MedicalPackage != null)
+            //        {
+            //            return MedicalPackage.Id;
+            //        }
+            //    }
+            //    return _medicalPackageId;
+            //}
+            //set
+            //{
+            //    _medicalPackageId = value;
+            //}
         }
 
         [Required(ErrorMessage = "Wybierz pakiet medyczny")]
         [Display(Name = "Pakiet medyczny")]
-
+        [ForeignKey("MedicalPackageId")]
         public MedicalPackage MedicalPackage { get; set; }
+        //[Display(Name = "Oddział NFZ")]
+        //private long _NFZUnitId;
 
-        [Display(Name = "Oddział NFZ")]
-        public NFZUnit? NFZUnit { get; set; }
-        [Display(Name = "Oddział NFZ")]
-        private long _NFZUnitId;
         [Display(Name = "Oddział NFZ")]
         [Range(1, long.MaxValue, ErrorMessage = "Wybierz oddział NFZ")]
 
         public long NFZUnitId
         {
-            get
-            {
-                if (_NFZUnitId <= 0)
-                {
-                    if (NFZUnit != null)
-                    {
-                        if (NFZUnit!=null)
-                        {
-                            return NFZUnit.Id;
-                        }
-                    }
-                }
-                return _NFZUnitId;
-            }
-            set
-            {
-                _NFZUnitId = value;
-            }
+            get;set;
+            //get
+            //{
+            //    if (_NFZUnitId <= 0)
+            //    {
+            //        if (NFZUnit != null)
+            //        {
+            //            if (NFZUnit != null)
+            //            {
+            //                return NFZUnit.Id;
+            //            }
+            //        }
+            //    }
+            //    return _NFZUnitId;
+            //}
+            //set
+            //{
+            //    _NFZUnitId = value;
+            //}
         }
+        [Display(Name = "Oddział NFZ")]
+        [ForeignKey("NFZUnitId")]
+        public NFZUnit? NFZUnit { get; set; }
 
 
         [Display(Name = "Nazwa pracodawcy")]
@@ -83,7 +92,7 @@ namespace Asklepios.Core.Models
         public string? EmployerNIP { get; set; }
 
 
-        public List<MedicalTestResult> TestsResults 
+        public virtual List<MedicalTestResult> TestsResults 
         { 
             get
             {
@@ -134,8 +143,38 @@ namespace Asklepios.Core.Models
             }          
         }
         //public List<IssuedMedicine> IssuedMedicines { get; set; }
-        public List<Visit> HistoricalVisits { get; set; }
-        public List<Visit> BookedVisits { get; set; }
+        [NotMapped]
+        public List<Visit>? HistoricalVisits 
+        {
+            get
+            {
+                if (AllVisits!=null)
+                {
+                    return AllVisits.Where(c => c.VisitStatus == VisitStatus.Finished).ToList();
+                }
+                else
+                {
+                    return null;
+                }
+            }
+        }
+        [NotMapped]
+        public List<Visit>? BookedVisits 
+        {
+            get
+            {
+                if (AllVisits!=null)
+                {
+                    return AllVisits.Where(c => c.VisitStatus == VisitStatus.Booked || c.VisitStatus == VisitStatus.Started).ToList();
+                }
+                else
+                {
+                    return null;
+                }
+                
+            }
+        }
+        public List<Visit> AllVisits { get; set; } = new List<Visit>();
         public bool IsValid 
         {
             get
@@ -156,17 +195,18 @@ namespace Asklepios.Core.Models
                 return false;
             }
         }
-        public List<Notification> Notifications 
+        public virtual List<Notification> Notifications 
         { get; set; }
         public void BookVisit(Visit visit)
         {
             visit.Patient = this;
             visit.PatientId = this.Id;
-            if (BookedVisits==null)
-            {
-                BookedVisits = new List<Visit>();
-            }
-            BookedVisits.Add(visit);
+            visit.VisitStatus = VisitStatus.Booked;
+            //if (BookedVisits==null)
+            //{
+            //    BookedVisits = new List<Visit>();
+            //}
+            AllVisits.Add(visit);
         }
 
         //public List<NotificationFilter> Notifications {get;set;}

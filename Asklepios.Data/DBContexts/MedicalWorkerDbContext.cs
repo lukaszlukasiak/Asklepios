@@ -10,6 +10,22 @@ namespace Asklepios.Data
 {
     public class MedicalWorkerDbContext : DbContext, IMedicalWorkerModuleRepository
     {
+        public MedicalWorkerDbContext()
+        {
+
+        }
+
+        // Metoda pozwala na wskazanie i konfigurację źródła danych
+        // Przykład użycia był doskonale widoczny w poprzednim wpisie
+        protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
+        {
+        }
+
+        // Metoda pozwala na konfigurację modelu przy wykorzystaniu Fluent API
+        protected override void OnModelCreating(ModelBuilder modelBuilder)
+        {
+        }
+
         public List<Visit> GetFutureVisitsByMedicalWorkerId(long id)
         {
             throw new NotImplementedException();

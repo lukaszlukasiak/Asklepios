@@ -11,12 +11,19 @@ namespace Asklepios.Core.Models
         //{
         //    NPWZNumber = npwzNumber;
         //}
-        public Physiotherapist(Person person, string profNumber):base(person)
+        //public Physiotherapist(Person person, string profNumber):base(person)
+        //{
+        //    ProfessionalNumber = profNumber;
+        //    MedicalWorkerType = Enums.MedicalWorkerType.Physiotherapist;
+        //    PersonId = person.Id;
+        //}
+        public Physiotherapist(long personId, string professionalNumber) : base(personId)
         {
-            ProfessionalNumber = profNumber;
+            ProfessionalNumber = professionalNumber;
             MedicalWorkerType = Enums.MedicalWorkerType.Physiotherapist;
-            PersonId = person.Id;
+            PersonId = personId;
         }
+
         public override string ProfessionalTitle => "Fizjoterapeuta";
         //public string   NPWZNumber { get;}
     }

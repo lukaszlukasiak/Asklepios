@@ -9,8 +9,21 @@ using System.Threading.Tasks;
 
 namespace Asklepios.Data.DBContexts
 {
-    class HomeDbContext : DbContext, IHomeModuleRepository
+    public class HomeDbContext : DbContext, IHomeModuleRepository
     {
+        public HomeDbContext()
+        {
+
+        }
+
+        protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
+        {
+        }
+
+        protected override void OnModelCreating(ModelBuilder modelBuilder)
+        {
+        }
+
         public IEnumerable<Location> GetAllLocations()
         {
             throw new NotImplementedException();

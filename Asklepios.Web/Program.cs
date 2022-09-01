@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace Asklepios.Web
 {
-    public class Program
+    public class Program1
     {
         public static void Main(string[] args)
         {
@@ -21,6 +21,7 @@ namespace Asklepios.Web
                 .ConfigureWebHostDefaults(webBuilder =>
                 {
                     webBuilder.UseStartup<Startup>();
+                    
                 });
     }
 }

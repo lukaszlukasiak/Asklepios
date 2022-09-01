@@ -1,20 +1,28 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Asklepios.Core.Models
 {
     public class Prescription
     {
+        [Key]
+        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
+        [Required]
+
         public long Id { get; set; }
 
         public DateTimeOffset IssueDate { get; set; }
         public DateTimeOffset ExpirationDate { get; set; }
+        public long IssuedById { get; set; }
+        [ForeignKey("IssuedById")]
         public MedicalWorker IssuedBy { get; set; }
-        public Patient IssuedTo { get; set; }
         public long IssuedToId { get; set; }
-
-        public List<IssuedMedicine> IssuedMedicines { get; set; } = new List<IssuedMedicine>();
+        [ForeignKey("IssuedToId")]
+        public Patient IssuedTo { get; set; }
+        
+        public virtual List<IssuedMedicine> IssuedMedicines { get; set; } = new List<IssuedMedicine>();
         
         [Display(Name = "Kod dostępu")]
         [Required(ErrorMessage = "Proszę wprowadzić kod dostępu")]
@@ -29,22 +37,50 @@ namespace Asklepios.Core.Models
         [StringLength(20, ErrorMessage ="Numer identyfikacyjny powinien się składać z 20 znaków")]
 
         public string IdentificationCode { get; set; }
-        public Visit _visit;
+        public long VisitId { get; set; }
+        //private Visit _visit;
+        //[ForeignKey("VisitId")]
         public Visit Visit
         {
-            get
-            {
-                return _visit;
-            }
-            set
-            {
-                _visit = value;
-                IssuedBy = value.MedicalWorker;
-                IssuedTo = value.Patient;
-                IssueDate = value.DateTimeSince;
-            }
+            get;set;
+            //get
+            //{
+            //    return _visit;
+            //}
+            //set
+            //{
+            //    _visit = value;
+            //    IssuedBy = value.MedicalWorker;
+            //    IssuedTo = value.Patient;
+            //    IssueDate = value.DateTimeSince;
+            //}
         }
-        public long VisitId { get; set; }
+        public Prescription()
+        {
+            IssuedMedicines = new List<IssuedMedicine>();
+        }
+        public Prescription MockClone( long pId, long iId )
+        {
+            Prescription prescription = new Prescription();
+            prescription.Id = pId;
+            prescription.AccessCode = AccessCode;
+            prescription.IdentificationCode = IdentificationCode;
+            prescription.ExpirationDate = ExpirationDate;
+            prescription.IssueDate = IssueDate;
+
+            for (int i = 0; i < IssuedMedicines.Count; i++)
+            {
+                IssuedMedicine issuedMedicine = new IssuedMedicine();
+                issuedMedicine.Id = iId+i;
+                issuedMedicine.PrescriptionId = pId;
+                issuedMedicine.MedicineName = IssuedMedicines[i].MedicineName;
+                issuedMedicine.PaymentDiscount= IssuedMedicines[i].PaymentDiscount;
+                issuedMedicine.PackageSize= IssuedMedicines[i].PackageSize;
+                prescription.IssuedMedicines.Add(issuedMedicine);
+            }
+
+            return prescription;
+        }
         //public VisitSummary VisitSummary { get; set; }
     }
 }

@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -11,6 +12,8 @@ namespace Asklepios.Core.Models
     public class User
     {
         [Key]
+        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
+        [Required]
         public long Id { get; set; }
         [Required(ErrorMessage = "Proszę podać adres e-mail. Będzie on pełnił również funckję nazwy użytkownika.")]
         [DataType(DataType.EmailAddress)]
@@ -26,7 +29,20 @@ namespace Asklepios.Core.Models
         [Display(Name = "Typ modułu, do którego użytkownik ma dostęp")]
         public WorkerModuleType? WorkerModuleType { get; set; }
         public long PersonId { get; set; }
-        public Person Person { get; set; }
+        [ForeignKey("PersonId")]
+        public virtual Person Person { get; set; }
+
+        public long MedicalWorkerId { get; set; }
+        //[ForeignKey("MedicalWorkerId")]
+
+        public virtual MedicalWorker MedicalWorker { get; set; }
+        public long PatientId { get; set; }
+        //[ForeignKey("PatientId")]
+
+        public virtual Patient Patient { get; set; }
+        //public virtual worker Person { get; set; }
+
+
 
         public bool IsValid
         {

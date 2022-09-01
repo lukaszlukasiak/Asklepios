@@ -3,12 +3,17 @@ using Microsoft.AspNetCore.Http;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 using System.IO;
 
 namespace Asklepios.Core.Models
 {
     public class Location
     {
+        [Key]
+        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
+        [Required]
+
         public long Id { get; set; }
         [Required(ErrorMessage ="Proszę wprowadzić nazwę placówki")]
         [Display(Name ="Nazwa placówki")]
@@ -17,6 +22,7 @@ namespace Asklepios.Core.Models
         [Display(Name = "Króki opis placówki")]
         public string Description { get; set; }
         [Display(Name = "Zdjęcie (300x500 pikseli)")]
+        [NotMapped]
         public IFormFile ImageFile { get; set; }
         [Display(Name = "Zdjęcie (300x500 pikseli)")]
         public string ImagePath { get; set; }
@@ -63,13 +69,15 @@ namespace Asklepios.Core.Models
         [Required(ErrorMessage = "Proszę wprowadzić nazwę ulicy oraz numer budynku")]
         [DataType(DataType.Text)]
         public string StreetAndNumber { get; set; }
-        public IEnumerable<string> Facilities { get; set; }
+        //public IEnumerable<Facility> Facilities { get; set; }
         [Display(Name = "Świadczone usługi")]
         [Required(ErrorMessage = "Proszę wybrać świadczone usługi")]
+        [NotMapped]
         public List<long> MedicalServiceIds { get; set; }
         public List<MedicalService> Services { get; set; }
         [Display(Name = "Lista pokoi")]
         [Required(ErrorMessage = "Wybierz pokoje")]
+        [NotMapped]
         public List<long> MedicalRoomIds { get; set; }
         private List<MedicalRoom> _medicalRooms;
         public List<MedicalRoom> MedicalRooms 
@@ -81,10 +89,10 @@ namespace Asklepios.Core.Models
             set
             {
                 _medicalRooms = value;
-                if (value!=null)
-                {
-                    SetRoomsBackReferences();
-                }
+                //if (value!=null)
+                //{
+                //    SetRoomsBackReferences();
+                //}
             }
         }
         public void SetRoomsBackReferences()

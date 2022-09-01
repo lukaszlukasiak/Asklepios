@@ -10,6 +10,10 @@ namespace Asklepios.Core.Models
 {
     public class Person
     {
+        [Key]
+        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
+        [Required]
+
         public long Id { get; set; }
         [Required(ErrorMessage = "Proszę podać imię")]
         [DataType(DataType.Text)]
@@ -106,7 +110,7 @@ namespace Asklepios.Core.Models
         [Display(Name = "Płeć")]
         public Gender? Gender { get; set; }
 
-        //[NotMapped]
+        [NotMapped]
         [Display(Name = "Zdjęcie (300x500 pikseli)")]
         public IFormFile ImageFile { get; set; }
         public string ImageFilePath { get; set; }

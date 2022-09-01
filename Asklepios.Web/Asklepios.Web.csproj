@@ -3,7 +3,7 @@
   <PropertyGroup>
     <TargetFramework>net6.0</TargetFramework>
     <CopyRefAssembliesToPublishDirectory>false</CopyRefAssembliesToPublishDirectory>
-    <StartupObject>Asklepios.Web.Program</StartupObject>
+    <StartupObject></StartupObject>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
@@ -23,6 +23,8 @@
     <Compile Remove="Areas\PatientArea\Models\PatientViewModel - Copy.cs" />
     <Compile Remove="Areas\PatientArea\Models\PrescriptionsViewModel.cs" />
     <Compile Remove="Areas\PatientArea\Views\Patient\_RateVisit.cshtml.cs" />
+    <Compile Remove="Program1.cs" />
+    <Compile Remove="Program6.cs" />
   </ItemGroup>
 
   <ItemGroup>
@@ -84,13 +86,26 @@
     <Content Remove="C:\Users\lukas\.nuget\packages\bootstrap\5.0.1\contentFiles\any\any\wwwroot\js\bootstrap.js.map" />
     <Content Remove="C:\Users\lukas\.nuget\packages\bootstrap\5.0.1\contentFiles\any\any\wwwroot\js\bootstrap.min.js" />
     <Content Remove="C:\Users\lukas\.nuget\packages\bootstrap\5.0.1\contentFiles\any\any\wwwroot\js\bootstrap.min.js.map" />
+    <Content Remove="Properties\launchSettingsOLD.json" />
+    <Content Remove="Properties\ServiceDependencies\launchSettings.json" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <_WebToolingArtifacts Remove="Properties\launchSettingsOLD.json" />
+    <_WebToolingArtifacts Remove="Properties\ServiceDependencies\launchSettings.json" />
   </ItemGroup>
 
   <ItemGroup>
     <PackageReference Include="Microsoft.AspNetCore.Http.Features" Version="5.0.17" />
-    <PackageReference Include="Microsoft.AspNetCore.Mvc.Razor.RuntimeCompilation" Version="6.0.6" />
-    <PackageReference Include="Microsoft.EntityFrameworkCore" Version="6.0.6" />
-    <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="6.0.6" />
+    <PackageReference Include="Microsoft.AspNetCore.Mvc.Razor.RuntimeCompilation" Version="6.0.8" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore" Version="6.0.8" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.InMemory" Version="6.0.8" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="6.0.8" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="6.0.8">
+      <PrivateAssets>all</PrivateAssets>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+    </PackageReference>
+    <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="6.0.8" />
     <PackageReference Include="NETCore.MailKit" Version="2.1.0" />
     <PackageReference Include="Newtonsoft.Json" Version="13.0.1" />
   </ItemGroup>
@@ -106,6 +121,7 @@
     <Folder Include="Areas\HomeArea\Data\" />
     <Folder Include="Areas\MedicalWorkerArea\Data\" />
     <Folder Include="Areas\PatientArea\Data\" />
+    <Folder Include="Properties\ServiceDependencies\" />
     <Folder Include="wwwroot\MedicalTestResults\" />
   </ItemGroup>
 

@@ -1,4 +1,5 @@
 C:\Users\lukas\source\repos\Asklepios8\Asklepios.Models\bin\Debug\net6.0\Asklepios.Core.deps.json
+C:\Users\lukas\source\repos\Asklepios8\Asklepios.Models\bin\Debug\net6.0\Asklepios.Core.runtimeconfig.json
 C:\Users\lukas\source\repos\Asklepios8\Asklepios.Models\bin\Debug\net6.0\Asklepios.Core.dll
 C:\Users\lukas\source\repos\Asklepios8\Asklepios.Models\bin\Debug\net6.0\Asklepios.Core.pdb
 C:\Users\lukas\source\repos\Asklepios8\Asklepios.Models\bin\Debug\net6.0\refs\Microsoft.AspNetCore.Antiforgery.dll
@@ -297,4 +298,5 @@ C:\Users\lukas\source\repos\Asklepios8\Asklepios.Models\obj\Debug\net6.0\Asklepi
 C:\Users\lukas\source\repos\Asklepios8\Asklepios.Models\obj\Debug\net6.0\Asklepios.Core.dll
 C:\Users\lukas\source\repos\Asklepios8\Asklepios.Models\obj\Debug\net6.0\refint\Asklepios.Core.dll
 C:\Users\lukas\source\repos\Asklepios8\Asklepios.Models\obj\Debug\net6.0\Asklepios.Core.pdb
+C:\Users\lukas\source\repos\Asklepios8\Asklepios.Models\obj\Debug\net6.0\Asklepios.Core.genruntimeconfig.cache
 C:\Users\lukas\source\repos\Asklepios8\Asklepios.Models\obj\Debug\net6.0\ref\Asklepios.Core.dll

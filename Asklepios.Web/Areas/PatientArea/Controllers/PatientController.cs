@@ -61,8 +61,10 @@ namespace Asklepios.Web.Areas.PatientArea.Controllers
             }
             else
             {
-                _selectedPatient.HistoricalVisits = _context.GetHistoricalVisitsByPatientId(_selectedPatient.Id);
-                _selectedPatient.BookedVisits = _context.GetBookedVisitsByPatientId(_selectedPatient.Id);
+                _selectedPatient.AllVisits.AddRange(_context.GetHistoricalVisitsByPatientId(_selectedPatient.Id));
+                _selectedPatient.AllVisits.AddRange(_context.GetBookedVisitsByPatientId(_selectedPatient.Id));
+                //_selectedPatient.HistoricalVisits = _context.GetHistoricalVisitsByPatientId(_selectedPatient.Id);
+                //_selectedPatient.BookedVisits = _context.GetBookedVisitsByPatientId(_selectedPatient.Id);
                 PatientArea.Models.PatientViewModel viewModel = new Models.PatientViewModel(_selectedPatient);
                 viewModel.UserName = _loggedUser.Person.FullName;
                 viewModel.Notifications = _context.GetNotificationsByPatientId(_selectedPatient.Id);
@@ -577,7 +579,9 @@ namespace Asklepios.Web.Areas.PatientArea.Controllers
             {
 
                 //Patient patient = _context.CurrentPatient;
-                _selectedPatient.BookedVisits = _context.GetBookedVisitsByPatientId(_selectedPatient.Id);
+                _selectedPatient.AllVisits.AddRange(_context.GetBookedVisitsByPatientId(_selectedPatient.Id));
+
+                //_selectedPatient.BookedVisits = _context.GetBookedVisitsByPatientId(_selectedPatient.Id);
                 PatientArea.Models.PatientViewModel model = new PatientViewModel(_selectedPatient);
                 model.UserName = _loggedUser.Person.FullName;
                 model.Notifications = _context.GetNotificationsByPatientId(_selectedPatient.Id);

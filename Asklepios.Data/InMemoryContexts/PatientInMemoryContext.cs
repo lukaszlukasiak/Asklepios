@@ -24,7 +24,7 @@ namespace Asklepios.Data.InMemoryContexts
         private List<NFZUnit> nfzUnits { get; set; }
         private List<Patient> allPatients { get; set; }
         private List<List<MedicalRoom>> medicalRooms { get; set; }
-        public Patient CurrentPatient { get; set; }
+        //public Patient CurrentPatient { get; set; }
         //static string lol;
 
         public PatientInMemoryContext()
@@ -46,10 +46,10 @@ namespace Asklepios.Data.InMemoryContexts
             //CurrentPatient = GetPatientData();
         }
 
-        public Patient GetPatientData()
-        {
-            return PatientMockDB.CurrentPatient;
-        }
+        //public Patient GetPatientData()
+        //{
+        //    return PatientMockDB.CurrentPatient;
+        //}
 
         public IEnumerable<Visit> GetAvailableVisits()
         {
@@ -61,10 +61,11 @@ namespace Asklepios.Data.InMemoryContexts
             return PatientMockDB.MedicalWorkers;
         }
 
-        public IEnumerable<Visit> GetHistoricalVisits()
-        {
-            return PatientMockDB.CurrentPatient.HistoricalVisits;
-        }
+        //public IEnumerable<Visit> GetHistoricalVisits(long patientId)
+        //{
+        //    GetHistoricalVisitsByPatientId
+        //    return PatientMockDB.CurrentPatient.HistoricalVisits;
+        //}
 
         public IEnumerable<MedicalService> GetMedicalServices()
         {

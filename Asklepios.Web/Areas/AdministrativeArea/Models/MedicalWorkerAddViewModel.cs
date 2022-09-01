@@ -61,19 +61,19 @@ namespace Asklepios.Web.Areas.AdministrativeArea.Models
                 switch (MedicalWorkertData.MedicalWorkerType)
                 {
                     case MedicalWorkerType.Doctor:
-                        MedicalWorker = new Doctor(Person, MedicalWorkertData.ProfessionalNumber);
+                        MedicalWorker = new Doctor(Person.Id, MedicalWorkertData.ProfessionalNumber);
                         break;
                     case MedicalWorkerType.Nurse:
-                        MedicalWorker = new Nurse(Person, MedicalWorkertData.ProfessionalNumber);
+                        MedicalWorker = new Nurse(Person.Id, MedicalWorkertData.ProfessionalNumber);
                         break;
                     case MedicalWorkerType.Physiotherapist:
-                        MedicalWorker = new Physiotherapist(Person, MedicalWorkertData.ProfessionalNumber);
+                        MedicalWorker = new Physiotherapist(Person.Id, MedicalWorkertData.ProfessionalNumber);
                         break;
                     case MedicalWorkerType.ElectroriadologyTechnician:
-                        MedicalWorker = new ElectroradiologyTechnician(Person, MedicalWorkertData.ProfessionalNumber);
+                        MedicalWorker = new ElectroradiologyTechnician(Person.Id, MedicalWorkertData.ProfessionalNumber);
                         break;
                     case MedicalWorkerType.DentalHygienist:
-                        MedicalWorker = new DentalHygienist(Person, MedicalWorkertData.ProfessionalNumber);
+                        MedicalWorker = new DentalHygienist(Person.Id, MedicalWorkertData.ProfessionalNumber);
                         break;
                     default:
                         break;

@@ -2,6 +2,8 @@
 using Microsoft.AspNetCore.Http;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 using System.IO;
 using System.Linq;
 using System.Text;
@@ -10,44 +12,62 @@ namespace Asklepios.Core.Models
 {
     public class Visit
     {
+        [Key]
+        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
+        [Required]
+
         public long Id { get; set; }
-        public VisitCategory VisitCategory { get; set; }
         public long VisitCategoryId { get; set; }
+        [ForeignKey("VisitCategoryId")]
+        public virtual VisitCategory VisitCategory { get; set; }
         public VisitStatus VisitStatus { get; set; }
-        private Patient _Patient;
-        public Patient Patient 
-        {
-            get
-            {
-                return _Patient;
-            }
-            set
-            {
-                if (value!=null)
-                {
-                    _Patient = value;
-                    VisitStatus = VisitStatus.Booked;
-                }
-            }
-        }
         public long PatientId { get; set; }
-        public MedicalWorker MedicalWorker { get; set; }
+        [ForeignKey("PatientId")]
+        private  Patient _Patient;
+        public virtual Patient Patient 
+        {
+            get;set;
+            //get
+            //{
+            //    return _Patient;
+            //}
+            //set
+            //{
+            //    if (value!=null)
+            //    {
+            //        _Patient = value;
+            //        VisitStatus = VisitStatus.Booked;
+            //    }
+            //    else
+            //    {
+            //        _patien
+            //    }
+            //}
+        }
         public long MedicalWorkerId { get; set; }
+        [ForeignKey("MedicalWorkerId")]
+        public virtual MedicalWorker MedicalWorker { get; set; }
         public DateTimeOffset DateTimeSince { get; set; }
         public DateTimeOffset DateTimeTill { get; set; }
+        [NotMapped]
         public List<long> MinorMedicalServicesIds { get; set; }
-        public List<MedicalService> MinorMedicalServices { get; set; }
-        public MedicalService PrimaryService { get; set; }
+        public virtual List<MedicalService> MinorMedicalServices { get; set; }
         public long PrimaryServiceId { get; set; }
-        public Location Location { get; set; }
+        [ForeignKey("PrimaryServiceId")]
+        public virtual MedicalService PrimaryService { get; set; }
         public long LocationId { get; set; }
-        public MedicalRoom MedicalRoom { get; set; }
+        [ForeignKey("LocationId")]
+        public virtual Location Location { get; set; }
         public long MedicalRoomId { get; set; }
+        [ForeignKey("MedicalRoomId")]
+        public MedicalRoom MedicalRoom { get; set; }
+        
         public string MedicalHistory { get; set; }
         public long MedicalResultId { get; set; }
+        
         private MedicalTestResult _medicalTestResult;
-
-        public MedicalTestResult MedicalResult 
+        [ForeignKey("MedicalResultId")]
+        public virtual MedicalTestResult MedicalResult 
         { 
             get
             {
@@ -63,34 +83,34 @@ namespace Asklepios.Core.Models
                 }
             }
         }
-        public IFormFile ImageFile { get; set; }
-        public string ImageFilePath { get; set; }
-        public string ImageSource
-        {
-            get
-            {
-                if (ImageFile != null)
-                {
-                    if (ImageFile.Length > 0)
-                    {
-                        using (var ms = new MemoryStream())
-                        {
-                            ImageFile.CopyTo(ms);
-                            var fileBytes = ms.ToArray();
-                            string s = Convert.ToBase64String(fileBytes);
+        //public IFormFile ImageFile { get; set; }
+        //public string ImageFilePath { get; set; }
+        //public string ImageSource
+        //{
+        //    get
+        //    {
+        //        if (ImageFile != null)
+        //        {
+        //            if (ImageFile.Length > 0)
+        //            {
+        //                using (var ms = new MemoryStream())
+        //                {
+        //                    ImageFile.CopyTo(ms);
+        //                    var fileBytes = ms.ToArray();
+        //                    string s = Convert.ToBase64String(fileBytes);
 
 
-                            return string.Format("data:image/jpg;base64,{0}", s);
-                            // act on the Base64 data
-                        }
-                    }
+        //                    return string.Format("data:image/jpg;base64,{0}", s);
+        //                    // act on the Base64 data
+        //                }
+        //            }
 
-                }
-                return ImageFilePath;
-            }
-        }
+        //        }
+        //        return ImageFilePath;
+        //    }
+        //}
         private List<Recommendation> _recommendations;
-        public List<Recommendation> Recommendations 
+        public virtual List<Recommendation> Recommendations 
         {
             get
             {
@@ -109,10 +129,14 @@ namespace Asklepios.Core.Models
                 }              
             }
         }
+        [NotMapped]
         public List<long> RecommendationIds { get; set; }
 
+        public long PrescriptionId { get; set; }
+
         private Prescription _prescription;
-        public Prescription Prescription 
+        [ForeignKey("PrescriptionId")]
+        public virtual Prescription Prescription 
         { 
             get
             {
@@ -129,9 +153,11 @@ namespace Asklepios.Core.Models
                 
             }
         }
-        public long PrescriptionId { get; set; }
+        public long UsedExaminationReferralId { get; set; }
+
         private MedicalReferral _usedExaminationReferral;
-        public MedicalReferral UsedExaminationReferral
+        [ForeignKey("UsedExaminationReferralId")]
+        public virtual MedicalReferral UsedExaminationReferral
         {
             get
             {
@@ -153,10 +179,9 @@ namespace Asklepios.Core.Models
                 }
             }
         }
-        public long UsedExaminationReferralId { get; set; }
 
         private List<MedicalReferral> _examinationReferrals;
-        public List<MedicalReferral> ExaminationReferrals 
+        public virtual List<MedicalReferral> ExaminationReferrals 
         { 
             get
             {
@@ -177,8 +202,12 @@ namespace Asklepios.Core.Models
                 }              
             }
         }
+        [NotMapped]
         public List<long> ExaminatinoReferralsIds { get; set; }
+        public long VisitReviewId { get; set; }
+
         public VisitReview _visitReview;
+        [ForeignKey("VisitReviewId")]
         public VisitReview VisitReview 
         {
             get
@@ -200,7 +229,6 @@ namespace Asklepios.Core.Models
                 }
             }
         }
-        public long VisitReviewId { get; set; }
         //public bool IsBooked
         //{
         //    get

@@ -9,10 +9,10 @@ namespace Asklepios.Data.Interfaces
 {
     public interface IPatientModuleRepository
     {
-        Patient GetPatientData();
+        //Patient GetPatientData();
         IEnumerable<Visit> GetAvailableVisits();
         IEnumerable<MedicalWorker> GetMedicalWorkers();
-        IEnumerable<Visit> GetHistoricalVisits();
+        //IEnumerable<Visit> GetHistoricalVisits();
         IEnumerable<MedicalService> GetMedicalServices();
         IEnumerable<MedicalPackage> GetMedicalPackages();
         IEnumerable<NFZUnit> GetNFZUnits();
@@ -28,7 +28,7 @@ namespace Asklepios.Data.Interfaces
         MedicalPackage GetMedicalPackageById(long id);
         NFZUnit GetNFZUnitById(long id);
         VisitCategory GetVisitCategoryById(long id);
-        Patient CurrentPatient { get; set; }
+        //Patient CurrentPatient { get; set; }
         User GetUser(int parsedId);
 
         void UpdateReferral(MedicalReferral referral);
