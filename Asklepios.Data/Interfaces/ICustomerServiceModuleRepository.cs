@@ -29,7 +29,7 @@ namespace Asklepios.Data.Interfaces
         MedicalPackage GetMedicalPackageById(long id);
         NFZUnit GetNFZUnitById(string id);
         VisitCategory GetVisitCategoryById(long id);
-        Patient CurrentPatient { get; set; }
+        //Patient CurrentPatient { get; set; }
         void UpdateReferral(MedicalReferral referral);
         void UpdateVisit(Visit visit);
         User GetUser(int parsedId);

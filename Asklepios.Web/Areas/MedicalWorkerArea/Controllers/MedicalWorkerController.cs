@@ -93,7 +93,7 @@ namespace Asklepios.Web.Areas.MedicalWorkerArea.Controllers
         {
             if (_loggedUser != null)
             {
-                _medicalWorker.FutureVisits = _context.GetFutureVisitsByMedicalWorkerId(_medicalWorker.Id);
+                _medicalWorker.AllVisits.AddRange( _context.GetFutureVisitsByMedicalWorkerId(_medicalWorker.Id));
 
                 DashboardViewModel model = new DashboardViewModel(_medicalWorker);
                 model.UserName = _loggedUser.Person.FullName;
@@ -420,7 +420,7 @@ namespace Asklepios.Web.Areas.MedicalWorkerArea.Controllers
                 //ScheduleViewModel model = new ScheduleViewModel(_medicalWorker);
                 if (model.SelectedDate != null)
                 {
-                    model.MedicalWorker.FutureVisits = visits.Where(c => c.DateTimeSince.Date == model.SelectedDate.Value.Date).ToList();
+                    model.MedicalWorker.AllVisits.AddRange(visits);//.Where(c => c.DateTimeSince.Date == model.SelectedDate.Value.Date).ToList();
                 }
                 model.UserName = _loggedUser.Person.FullName;
 
@@ -438,7 +438,7 @@ namespace Asklepios.Web.Areas.MedicalWorkerArea.Controllers
         {
             if (_loggedUser != null)
             {
-                _medicalWorker.FutureVisits = _context.GetFutureVisitsByMedicalWorkerId(_medicalWorker.Id);
+                _medicalWorker.AllVisits.AddRange(_context.GetFutureVisitsByMedicalWorkerId(_medicalWorker.Id));
                 ScheduleViewModel model = new ScheduleViewModel(_medicalWorker);
                 model.UserName = _loggedUser.Person.FullName;
 
@@ -459,7 +459,7 @@ namespace Asklepios.Web.Areas.MedicalWorkerArea.Controllers
                 {
 
                     Visit visit = _context.GetBookedVisitById(CurrentVisitId);
-                    _medicalWorker.PastVisits = _context.GetHistoricalVisitsByMedicalWorkerId(_medicalWorker.Id);
+                    _medicalWorker.AllVisits = _context.GetHistoricalVisitsByMedicalWorkerId(_medicalWorker.Id);
                     MedicalTestResult testResult = _medicalWorker.AllVisits.Where(c => c.MedicalResult != null && c.MedicalResult.Id == idL).FirstOrDefault().MedicalResult;
 
                     if (testResult != null)
@@ -498,7 +498,7 @@ namespace Asklepios.Web.Areas.MedicalWorkerArea.Controllers
                 //Build the File Path.
 
                 Visit visit = _context.GetBookedVisitById(CurrentVisitId);
-                _medicalWorker.PastVisits = _context.GetHistoricalVisitsByMedicalWorkerId(_medicalWorker.Id);
+                _medicalWorker.AllVisits.AddRange( _context.GetHistoricalVisitsByMedicalWorkerId(_medicalWorker.Id));
                 MedicalTestResult testResult = _medicalWorker.AllVisits.Where(c => c.MedicalResult != null && c.MedicalResult.Id == id).FirstOrDefault().MedicalResult;
 
                 if (testResult != null)
@@ -532,7 +532,7 @@ namespace Asklepios.Web.Areas.MedicalWorkerArea.Controllers
                 {
                     historicalVisits = historicalVisits.Where(c => c.DateTimeSince.Date == model.SelectedDate.Value.Date).ToList();
                 }
-                _medicalWorker.PastVisits = historicalVisits;
+                _medicalWorker.AllVisits.AddRange( historicalVisits);
                 //HistoricalVisitsViewModel model = new HistoricalVisitsViewModel(_medicalWorker);
                 model.MedicalWorker = _medicalWorker;
                 model.UserName = _loggedUser.Person.FullName;
@@ -551,7 +551,7 @@ namespace Asklepios.Web.Areas.MedicalWorkerArea.Controllers
             if (_loggedUser != null)
             {
                 List<Visit> historicalVisits = _context.GetHistoricalVisitsByMedicalWorkerId(_medicalWorker.Id);
-                _medicalWorker.PastVisits = historicalVisits;
+                _medicalWorker.AllVisits.AddRange( historicalVisits);
                 HistoricalVisitsViewModel model = new HistoricalVisitsViewModel(_medicalWorker);
                 model.UserName = _loggedUser.Person.FullName;
 

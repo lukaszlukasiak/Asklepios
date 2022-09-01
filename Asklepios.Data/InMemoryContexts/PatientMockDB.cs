@@ -2,6 +2,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations.Schema;
 using System.IO;
 using System.Linq;
 using System.Text;
@@ -15,12 +16,14 @@ namespace Asklepios.Data.InMemoryContexts
         const string UM_2 = "Gdański Uniwersytet Medyczny";
         const string UM_3 = "Śląski Uniwersytet Medyczny";
         const string UM_4 = "Uniwersytet Medyczny w Lublinie";
+
+
         const string UM_5 = "Uniwersytet Medyczny w Łodzi";
         const string UM_6 = "Uniwersytet Medyczny im.Karola Marcinkowskiego w Poznaniu";
         const string UM_7 = "Pomorski Uniwersytet Medyczny";
         const string UM_8 = "Warszawski Uniwersytet Medyczny";
         const string UM_9 = "Uniwersytet Medyczny im.Piastów Śląskich we Wrocławiu";
-
+        [NotMapped]
         public static ICollection<Visit> AvailableVisits
         {
             get
@@ -28,6 +31,7 @@ namespace Asklepios.Data.InMemoryContexts
                 return FutureVisits.Where(c => c.VisitStatus == Core.Enums.VisitStatus.AvailableNotBooked).ToList();
             }
         }
+        [NotMapped]
         public static ICollection<Visit> BookedVisits
         {
             get
@@ -36,11 +40,14 @@ namespace Asklepios.Data.InMemoryContexts
                 return FutureVisits.Where(c => c.VisitStatus == Core.Enums.VisitStatus.Booked).ToList();
             }
         }
+        [NotMapped]
         public static List<Visit> FutureVisits { get; set; }
+        [NotMapped]
         public static List<Visit> HistoricalVisits { get; set; }
 
         public static List<Location> Locations { get; set; }
-        //public  Patient Patient { get; set; }
+        //public Patient Patient { get; set; }
+
         public static List<MedicalWorker> MedicalWorkers { get; set; }
         public static List<MedicalService> MedicalServices { get; set; }
         public static List<MedicalServiceDiscount> MedicalServiceDiscounts { get; private set; }
@@ -56,6 +63,7 @@ namespace Asklepios.Data.InMemoryContexts
         public static List<IssuedMedicine> IssuedMedicines { get; set; }
         public static List<MedicalTestResult> MedicalTestResults { get; set; }
         public static List<Notification> Notifications { get; set; }
+        public static List<VisitReview> VisitReviews { get; set; }
         private static List<User> _users;
         public static List<User> Users
         {
@@ -76,7 +84,7 @@ namespace Asklepios.Data.InMemoryContexts
                 _users = value;
             }
         }
-
+        //private static long _patientId;
         internal static Visit GetBookedVisitById(long currentVisitId)
         {
             Visit visit = BookedVisits.Where(d => d.Id == currentVisitId).FirstOrDefault();
@@ -84,13 +92,56 @@ namespace Asklepios.Data.InMemoryContexts
         }
 
         public static Patient CurrentPatient { get; set; }
-        public static List<Person> Persons { get; internal set; }
+        public static List<Person> Persons { get; set; }
+        public static List<Visit> AllVisits
+        {
+            get
+            {
+                List<Visit> visits = new List<Visit>();
+                visits.AddRange(HistoricalVisits);
+                visits.AddRange(FutureVisits);
+                return visits;
+            }
+        }
         //public static List<MedicalRoom> Rooms { get; set; }
+        public static List<MedicalServiceMedicalWorker> MedicalServiceMedicalWorkers { get; set; }
+        public static List<MinorServiceVisit> MinorServiceVisit { get; set; } = new List<MinorServiceVisit>();
 
         public static bool IsCreated;
+        //public static List<Facility> Facilities { get; set; }
+        //public static void SetDataPatient(long patientId)
+        //{
+        //    _patientId = patientId;
+        //    IsCreated = true;
+        //    Persons = GetAllPersons();
+        //    Users = GetAllUsers();
+        //    Notifications = new List<Notification>();
+        //    //Rooms = GetMedicalRooms().ToList();
+        //    NfzUnits = GetNFZUnits().ToList();
+        //    MedicalServices = GetMedicalServices().ToList();
+        //    MedicalServiceDiscounts = GetMedicalServiceDiscounts();
+        //    Recommendations = GetSomeRecommendations();
+        //    MedicalPackages = GetMedicalPackages().ToList();
+        //    AllPatients = GetAllPatients().ToList();
+        //    PrimaryMedicalServices = MedicalServices.Where(c => c.IsPrimaryService == true).ToList();
+        //    VisitCategories = GetVisitCategories().ToList();
+        //    MedicalRooms = GetMedicalRooms().ToList();
+        //    Locations = GetAllLocations().ToList();
+        //    MedicalWorkers = GetMedicalWorkers().ToList();
+        //    MedicalReferrals = GetDummyMedicalReferrals(null, DateTimeOffset.Now);
+        //    IssuedMedicines = GetDummyMedicines();
+        //    Prescriptions = GetDummyPrescriptions(DateTimeOffset.Now);
+        //    MedicalTestResults = GetSomeMedicalTestResults();            //AllPatients = GetAllPatients().ToList();
+        //    FutureVisits = GetFutureVisits().ToList();
+        //    HistoricalVisits = GetHistoricalVisits().ToList();
+        //    BookRandomVisits();
+
+        //    CurrentPatient = AllPatients.First(c => c.Id == _patientId); //GetPatientData(AllPatients[0])
+        //}
         public static void SetData()
         {
             IsCreated = true;
+            //Facilities = GetFacilities();
             Persons = GetAllPersons();
             Users = GetAllUsers();
             Notifications = new List<Notification>();
@@ -107,13 +158,66 @@ namespace Asklepios.Data.InMemoryContexts
             Locations = GetAllLocations().ToList();
             MedicalWorkers = GetMedicalWorkers().ToList();
             MedicalReferrals = GetDummyMedicalReferrals(null, DateTimeOffset.Now);
+            VisitReviews = GetDummyMedicalReviews().ToList();
             IssuedMedicines = GetDummyMedicines();
             Prescriptions = GetDummyPrescriptions(DateTimeOffset.Now);
             MedicalTestResults = GetSomeMedicalTestResults();            //AllPatients = GetAllPatients().ToList();
             FutureVisits = GetFutureVisits().ToList();
             HistoricalVisits = GetHistoricalVisits().ToList();
-            CurrentPatient = GetPatientData(AllPatients[0]);
+
+            FillManyToManyRelationsForVisit();
+
             BookRandomVisits();
+        }
+
+        private static void FillManyToManyRelationsForVisit()
+        {
+            long id = 0;
+            for (int j = 0; j < PatientMockDB.AllVisits.Count; j++)
+            {
+                Visit v = PatientMockDB.AllVisits[j];
+
+                if (v.MinorMedicalServices != null)
+                {
+                    for (int i = 0; i < v.MinorMedicalServices.Count; i++)
+                    {
+                        MedicalService ms = v.MinorMedicalServices[i];
+                        if (ms == null)
+                        {
+                            v.MinorMedicalServices.Remove(ms);
+                        }
+                        else
+                        {
+                            PatientMockDB.MinorServiceVisit.Add(new MinorServiceVisit() { Id = ++id, MedicalServiceId = ms.Id,VisitId=v.Id });
+                        }
+                    }
+
+
+                }
+            }
+        }
+
+        //private static List<Facility> GetFacilities()
+        //{
+        //    List<Facility> facilities=new List<Facility>()
+        //    {
+        //    }
+        //}
+
+        internal static void SetDataHome()
+        {
+            IsCreated = true;
+            MedicalServices = GetMedicalServices().ToList();
+            PrimaryMedicalServices = MedicalServices.Where(c => c.IsPrimaryService == true).ToList();
+
+            Locations = GetAllLocations().ToList();
+        }
+
+        internal static List<Visit> GetAllVisits()
+        {
+            List<Visit> visits = GetHistoricalVisits().ToList();
+            visits.AddRange(GetFutureVisits());
+            return visits;
         }
 
         private static void BookRandomVisits()
@@ -187,7 +291,7 @@ namespace Asklepios.Data.InMemoryContexts
             return Persons.Where(c => c.Id == id).FirstOrDefault();
         }
 
-        private static List<User> GetAllUsers()
+        internal static List<User> GetAllUsers()
         {
             long id = 0;
             long pid = 0;
@@ -338,7 +442,7 @@ namespace Asklepios.Data.InMemoryContexts
             {
                 medicalWorker.Id = Persons.Max(c => c.Id) + 1;
             }
-            MedicalWorkers.Append(medicalWorker);
+            MedicalWorkers.Add(medicalWorker);
         }
         internal static void UpdateMedicalWorker(MedicalWorker oldMedicalWorker, MedicalWorker medicalWorker)
         {
@@ -455,10 +559,10 @@ namespace Asklepios.Data.InMemoryContexts
                     int serviceIndex = (servicesCounter - 1) % (i + 1);
                     MedicalService service = medicalWorker.MedicalServices.Where(c => c.IsPrimaryService).ToList().ElementAt(serviceIndex);
                     List<VisitCategory> categories = VisitCategories.Where(c => c.PrimaryMedicalServices.Any(d => d.Id == service.Id)).ToList();
-                    VisitCategory visitCategory = categories[(categories.Count-1) % (i + 1)];
-                    Location location = Locations.ElementAt((locationsNumber -1)% (j + 1));
+                    VisitCategory visitCategory = categories[(categories.Count - 1) % (i + 1)];
+                    Location location = Locations.ElementAt((locationsNumber - 1) % (j + 1));
                     int roomsCounter = location.MedicalRooms.Count;
-                    MedicalRoom room = location.MedicalRooms.ElementAt((roomsCounter-1) % (j + 1));
+                    MedicalRoom room = location.MedicalRooms.ElementAt((roomsCounter - 1) % (j + 1));
 
                     for (int m = 0; m < 12; m++)
                     {
@@ -467,1160 +571,55 @@ namespace Asklepios.Data.InMemoryContexts
                         {
                             Id = startId++,
                             PrimaryService = service,// PrimaryMedicalServices[0],
-                            PrimaryServiceId=service.Id,
+                            PrimaryServiceId = service.Id,
                             DateTimeSince = start.AddDays(dayOffset).AddMinutes(minutsOffset * 15),
 
                             DateTimeTill = start.AddDays(dayOffset).AddMinutes(minutsOffset * 15 + 15),
                             Location = location,
-                            
+                            LocationId = location.Id,
+
                             MedicalRoom = room,
+                            MedicalRoomId=room.Id,
                             MedicalWorker = medicalWorker,//MedicalWorkers.ElementAt(36),
-                            VisitCategory = visitCategory//VisitCategories.ElementAt(0),
+                            MedicalWorkerId=medicalWorker.Id,
+                            VisitCategory = visitCategory,//VisitCategories.ElementAt(0),,
+                            VisitCategoryId=visitCategory.Id
                         };
                         availableVisits.Add(visit);
                     }
 
                 }
-
-                //for (int j = 0; j < 12; j++)
-                //{
-                //    minutsOffset++;
-                //    Visit visit = new Visit()
-                //    {
-                //        Id = startId++,
-                //        PrimaryService = service,// PrimaryMedicalServices[0],
-                //        DateTimeSince = start.AddDays(dayOffset).AddMinutes(minutsOffset * 15),
-                //        DateTimeTill = start.AddDays(dayOffset).AddMinutes(minutsOffset * 15 + 15),
-                //        Location = Locations.ElementAt(3),
-                //        MedicalRoom = Locations.ElementAt(3).MedicalRooms.ElementAt(4),
-                //        MedicalWorker = medicalWorker,//MedicalWorkers.ElementAt(36),
-                //        VisitCategory = visitCategory//VisitCategories.ElementAt(0),
-                //    };
-                //    availableVisits.Add(visit);
-                //}
-                //minutsOffset = -1;
-
-                //medicalWorker = MedicalWorkers.ElementAt(34);
-                //servicesCounter = medicalWorker.MedicalServices.Where(c => c.IsPrimaryService).Count();
-                //serviceIndex = (servicesCounter - 1) % (i + 1);
-                //service = medicalWorker.MedicalServices.Where(c => c.IsPrimaryService).ToList().ElementAt(serviceIndex);
-                //categories = VisitCategories.Where(c => c.PrimaryMedicalServices.Any(d => d.Id == service.Id)).ToList();
-                //visitCategory = categories[categories.Count % (i + 1)];
-
-                //for (int j = 0; j < 12; j++)
-                //{
-                //    minutsOffset++;
-                //    Visit visit = new Visit()
-                //    {
-                //        Id = startId++,
-
-                //        PrimaryService = service,
-                //        DateTimeSince = start.AddDays(dayOffset).AddMinutes(minutsOffset * 15),
-                //        DateTimeTill = start.AddDays(dayOffset).AddMinutes(minutsOffset * 15 + 15),
-                //        Location = Locations.ElementAt(1),
-                //        MedicalRoom = Locations.ElementAt(1).MedicalRooms.ElementAt(6),
-                //        MedicalWorker = medicalWorker,
-                //        VisitCategory = visitCategory,
-                //    };
-                //    availableVisits.Add(visit);
-                //}
-                //minutsOffset = -1;
-
-                //medicalWorker = MedicalWorkers.ElementAt(12);
-                //servicesCounter = medicalWorker.MedicalServices.Where(c => c.IsPrimaryService).Count();
-                //serviceIndex = (servicesCounter - 1) % (i + 1);
-                //service = medicalWorker.MedicalServices.Where(c => c.IsPrimaryService).ToList().ElementAt(serviceIndex);
-                //categories = VisitCategories.Where(c => c.PrimaryMedicalServices.Any(d => d.Id == service.Id)).ToList();
-                //visitCategory = categories[categories.Count % (i + 1)];
-
-                //for (int j = 0; j < 12; j++)
-                //{
-                //    minutsOffset++;
-                //    Visit visit = new Visit()
-                //    {
-                //        Id = startId++,
-
-                //        PrimaryService = PrimaryMedicalServices[23],
-                //        DateTimeSince = start.AddDays(dayOffset).AddMinutes(minutsOffset * 15),
-                //        DateTimeTill = start.AddDays(dayOffset).AddMinutes(minutsOffset * 15 + 15),
-                //        Location = Locations.ElementAt(1),
-                //        MedicalRoom = Locations.ElementAt(1).MedicalRooms.ElementAt(3),
-                //        MedicalWorker = MedicalWorkers.ElementAt(12),
-                //        VisitCategory = VisitCategories.ElementAt(2),
-                //    };
-                //    availableVisits.Add(visit);
-                //}
-                //minutsOffset = -1;
-
-                //medicalWorker = MedicalWorkers.ElementAt(37);
-                //servicesCounter = medicalWorker.MedicalServices.Where(c => c.IsPrimaryService).Count();
-                //serviceIndex = (servicesCounter - 1) % (i + 1);
-                //service = medicalWorker.MedicalServices.Where(c => c.IsPrimaryService).ToList().ElementAt(serviceIndex);
-                //categories = VisitCategories.Where(c => c.PrimaryMedicalServices.Any(d => d.Id == service.Id)).ToList();
-                //visitCategory = categories[categories.Count % (i + 1)];
-
-                //for (int j = 0; j < 12; j++)
-                //{
-                //    minutsOffset++;
-                //    Visit visit = new Visit()
-                //    {
-                //        Id = startId++,
-
-                //        PrimaryService = PrimaryMedicalServices[3],
-                //        DateTimeSince = start.AddDays(dayOffset).AddMinutes(minutsOffset * 15),
-                //        DateTimeTill = start.AddDays(dayOffset).AddMinutes(minutsOffset * 15 + 15),
-                //        Location = Locations.ElementAt(5),
-                //        MedicalRoom = Locations.ElementAt(5).MedicalRooms.ElementAt(3),
-                //        MedicalWorker = MedicalWorkers.ElementAt(37),
-                //        VisitCategory = VisitCategories.ElementAt(0),
-                //    };
-                //    availableVisits.Add(visit);
-                //}
-                //minutsOffset = -1;
-
-                //medicalWorker = MedicalWorkers.ElementAt(55);
-                //servicesCounter = medicalWorker.MedicalServices.Where(c => c.IsPrimaryService).Count();
-                //serviceIndex = (servicesCounter - 1) % (i + 1);
-                //service = medicalWorker.MedicalServices.Where(c => c.IsPrimaryService).ToList().ElementAt(serviceIndex);
-                //categories = VisitCategories.Where(c => c.PrimaryMedicalServices.Any(d => d.Id == service.Id)).ToList();
-                //visitCategory = categories[categories.Count % (i + 1)];
-
-                //for (int j = 0; j < 12; j++)
-                //{
-                //    minutsOffset++;
-                //    Visit visit = new Visit()
-                //    {
-                //        Id = startId++,
-
-                //        PrimaryService = PrimaryMedicalServices[28],
-                //        DateTimeSince = start.AddDays(dayOffset).AddMinutes(minutsOffset * 15),
-                //        DateTimeTill = start.AddDays(dayOffset).AddMinutes(minutsOffset * 15 + 15),
-                //        Location = Locations.ElementAt(1),
-                //        MedicalRoom = Locations.ElementAt(1).MedicalRooms.ElementAt(3),
-                //        MedicalWorker = MedicalWorkers.ElementAt(55),
-                //        VisitCategory = VisitCategories.ElementAt(3),
-                //    };
-                //    availableVisits.Add(visit);
-                //}
-                //minutsOffset = -1;
-
-                //medicalWorker = MedicalWorkers.ElementAt(61);
-                //servicesCounter = medicalWorker.MedicalServices.Where(c => c.IsPrimaryService).Count();
-                //serviceIndex = (servicesCounter - 1) % (i + 1);
-                //service = medicalWorker.MedicalServices.Where(c => c.IsPrimaryService).ToList().ElementAt(serviceIndex);
-                //categories = VisitCategories.Where(c => c.PrimaryMedicalServices.Any(d => d.Id == service.Id)).ToList();
-                //visitCategory = categories[categories.Count % (i + 1)];
-
-
-                //for (int j = 0; j < 12; j++)
-                //{
-                //    minutsOffset++;
-                //    Visit visit = new Visit()
-                //    {
-                //        Id = startId++,
-
-                //        PrimaryService = PrimaryMedicalServices[33],
-                //        DateTimeSince = start.AddDays(dayOffset).AddMinutes(minutsOffset * 15),
-                //        DateTimeTill = start.AddDays(dayOffset).AddMinutes(minutsOffset * 15 + 15),
-                //        Location = Locations.ElementAt(1),
-                //        MedicalRoom = Locations.ElementAt(1).MedicalRooms.ElementAt(1),
-                //        MedicalWorker = MedicalWorkers.ElementAt(61),
-                //        VisitCategory = VisitCategories.ElementAt(5),
-                //    };
-                //    availableVisits.Add(visit);
-                //}
-                //minutsOffset = -1;
-
-                //for (int j = 0; j < 12; j++)
-                //{
-                //    minutsOffset++;
-
-                //    Visit visit = new Visit()
-                //    {
-                //        Id = startId++,
-                //        PrimaryService = PrimaryMedicalServices[9],
-                //        MedicalRoom = Locations.ElementAt(0).MedicalRooms.ElementAt(0),
-                //        DateTimeSince = start.AddDays(dayOffset).AddMinutes(minutsOffset * 15),
-                //        DateTimeTill = start.AddDays(dayOffset).AddMinutes(minutsOffset * 15 + 15),
-                //        Location = Locations.ElementAt(0),
-                //        MedicalWorker = MedicalWorkers.ElementAt(50),
-                //        VisitCategory = VisitCategories.ElementAt(0),
-                //    };
-                //    availableVisits.Add(visit);
-                //}
-                //minutsOffset = -1;
-
-                //for (int j = 0; j < 12; j++)
-                //{
-                //    minutsOffset++;
-
-                //    Visit visit = new Visit()
-                //    {
-                //        Id = startId++,
-                //        PrimaryService = PrimaryMedicalServices[7],
-                //        DateTimeSince = start.AddDays(dayOffset).AddMinutes(minutsOffset * 15),
-                //        DateTimeTill = start.AddDays(dayOffset).AddMinutes(minutsOffset * 15 + 15),
-                //        Location = Locations.ElementAt(0),
-                //        MedicalRoom = Locations.ElementAt(0).MedicalRooms.ElementAt(1),
-                //        MedicalWorker = MedicalWorkers.ElementAt(29),
-                //        VisitCategory = VisitCategories.ElementAt(0),
-                //    };
-                //    availableVisits.Add(visit);
-
-                //}
-                //minutsOffset = -1;
-
-                //for (int j = 0; j < 12; j++)
-                //{
-                //    minutsOffset++;
-
-                //    Visit visit = new Visit()
-                //    {
-                //        Id = startId++,
-                //        PrimaryService = PrimaryMedicalServices[1],
-                //        MedicalRoom = Locations.ElementAt(0).MedicalRooms.ElementAt(0),
-                //        DateTimeSince = start.AddDays(dayOffset).AddMinutes(minutsOffset * 15),
-                //        DateTimeTill = start.AddDays(dayOffset).AddMinutes(minutsOffset * 15 + 15),
-                //        Location = Locations.ElementAt(0),
-                //        MedicalWorker = MedicalWorkers.ElementAt(0),
-                //        VisitCategory = VisitCategories.ElementAt(0),
-                //    };
-                //    availableVisits.Add(visit);
-
-                //}
-                //minutsOffset = -1;
-
-                //for (int j = 0; j < 12; j++)
-                //{
-                //    minutsOffset++;
-
-                //    Visit visit = new Visit()
-                //    {
-                //        Id = startId++,
-                //        PrimaryService = PrimaryMedicalServices[28],
-                //        MedicalRoom = Locations.ElementAt(0).MedicalRooms.ElementAt(0),
-                //        DateTimeSince = start.AddDays(dayOffset).AddMinutes(minutsOffset * 15),
-                //        DateTimeTill = start.AddDays(dayOffset).AddMinutes(minutsOffset * 15 + 15),
-                //        Location = Locations.ElementAt(0),
-                //        MedicalWorker = MedicalWorkers.ElementAt(51),
-                //        VisitCategory = VisitCategories.ElementAt(3),
-                //    };
-                //    availableVisits.Add(visit);
-                //}
-                //minutsOffset = -1;
-
-                //for (int j = 0; j < 12; j++)
-                //{
-                //    minutsOffset++;
-
-                //    Visit visit = new Visit()
-                //    {
-                //        Id = startId++,
-                //        PrimaryService = PrimaryMedicalServices[6],
-                //        MedicalRoom = Locations.ElementAt(0).MedicalRooms.ElementAt(0),
-                //        DateTimeSince = start.AddDays(dayOffset).AddMinutes(minutsOffset * 15),
-                //        DateTimeTill = start.AddDays(dayOffset).AddMinutes(minutsOffset * 15 + 15),
-                //        Location = Locations.ElementAt(0),
-                //        MedicalWorker = MedicalWorkers.ElementAt(26),
-                //        VisitCategory = VisitCategories.ElementAt(0),
-                //    };
-                //    availableVisits.Add(visit);
-                //}
-                //minutsOffset = -1;
-
-                //for (int j = 0; j < 12; j++)
-                //{
-                //    minutsOffset++;
-
-                //    Visit visit = new()
-                //    {
-                //        Id = startId++,
-                //        PrimaryService = PrimaryMedicalServices[32],
-                //        MedicalRoom = Locations.ElementAt(0).MedicalRooms.ElementAt(0),
-                //        DateTimeSince = start.AddDays(dayOffset).AddMinutes(minutsOffset * 15),
-                //        DateTimeTill = start.AddDays(dayOffset).AddMinutes(minutsOffset * 15 + 15),
-                //        Location = Locations.ElementAt(0),
-                //        MedicalWorker = MedicalWorkers.ElementAt(3),
-                //        VisitCategory = VisitCategories.ElementAt(4),
-                //    };
-                //    availableVisits.Add(visit);
-                //}
-                //minutsOffset = -1;
-
-
-                //for (int j = 0; j < 12; j++)
-                //{
-                //    minutsOffset++;
-
-                //    Visit visit = new Visit()
-                //    {
-                //        Id = startId++,
-                //        PrimaryService = PrimaryMedicalServices[33],
-                //        MedicalRoom = Locations.ElementAt(0).MedicalRooms.ElementAt(1),
-                //        DateTimeSince = start.AddDays(dayOffset).AddMinutes(minutsOffset * 15),
-                //        DateTimeTill = start.AddDays(dayOffset).AddMinutes(minutsOffset * 15 + 15),
-                //        Location = Locations.ElementAt(3),
-                //        MedicalWorker = MedicalWorkers.ElementAt(39),
-                //        VisitCategory = VisitCategories.ElementAt(5),
-
-                //    };
-                //    availableVisits.Add(visit);
-                //}
-                ////interna
-                //for (int j = 0; j < 12; j++)
-                //{
-                //    minutsOffset++;
-
-                //    Visit visit = new Visit()
-                //    {
-                //        Id = startId++,
-                //        PrimaryService = PrimaryMedicalServices[2],
-                //        MedicalRoom = Locations.ElementAt(0).MedicalRooms.ElementAt(1),
-                //        DateTimeSince = start.AddDays(dayOffset).AddMinutes(minutsOffset * 15),
-                //        DateTimeTill = start.AddDays(dayOffset).AddMinutes(minutsOffset * 15 + 15),
-                //        Location = Locations.ElementAt(3),
-                //        MedicalWorker = MedicalWorkers.ElementAt(35),
-                //        VisitCategory = VisitCategories.ElementAt(1),
-                //    };
-                //    availableVisits.Add(visit);
-                //}
-                //for (int j = 0; j < 12; j++)
-                //{
-                //    minutsOffset++;
-
-                //    Visit visit = new Visit()
-                //    {
-                //        Id = startId++,
-                //        PrimaryService = PrimaryMedicalServices[2],
-                //        MedicalRoom = Locations.ElementAt(7).MedicalRooms.ElementAt(4),
-                //        DateTimeSince = start.AddDays(dayOffset).AddMinutes(minutsOffset * 15),
-                //        DateTimeTill = start.AddDays(dayOffset).AddMinutes(minutsOffset * 15 + 15),
-                //        Location = Locations.ElementAt(7),
-                //        MedicalWorker = MedicalWorkers.ElementAt(44),
-                //        VisitCategory = VisitCategories.ElementAt(0),
-                //    };
-                //    availableVisits.Add(visit);
-                //}
-                ////
-
-
-                //for (int j = 0; j < 12; j++)
-                //{
-                //    minutsOffset++;
-
-                //    Visit visit = new Visit()
-                //    {
-                //        Id = startId++,
-                //        PrimaryService = PrimaryMedicalServices[4],
-                //        MedicalRoom = Locations.ElementAt(3).MedicalRooms.ElementAt(6),
-                //        DateTimeSince = start.AddDays(dayOffset).AddMinutes(minutsOffset * 15),
-                //        DateTimeTill = start.AddDays(dayOffset).AddMinutes(minutsOffset * 15 + 15),
-                //        Location = Locations.ElementAt(3),
-                //        MedicalWorker = MedicalWorkers.ElementAt(8),
-                //        VisitCategory = VisitCategories.ElementAt(0),
-                //    };
-                //    availableVisits.Add(visit);
-                //}
-                //for (int j = 0; j < 12; j++)
-                //{
-                //    minutsOffset++;
-
-                //    Visit visit = new Visit()
-                //    {
-                //        Id = startId++,
-                //        PrimaryService = PrimaryMedicalServices[5],
-                //        MedicalRoom = Locations.ElementAt(6).MedicalRooms.ElementAt(2),
-                //        DateTimeSince = start.AddDays(dayOffset).AddMinutes(minutsOffset * 15),
-                //        DateTimeTill = start.AddDays(dayOffset).AddMinutes(minutsOffset * 15 + 15),
-                //        Location = Locations.ElementAt(6),
-                //        MedicalWorker = MedicalWorkers.ElementAt(4),
-                //        VisitCategory = VisitCategories.ElementAt(0),
-                //    };
-                //    availableVisits.Add(visit);
-                //}
-                ////okulistyczna
-                //for (int j = 0; j < 8; j++)
-                //{
-                //    minutsOffset++;
-
-                //    Visit visit = new Visit()
-                //    {
-                //        Id = startId++,
-                //        PrimaryService = PrimaryMedicalServices[8],
-                //        MedicalRoom = Locations.ElementAt(7).MedicalRooms.ElementAt(7),
-                //        DateTimeSince = start.AddDays(dayOffset).AddMinutes(60 + (minutsOffset * 15)),
-                //        DateTimeTill = start.AddDays(dayOffset).AddMinutes(60 + (minutsOffset * 15) + 15),
-                //        Location = Locations.ElementAt(7),
-                //        MedicalWorker = MedicalWorkers.ElementAt(15),
-                //        VisitCategory = VisitCategories.ElementAt(0),
-                //    };
-                //    availableVisits.Add(visit);
-                //}
-                //for (int j = 0; j < 10; j++)
-                //{
-                //    minutsOffset++;
-
-                //    Visit visit = new Visit()
-                //    {
-                //        Id = startId++,
-                //        PrimaryService = PrimaryMedicalServices[8],
-                //        MedicalRoom = Locations.ElementAt(8).MedicalRooms.ElementAt(7),
-                //        DateTimeSince = start.AddDays(dayOffset).AddMinutes(90 + (minutsOffset * 15)),
-                //        DateTimeTill = start.AddDays(dayOffset).AddMinutes(90 + (minutsOffset * 15) + 15),
-                //        Location = Locations.ElementAt(8),
-                //        MedicalWorker = MedicalWorkers.ElementAt(31),
-                //        VisitCategory = VisitCategories.ElementAt(0),
-                //    };
-                //    availableVisits.Add(visit);
-                //}
-                ////endokrynologia
-                //for (int j = 0; j < 10; j++)
-                //{
-                //    minutsOffset++;
-
-                //    Visit visit = new Visit()
-                //    {
-                //        Id = startId++,
-                //        PrimaryService = PrimaryMedicalServices[10],
-                //        MedicalRoom = Locations.ElementAt(8).MedicalRooms.ElementAt(9),
-                //        DateTimeSince = start.AddDays(dayOffset).AddMinutes(90 + (minutsOffset * 15)),
-                //        DateTimeTill = start.AddDays(dayOffset).AddMinutes(90 + (minutsOffset * 15) + 15),
-                //        Location = Locations.ElementAt(8),
-                //        MedicalWorker = MedicalWorkers.ElementAt(43),
-                //        VisitCategory = VisitCategories.ElementAt(1),
-                //    };
-                //    availableVisits.Add(visit);
-                //}
-                //for (int j = 0; j < 10; j++)
-                //{
-                //    minutsOffset++;
-
-                //    Visit visit = new Visit()
-                //    {
-                //        Id = startId++,
-                //        PrimaryService = PrimaryMedicalServices[10],
-                //        MedicalRoom = Locations.ElementAt(0).MedicalRooms.ElementAt(9),
-                //        DateTimeSince = start.AddDays(dayOffset).AddMinutes(90 + (minutsOffset * 15)),
-                //        DateTimeTill = start.AddDays(dayOffset).AddMinutes(90 + (minutsOffset * 15) + 15),
-                //        Location = Locations.ElementAt(0),
-                //        MedicalWorker = MedicalWorkers.ElementAt(48),
-                //        VisitCategory = VisitCategories.ElementAt(0),
-                //    };
-                //    availableVisits.Add(visit);
-                //}
-                ////chirurgia ogólna  // chirurdzy 16-19, kolejno
-                //for (int j = 0; j < 10; j++)
-                //{
-                //    minutsOffset++;
-
-                //    Visit visit = new Visit()
-                //    {
-                //        Id = startId++,
-                //        PrimaryService = PrimaryMedicalServices[11],
-                //        MedicalRoom = Locations.ElementAt(1).MedicalRooms.ElementAt(2),
-                //        DateTimeSince = start.AddDays(dayOffset).AddMinutes((minutsOffset * 15)),
-                //        DateTimeTill = start.AddDays(dayOffset).AddMinutes((minutsOffset * 15) + 15),
-                //        Location = Locations.ElementAt(1),
-                //        MedicalWorker = MedicalWorkers.ElementAt(30),
-                //        VisitCategory = VisitCategories.ElementAt(0),
-                //    };
-                //    availableVisits.Add(visit);
-                //}
-                //for (int j = 0; j < 10; j++)
-                //{
-                //    minutsOffset++;
-
-                //    Visit visit = new Visit()
-                //    {
-                //        Id = startId++,
-                //        PrimaryService = PrimaryMedicalServices[12],
-                //        MedicalRoom = Locations.ElementAt(1).MedicalRooms.ElementAt(2),
-                //        DateTimeSince = start.AddDays(dayOffset).AddMinutes(180 + (minutsOffset * 15)),
-                //        DateTimeTill = start.AddDays(dayOffset).AddMinutes(180 + (minutsOffset * 15) + 15),
-                //        Location = Locations.ElementAt(1),
-                //        MedicalWorker = MedicalWorkers.ElementAt(30),
-                //        VisitCategory = VisitCategories.ElementAt(0),
-                //    };
-                //    availableVisits.Add(visit);
-                //}
-                //for (int j = 0; j < 10; j++)
-                //{
-                //    minutsOffset++;
-
-                //    Visit visit = new Visit()
-                //    {
-                //        Id = startId++,
-                //        PrimaryService = PrimaryMedicalServices[11],
-                //        MedicalRoom = Locations.ElementAt(3).MedicalRooms.ElementAt(3),
-                //        DateTimeSince = start.AddDays(dayOffset).AddMinutes((minutsOffset * 15)),
-                //        DateTimeTill = start.AddDays(dayOffset).AddMinutes((minutsOffset * 15) + 15),
-                //        Location = Locations.ElementAt(3),
-                //        MedicalWorker = MedicalWorkers.ElementAt(16),
-                //        VisitCategory = VisitCategories.ElementAt(0),
-                //    };
-                //    availableVisits.Add(visit);
-                //}
-                //for (int j = 0; j < 10; j++)
-                //{
-                //    minutsOffset++;
-
-                //    Visit visit = new Visit()
-                //    {
-                //        Id = startId++,
-                //        PrimaryService = PrimaryMedicalServices[12],
-                //        MedicalRoom = Locations.ElementAt(3).MedicalRooms.ElementAt(3),
-                //        DateTimeSince = start.AddDays(dayOffset).AddMinutes(180 + (minutsOffset * 15)),
-                //        DateTimeTill = start.AddDays(dayOffset).AddMinutes(180 + (minutsOffset * 15) + 15),
-                //        Location = Locations.ElementAt(3),
-                //        MedicalWorker = MedicalWorkers.ElementAt(16),
-                //        VisitCategory = VisitCategories.ElementAt(0),
-                //    };
-                //    availableVisits.Add(visit);
-                //}
-
-                //for (int j = 0; j < 24; j++)
-                //{
-                //    minutsOffset++;
-
-                //    Visit visit = new Visit()
-                //    {
-                //        Id = startId++,
-                //        PrimaryService = PrimaryMedicalServices[13],
-                //        MedicalRoom = Locations.ElementAt(1).MedicalRooms.ElementAt(3),
-                //        DateTimeSince = start.AddDays(dayOffset).AddMinutes(180 + (minutsOffset * 15)),
-                //        DateTimeTill = start.AddDays(dayOffset).AddMinutes(180 + (minutsOffset * 15) + 15),
-                //        Location = Locations.ElementAt(1),
-                //        MedicalWorker = MedicalWorkers.ElementAt(17),
-                //        VisitCategory = VisitCategories.ElementAt(0),
-                //    };
-                //    availableVisits.Add(visit);
-                //}
-                //for (int j = 0; j < 24; j++)
-                //{
-                //    minutsOffset++;
-
-                //    Visit visit = new Visit()
-                //    {
-                //        Id = startId++,
-                //        PrimaryService = PrimaryMedicalServices[14],
-                //        MedicalRoom = Locations.ElementAt(2).MedicalRooms.ElementAt(3),
-                //        DateTimeSince = start.AddDays(dayOffset).AddMinutes(180 + (minutsOffset * 15)),
-                //        DateTimeTill = start.AddDays(dayOffset).AddMinutes(180 + (minutsOffset * 15) + 15),
-                //        Location = Locations.ElementAt(2),
-                //        MedicalWorker = MedicalWorkers.ElementAt(18),
-                //        VisitCategory = VisitCategories.ElementAt(0),
-                //    };
-                //    availableVisits.Add(visit);
-                //}
-                //for (int j = 0; j < 24; j++)
-                //{
-                //    minutsOffset++;
-
-                //    Visit visit = new Visit()
-                //    {
-                //        Id = startId++,
-                //        PrimaryService = PrimaryMedicalServices[15],
-                //        MedicalRoom = Locations.ElementAt(4).MedicalRooms.ElementAt(3),
-                //        DateTimeSince = start.AddDays(dayOffset).AddMinutes(180 + (minutsOffset * 15)),
-                //        DateTimeTill = start.AddDays(dayOffset).AddMinutes(180 + (minutsOffset * 15) + 15),
-                //        Location = Locations.ElementAt(4),
-                //        MedicalWorker = MedicalWorkers.ElementAt(19),
-                //        VisitCategory = VisitCategories.ElementAt(0),
-                //    };
-                //    availableVisits.Add(visit);
-                //}
-
-
-                ////laryngologia
-                //for (int j = 0; j < 12; j++)
-                //{
-                //    minutsOffset++;
-                //    Visit visit = new Visit()
-                //    {
-                //        Id = startId++,
-
-                //        PrimaryService = PrimaryMedicalServices[16],
-                //        DateTimeSince = start.AddDays(dayOffset).AddMinutes(minutsOffset * 15),
-                //        DateTimeTill = start.AddDays(dayOffset).AddMinutes(minutsOffset * 15 + 15),
-                //        Location = Locations.ElementAt(4),
-                //        MedicalRoom = Locations.ElementAt(5).MedicalRooms.ElementAt(2),
-                //        MedicalWorker = MedicalWorkers.ElementAt(20),
-                //        VisitCategory = VisitCategories.ElementAt(0),
-                //    };
-                //    availableVisits.Add(visit);
-                //}
-                //minutsOffset = -1;
-
-                //for (int j = 0; j < 12; j++)
-                //{
-                //    minutsOffset++;
-                //    Visit visit = new Visit()
-                //    {
-                //        Id = startId++,
-
-                //        PrimaryService = PrimaryMedicalServices[16],
-                //        DateTimeSince = start.AddDays(dayOffset).AddMinutes(minutsOffset * 15),
-                //        DateTimeTill = start.AddDays(dayOffset).AddMinutes(minutsOffset * 15 + 15),
-                //        Location = Locations.ElementAt(6),
-                //        MedicalRoom = Locations.ElementAt(6).MedicalRooms.ElementAt(6),
-                //        MedicalWorker = MedicalWorkers.ElementAt(64),
-                //        VisitCategory = VisitCategories.ElementAt(0),
-                //    };
-                //    availableVisits.Add(visit);
-                //}
-                //minutsOffset = -1;
-
-                ////neurologia
-
-                //for (int j = 0; j < 12; j++)
-                //{
-                //    minutsOffset++;
-                //    Visit visit = new Visit()
-                //    {
-                //        Id = startId++,
-
-                //        PrimaryService = PrimaryMedicalServices[17],
-                //        DateTimeSince = start.AddDays(dayOffset).AddMinutes(minutsOffset * 15),
-                //        DateTimeTill = start.AddDays(dayOffset).AddMinutes(minutsOffset * 15 + 15),
-                //        Location = Locations.ElementAt(6),
-                //        MedicalRoom = Locations.ElementAt(6).MedicalRooms.ElementAt(7),
-                //        MedicalWorker = MedicalWorkers.ElementAt(21),
-                //        VisitCategory = VisitCategories.ElementAt(0),
-                //    };
-                //    availableVisits.Add(visit);
-                //}
-                //minutsOffset = -1;
-                ////urologia
-
-                //for (int j = 0; j < 12; j++)
-                //{
-                //    minutsOffset++;
-                //    Visit visit = new Visit()
-                //    {
-                //        Id = startId++,
-
-                //        PrimaryService = PrimaryMedicalServices[18],
-                //        DateTimeSince = start.AddDays(dayOffset).AddMinutes(minutsOffset * 15),
-                //        DateTimeTill = start.AddDays(dayOffset).AddMinutes(minutsOffset * 15 + 15),
-                //        Location = Locations.ElementAt(6),
-                //        MedicalRoom = Locations.ElementAt(6).MedicalRooms.ElementAt(8),
-                //        MedicalWorker = MedicalWorkers.ElementAt(22),
-                //        VisitCategory = VisitCategories.ElementAt(0),
-                //    };
-                //    availableVisits.Add(visit);
-                //}
-                //minutsOffset = -1;
-                ////stomatologia zachowawcza
-                //for (int j = 0; j < 12; j++)
-                //{
-                //    minutsOffset++;
-                //    Visit visit = new Visit()
-                //    {
-                //        Id = startId++,
-
-                //        PrimaryService = PrimaryMedicalServices[20],
-                //        DateTimeSince = start.AddDays(dayOffset).AddMinutes(minutsOffset * 30),
-                //        DateTimeTill = start.AddDays(dayOffset).AddMinutes(minutsOffset * 30 + 30),
-                //        Location = Locations.ElementAt(4),
-                //        MedicalRoom = Locations.ElementAt(5).MedicalRooms.ElementAt(1),
-                //        MedicalWorker = MedicalWorkers.ElementAt(5),
-                //        VisitCategory = VisitCategories.ElementAt(2),
-                //    };
-                //    availableVisits.Add(visit);
-                //}
-                //minutsOffset = -1;
-
-                //for (int j = 0; j < 12; j++)
-                //{
-                //    minutsOffset++;
-
-                //    Visit visit = new Visit()
-                //    {
-                //        Id = startId++,
-                //        PrimaryService = PrimaryMedicalServices[20],
-                //        MinorMedicalServices = new List<MedicalService>() { MedicalServices[48], MedicalServices[49], MedicalServices[52] },
-                //        MedicalRoom = Locations.ElementAt(0).MedicalRooms.ElementAt(1),
-                //        DateTimeSince = start.AddDays(dayOffset).AddMinutes(minutsOffset * 30),
-                //        DateTimeTill = start.AddDays(dayOffset).AddMinutes(minutsOffset * 30 + 30),
-                //        Location = Locations.ElementAt(0),
-                //        MedicalWorker = MedicalWorkers.ElementAt(63),
-                //        VisitCategory = VisitCategories.ElementAt(2),
-                //    };
-                //    availableVisits.Add(visit);
-                //}
-                //minutsOffset = -1;
-
-                ////ortodoncja
-                //for (int j = 0; j < 12; j++)
-                //{
-                //    minutsOffset++;
-                //    Visit visit = new Visit()
-                //    {
-                //        Id = startId++,
-                //        PrimaryService = PrimaryMedicalServices[21],
-                //        DateTimeSince = start.AddDays(dayOffset).AddMinutes(minutsOffset * 30),
-                //        DateTimeTill = start.AddDays(dayOffset).AddMinutes(minutsOffset * 30 + 30),
-                //        Location = Locations.ElementAt(7),
-                //        MedicalRoom = Locations.ElementAt(7).MedicalRooms.ElementAt(8),
-                //        MedicalWorker = MedicalWorkers.ElementAt(63),
-                //        VisitCategory = VisitCategories.ElementAt(2),
-                //    };
-                //    availableVisits.Add(visit);
-                //}
-                //minutsOffset = -1;
-
-                //for (int j = 0; j < 12; j++)
-                //{
-                //    minutsOffset++;
-                //    Visit visit = new Visit()
-                //    {
-                //        Id = startId++,
-                //        PrimaryService = PrimaryMedicalServices[21],
-                //        DateTimeSince = start.AddDays(dayOffset).AddMinutes(minutsOffset * 30),
-                //        DateTimeTill = start.AddDays(dayOffset).AddMinutes(minutsOffset * 30 + 30),
-                //        Location = Locations.ElementAt(8),
-                //        MedicalRoom = Locations.ElementAt(8).MedicalRooms.ElementAt(8),
-                //        MedicalWorker = MedicalWorkers.ElementAt(42),
-                //        VisitCategory = VisitCategories.ElementAt(2),
-                //    };
-                //    availableVisits.Add(visit);
-                //}
-                //minutsOffset = -1;
-                ////chiruriga sotmatologiczna
-                //for (int j = 0; j < 12; j++)
-                //{
-                //    minutsOffset++;
-                //    Visit visit = new Visit()
-                //    {
-                //        Id = startId++,
-                //        PrimaryService = PrimaryMedicalServices[22],
-                //        DateTimeSince = start.AddDays(dayOffset).AddMinutes(minutsOffset * 30),
-                //        DateTimeTill = start.AddDays(dayOffset).AddMinutes(minutsOffset * 30 + 30),
-                //        Location = Locations.ElementAt(0),
-                //        MedicalRoom = Locations.ElementAt(0).MedicalRooms.ElementAt(10),
-                //        MedicalWorker = MedicalWorkers.ElementAt(9),
-                //        VisitCategory = VisitCategories.ElementAt(2),
-                //    };
-                //    availableVisits.Add(visit);
-                //}
-                //minutsOffset = -1;
-
-                ////protetyka
-                //for (int j = 0; j < 16; j++)
-                //{
-                //    minutsOffset++;
-                //    Visit visit = new Visit()
-                //    {
-                //        Id = startId++,
-                //        PrimaryService = PrimaryMedicalServices[24],
-                //        DateTimeSince = start.AddDays(dayOffset).AddMinutes(minutsOffset * 30),
-                //        DateTimeTill = start.AddDays(dayOffset).AddMinutes(minutsOffset * 30 + 30),
-                //        Location = Locations.ElementAt(0),
-                //        MedicalRoom = Locations.ElementAt(0).MedicalRooms.ElementAt(11),
-                //        MedicalWorker = MedicalWorkers.ElementAt(24),
-                //        VisitCategory = VisitCategories.ElementAt(2),
-                //    };
-                //    availableVisits.Add(visit);
-                //}
-                //minutsOffset = -1;
-
-                ////higiena
-
-                //for (int j = 0; j < 12; j++)
-                //{
-                //    minutsOffset++;
-                //    Visit visit = new Visit()
-                //    {
-                //        Id = startId++,
-                //        PrimaryService = PrimaryMedicalServices[25],
-                //        DateTimeSince = start.AddDays(dayOffset).AddMinutes(minutsOffset * 30),
-                //        DateTimeTill = start.AddDays(dayOffset).AddMinutes(minutsOffset * 30 + 30),
-                //        Location = Locations.ElementAt(1),
-                //        MedicalRoom = Locations.ElementAt(1).MedicalRooms.ElementAt(11),
-                //        MedicalWorker = MedicalWorkers.ElementAt(33),
-                //        VisitCategory = VisitCategories.ElementAt(2),
-                //    };
-                //    availableVisits.Add(visit);
-                //}
-                //minutsOffset = -1;
-
-                //for (int j = 0; j < 12; j++)
-                //{
-                //    minutsOffset++;
-                //    Visit visit = new Visit()
-                //    {
-                //        Id = startId++,
-                //        PrimaryService = PrimaryMedicalServices[25],
-                //        DateTimeSince = start.AddDays(dayOffset).AddMinutes(minutsOffset * 30),
-                //        DateTimeTill = start.AddDays(dayOffset).AddMinutes(minutsOffset * 30 + 30),
-                //        Location = Locations.ElementAt(2),
-                //        MedicalRoom = Locations.ElementAt(2).MedicalRooms.ElementAt(11),
-                //        MedicalWorker = MedicalWorkers.ElementAt(46),
-                //        VisitCategory = VisitCategories.ElementAt(2),
-                //    };
-                //    availableVisits.Add(visit);
-                //}
-                //minutsOffset = -1;
-
-                ////usg
-
-                //for (int j = 0; j < 12; j++)
-                //{
-                //    minutsOffset++;
-                //    Visit visit = new Visit()
-                //    {
-                //        Id = startId++,
-                //        PrimaryService = PrimaryMedicalServices[27],
-                //        DateTimeSince = start.AddDays(dayOffset).AddMinutes(minutsOffset * 15),
-                //        DateTimeTill = start.AddDays(dayOffset).AddMinutes(minutsOffset * 15 + 15),
-                //        Location = Locations.ElementAt(8),
-                //        MedicalRoom = Locations.ElementAt(8).MedicalRooms.ElementAt(11),
-                //        MedicalWorker = MedicalWorkers.ElementAt(26),
-                //        VisitCategory = VisitCategories.ElementAt(3),
-                //    };
-                //    availableVisits.Add(visit);
-                //}
-                //minutsOffset = -1;
-                ////rezonans magnetyczny
-
-                //for (int j = 0; j < 12; j++)
-                //{
-                //    minutsOffset++;
-                //    Visit visit = new Visit()
-                //    {
-                //        Id = startId++,
-                //        PrimaryService = PrimaryMedicalServices[29],
-                //        DateTimeSince = start.AddDays(dayOffset).AddMinutes(minutsOffset * 15),
-                //        DateTimeTill = start.AddDays(dayOffset).AddMinutes(minutsOffset * 15 + 15),
-                //        Location = Locations.ElementAt(8),
-                //        MedicalRoom = Locations.ElementAt(8).MedicalRooms.ElementAt(5),
-                //        MedicalWorker = MedicalWorkers.ElementAt(68),
-                //        VisitCategory = VisitCategories.ElementAt(3),
-                //    };
-                //    availableVisits.Add(visit);
-                //}
-                //minutsOffset = -1;
-
-                //for (int j = 0; j < 12; j++)
-                //{
-                //    minutsOffset++;
-                //    Visit visit = new Visit()
-                //    {
-                //        Id = startId++,
-                //        PrimaryService = PrimaryMedicalServices[29],
-                //        DateTimeSince = start.AddDays(dayOffset).AddMinutes(minutsOffset * 15),
-                //        DateTimeTill = start.AddDays(dayOffset).AddMinutes(minutsOffset * 15 + 15),
-                //        Location = Locations.ElementAt(2),
-                //        MedicalRoom = Locations.ElementAt(2).MedicalRooms.ElementAt(9),
-                //        MedicalWorker = MedicalWorkers.ElementAt(62),
-                //        VisitCategory = VisitCategories.ElementAt(3),
-                //    };
-                //    availableVisits.Add(visit);
-                //}
-                //minutsOffset = -1;
-
-                ////fizjo :  masaż + fizykoterapia
-
-                //for (int j = 0; j < 12; j++)
-                //{
-                //    minutsOffset++;
-                //    Visit visit = new Visit()
-                //    {
-                //        Id = startId++,
-                //        PrimaryService = PrimaryMedicalServices[31],
-                //        DateTimeSince = start.AddDays(dayOffset).AddMinutes(minutsOffset * 15),
-                //        DateTimeTill = start.AddDays(dayOffset).AddMinutes(minutsOffset * 15 + 15),
-                //        Location = Locations.ElementAt(2),
-                //        MedicalRoom = Locations.ElementAt(2).MedicalRooms.ElementAt(5),
-                //        MedicalWorker = MedicalWorkers.ElementAt(62),
-                //        VisitCategory = VisitCategories.ElementAt(3),
-                //    };
-                //    availableVisits.Add(visit);
-                //}
-                //minutsOffset = -1;
-
-                ////gabinet zab: 1 labo, 2 szczepienia
-                //for (int j = 0; j < 10; j++)
-                //{
-                //    minutsOffset++;
-                //    Visit visit = new Visit()
-                //    {
-                //        Id = startId++,
-
-                //        PrimaryService = PrimaryMedicalServices[31],
-                //        DateTimeSince = start.AddDays(dayOffset).AddMinutes(minutsOffset * 30),
-                //        DateTimeTill = start.AddDays(dayOffset).AddMinutes(minutsOffset * 30 + 30),
-                //        Location = Locations.ElementAt(0),
-                //        MedicalRoom = Locations.ElementAt(0).MedicalRooms.ElementAt(11),
-                //        MedicalWorker = MedicalWorkers.ElementAt(2),
-                //        VisitCategory = VisitCategories.ElementAt(4),
-                //    };
-                //    availableVisits.Add(visit);
-                //}
-                //minutsOffset = -1;
-
-                //for (int j = 0; j < 12; j++)
-                //{
-                //    minutsOffset++;
-                //    Visit visit = new Visit()
-                //    {
-                //        Id = startId++,
-
-                //        PrimaryService = PrimaryMedicalServices[32],
-                //        DateTimeSince = start.AddDays(dayOffset).AddMinutes(minutsOffset * 15),
-                //        DateTimeTill = start.AddDays(dayOffset).AddMinutes(minutsOffset * 15 + 15),
-                //        Location = Locations.ElementAt(1),
-                //        MedicalRoom = Locations.ElementAt(1).MedicalRooms.ElementAt(9),
-                //        MedicalWorker = MedicalWorkers.ElementAt(3),
-                //        VisitCategory = VisitCategories.ElementAt(4),
-                //    };
-                //    availableVisits.Add(visit);
-                //}
-                //minutsOffset = -1;
-
-
-                //for (int j = 0; j < 12; j++)
-                //{
-                //    minutsOffset++;
-                //    Visit visit = new Visit()
-                //    {
-                //        Id = startId++,
-
-                //        PrimaryService = PrimaryMedicalServices[32],
-                //        DateTimeSince = start.AddDays(dayOffset).AddMinutes(minutsOffset * 15),
-                //        DateTimeTill = start.AddDays(dayOffset).AddMinutes(minutsOffset * 15 + 15),
-                //        Location = Locations.ElementAt(2),
-                //        MedicalRoom = Locations.ElementAt(2).MedicalRooms.ElementAt(6),
-                //        MedicalWorker = MedicalWorkers.ElementAt(25),
-                //        VisitCategory = VisitCategories.ElementAt(4),
-                //    };
-                //    availableVisits.Add(visit);
-                //}
-                //minutsOffset = -1;
-
-
-                //for (int j = 0; j < 12; j++)
-                //{
-                //    minutsOffset++;
-                //    Visit visit = new Visit()
-                //    {
-                //        Id = startId++,
-
-                //        PrimaryService = PrimaryMedicalServices[33],
-                //        DateTimeSince = start.AddDays(dayOffset).AddMinutes(minutsOffset * 15),
-                //        DateTimeTill = start.AddDays(dayOffset).AddMinutes(minutsOffset * 15 + 15),
-                //        Location = Locations.ElementAt(3),
-                //        MedicalRoom = Locations.ElementAt(3).MedicalRooms.ElementAt(3),
-                //        MedicalWorker = MedicalWorkers.ElementAt(59),
-                //        VisitCategory = VisitCategories.ElementAt(4),
-                //    };
-                //    availableVisits.Add(visit);
-                //}
-                //minutsOffset = -1;
-
-
-                //for (int j = 0; j < 12; j++)
-                //{
-                //    minutsOffset++;
-                //    Visit visit = new Visit()
-                //    {
-                //        Id = startId++,
-
-                //        PrimaryService = PrimaryMedicalServices[33],
-                //        DateTimeSince = start.AddDays(dayOffset).AddMinutes(minutsOffset * 15),
-                //        DateTimeTill = start.AddDays(dayOffset).AddMinutes(minutsOffset * 15 + 15),
-                //        Location = Locations.ElementAt(4),
-                //        MedicalRoom = Locations.ElementAt(4).MedicalRooms.ElementAt(11),
-                //        MedicalWorker = MedicalWorkers.ElementAt(65),
-                //        VisitCategory = VisitCategories.ElementAt(4),
-                //    };
-                //    availableVisits.Add(visit);
-                //}
-                //minutsOffset = -1;
-
-                ////gabinet pielegniarski
-                ////szczepienia
-
-
-                ////39,40,52,61,
-
-                //for (int j = 0; j < 12; j++)
-                //{
-                //    minutsOffset++;
-                //    Visit visit = new Visit()
-                //    {
-                //        Id = startId++,
-
-                //        PrimaryService = PrimaryMedicalServices[26],
-                //        DateTimeSince = start.AddDays(dayOffset).AddMinutes(minutsOffset * 10),
-                //        DateTimeTill = start.AddDays(dayOffset).AddMinutes(minutsOffset * 10 + 10),
-                //        Location = Locations.ElementAt(2),
-                //        MedicalRoom = Locations.ElementAt(5).MedicalRooms.ElementAt(2),
-                //        MedicalWorker = MedicalWorkers.ElementAt(39),
-                //        VisitCategory = VisitCategories.ElementAt(4),
-                //    };
-                //    availableVisits.Add(visit);
-                //}
-                //minutsOffset = -1;
-
-                //for (int j = 0; j < 12; j++)
-                //{
-                //    minutsOffset++;
-                //    Visit visit = new Visit()
-                //    {
-                //        Id = startId++,
-
-                //        PrimaryService = PrimaryMedicalServices[26],
-                //        DateTimeSince = start.AddDays(dayOffset).AddMinutes(minutsOffset * 10),
-                //        DateTimeTill = start.AddDays(dayOffset).AddMinutes(minutsOffset * 10 + 10),
-                //        Location = Locations.ElementAt(2),
-                //        MedicalRoom = Locations.ElementAt(5).MedicalRooms.ElementAt(2),
-                //        MedicalWorker = MedicalWorkers.ElementAt(39),
-                //        VisitCategory = VisitCategories.ElementAt(4),
-                //    };
-                //    availableVisits.Add(visit);
-                //}
-                //minutsOffset = -1;
-
-                //for (int j = 0; j < 12; j++)
-                //{
-                //    minutsOffset++;
-                //    Visit visit = new Visit()
-                //    {
-                //        Id = startId++,
-
-                //        PrimaryService = PrimaryMedicalServices[26],
-                //        DateTimeSince = start.AddDays(dayOffset).AddMinutes(minutsOffset * 10),
-                //        DateTimeTill = start.AddDays(dayOffset).AddMinutes(minutsOffset * 10 + 10),
-                //        Location = Locations.ElementAt(2),
-                //        MedicalRoom = Locations.ElementAt(5).MedicalRooms.ElementAt(2),
-                //        MedicalWorker = MedicalWorkers.ElementAt(39),
-                //        VisitCategory = VisitCategories.ElementAt(4),
-                //    };
-                //    availableVisits.Add(visit);
-                //}
-                //minutsOffset = -1;
-                //for (int j = 0; j < 12; j++)
-                //{
-                //    minutsOffset++;
-                //    Visit visit = new Visit()
-                //    {
-                //        Id = startId++,
-
-                //        PrimaryService = PrimaryMedicalServices[26],
-                //        DateTimeSince = start.AddDays(dayOffset).AddMinutes(minutsOffset * 10),
-                //        DateTimeTill = start.AddDays(dayOffset).AddMinutes(minutsOffset * 10 + 10),
-                //        Location = Locations.ElementAt(2),
-                //        MedicalRoom = Locations.ElementAt(5).MedicalRooms.ElementAt(2),
-                //        MedicalWorker = MedicalWorkers.ElementAt(39),
-                //        VisitCategory = VisitCategories.ElementAt(4),
-                //    };
-                //    availableVisits.Add(visit);
-                //}
-                //minutsOffset = -1;
-                //for (int j = 0; j < 12; j++)
-                //{
-                //    minutsOffset++;
-                //    Visit visit = new Visit()
-                //    {
-                //        Id = startId++,
-
-                //        PrimaryService = PrimaryMedicalServices[26],
-                //        DateTimeSince = start.AddDays(dayOffset).AddMinutes(minutsOffset * 10),
-                //        DateTimeTill = start.AddDays(dayOffset).AddMinutes(minutsOffset * 10 + 10),
-                //        Location = Locations.ElementAt(2),
-                //        MedicalRoom = Locations.ElementAt(5).MedicalRooms.ElementAt(2),
-                //        MedicalWorker = MedicalWorkers.ElementAt(39),
-                //        VisitCategory = VisitCategories.ElementAt(4),
-                //    };
-                //    availableVisits.Add(visit);
-                //}
-                //minutsOffset = -1;
-
-                //for (int j = 0; j < 12; j++)
-                //{
-                //    minutsOffset++;
-                //    Visit visit = new Visit()
-                //    {
-                //        Id = startId++,
-
-                //        PrimaryService = PrimaryMedicalServices[26],
-                //        DateTimeSince = start.AddDays(dayOffset).AddMinutes(minutsOffset * 10),
-                //        DateTimeTill = start.AddDays(dayOffset).AddMinutes(minutsOffset * 10 + 10),
-                //        Location = Locations.ElementAt(2),
-                //        MedicalRoom = Locations.ElementAt(5).MedicalRooms.ElementAt(2),
-                //        MedicalWorker = MedicalWorkers.ElementAt(39),
-                //        VisitCategory = VisitCategories.ElementAt(4),
-                //    };
-                //    availableVisits.Add(visit);
-                //}
-                //minutsOffset = -1;
-
-
             }
 
-            int visitCounter = 100;
+            int visitCounter = 1;// 00;
             for (int i = 0; i < AllPatients.Count; i++)
             {
-                availableVisits[visitCounter * (1) + 0 + i * 2].Patient = AllPatients[i];
-                availableVisits[visitCounter * (i + 1) + 100 + i].Patient = AllPatients[i];
-                availableVisits[visitCounter * (i + 1) + 200 + i].Patient = AllPatients[i];
-                availableVisits[visitCounter * (i + 1) + 300 + i].Patient = AllPatients[i];
-                availableVisits[visitCounter * (i + 1) + 400 + i].Patient = AllPatients[i];
-                availableVisits[visitCounter * (i + 1) + 500 + i].Patient = AllPatients[i];
+                AllPatients[i].BookVisit(availableVisits[visitCounter * (1) + 0 + i * 2]);
+                AllPatients[i].BookVisit(availableVisits[visitCounter * (i + 1) + 100 + i]);
+                AllPatients[i].BookVisit(availableVisits[visitCounter * (i + 1) + 200 + i]);
+                AllPatients[i].BookVisit(availableVisits[visitCounter * (i + 1) + 300 + i]);
+                AllPatients[i].BookVisit(availableVisits[visitCounter * (i + 1) + 400 + i]);
+                AllPatients[i].BookVisit(availableVisits[visitCounter * (i + 1) + 500 + i]);
 
+                //availableVisits[visitCounter * (i + 1) + 100 + i].Patient = AllPatients[i];
+                //availableVisits[visitCounter * (i + 1) + 200 + i].Patient = AllPatients[i];
+                //availableVisits[visitCounter * (i + 1) + 300 + i].Patient = AllPatients[i];
+                //availableVisits[visitCounter * (i + 1) + 400 + i].Patient = AllPatients[i];
+                //availableVisits[visitCounter * (i + 1) + 500 + i].Patient = AllPatients[i];
+
+                //availableVisits[visitCounter * (1) + 0 + i * 2].Patient = AllPatients[i];
+                //availableVisits[visitCounter * (i + 1) + 100 + i].Patient = AllPatients[i];
+                //availableVisits[visitCounter * (i + 1) + 200 + i].Patient = AllPatients[i];
+                //availableVisits[visitCounter * (i + 1) + 300 + i].Patient = AllPatients[i];
+                //availableVisits[visitCounter * (i + 1) + 400 + i].Patient = AllPatients[i];
+                //availableVisits[visitCounter * (i + 1) + 500 + i].Patient = AllPatients[i];
+                //availableVisits[visitCounter * (1) + 0 + i * 2].PatientId = AllPatients[i].Id;
+                //availableVisits[visitCounter * (i + 1) + 100 + i].PatientId = AllPatients[i].Id;
+                //availableVisits[visitCounter * (i + 1) + 200 + i].PatientId = AllPatients[i].Id;
+                //availableVisits[visitCounter * (i + 1) + 300 + i].PatientId = AllPatients[i].Id;
+                //availableVisits[visitCounter * (i + 1) + 400 + i].PatientId = AllPatients[i].Id;
+                //availableVisits[visitCounter * (i + 1) + 500 + i].PatientId = AllPatients[i].Id;
             }
-
-            //for (int i = 100; i < availableVisits.Count; i+=10)
-            //{
-
-            //}
-            //{
-            //    new Visit()
-            //    {
-            //        Id=6,
-            //        BookedMedicalServices=new List<MedicalService>(){ PrimaryMedicalServices[0], PrimaryMedicalServices[5] },
-            //        DateTimeSince=dateTimeOffset.AddDays(10),
-            //        DateTimeTill=dateTimeOffset.AddDays(10).AddMinutes(15),
-            //        Location=Locations.ElementAt(3),
-            //        MedicalRoom=Locations.ElementAt(3).MedicalRooms.ElementAt(6),
-            //        MedicalWorker=MedicalWorkers.ElementAt(36),
-            //        VisitCategory=VisitCategories.ElementAt(3),
-            //    },
-            //    new Visit()
-            //    {
-            //        Id=7,
-            //        BookedMedicalServices=new List<MedicalService>(){ PrimaryMedicalServices[0], PrimaryMedicalServices[5] },
-            //        DateTimeSince=dateTimeOffset.AddDays(14),
-            //        DateTimeTill=dateTimeOffset.AddDays(14).AddMinutes(15),
-            //        Location=Locations.ElementAt(2),
-            //        MedicalRoom=Locations.ElementAt(2).MedicalRooms.ElementAt(6),
-            //        MedicalWorker=MedicalWorkers.ElementAt(40),
-            //        VisitCategory=VisitCategories.ElementAt(4),
-            //    },
-            //    new Visit()
-            //    {
-            //        Id=8,
-            //        BookedMedicalServices=new List<MedicalService>(){ PrimaryMedicalServices[0], PrimaryMedicalServices[5] },
-            //        DateTimeSince=dateTimeOffset.AddDays(20),
-            //        DateTimeTill=dateTimeOffset.AddDays(20).AddMinutes(15),
-            //        Location=Locations.ElementAt(4),
-            //        MedicalRoom=Locations.ElementAt(4).MedicalRooms.ElementAt(6),
-            //        MedicalWorker=MedicalWorkers.ElementAt(30),
-            //        VisitCategory=VisitCategories.ElementAt(3),
-            //    },
-            //    new Visit()
-            //    {
-            //        Id=9,
-            //        BookedMedicalServices=new List<MedicalService>(){ PrimaryMedicalServices[0], PrimaryMedicalServices[5] },
-            //        DateTimeSince=dateTimeOffset.AddDays(15),
-            //        DateTimeTill=dateTimeOffset.AddDays(15).AddMinutes(30),
-            //        Location=Locations.ElementAt(4),
-            //        MedicalRoom=Locations.ElementAt(4).MedicalRooms.ElementAt(6),
-            //        MedicalWorker=MedicalWorkers.ElementAt(30),
-            //        VisitCategory=VisitCategories.ElementAt(2),
-            //    },
-            //};
 
             return availableVisits;
         }
@@ -1641,8 +640,8 @@ namespace Asklepios.Data.InMemoryContexts
             DateTimeOffset dateTimeOffset = new DateTimeOffset(DateTime.Now);
             DateTimeOffset now = DateTime.Now;
 
-            List<VisitReview> reviews = GetDummyMedicalReviews();
-            List<MedicalReferral> referrals = GetDummyMedicalReferrals(null, now);
+            List<VisitReview> reviews = VisitReviews; //GetDummyMedicalReviews();
+            List<MedicalReferral> referrals = MedicalReferrals;// GetDummyMedicalReferrals(null, now);
             List<string> medicalHistories = GetDummyMedicalHistories();
             List<Visit> historicalVisits = new List<Visit>();
             //List<Recommendation> recommendations = GetSomeRecommendations();
@@ -1714,8 +713,12 @@ namespace Asklepios.Data.InMemoryContexts
                     List<long> examinationReferralsIds = null;
                     if (referralsIndex >= 0)
                     {
-                        examinationReferrals = new List<MedicalReferral>() { referrals[referralsIndex] };
+                        long max = referrals.Max(c => c.Id) + 1;
+                        MedicalReferral referral = referrals[referralsIndex].MockClone(max);
+                        MedicalReferrals.Add(referral);
+                        examinationReferrals = new List<MedicalReferral>() { referral };
                         examinationReferralsIds = examinationReferrals.Select(c => c.Id).ToList();
+                        // referrals.RemoveAt(referralsIndex);
                     }
                     string history = null;
                     if (medicalHistoryIndex >= 0)
@@ -1727,13 +730,28 @@ namespace Asklepios.Data.InMemoryContexts
                     if (prescriptionIndex >= 0)
                     {
                         prescription = Prescriptions[prescriptionIndex];
+                        long newId = Prescriptions.Max(c => c.Id) + 1;
+                        long newIMId = IssuedMedicines.Max(c => c.Id) + 1;
+                        prescription = prescription.MockClone(newId, newIMId);
                         prescriptionId = prescription.Id;
+                        Prescriptions.Add(prescription);
+                        IssuedMedicines.AddRange(prescription.IssuedMedicines);
                     }
                     List<Recommendation> visitRecommendations = null;
                     List<long> visitRecommendationsIds = null;
                     if (recommendationIndex >= 0)
                     {
+                        
                         visitRecommendations = new List<Recommendation>() { Recommendations[recommendationIndex] };
+                        long newId = Recommendations.Max(c => c.Id) + 1;
+
+                        for (int j = 0; j > visitRecommendations.Count; j++)
+                        {
+                            visitRecommendations[j] = visitRecommendations[j].MockClone(newId);
+                            newId++;
+                        }
+                        Recommendations.AddRange(visitRecommendations);
+
                         visitRecommendationsIds = visitRecommendations.Select(c => c.Id).ToList();
                     }
                     VisitReview review = null;
@@ -1741,57 +759,89 @@ namespace Asklepios.Data.InMemoryContexts
                     if (reviewIndex >= 0)
                     {
                         review = reviews[reviewIndex];
+                        long max = reviews.Max(c => c.Id) + 1;
+                        review = review.MockClone(max);
+                        VisitReviews.Add(review);
                         review.ReviewDate = dateTime.AddDays(reviewDaysOffset);
                         reviewId = review.Id;
                     }
                     MedicalTestResult testResult = null;
                     long testResultId = -1;
-                    if (testResultIndex>=0)
+                    if (testResultIndex >= 0)
                     {
                         testResult = (MedicalTestResult)MedicalTestResults[testResultIndex].Clone();
                         testResult.MedicalWorker = medicalWorker;
                         testResult.Id = MedicalTestResults.Max(c => c.Id) + 1;
                         testResult.MedicalService = medicalService;
+                        testResult.MedicalServiceId = medicalService.Id;
                         testResultId = testResult.Id;
                         MedicalTestResults.Add(testResult);
                     }
                     VisitCategory visitCategory = VisitCategories.Where(c => c.PrimaryMedicalServices.Any(d => d.Id == medicalService.Id)).FirstOrDefault();
                     long visitCategoryId = -1;
-                    if (visitCategory!=null)
+                    if (visitCategory != null)
                     {
                         visitCategoryId = visitCategory.Id;
                     }
                     Visit visit = new Visit()
                     {
                         Id = ++id,
-                        Patient = patient,
-                        PatientId=patient.Id,
-                        MedicalWorker = medicalWorker,
-                        MedicalWorkerId=medicalWorker.Id,
+                        //Patient = patient,
+                        PatientId = patient.Id,
+                        //MedicalWorker = medicalWorker,
+                        MedicalWorkerId = medicalWorker.Id,
                         DateTimeSince = dateTime,
                         DateTimeTill = dateTime.AddMinutes(15),
-                        Location = Locations[medicalLocationIndex],
-                        LocationId= Locations[medicalLocationIndex].Id,
-                        MedicalRoom = medicalRoom,
-                        MedicalRoomId=medicalRoom.Id,
+                        ///Location = Locations[medicalLocationIndex],
+                        LocationId = Locations[medicalLocationIndex].Id,
+                        //MedicalRoom = medicalRoom,
+                        MedicalRoomId = medicalRoom.Id,
                         ExaminationReferrals = examinationReferrals,
-                        ExaminatinoReferralsIds= examinationReferralsIds,
+                        //ExaminatinoReferralsIds = examinationReferralsIds,
                         MedicalHistory = history,
-                        Prescription = prescription,
-                        PrescriptionId=prescriptionId,
+                        //Prescription = prescription,
+                        PrescriptionId = prescriptionId,
                         Recommendations = visitRecommendations,
-                        RecommendationIds= visitRecommendationsIds,
-                        PrimaryService = medicalService,
-                        PrimaryServiceId=medicalServiceId,
-                        MedicalResult = testResult,
-                        MedicalResultId= testResultId,
-                        VisitCategory = visitCategory,
-                        VisitCategoryId= visitCategoryId,
-                        MinorMedicalServices = new List<MedicalService>() { minorService},
-                        MinorMedicalServicesIds= minorMedicalServicesIds,
-                        VisitReview = review,
-                        VisitReviewId=reviewId
+                        //RecommendationIds = visitRecommendationsIds,
+                        //PrimaryService = medicalService,
+                        PrimaryServiceId = medicalServiceId,
+                        //MedicalResult = testResult,
+                        MedicalResultId = testResultId,
+                        //VisitCategory = visitCategory,
+                        VisitCategoryId = visitCategoryId,
+                        MinorMedicalServices = new List<MedicalService>() { minorService },
+                        // MinorMedicalServicesIds = minorMedicalServicesIds,
+                        // VisitReview = review,
+                        VisitReviewId = reviewId
                     };
+                    if (testResult != null)
+                    {
+                        testResult.PatientId = patient.Id;
+                        testResult.MedicalWorkerId = medicalWorker.Id;
+                        testResult.ExamDate = dateTime;
+                        testResult.VisitId = visit.Id;
+                    }
+                    if (review != null)
+                    {
+                        review.VisitId = visit.Id;
+                        review.ReviewerId = visit.PatientId;
+                        review.RevieweeId = visit.MedicalWorkerId;
+
+                    }
+                    if (examinationReferrals != null)
+                    {
+                        examinationReferrals[0].VisitWhenIssuedId = visit.Id;
+                        examinationReferrals[0].IssuedToId = patient.Id;
+                        examinationReferrals[0].IssuedById = medicalWorker.Id;
+                    }
+                    if (prescription != null)
+                    {
+                        prescription.IssuedToId = patient.Id;
+                        prescription.IssuedById = medicalWorker.Id;
+                        prescription.VisitId = visit.Id;
+                        //prescription.
+                    }
+
                     AddNotificationsOrNot(visit);
                     historicalVisits.Add(visit);
                 }
@@ -1820,6 +870,12 @@ namespace Asklepios.Data.InMemoryContexts
             //    }
 
             //}
+
+
+            MedicalTestResults.RemoveAll(c => c.PatientId == 0);
+            Prescriptions.RemoveAll(c => c.IssuedById == 0);
+            IssuedMedicines.RemoveAll(c => c.PrescriptionId == 0);
+            Recommendations.RemoveAll(c => c.VisitId == 0);
 
             return historicalVisits;
 
@@ -1878,7 +934,7 @@ namespace Asklepios.Data.InMemoryContexts
                     notification.EventObjectId = item.Id;
                     notification.NotificationType = Core.Enums.NotificationType.MedicalReferral;
                     notification.Patient = visit.Patient;
-                    notification.PatientId = visit.Patient.Id;
+                    notification.PatientId = visit.PatientId;
                     notification.VisitId = visit.Id;
 
                     if (Notifications?.Count > 0)
@@ -1918,35 +974,39 @@ namespace Asklepios.Data.InMemoryContexts
         {
             DateTimeOffset now = DateTime.Now;
             long id = 0;
-            List<VisitReview> visitReviews = new List<VisitReview>()
+            List<VisitReview> visitReviews = new List<VisitReview>();
+            for (int i = 0; i < 100; i++)
             {
-                new VisitReview(){Id=++id, AtmosphereRate=1,CompetenceRate=4,GeneralRate=3,ShortDescription="Lekarz w miarę kompetentny, ale chamski gbur"},
-                new VisitReview(){Id=++id,AtmosphereRate=5,CompetenceRate=2,GeneralRate=3,ShortDescription="Miły lekarz, niestety jego zalecenia nic nie pomogły"},
-                new VisitReview(){Id=++id,AtmosphereRate=4,CompetenceRate=4,GeneralRate=4,ShortDescription="Przepisane przez niego medykamenty poprawiły mój stan, ale część objawów się utrzymała."},
-                new VisitReview(){Id=++id,AtmosphereRate=5,CompetenceRate=5,GeneralRate=5,ShortDescription="Super lekarz, pomógł mi, dodatkowo jest bardzo sympatyczny i wszystko mi po kolei wyjaśnił. Lekarz-ideał."},
-                new VisitReview(){Id=++id,AtmosphereRate=2,CompetenceRate=1,GeneralRate=1,ShortDescription="Lekarza nie interesowały wyniki badań, nie interesowało co mówię, jedyne co mi zalecił, to leki przeciwbólowe!."},
-                new VisitReview(){Id=++id,AtmosphereRate=1,CompetenceRate=2,GeneralRate=2,ShortDescription="Bardzo nieprzyjemny, jego leczenie nie przyniosło większej poprawy"},
-                new VisitReview(){Id=++id,AtmosphereRate=5,CompetenceRate=5,GeneralRate=5,ShortDescription="Polecam, 100% zaangażowania w problem z jakim przychodzi się do doktora.Szczegółowo omawia choroba, natychmiastowo zleca dalsze badania i dobiera leczenie."},
-                new VisitReview(){Id=++id,AtmosphereRate=4,CompetenceRate=5,GeneralRate=5,ShortDescription="Doktor sumiennie zajmuje się pacjentem na wizycie. Odpowiada na pytania, doskonale tłumaczy sposób leczenia."},
-                new VisitReview(){Id=++id,AtmosphereRate=5,CompetenceRate=5,GeneralRate=5,ShortDescription="Bardzo dobry lekarz z ogromnym doświadczeniem, oddany pacjentom, przyjazny, można mu zaufać, rzeczowy w wyjaśnieniach." },
-                new VisitReview(){Id=++id,AtmosphereRate=4,CompetenceRate=5,GeneralRate=5,ShortDescription="Bardzo profesjonalne podejście do pacjenta. Wszystko dokładnie wyjaśnione. Serdecznie polecam!"},
-                new VisitReview(){Id=++id,AtmosphereRate=5,CompetenceRate=4,GeneralRate=4,ShortDescription="Doktor jest cudownym człowiekiem. Jest niesamowicie miły i empatyczny. Bardzo zaangażowany w problemy pacjenta. Szczegółowo wyjaśnia wszystkie wątpliwości. Na pacjenta poświęca tyle czasu ile jest niezbędne, a nie tyle ile jest w grafiku. Zaproponowane leczenie okazało sie bardzo skuteczne i znacznie poprawiło mój komfort życia."},
-                new VisitReview(){Id=++id,AtmosphereRate=4,CompetenceRate=5,GeneralRate=4,ShortDescription="Bardzo dobry lekarz, z dużym doświadczeniem. Dokładny wywiad, badania, szybka diagnoza i leczenie. Polecam."},
-                new VisitReview(){Id=++id,AtmosphereRate=4,CompetenceRate=4,GeneralRate=4,ShortDescription="Polecam, 100% zaangażowania w problem z jakim przychodzi się do doktora.Szczegółowo omawia przypadłość, natychmiast zleca dalsze badania i dobiera leczenie." },
-                new VisitReview(){Id=++id,AtmosphereRate=5,CompetenceRate=4,GeneralRate=4,ShortDescription="Bardzo miły i pomocny lekarz :) Wszystko wyjaśnił, o wszystko co istotne zapytał. Polecam!!!" },
-                new VisitReview(){Id=++id,AtmosphereRate=4,CompetenceRate=5,GeneralRate=4,ShortDescription="Było tak, jak chyba każdy pacjent oczekuje. Lekarz elokwentny i ewidentnie zna się na swoim fachu.Polecam." },
-                new VisitReview(){Id=++id,AtmosphereRate=2,CompetenceRate=2,GeneralRate=2,ShortDescription="Miałam teleporade u tego lekarza, która trwała może z 2 min z czego większość czasu mówiłam ja. Żadnego dzień dobry, Lekarz wysłuchał i wystawił zwolnienie i tyle. Zero porady, brak pytań z jego strony oprócz prośby o pesel i pytania co się dzieje. Osobiście nie polecam." },
-                new VisitReview(){Id=++id,AtmosphereRate=1,CompetenceRate=2,GeneralRate=2,ShortDescription="Nieuprzejmy, wręcz opryskliwy doktor, bez szacunku do pacjenta." },
-                new VisitReview(){Id=++id,AtmosphereRate=2,CompetenceRate=3,GeneralRate=2,ShortDescription="Doktor nie słucha, poucza (a nie doradza pacjentowi, który w końcu nie przychodzi na wizytę dla przyjemności).W rezultacie przepisuje leki, które wcześniej samemu sie zażywało bez wizyty u lekarza. Bardzo niemiła i nieprofesjonalna wizyta. Szczerze odradzam, szkoda czasu i zdrowia." },
-                new VisitReview(){Id=++id,AtmosphereRate=3,CompetenceRate=2,GeneralRate=2,ShortDescription="Pan doktor bardziej byl zainteresowany nipem do L4 niz stanem mojego zdrowia. Po skończeniu przepisanego przez Pana doktora antybiotyku nastąpiły powikłania i nawrót choroby." },
-                new VisitReview(){Id=++id,AtmosphereRate=2,CompetenceRate=3,GeneralRate=2,ShortDescription="Mało delikatnie dał mi do zrozumienia, że zabieram mu za dużo czasu, bo mam dwie sprawy a nie jedną." },
-                new VisitReview(){Id=++id,AtmosphereRate=3,CompetenceRate=1,GeneralRate=2,ShortDescription="Podczas wizyty doktor powiedział, że ludzie niepotrzebnie chcą się badać i wykonywanie badań kontrolnych jest bez sensu. Z łaską dostałam skierowanie do specjalisty, u którego okazało się, że pan doktor postawił u mnie błędną diagnozę." },
-                new VisitReview(){Id=++id,AtmosphereRate=2,CompetenceRate=2,GeneralRate=2,ShortDescription="Lekarz podczas wizyty skupione głównie nie na pacjencie, tylko na zabawie ze smartfonem. Zdawkowe odpowiedzi, leczenie nie przyniosło pożądancyh rezultatów." },
-                new VisitReview(){Id=++id,AtmosphereRate=2,CompetenceRate=4,GeneralRate=3,ShortDescription="Lekarz niemiły podczas wizyty, ale zalecone leki wydają się działać." },
-                new VisitReview(){Id=++id,AtmosphereRate=5,CompetenceRate=2,GeneralRate=2,ShortDescription="Doktor przyjazny, dopytywał o wiele rzeczy, niestety zalecone leczenie jedynie pogorszyło mój stan. więc niestety nie mogę polecić." }
-
-            };
-
+                visitReviews.AddRange(
+                    new List<VisitReview>()
+                    {
+                        new VisitReview(){Id=++id, AtmosphereRate=1,CompetenceRate=4,GeneralRate=3,ShortDescription="Lekarz w miarę kompetentny, ale chamski gbur"},
+                        new VisitReview(){Id=++id,AtmosphereRate=5,CompetenceRate=2,GeneralRate=3,ShortDescription="Miły lekarz, niestety jego zalecenia nic nie pomogły"},
+                        new VisitReview(){Id=++id,AtmosphereRate=4,CompetenceRate=4,GeneralRate=4,ShortDescription="Przepisane przez niego medykamenty poprawiły mój stan, ale część objawów się utrzymała."},
+                        new VisitReview(){Id=++id,AtmosphereRate=5,CompetenceRate=5,GeneralRate=5,ShortDescription="Super lekarz, pomógł mi, dodatkowo jest bardzo sympatyczny i wszystko mi po kolei wyjaśnił. Lekarz-ideał."},
+                        new VisitReview(){Id=++id,AtmosphereRate=2,CompetenceRate=1,GeneralRate=1,ShortDescription="Lekarza nie interesowały wyniki badań, nie interesowało co mówię, jedyne co mi zalecił, to leki przeciwbólowe!."},
+                        new VisitReview(){Id=++id,AtmosphereRate=1,CompetenceRate=2,GeneralRate=2,ShortDescription="Bardzo nieprzyjemny, jego leczenie nie przyniosło większej poprawy"},
+                        new VisitReview(){Id=++id,AtmosphereRate=5,CompetenceRate=5,GeneralRate=5,ShortDescription="Polecam, 100% zaangażowania w problem z jakim przychodzi się do doktora.Szczegółowo omawia choroba, natychmiastowo zleca dalsze badania i dobiera leczenie."},
+                        new VisitReview(){Id=++id,AtmosphereRate=4,CompetenceRate=5,GeneralRate=5,ShortDescription="Doktor sumiennie zajmuje się pacjentem na wizycie. Odpowiada na pytania, doskonale tłumaczy sposób leczenia."},
+                        new VisitReview(){Id=++id,AtmosphereRate=5,CompetenceRate=5,GeneralRate=5,ShortDescription="Bardzo dobry lekarz z ogromnym doświadczeniem, oddany pacjentom, przyjazny, można mu zaufać, rzeczowy w wyjaśnieniach." },
+                        new VisitReview(){Id=++id,AtmosphereRate=4,CompetenceRate=5,GeneralRate=5,ShortDescription="Bardzo profesjonalne podejście do pacjenta. Wszystko dokładnie wyjaśnione. Serdecznie polecam!"},
+                        new VisitReview(){Id=++id,AtmosphereRate=5,CompetenceRate=4,GeneralRate=4,ShortDescription="Doktor jest cudownym człowiekiem. Jest niesamowicie miły i empatyczny. Bardzo zaangażowany w problemy pacjenta. Szczegółowo wyjaśnia wszystkie wątpliwości. Na pacjenta poświęca tyle czasu ile jest niezbędne, a nie tyle ile jest w grafiku. Zaproponowane leczenie okazało sie bardzo skuteczne i znacznie poprawiło mój komfort życia."},
+                        new VisitReview(){Id=++id,AtmosphereRate=4,CompetenceRate=5,GeneralRate=4,ShortDescription="Bardzo dobry lekarz, z dużym doświadczeniem. Dokładny wywiad, badania, szybka diagnoza i leczenie. Polecam."},
+                        new VisitReview(){Id=++id,AtmosphereRate=4,CompetenceRate=4,GeneralRate=4,ShortDescription="Polecam, 100% zaangażowania w problem z jakim przychodzi się do doktora.Szczegółowo omawia przypadłość, natychmiast zleca dalsze badania i dobiera leczenie." },
+                        new VisitReview(){Id=++id,AtmosphereRate=5,CompetenceRate=4,GeneralRate=4,ShortDescription="Bardzo miły i pomocny lekarz :) Wszystko wyjaśnił, o wszystko co istotne zapytał. Polecam!!!" },
+                        new VisitReview(){Id=++id,AtmosphereRate=4,CompetenceRate=5,GeneralRate=4,ShortDescription="Było tak, jak chyba każdy pacjent oczekuje. Lekarz elokwentny i ewidentnie zna się na swoim fachu.Polecam." },
+                        new VisitReview(){Id=++id,AtmosphereRate=2,CompetenceRate=2,GeneralRate=2,ShortDescription="Miałam teleporade u tego lekarza, która trwała może z 2 min z czego większość czasu mówiłam ja. Żadnego dzień dobry, Lekarz wysłuchał i wystawił zwolnienie i tyle. Zero porady, brak pytań z jego strony oprócz prośby o pesel i pytania co się dzieje. Osobiście nie polecam." },
+                        new VisitReview(){Id=++id,AtmosphereRate=1,CompetenceRate=2,GeneralRate=2,ShortDescription="Nieuprzejmy, wręcz opryskliwy doktor, bez szacunku do pacjenta." },
+                        new VisitReview(){Id=++id,AtmosphereRate=2,CompetenceRate=3,GeneralRate=2,ShortDescription="Doktor nie słucha, poucza (a nie doradza pacjentowi, który w końcu nie przychodzi na wizytę dla przyjemności).W rezultacie przepisuje leki, które wcześniej samemu sie zażywało bez wizyty u lekarza. Bardzo niemiła i nieprofesjonalna wizyta. Szczerze odradzam, szkoda czasu i zdrowia." },
+                        new VisitReview(){Id=++id,AtmosphereRate=3,CompetenceRate=2,GeneralRate=2,ShortDescription="Pan doktor bardziej byl zainteresowany nipem do L4 niz stanem mojego zdrowia. Po skończeniu przepisanego przez Pana doktora antybiotyku nastąpiły powikłania i nawrót choroby." },
+                        new VisitReview(){Id=++id,AtmosphereRate=2,CompetenceRate=3,GeneralRate=2,ShortDescription="Mało delikatnie dał mi do zrozumienia, że zabieram mu za dużo czasu, bo mam dwie sprawy a nie jedną." },
+                        new VisitReview(){Id=++id,AtmosphereRate=3,CompetenceRate=1,GeneralRate=2,ShortDescription="Podczas wizyty doktor powiedział, że ludzie niepotrzebnie chcą się badać i wykonywanie badań kontrolnych jest bez sensu. Z łaską dostałam skierowanie do specjalisty, u którego okazało się, że pan doktor postawił u mnie błędną diagnozę." },
+                        new VisitReview(){Id=++id,AtmosphereRate=2,CompetenceRate=2,GeneralRate=2,ShortDescription="Lekarz podczas wizyty skupione głównie nie na pacjencie, tylko na zabawie ze smartfonem. Zdawkowe odpowiedzi, leczenie nie przyniosło pożądancyh rezultatów." },
+                        new VisitReview(){Id=++id,AtmosphereRate=2,CompetenceRate=4,GeneralRate=3,ShortDescription="Lekarz niemiły podczas wizyty, ale zalecone leki wydają się działać." },
+                        new VisitReview(){Id=++id,AtmosphereRate=5,CompetenceRate=2,GeneralRate=2,ShortDescription="Doktor przyjazny, dopytywał o wiele rzeczy, niestety zalecone leczenie jedynie pogorszyło mój stan. więc niestety nie mogę polecić." }
+                    }
+                );
+            }
             return visitReviews;
         }
         static List<IssuedMedicine> GetDummyMedicines()
@@ -2047,7 +1107,7 @@ namespace Asklepios.Data.InMemoryContexts
                             //Dosage="Dwa razy dziennie po 1 tabletce",
                             PackageSize="20 ampułek",MedicineName="Nebbud 2 ml",PaymentDiscount=66},
 
-                                            new IssuedMedicine(){
+                        new IssuedMedicine(){
                             Id=++medicineId,
                             //Dosage="Dwa razy dziennie po 1 tabletce",
                             PackageSize="100 ml",MedicineName="Iberogast",PaymentDiscount=20},
@@ -2067,7 +1127,7 @@ namespace Asklepios.Data.InMemoryContexts
                     };
             return issuedMedicines;
         }
-        static List<Prescription> GetDummyPrescriptions(DateTimeOffset dateTimeOffset)
+        internal static List<Prescription> GetDummyPrescriptions(DateTimeOffset dateTimeOffset)
         {
             List<Prescription> prescriptions = new List<Prescription>()
             {
@@ -2229,7 +1289,11 @@ namespace Asklepios.Data.InMemoryContexts
             };
             return prescriptions;
         }
-
+        public static List<MedicalRoom> UpdateWithIdsAndReturnMedicalRooms(List<MedicalRoom> rooms, long id)
+        {
+            rooms.ForEach(c => c.LocationId = id);
+            return rooms;
+        }
         public static IEnumerable<Location> GetAllLocations()
         {
             //IEnumerable<MedicalRoom> roomsCollections = GetMedicalRooms();
@@ -2237,15 +1301,16 @@ namespace Asklepios.Data.InMemoryContexts
             {
                 MedicalRooms = GetMedicalRooms().ToList();
             }
-            return new List<Location>()
+            long id = 0;
+            List<Location> locations = new List<Location>()
             {
                 new Location()
                     {
                         City="Warszawa",
                         StreetAndNumber="Jerozolimskie 80",
                         Description="Ośrodek w centrum Warszawy ze świetnym dojazdem z każdej dzielnicy.",
-                        Facilities=new List<string>(){"15 gabinetów ogólno-konsultacyjnych", "Gabinet zabiegowy", "2 gabinety stomatologiczne", "Gabinet higieny jamy ustnej", "Gabinet diagnostyki obrazowej"},
-                        Id=1,
+                        //Facilities=new List<string>(){"15 gabinetów ogólno-konsultacyjnych", "Gabinet zabiegowy", "2 gabinety stomatologiczne", "Gabinet higieny jamy ustnej", "Gabinet diagnostyki obrazowej"},
+                        Id=++id,
                         Name="Ośrodek Warszawa Jerozolimskie",
                         Services=new List<MedicalService>(){ PrimaryMedicalServices[0],PrimaryMedicalServices[1],PrimaryMedicalServices[2],PrimaryMedicalServices[3],PrimaryMedicalServices[4],PrimaryMedicalServices[5],PrimaryMedicalServices[6],PrimaryMedicalServices[7],PrimaryMedicalServices[8] ,PrimaryMedicalServices[9],PrimaryMedicalServices[10]}, 
                         //new List<string>(){"Interna", "Ginekologia", "Pediatria", "Diagnostyka obrazowa", "Stomatologia", "Higiena jamy ustnej", "Dermatologia", "Ortopedia", "Neurochirurgia"},
@@ -2254,15 +1319,15 @@ namespace Asklepios.Data.InMemoryContexts
                         ImagePath="/img/Locations/loc1.jpeg",
                         PhoneNumber="22 780 421 433",
                         PostalCode="01-111",
-                        MedicalRooms=MedicalRooms.GetRange(0,12),//roomsCollections.ElementAt(0)
+                        MedicalRooms=UpdateWithIdsAndReturnMedicalRooms(MedicalRooms.GetRange(0,12),id),//roomsCollections.ElementAt(0)
                     },
                 new Location()
                     {
                         City="Warszawa",
                         StreetAndNumber="Grójecka 100",
                         Description="Ośrodek w Warszawie w dzielnicy Ochota, z bardzo dobrym dojazdem z zachodniej części Warszawy.",
-                        Facilities=new List<string>(){"12 gabinetów ogólno-konsultacyjnych", "Gabinet zabiegowy", "Gabinet diagnostyki obrazowej", "Gabinek okulistyczny"},
-                        Id=2,
+                        //Facilities=new List<string>(){"12 gabinetów ogólno-konsultacyjnych", "Gabinet zabiegowy", "Gabinet diagnostyki obrazowej", "Gabinek okulistyczny"},
+                        Id=++id,
                         Name="Ośrodek Warszawa Ochota",
                         Services=new List<MedicalService>(){ PrimaryMedicalServices[10],PrimaryMedicalServices[11],PrimaryMedicalServices[12],PrimaryMedicalServices[13],PrimaryMedicalServices[14],PrimaryMedicalServices[15],PrimaryMedicalServices[16],PrimaryMedicalServices[17],PrimaryMedicalServices[18] ,PrimaryMedicalServices[19],PrimaryMedicalServices[20] },
                         //Services=new List<string>(){"Interna", "Ginekologia", "Pediatria", "Diagnostyka obrazowa", "Stomatologia", "Higiena jamy ustnej", "Dermatologia", "Ortopedia", "Neurochirurgia"},
@@ -2272,15 +1337,15 @@ namespace Asklepios.Data.InMemoryContexts
                         ImagePath="/img/Locations/loc2.jpg",
                         PhoneNumber="22 787 477 323",
                         PostalCode="01-211",
-                        MedicalRooms=MedicalRooms.GetRange(12,13),//roomsCollections.ElementAt(1)
+                        MedicalRooms=UpdateWithIdsAndReturnMedicalRooms(MedicalRooms.GetRange(12,13),id),//roomsCollections.ElementAt(1)
                         },
                 new Location()
                     {
                     City="Warszawa",
                         StreetAndNumber="KEN 20",
                         Description="Ośrodek na południu Warszawy ze świetnym dojazdem z południa Warszawy oraz regionów wzdłuż M1 oraz południowych okolic Warszawy.",
-                        Facilities=new List<string>(){"11 gabinetów ogólno-konsultacyjnych", "2 Gabinety zabiegowe", "2 Gabinety ginekologiczne", "2 gabinety stomatologiczne", "Gabinet diagnostyki obrazowej"},
-                        Id=3,
+                        //Facilities=new List<string>(){"11 gabinetów ogólno-konsultacyjnych", "2 Gabinety zabiegowe", "2 Gabinety ginekologiczne", "2 gabinety stomatologiczne", "Gabinet diagnostyki obrazowej"},
+                        Id=++id,
                         Name="Ośrodek Warszawa Ursynów",
                         Services=new List<MedicalService>(){ PrimaryMedicalServices[20],PrimaryMedicalServices[21],PrimaryMedicalServices[22],PrimaryMedicalServices[23],PrimaryMedicalServices[24],PrimaryMedicalServices[25],PrimaryMedicalServices[26],PrimaryMedicalServices[27],PrimaryMedicalServices[28] ,PrimaryMedicalServices[29],PrimaryMedicalServices[30] },
                         //Services=new List<string>(){"Interna", "Ginekologia", "Pediatria", "Diagnostyka obrazowa", "Stomatologia", "Higiena jamy ustnej", "Dermatologia", "Ortopedia", "Neurochirurgia"},
@@ -2289,7 +1354,7 @@ namespace Asklepios.Data.InMemoryContexts
                         ImagePath="/img/Locations/loc3.jpg",
                         PhoneNumber="22 777 600 313",
                         PostalCode="03-055",
-                        MedicalRooms=MedicalRooms.GetRange(25,15),//roomsCollections.ElementAt(2)
+                        MedicalRooms=UpdateWithIdsAndReturnMedicalRooms(MedicalRooms.GetRange(25,15),id)//.ForEach(c=>c.LocationId=id),//roomsCollections.ElementAt(2)
 
                     },
                 new Location()
@@ -2297,8 +1362,8 @@ namespace Asklepios.Data.InMemoryContexts
                         City="Warszawa",
                         StreetAndNumber="Malborska",
                         Description="Ośrodek na wschodzie Warszawy z dobrym dojazdem ze wschodnich dzielnic Warszawy a także wschodnich okolic Warszawy.",
-                        Facilities=new List<string>(){"15 gabinetów ogólno-konsultacyjnych", "Gabinet zabiegowy", "2 gabinety stomatologiczne", "Gabinet higieny jamy ustnej", "Gabinet diagnostyki obrazowej"},
-                        Id=4,
+                        //Facilities=new List<string>(){"15 gabinetów ogólno-konsultacyjnych", "Gabinet zabiegowy", "2 gabinety stomatologiczne", "Gabinet higieny jamy ustnej", "Gabinet diagnostyki obrazowej"},
+                        Id=++id,//4,
                         Name="Ośrodek Warszawa Targówek",
                         Services=new List<MedicalService>(){ PrimaryMedicalServices[30],PrimaryMedicalServices[31],PrimaryMedicalServices[32],PrimaryMedicalServices[33],PrimaryMedicalServices[33],PrimaryMedicalServices[5],PrimaryMedicalServices[6],PrimaryMedicalServices[7],PrimaryMedicalServices[8] ,PrimaryMedicalServices[9],PrimaryMedicalServices[0] },
 
@@ -2309,7 +1374,7 @@ namespace Asklepios.Data.InMemoryContexts
                         ImagePath="/img/Locations/loc4.jpg",
                         PhoneNumber="22 777 444 333",
                         PostalCode="02-222",
-                        MedicalRooms=MedicalRooms.GetRange(40,12),//roomsCollections.ElementAt(3)
+                        MedicalRooms=UpdateWithIdsAndReturnMedicalRooms(MedicalRooms.GetRange(40,12),id),//roomsCollections.ElementAt(3)
 
                         },
                     new Location()
@@ -2317,8 +1382,8 @@ namespace Asklepios.Data.InMemoryContexts
                         City="Kraków",
                         StreetAndNumber="Podgórska 14",
                         Description="Ośrodek w Krakowie, w świetnie skomunikowanym Kazimierzu",
-                        Facilities=new List<string>(){"15 gabinetów ogólno-konsultacyjnych", "Gabinet zabiegowy", "2 gabinety stomatologiczne", "Gabinet higieny jamy ustnej", "Gabinet diagnostyki obrazowej"},
-                        Id=5,
+                        //Facilities=new List<string>(){"15 gabinetów ogólno-konsultacyjnych", "Gabinet zabiegowy", "2 gabinety stomatologiczne", "Gabinet higieny jamy ustnej", "Gabinet diagnostyki obrazowej"},
+                        Id=++id,//5,
                         Name="Ośrodek Kraków Pogórze",
                         Services=new List<MedicalService>(){ PrimaryMedicalServices[15],PrimaryMedicalServices[31],PrimaryMedicalServices[32],PrimaryMedicalServices[33],PrimaryMedicalServices[14],PrimaryMedicalServices[25],PrimaryMedicalServices[26],PrimaryMedicalServices[27],PrimaryMedicalServices[28] ,PrimaryMedicalServices[29],PrimaryMedicalServices[11] },
 
@@ -2329,7 +1394,7 @@ namespace Asklepios.Data.InMemoryContexts
                         ImagePath="/img/Locations/loc5.jpg",
                         PhoneNumber="20 300 400 111",
                         PostalCode="80-078",
-                        MedicalRooms=MedicalRooms.GetRange(52,12),//roomsCollections.ElementAt(4)
+                        MedicalRooms=UpdateWithIdsAndReturnMedicalRooms(MedicalRooms.GetRange(52,12),id),//roomsCollections.ElementAt(4)
 
                         },
                     new Location()
@@ -2337,8 +1402,8 @@ namespace Asklepios.Data.InMemoryContexts
                         City="Gdańsk",
                         StreetAndNumber="Chlebnicka 11",
                         Description="Ośrodek w centrum Gdańska na popularnej Wyspie Spichrzów",
-                        Facilities=new List<string>(){"22 gabinety ogólno-konsultacyjne", "Gabinet zabiegowy", "2 gabinety stomatologiczne", "Gabinet higieny jamy ustnej", "Gabinet diagnostyki obrazowej"},
-                        Id=6,
+                        //Facilities=new List<string>(){"22 gabinety ogólno-konsultacyjne", "Gabinet zabiegowy", "2 gabinety stomatologiczne", "Gabinet higieny jamy ustnej", "Gabinet diagnostyki obrazowej"},
+                        Id=++id,//6,
                         Name="Ośrodek Gdańsk Wyspa Spichrzów",
                         Services=new List<MedicalService>(){ PrimaryMedicalServices[18],PrimaryMedicalServices[19],PrimaryMedicalServices[20],PrimaryMedicalServices[21],PrimaryMedicalServices[22],PrimaryMedicalServices[25],PrimaryMedicalServices[26],PrimaryMedicalServices[27],PrimaryMedicalServices[28] ,PrimaryMedicalServices[29],PrimaryMedicalServices[11] },
 
@@ -2349,7 +1414,7 @@ namespace Asklepios.Data.InMemoryContexts
                         ImagePath="/img/Locations/loc6.jpg",
                         PhoneNumber="30 500 500 241",
                         PostalCode="45-100",
-                        MedicalRooms=MedicalRooms.GetRange(64,16),//roomsCollections.ElementAt(5)
+                        MedicalRooms=UpdateWithIdsAndReturnMedicalRooms(MedicalRooms.GetRange(64,16),id),//roomsCollections.ElementAt(5)
 
                     },
                     new Location()
@@ -2357,8 +1422,8 @@ namespace Asklepios.Data.InMemoryContexts
                         City="Poznań",
                         StreetAndNumber="Maltańska 1",
                         Description="Ośrodek położony na terenie Galerie Malta Poznań",
-                        Facilities=new List<string>(){"20 gabinetów ogólno-konsultacyjnych", "Gabinet zabiegowy", "2 gabinety stomatologiczne", "Gabinet higieny jamy ustnej", "Gabinet diagnostyki obrazowej"},
-                        Id=7,
+                        //Facilities=new List<string>(){"20 gabinetów ogólno-konsultacyjnych", "Gabinet zabiegowy", "2 gabinety stomatologiczne", "Gabinet higieny jamy ustnej", "Gabinet diagnostyki obrazowej"},
+                        Id=++id,//7,
                         Name="Ośrodek Poznań Malta",
                         Services=new List<MedicalService>(){ PrimaryMedicalServices[21],PrimaryMedicalServices[22],PrimaryMedicalServices[23],PrimaryMedicalServices[24],PrimaryMedicalServices[25],PrimaryMedicalServices[32],PrimaryMedicalServices[26],PrimaryMedicalServices[27],PrimaryMedicalServices[28] ,PrimaryMedicalServices[29],PrimaryMedicalServices[1] },
 
@@ -2368,7 +1433,7 @@ namespace Asklepios.Data.InMemoryContexts
                         ImagePath="/img/locations/loc7.jpg",
                         PhoneNumber="30 500 500 241",
                         PostalCode="60-102",
-                        MedicalRooms=MedicalRooms.GetRange(80,10),//roomsCollections.ElementAt(1)
+                        MedicalRooms=UpdateWithIdsAndReturnMedicalRooms(MedicalRooms.GetRange(80,10),id),//roomsCollections.ElementAt(1)
 
                     },
                     new Location()
@@ -2376,8 +1441,8 @@ namespace Asklepios.Data.InMemoryContexts
                         City="Wrocław",
                         StreetAndNumber="Szczytnicka 11",
                         Description="Placówka położona nieco na wschód od ścisłego centrum. Łatwo do niej trafić, idąc prosto od strony placu Grunwaldzkiego.",
-                        Facilities=new List<string>(){"15 gabinetów ogólno-konsultacyjnych", "Gabinet zabiegowy", "2 gabinety stomatologiczne", "Gabinet higieny jamy ustnej", "Gabinet diagnostyki obrazowej"},
-                        Id=8,
+                        //Facilities=new List<string>(){"15 gabinetów ogólno-konsultacyjnych", "Gabinet zabiegowy", "2 gabinety stomatologiczne", "Gabinet higieny jamy ustnej", "Gabinet diagnostyki obrazowej"},
+                        Id=++id,
                         Name="Ośrodek Wrocław Szczytnicka",
                                                 Services=new List<MedicalService>(){ PrimaryMedicalServices[15],PrimaryMedicalServices[31],PrimaryMedicalServices[32],PrimaryMedicalServices[33],PrimaryMedicalServices[0],PrimaryMedicalServices[1],PrimaryMedicalServices[2],PrimaryMedicalServices[3] ,PrimaryMedicalServices[4],PrimaryMedicalServices[5] },
 
@@ -2387,7 +1452,7 @@ namespace Asklepios.Data.InMemoryContexts
                         ImagePath="/img/locations/loc8.jpg",
                         PhoneNumber="71 500 500 241",
                         PostalCode="50-031",
-                        MedicalRooms=MedicalRooms.GetRange(90,14),//roomsCollections.ElementAt(3)
+                        MedicalRooms=UpdateWithIdsAndReturnMedicalRooms(MedicalRooms.GetRange(90,14),id),//roomsCollections.ElementAt(3)
                         
                     },
                     new Location()
@@ -2395,8 +1460,8 @@ namespace Asklepios.Data.InMemoryContexts
                         City="Katowice",
                         StreetAndNumber="Młyńska 23",
                         Description="Ośrodek położony w bliskiej okolicy dworca PKP oraz Placu Wolności",
-                        Facilities=new List<string>(){"21 gabinetów ogólno-konsultacyjnych", "Gabinet zabiegowy", "2 gabinety stomatologiczne", "Gabinet higieny jamy ustnej", "Gabinet diagnostyki obrazowej"},
-                        Id=9,
+                        //Facilities=new List<string>(){"21 gabinetów ogólno-konsultacyjnych", "Gabinet zabiegowy", "2 gabinety stomatologiczne", "Gabinet higieny jamy ustnej", "Gabinet diagnostyki obrazowej"},
+                        Id=++id,
                         Name="Ośrodek Kopalnia Katowice",
                         Services=new List<MedicalService>(){ PrimaryMedicalServices[15],PrimaryMedicalServices[16],PrimaryMedicalServices[17],PrimaryMedicalServices[18],PrimaryMedicalServices[14],PrimaryMedicalServices[25],PrimaryMedicalServices[6],PrimaryMedicalServices[7],PrimaryMedicalServices[8] ,PrimaryMedicalServices[9],PrimaryMedicalServices[11] },
                         //Services=new List<string>(){"Interna", "Ginekologia", "Pediatria", "Diagnostyka obrazowa", "Stomatologia", "Higiena jamy ustnej", "Dermatologia", "Ortopedia", "Neurochirurgia", "Gastrologia"},
@@ -2405,9 +1470,12 @@ namespace Asklepios.Data.InMemoryContexts
                         ImagePath="/img/locations/loc9.jpg",
                         PhoneNumber="32 500 500 241",
                         PostalCode="40-750",
-                        MedicalRooms=MedicalRooms.GetRange(104,20),//roomsCollections.ElementAt(2)
+                        MedicalRooms=UpdateWithIdsAndReturnMedicalRooms(MedicalRooms.GetRange(104,21),id),//roomsCollections.ElementAt(2)
                     },
             };
+
+            //  locations.ForEach(c=>c.SetRoomsBackReferences());
+            return locations;
         }
 
         public static IEnumerable<MedicalPackage> GetMedicalPackages()
@@ -2488,7 +1556,7 @@ namespace Asklepios.Data.InMemoryContexts
             return medicalPackages;
         }
 
-        private static List<Person> GetAllPersons()
+        internal static List<Person> GetAllPersons()
         {
             List<Person> people = new List<Person>()
             { };
@@ -2599,7 +1667,7 @@ namespace Asklepios.Data.InMemoryContexts
             people.Add(new Person(imagePath: "/img/persons/um13.jpg", phoneNumber: "401361353", name: "Robert", surName: "Krzycki", id: 100, gender: Core.Enums.Gender.Male, birthDate: new DateTimeOffset(new DateTime(1972, 01, 15)), pesel: "72011525627", hasPolishCitizenship: true, passportCode: null, passportNumber: null, email: "person100@gmail.com", aglomeration: Core.Enums.Aglomeration.Tricity));//,
             people.Add(new Person(imagePath: "/img/persons/um14.jpg", phoneNumber: "854612314", name: "Tomasz", surName: "Janiga", id: 101, gender: Core.Enums.Gender.Male, birthDate: new DateTimeOffset(new DateTime(1997, 01, 15)), pesel: "97011215631", hasPolishCitizenship: true, passportCode: null, passportNumber: null, email: "person101@gmail.com", aglomeration: Core.Enums.Aglomeration.Poznan));//,
             people.Add(new Person(imagePath: "/img/persons/um15.jpg", phoneNumber: "795161304", name: "Rafał", surName: "Fabisiak", id: 102, gender: Core.Enums.Gender.Male, birthDate: new DateTimeOffset(new DateTime(1988, 01, 15)), pesel: "88011525627", hasPolishCitizenship: true, passportCode: null, passportNumber: null, email: "person102@gmail.com", aglomeration: Core.Enums.Aglomeration.Warsaw));//,
-                                                                                                                                                                                                                                                                                                                                                                                                                  //administrative workers
+                                                                                                                                                                                                                                                                                                                                                                                                                 //administrative workers
 
             //customer service workers
             //};
@@ -2610,262 +1678,383 @@ namespace Asklepios.Data.InMemoryContexts
         {
             DateTime now = DateTime.Now;
 
-            List<VisitReview> visitRatings1 = new List<VisitReview>()
+            List<List<VisitReview>> visitRatingsList1 = new List<List<VisitReview>>();
+            List<List<VisitReview>> visitRatingsList2 = new List<List<VisitReview>>();
+            List<List<VisitReview>> visitRatingsList3 = new List<List<VisitReview>>();
+
+            for (int i = 0; i < 70; i++)
             {
-                new VisitReview()
+                List<VisitReview> visitRatings1 = new List<VisitReview>()
                 {
-                    AtmosphereRate=1,
-                    CompetenceRate=4,
-                    GeneralRate=3,
-                    Id=1,
-                    ShortDescription="Lekarz w miarę kompetentny, ale chamski gbur",
-                    ReviewDate= now.AddDays(-10),
-                    Reviewer=AllPatients[0],
-                },
-                new VisitReview()
+                    new VisitReview()
+                    {
+                        AtmosphereRate=1,
+                        CompetenceRate=4,
+                        GeneralRate=3,
+                        Id=1+i*6,
+                        ShortDescription="Lekarz w miarę kompetentny, ale chamski gbur",
+                        ReviewDate= now.AddDays(-10),
+                        //Reviewer=AllPatients[0],
+                        ReviewerId=AllPatients[0].Id,
+
+                    },
+                    new VisitReview()
+                    {
+                        AtmosphereRate=5,
+                        CompetenceRate=2,
+                        GeneralRate=3,
+                        Id=2+i*6,
+                        ShortDescription="Miły lekarz, niestety jego zalecenia nic nie pomogły",
+                        ReviewDate= now.AddDays(-20),
+                        //Reviewer=AllPatients[1]
+                        ReviewerId=AllPatients[1].Id,
+
+                    }
+                };
+                List<VisitReview> visitRatings2 = new List<VisitReview>()
                 {
-                    AtmosphereRate=5,
-                    CompetenceRate=2,
-                    GeneralRate=3,
-                    Id=2,
-                    ShortDescription="Miły lekarz, niestety jego zalecenia nic nie pomogły",
-                    ReviewDate= now.AddDays(-20),
-                    Reviewer=AllPatients[1]
-                }
-            };
-            List<VisitReview> visitRatings2 = new List<VisitReview>()
-            {
-                new VisitReview()
+                    new VisitReview()
+                    {
+                        AtmosphereRate=4,
+                        CompetenceRate=4,
+                        GeneralRate=4,
+                        Id=4+i*6,
+                        ShortDescription="Przepisane przez niego medykamenty poprawiły mój stan, ale część objawów się utrzymała.",
+                        ReviewDate= now.AddDays(-120),
+                        //Reviewer=AllPatients[2]
+                        ReviewerId=AllPatients[2].Id,
+                    },
+                    new VisitReview()
+                    {
+                        AtmosphereRate=5,
+                        CompetenceRate=5,
+                        GeneralRate=5,
+                        Id=3+i*6,
+                        ShortDescription="Super lekarz, pomógł mi, dodatkowo jest bardzo sympatyczny i wszystko mi po kolei wyjaśnił. Lekarz-ideał.",
+                        ReviewDate= now.AddDays(-100),
+                        //Reviewer=AllPatients[3],
+                        ReviewerId=AllPatients[3].Id,
+                    }
+                };
+                List<VisitReview> visitRatings3 = new List<VisitReview>()
                 {
-                    AtmosphereRate=4,
-                    CompetenceRate=4,
-                    GeneralRate=4,
-                    Id=4,
-                    ShortDescription="Przepisane przez niego medykamenty poprawiły mój stan, ale część objawów się utrzymała.",
-                    ReviewDate= now.AddDays(-120),
-                    Reviewer=AllPatients[2]
-                },
-                new VisitReview()
-                {
-                    AtmosphereRate=5,
-                    CompetenceRate=5,
-                    GeneralRate=5,
-                    Id=3,
-                    ShortDescription="Super lekarz, pomógł mi, dodatkowo jest bardzo sympatyczny i wszystko mi po kolei wyjaśnił. Lekarz-ideał.",
-                    ReviewDate= now.AddDays(-100),
-                    Reviewer=AllPatients[3]
-                }
-            };
-            List<VisitReview> visitRatings3 = new List<VisitReview>()
-            {
-                new VisitReview()
-                {
-                    AtmosphereRate=2,
-                    CompetenceRate=1,
-                    GeneralRate=1,
-                    Id=3,
-                    ShortDescription="Lekarza nie interesowały wyniki badań, nie interesowało co mówię, jedyne co mi zalecił, to leki przeciwbólowe!.",
-                    ReviewDate= now.AddDays(-50),
-                    Reviewer=AllPatients[4]
-                },
-                new VisitReview()
-                {
-                    AtmosphereRate=1,
-                    CompetenceRate=2,
-                    GeneralRate=2,
-                    Id=6,
-                    ShortDescription="Bardzo nieprzyjemny, jego leczenie nie przyniosło większej poprawy",
-                    ReviewDate= now.AddDays(-55),
-                    Reviewer=AllPatients[5]
-                }
-            };
+                    new VisitReview()
+                    {
+                        AtmosphereRate=2,
+                        CompetenceRate=1,
+                        GeneralRate=1,
+                        Id=5+i*6,
+                        ShortDescription="Lekarza nie interesowały wyniki badań, nie interesowało co mówię, jedyne co mi zalecił, to leki przeciwbólowe!.",
+                        ReviewDate= now.AddDays(-50),
+                        //Reviewer=AllPatients[4],
+                        ReviewerId=AllPatients[4].Id,
+
+                    },
+                    new VisitReview()
+                    {
+                        AtmosphereRate=1,
+                        CompetenceRate=2,
+                        GeneralRate=2,
+                        Id=6+i*6,
+                        ShortDescription="Bardzo nieprzyjemny, jego leczenie nie przyniosło większej poprawy",
+                        ReviewDate= now.AddDays(-55),
+                        //Reviewer=AllPatients[5],
+                        ReviewerId=AllPatients[5].Id
+
+                    }
+                };
+            }
+            //List<VisitReview> visitRatings1 = new List<VisitReview>()
+            //{
+            //    new VisitReview()
+            //    {
+            //        AtmosphereRate=1,
+            //        CompetenceRate=4,
+            //        GeneralRate=3,
+            //        Id=1,
+            //        ShortDescription="Lekarz w miarę kompetentny, ale chamski gbur",
+            //        ReviewDate= now.AddDays(-10),
+            //        //Reviewer=AllPatients[0],
+            //        ReviewerId=AllPatients[0].Id,
+
+            //    },
+            //    new VisitReview()
+            //    {
+            //        AtmosphereRate=5,
+            //        CompetenceRate=2,
+            //        GeneralRate=3,
+            //        Id=2,
+            //        ShortDescription="Miły lekarz, niestety jego zalecenia nic nie pomogły",
+            //        ReviewDate= now.AddDays(-20),
+            //        //Reviewer=AllPatients[1]
+            //        ReviewerId=AllPatients[1].Id,
+
+            //    }
+            //};
+
+            //List<VisitReview> visitRatings3 = new List<VisitReview>()
+            //{
+            //    new VisitReview()
+            //    {
+            //        AtmosphereRate=2,
+            //        CompetenceRate=1,
+            //        GeneralRate=1,
+            //        Id=3,
+            //        ShortDescription="Lekarza nie interesowały wyniki badań, nie interesowało co mówię, jedyne co mi zalecił, to leki przeciwbólowe!.",
+            //        ReviewDate= now.AddDays(-50),
+            //        //Reviewer=AllPatients[4],
+            //        ReviewerId=AllPatients[4].Id,
+
+            //    },
+            //    new VisitReview()
+            //    {
+            //        AtmosphereRate=1,
+            //        CompetenceRate=2,
+            //        GeneralRate=2,
+            //        Id=6,
+            //        ShortDescription="Bardzo nieprzyjemny, jego leczenie nie przyniosło większej poprawy",
+            //        ReviewDate= now.AddDays(-55),
+            //        //Reviewer=AllPatients[5],
+            //        ReviewerId=AllPatients[5].Id
+
+            //    }
+            //};
 
             //Person person = new Person(name: "Mariusz", surName: "Puto", id: 1, pesel: "77784512598", hasPolishCitizenship: true, passportNumber: null, passportCode: "POL", email: "person1@gmail.com", aglomeration: Core.Enums.Aglomeration.Bialystok);
             long id = 0;
             int userId = 0;
-            List<MedicalWorker> MedicalWorkers = new List<MedicalWorker>()
+            List<MedicalWorker> MedicalWorkers =
+            new List<MedicalWorker>()
             {
-                new Doctor(Persons[0],"IUHIDUASHDI545613216")
+                new Doctor(Persons[0].Id,"IUHIDUASHDI545613216")
                 {
                     Id=++id,
+                                        UserId=Users[userId++].Id,
+                    //User=Users[userId++],
+
                     Education=UM_1,//new List<string>() {UM_1,UM_2},
                     Experience="W latach 2005-2020 praca w szpitalu Bródnowskim",
                     //ImagePath="/img/MW/m/1.jpg",
                     HiredSince=new DateTime(2015,1,1),
-                    IsCurrentlyHired=true,VisitReviews=visitRatings1,
-                    User=Users[userId++],
+                    IsCurrentlyHired=true,
+                   // VisitReviews=visitRatings1,
                     MedicalServices=new List<MedicalService>()
                     {
                         PrimaryMedicalServices[0],PrimaryMedicalServices[1]
                     }
 
                 },
-
-                new Doctor(Persons[1], "ASGER51541213")
+                new Doctor(Persons[1].Id, "ASGER51541213")
                 {
                     Id=++id,
-                    User=Users[userId++],
+                    UserId=Users[userId++].Id,
+                    //User=Users[userId++],
+
                     Education=UM_3,// new List<string>() {UM_3,UM_2},
                     Experience="W latach 2005-2020 praca w szpitalu praskim",
                     //ImagePath="/img/MW/m/2.jpg",
                     HiredSince=new DateTime(2017,1,1),
-                    IsCurrentlyHired=true,VisitReviews=visitRatings2,
+                    IsCurrentlyHired=true,
+                    //VisitReviews=visitRatings2,
                     MedicalServices=new List<MedicalService>()
                     {
                         PrimaryMedicalServices[2],PrimaryMedicalServices[3]
                     }
 
                 },
-                new Physiotherapist(Persons[2], "GVCXDS56151321")
+                new Physiotherapist(Persons[2].Id, "GVCXDS56151321")
                 {
                     Id=++id,
-                    User=Users[userId++],
+                                                            UserId=Users[userId++].Id,
+
+                    //User=Users[userId++],
+
                     Education=UM_2,// new List<string>() {UM_2},
                     Experience="W latach 2005-2020 praca w szpitalu MSWiA",
                     //ImagePath="/img/MW/m/3.jpg",
                     HiredSince=new DateTime(2015,1,1),
-                    IsCurrentlyHired=true,VisitReviews=visitRatings3,
+                    IsCurrentlyHired=true,
+                    //VisitReviews=visitRatings3,
                     MedicalServices=new List<MedicalService>()
                     {
                         PrimaryMedicalServices[33],                        PrimaryMedicalServices[31],                        PrimaryMedicalServices[32]
                     }
 
                 },
-                new Physiotherapist   (Persons[3],"IUJNKJN54321165")
-                {Id=++id,
-                    User=Users[userId++],
+                new Physiotherapist   (Persons[3].Id,"IUJNKJN54321165")
+                {
+                    Id=++id,
+                    UserId=Users[userId++].Id,
+
+                    //User=Users[userId++],
+
                     Education=UM_2,// new List<string>() {UM_1,UM_2},
                     Experience="W latach 2005-2020 praca w szpitalu UMK",
                     //ImagePath="/img/MW/m/4.jpg",
                     HiredSince=new DateTime(2020,4,1),
-                    IsCurrentlyHired=true,VisitReviews=visitRatings1,
+                    IsCurrentlyHired=true,
+                    //VisitReviews=visitRatings1,
                     MedicalServices=new List<MedicalService>()
                     {
                         PrimaryMedicalServices[33],                        PrimaryMedicalServices[31],                        PrimaryMedicalServices[32]
                     }
 
                 },
-                new Doctor(Persons[4],"IUJKHJK546121646")
-                {Id=++id,
-                    User=Users[userId++],
+                new Doctor(Persons[4].Id,"IUJKHJK546121646")
+                {
+                    Id=++id,
+                    UserId=Users[userId++].Id,
+
+                    //User=Users[userId++],
+
                     Education=UM_1,// new List<string>() {UM_1,UM_2},
                     Experience="W latach 2005-2020 praca w szpitalu Bródnowskim",
                     //ImagePath="/img/MW/m/5.jpg",
                     HiredSince=new DateTime(2015,1,1),
-                    IsCurrentlyHired=true,VisitReviews=visitRatings1,
+                    IsCurrentlyHired=true,
+                    //VisitReviews=visitRatings1,
                     MedicalServices=new List<MedicalService>()
                     {
                         PrimaryMedicalServices[5]
                     }
                 },
-                new Doctor(Persons[5],"OPASDASP54156142313")
-                {Id=++id,
-                    User=Users[userId++],
+                new Doctor(Persons[5].Id,"OPASDASP54156142313")
+                {
+                    Id=++id,
+                    UserId=Users[userId++].Id,
+
+                    //User=Users[userId++],
+
                     Education=UM_1,// new List<string>() {UM_1,UM_2},
                     Experience="W latach 2005-2020 praca w szpitalu Bródnowskim",
                     //ImagePath="/img/MW/m/6.jpg",
                     HiredSince=new DateTime(2015,1,1),
-                    IsCurrentlyHired=true,VisitReviews=visitRatings2,
+                    IsCurrentlyHired=true,
+                    //VisitReviews=visitRatings2,
                     MedicalServices=new List<MedicalService>()
                     {
                         PrimaryMedicalServices[20],PrimaryMedicalServices[21]
                     }
                 },
-                new Doctor(Persons[6], "IAOSD5161231564")
-                {Id=++id,
-                    User=Users[userId++],
+                new Doctor(Persons[6].Id, "IAOSD5161231564")
+                {
+                    Id=++id,
+                    UserId=Users[userId++].Id,
+
+                    //User=Users[userId++],
+
                     Education=UM_7,// new List<string>() {UM_1,UM_2},
                     Experience="W latach 2005-2020 praca w szpitalu wrocławskim",
                     //ImagePath="/img/MW/m/7.jpg",
                     HiredSince=new DateTime(2015,1,1),
-                    IsCurrentlyHired=true,VisitReviews=visitRatings3,
+                    IsCurrentlyHired=true,
+                    //VisitReviews=visitRatings3,
                     MedicalServices=new List<MedicalService>()
                     {
                         PrimaryMedicalServices[8]
                     }
                 },
-                new Doctor(Persons[7], "UNCAJSDS51651323")
-                {Id=++id,
-                    User=Users[userId++],
+                new Doctor(Persons[7].Id, "UNCAJSDS51651323")
+                {
+                    Id=++id,
+                    UserId=Users[userId++].Id,
+
+                    //User=Users[userId++],
 
                     Education=UM_3,// new List<string>() {UM_1,UM_2},
                     Experience="W latach 2005-2020 praca w szpitalu podlaskim",
                     //ImagePath="/img/MW/m/8.jpg",
                     HiredSince=new DateTime(2015,1,1),
-                    IsCurrentlyHired=true,VisitReviews=visitRatings2,
+                    IsCurrentlyHired=true,
+                   // VisitReviews=visitRatings2,
                     MedicalServices=new List<MedicalService>()
                     {
                         PrimaryMedicalServices[7],PrimaryMedicalServices[2]
                     }
 
                 },
-                new Doctor(Persons[8], "DFSDFD4654213")
-                {Id=++id,
-                    User=Users[userId++],
+                new Doctor(Persons[8].Id, "DFSDFD4654213")
+                {
+                    Id=++id,
+                    UserId=Users[userId++].Id,
+
+                    //User=Users[userId++],
 
                     Education=UM_4,// new List<string>() {UM_1,UM_2},
                     Experience="W latach 2005-2020 praca w szpitalu Bródnowskim",
                     //ImagePath="/img/MW/m/9.jpg",
                     HiredSince=new DateTime(2012,1,1),
-                    IsCurrentlyHired=true,VisitReviews=visitRatings1,
+                    IsCurrentlyHired=true,
+                   // VisitReviews=visitRatings1,
                     MedicalServices=new List<MedicalService>()
                     {
                         PrimaryMedicalServices[4],PrimaryMedicalServices[2]
                     }
                 },
-                new Doctor(Persons[9],"IOWNCAS5613245")
-                {Id=++id,
-                                    User=Users[userId++],
+                new Doctor(Persons[9].Id,"IOWNCAS5613245")
+                {
+                    Id=++id,
+                    UserId=Users[userId++].Id,
 
+                    //User=Users[userId++],
                     Education=UM_5,// new List<string>() {UM_1,UM_2},
                     Experience="W latach 2005-2020 praca w szpitalu suwalskim",
                     //ImagePath="/img/MW/m/10.jpg",
                     HiredSince=new DateTime(2018,1,1),
-                    IsCurrentlyHired=true,VisitReviews=visitRatings1,
+                    IsCurrentlyHired=true,
+                    //VisitReviews=visitRatings1,
                     MedicalServices=new List<MedicalService>()
                     {
                         PrimaryMedicalServices[20],PrimaryMedicalServices[22]
                     }
                 },
-                new Doctor(Persons[10],"MNMCXISA561235")
-                {Id=++id,
-                                    User=Users[userId++],
-
+                new Doctor(Persons[10].Id,"MNMCXISA561235")
+                {
+                    Id=++id,
+                    UserId=Users[userId++].Id,
+                    //User=Users[userId++],
                     Education=UM_9,// new List<string>() {UM_9},
                     Experience="W latach 2008-2019 praca w szpitalu podkarpackim",
                     //ImagePath="/img/MW/m/11.jpg",
                     HiredSince=new DateTime(2017,5,5),
-                    IsCurrentlyHired=true,VisitReviews=visitRatings1,
+                    IsCurrentlyHired=true,
+                   // VisitReviews=visitRatings1,
                     MedicalServices=new List<MedicalService>()
                     {
                         PrimaryMedicalServices[7],PrimaryMedicalServices[2]
                     }
 
                 },
-                new Doctor(Persons[11],"ASIUDAS5123463")
-                {Id=++id,
-                                    User=Users[userId++],
+                new Doctor(Persons[11].Id,"ASIUDAS5123463")
+                {
+                    Id=++id,
+                    UserId=Users[userId++].Id,
+
+                                    //User=Users[userId++],
 
                     Education=UM_8,// new List<string>() {UM_8},
                     Experience="W latach 2005-2020 praca w szpitalu Bródnowskim",
                     //ImagePath="/img/MW/m/12.jpg",
                     HiredSince=new DateTime(2017,1,1),
-                    IsCurrentlyHired=true,VisitReviews=visitRatings1,
+                    IsCurrentlyHired=true,
+                  //  VisitReviews=visitRatings1,
                     MedicalServices=new List<MedicalService>()
                     {
                         PrimaryMedicalServices[5]
                     }
 
                 },
-                new ElectroradiologyTechnician (Persons[12],"QPSCS5346448")
-                {Id=++id,
-                                    User=Users[userId++],
-
+                new ElectroradiologyTechnician (Persons[12].Id,"QPSCS5346448")
+                {
+                    Id=++id,
+                    UserId=Users[userId++].Id,
+                                    //User=Users[userId++],
                     Education=UM_7,// new List<string>() {UM_7},
                     Experience="W latach 2005-2020 praca w szpitalu wojskowym",
                     //ImagePath="/img/MW/m/13.jpg",
                     HiredSince=new DateTime(2012,12,12),
-                    IsCurrentlyHired=true,VisitReviews=visitRatings1,
+                    IsCurrentlyHired=true,
+                  //  VisitReviews=visitRatings1,
                     MedicalServices=new List<MedicalService>()
                     {
                         PrimaryMedicalServices[28],                        PrimaryMedicalServices[29]
@@ -2873,923 +2062,1015 @@ namespace Asklepios.Data.InMemoryContexts
                     }
 
                 },
-                new Doctor(Persons[13], "CXCXZS6543215")
-                {Id=++id,
-                                    User=Users[userId++],
-
+                new Doctor(Persons[13].Id, "CXCXZS6543215")
+                {
+                    Id=++id,
+                    UserId=Users[userId++].Id,
+                                    //User=Users[userId++],
                     Education=UM_6,// new List<string>() {UM_6},
                     Experience="W latach 2010-2019 praca w szpitalu matki i dziecka",
                     //ImagePath="/img/MW/m/14.jpg",
                     HiredSince=new DateTime(2019,4,4),
-                    IsCurrentlyHired=true,VisitReviews=visitRatings1,
+                    IsCurrentlyHired=true,
+                 //   VisitReviews=visitRatings1,
                     MedicalServices=new List<MedicalService>()
                     {
                         PrimaryMedicalServices[7]}
 
                 },
-                new Doctor(Persons[14], "PASXCA516164")
-                {Id=++id,
-                                    User=Users[userId++],
-
+                new Doctor(Persons[14].Id, "PASXCA516164")
+                {
+                    Id=++id,
+                    UserId=Users[userId++].Id,
+                    //User=Users[userId++],
                     Education=UM_5,// new List<string>() {UM_5},
                     Experience="W latach 2011-2021 praca w szpitalu zakaźnym",
                     //ImagePath="/img/MW/m/15.jpg",
                     HiredSince=new DateTime(2015,1,1),
-                    IsCurrentlyHired=true,VisitReviews=visitRatings1,
+                    IsCurrentlyHired=true,
+               //     VisitReviews=visitRatings1,
                     MedicalServices=new List<MedicalService>()
                     {
                         PrimaryMedicalServices[9]
                     }
-
                 },
-                new Doctor(Persons[15], "PSADNASJ1564613")
-                {Id=++id,
-                                    User=Users[userId++],
-
+                new Doctor(Persons[15].Id, "PSADNASJ1564613")
+                {
+                    Id=++id,
+                    UserId=Users[userId++].Id,
+                    //User=Users[userId++],
                     Education=UM_4,// new List<string>() {UM_1,UM_2},
                     Experience="W latach 2007-2021 praca w szpitalu kujawskim",
                     //ImagePath="/img/MW/m/16.jpg",
                     HiredSince=new DateTime(2015,1,1),
-                    IsCurrentlyHired=true,VisitReviews=visitRatings1,
+                    IsCurrentlyHired=true,
+           //         VisitReviews=visitRatings1,
                     MedicalServices=new List<MedicalService>()
                     {
                         PrimaryMedicalServices[8]
                     }
                 },
-                new Doctor(Persons[16], "AHUHIFDSD18564513")
-                {Id=++id,
-                                    User=Users[userId++],
+                new Doctor(Persons[16].Id, "AHUHIFDSD18564513")
+                {
+                    Id=++id,
+                    UserId=Users[userId++].Id,
+
+                                    //User=Users[userId++],
 
                     Education=UM_4,// new List<string>() {UM_4},
                     Experience="W latach 2005-2020 praca w szpitalu łódzkim",
                     //ImagePath="/img/MW/m/17.jpg",
                     HiredSince=new DateTime(2013,3,3),
-                    IsCurrentlyHired=true,VisitReviews=visitRatings3,
+                    IsCurrentlyHired=true,
+          //          VisitReviews=visitRatings3,
                     MedicalServices=new List<MedicalService>()
                     {
                         PrimaryMedicalServices[11],PrimaryMedicalServices[12]
                     }
-
                 },
-                new Doctor(Persons[17],"UYGSDAS541321")
-                {Id=++id,
-                                    User=Users[userId++],
+                new Doctor(Persons[17].Id,"UYGSDAS541321")
+                {
+                    Id=++id,
+                    UserId=Users[userId++].Id,
+
+                                    //User=Users[userId++],
+
                     Education=UM_2,// new List<string>() {UM_1,UM_2},
                     Experience="W latach 2005-2020 praca w szpitalu Bródnowskim",
                     //ImagePath="/img/MW/m/2.jpg",
                     HiredSince=new DateTime(2015,1,1),
-                    IsCurrentlyHired=true,VisitReviews=visitRatings2,
+                    IsCurrentlyHired=true,
+                   // VisitReviews=visitRatings2,
                     MedicalServices=new List<MedicalService>()
                     {
                         PrimaryMedicalServices[11],PrimaryMedicalServices[13]
                     }
 
                 },
-                new Doctor(Persons[18],"JHGDAJSH516145")
-                {Id=++id,
-                                    User=Users[userId++],
+                new Doctor(Persons[18].Id,"JHGDAJSH516145")
+                {
+                    Id=++id,
+                    UserId=Users[userId++].Id,
+
+                    //User=Users[userId++],
 
                     Education=UM_3,// new List<string>() {UM_3},
                     Experience="W latach 2009-2020 praca w POZ Węgrów.",
                     //ImagePath="/img/MW/m/19.jpg",
                     HiredSince=new DateTime(2018,7,6),
-                    IsCurrentlyHired=true,VisitReviews=visitRatings1,
+                    IsCurrentlyHired=true,
+                //    VisitReviews=visitRatings1,
                     MedicalServices=new List<MedicalService>()
                     {
                         PrimaryMedicalServices[11],PrimaryMedicalServices[14]
                     }
 
                 },
-                new Doctor(Persons[19], "GSFEQWDXA515646")
-                {Id=++id,
-                                    User=Users[userId++],
+                new Doctor(Persons[19].Id, "GSFEQWDXA515646")
+                {
+                    Id=++id,
+                    UserId=Users[userId++].Id,
+
+                                    //User=Users[userId++],
 
                     Education=UM_1,// new List<string>() {UM_1},
                     Experience="W latach 2005-2020 praca w szpitalu miejskim w Krośnie",
                     //ImagePath="/img/MW/m/20.jpg",
                     HiredSince=new DateTime(2020,2,1),
-                    IsCurrentlyHired=true,VisitReviews=visitRatings1,
+                    IsCurrentlyHired=true,
+                 //   VisitReviews=visitRatings1,
                     MedicalServices=new List<MedicalService>()
                     {
                         PrimaryMedicalServices[11],PrimaryMedicalServices[15]
                     }
 
                 },
-                new Doctor(Persons[20], "ISJAD4465132")
-                {Id=++id,
-                                    User=Users[userId++],
-
+                new Doctor(Persons[20].Id, "ISJAD4465132")
+                {
+                    Id=++id,
+                    UserId=Users[userId++].Id,
+                    //User=Users[userId++],
                     Education=UM_2,// new List<string>() {UM_1,UM_2},
                     Experience="W latach 2005-2020 praca w szpitalu tarnowskim",
                     //ImagePath="/img/MW/m/21.jpg",
                     HiredSince=new DateTime(2017,1,1),
-                    IsCurrentlyHired=true,VisitReviews=visitRatings1,
+                    IsCurrentlyHired=true,
+            //       VisitReviews=visitRatings1,
                     MedicalServices=new List<MedicalService>()
                     {
                         PrimaryMedicalServices[16]
                     }
 
                 },
-                new Doctor(Persons[21], "UISDR216443")
-                {Id=++id,
-                                    User=Users[userId++],
+                new Doctor(Persons[21].Id, "UISDR216443")
+                {
+                    Id=++id,
+                    UserId=Users[userId++].Id,
+                    //User=Users[userId++],
 
                     Education=UM_3,// new List<string>() {UM_1,UM_2},
                     Experience="W latach 2005-2020 praca w szpitalu miejskim w Zakopanem",
                     //ImagePath="/img/MW/m/22.jpg",
                     HiredSince=new DateTime(2015,1,1),
-                    IsCurrentlyHired=true,VisitReviews=visitRatings2,
+                    IsCurrentlyHired=true,
+                //    VisitReviews=visitRatings2,
                     MedicalServices=new List<MedicalService>()
                     {
                         PrimaryMedicalServices[17]
                     }
 
                 },
-                new Doctor(Persons[22], "VASDK5421324")
-                {Id=++id,
-                                    User=Users[userId++],
-
+                new Doctor(Persons[22].Id, "VASDK5421324")
+                {
+                    Id=++id,
+                    UserId=Users[userId++].Id,
+                                    //User=Users[userId++],
                     Education=UM_4,// new List<string>() {UM_7},
                     Experience="W latach 2005-2020 praca w szpitalu Bródnowskim",
                     //ImagePath="/img/MW/m/23.jpg",
                     HiredSince=new DateTime(2015,1,1),
-                    IsCurrentlyHired=true,VisitReviews=visitRatings1,
+                    IsCurrentlyHired=true,
+                 //   VisitReviews=visitRatings1,
                     MedicalServices=new List<MedicalService>()
                     {
                         PrimaryMedicalServices[18]
                     }
                 },
-                new Doctor(Persons[23], "ASPDUI56321587")
-                {Id=++id,
-                                    User=Users[userId++],
-
+                new Doctor(Persons[23].Id, "ASPDUI56321587")
+                {
+                    Id=++id,
+                    UserId=Users[userId++].Id,
+                                    //User=Users[userId++],
                     Education=UM_5,// new List<string>() {UM_5},
                     Experience="W latach 2008-2014 praca w szpitalu kardiologicznym",
                     //ImagePath="/img/MW/m/2.jpg",
                     HiredSince=new DateTime(2015,1,1),
-                    IsCurrentlyHired=true,VisitReviews=visitRatings1,
+                    IsCurrentlyHired=true,
+                 //   VisitReviews=visitRatings1,
                     MedicalServices=new List<MedicalService>()
                     {
                         PrimaryMedicalServices[19]
                     }
                 },
-                new Doctor(Persons[24], "BVNMXCA4623148")
-                {Id=++id,
-                                    User=Users[userId++],
-
+                new Doctor(Persons[24].Id, "BVNMXCA4623148")
+                {
+                    Id=++id,
+                    UserId=Users[userId++].Id,
+                                    //User=Users[userId++],
                     Education=UM_6,// new List<string>() {UM_5},
                     Experience="W latach 2005-2020 praca w szpitalu w Dębicy",
                     //ImagePath="/img/MW/m/25.jpg",
                     //HiredSince=new DateTime(2015,1,1),
-                    IsCurrentlyHired=true,VisitReviews=visitRatings1,
+                    IsCurrentlyHired=true,
+                //    VisitReviews=visitRatings1,
                     MedicalServices=new List<MedicalService>()
                     {
                         PrimaryMedicalServices[20],PrimaryMedicalServices[24]
                     }
 
                 },
-                new Physiotherapist(Persons[25],"FAHDJ665413215")
-                {Id=++id,
-                                    User=Users[userId++],
+                new Physiotherapist(Persons[25].Id,"FAHDJ665413215")
+                {
+                    Id=++id,
+                    UserId=Users[userId++].Id,
+                    //User=Users[userId++],
 
                     Education=UM_7,// new List<string>() {UM_4},
                     Experience="W latach 2005-2020 praca w szpitalu powiatowym w Zamościu",
                     //ImagePath="/img/MW/m/26.jpg",
                     //HiredSince=new DateTime(2019,1,1),
-                    IsCurrentlyHired=true,VisitReviews=visitRatings1,
+                    IsCurrentlyHired=true,
+                //    VisitReviews=visitRatings1,
                     MedicalServices=new List<MedicalService>()
                     {
                         PrimaryMedicalServices[31],PrimaryMedicalServices[32],PrimaryMedicalServices[33]
                     }
 
                 },
-                new Doctor(Persons[26],"ALKJSD5461321")
-                {Id=++id,
-                                    User=Users[userId++],
+                new Doctor(Persons[26].Id,"ALKJSD5461321")
+                {
+                    Id=++id,
+                    UserId=Users[userId++].Id,
+                    //User=Users[userId++],
+
                     Education=UM_8,// new List<string>() {UM_2},
                     Experience="W latach 2005-2020 praca w szpitalu zakaźnym na Woli",
                     //ImagePath="/img/MW/m/27.jpg",
                     //HiredSince=new DateTime(2011,10,11),
-                    IsCurrentlyHired=true,VisitReviews=visitRatings1,
+                    IsCurrentlyHired=true,
+                 //   VisitReviews=visitRatings1,
                     MedicalServices=new List<MedicalService>()
                     {
                         PrimaryMedicalServices[6],PrimaryMedicalServices[27]
                     }
 
                 },
-                new ElectroradiologyTechnician(Persons[27], "HGSDAS545641231")
-                {Id=++id,
-                                                    User=Users[userId++],
-
-                    Education=UM_9,// new List<string>() {UM_6},
-                    Experience="W latach 2006-2019 praca w szpitalu świętokrzyskim",
-                    //ImagePath="/img/MW/m/28.jpg",
-                    //HiredSince=new DateTime(2020,8,8),
-                    IsCurrentlyHired=true,VisitReviews=visitRatings1,
-                    MedicalServices=new List<MedicalService>()
-                    {
-                        PrimaryMedicalServices[28],PrimaryMedicalServices[29]
-                    }
-
-                },
-                new Doctor(Persons[28],"BHJASGDJAS54613254")
-                {
-                    Id=++id,
-                                                        User=Users[userId++],
-
-                    Education=UM_9,////new List<string>() {UM_8},
-                    Experience="W latach 2005-2020 praca w szpitalu akademickim w Białymstoku",
-                    //ImagePath="/img/MW/m/29.jpg",
-                    //HiredSince=new DateTime(2018,1,1),
-                    IsCurrentlyHired=true,VisitReviews=visitRatings1,
-                    MedicalServices=new List<MedicalService>()
-                    {
-                        PrimaryMedicalServices[6],PrimaryMedicalServices[27]
-                    }
-                },
-                new Doctor(Persons[29],"OJIHJDAS543156")
-                {
-                Id=++id,
-                                                    User=Users[userId++],
-
-                    Education=UM_8,// new List<string>() {UM_6},
-                    Experience="W latach 2005-2020 praca w szpitalu miejskim w Słupsku",
-                    //ImagePath="/img/MW/m/30.jpg",
-                    //HiredSince=new DateTime(2016,4,4),
-                    IsCurrentlyHired=true,VisitReviews=visitRatings1,
-                    MedicalServices=new List<MedicalService>()
-                    {
-                        PrimaryMedicalServices[7]
-                    }
-
-                },
-                new Doctor(Persons[30],"JHASKDAS65461321")
-                {
-                    Id = ++id,
-                                                        User=Users[userId++],
-
-                    Education =UM_7,// new List<string>() {UM_3},
-                    Experience="W latach 2005-2012 praca w szpitalu klinicznym w Gnieźnie. Wcześniej pracował w Zielonej górze.",
-                    //ImagePath="/img/MW/m/31.jpg",
-                    //HiredSince=new DateTime(2011,1,1),
-                    IsCurrentlyHired=true,VisitReviews=visitRatings1,
-                    MedicalServices=new List<MedicalService>()
-                    {
-                        PrimaryMedicalServices[11],PrimaryMedicalServices[12],PrimaryMedicalServices[13]
-                    }
-                },
-                new Doctor(Persons[31],"JHKSDASD546123")
-                {
-                    Id = ++id,
-                                                        User=Users[userId++],
-
-                    Education =UM_6,// new List<string>() {UM_4},
-                    Experience="W latach 2005-2020 praca w szpitalu akademickim w Krakowie",
-                    //ImagePath="/img/MW/m/32.jpg",
-                    //HiredSince=new DateTime(2019,8,1),
-                    IsCurrentlyHired=true,VisitReviews=visitRatings1,
-                    MedicalServices=new List<MedicalService>()
-                    {
-                        PrimaryMedicalServices[8]
-                    }
-
-                },
-                new Doctor(Persons[32],"JHASHJDGJA4516354")
-                {
-                    Id = ++id,
-                                                        User=Users[userId++],
-
-                    Education = UM_6,//new List<string>() {UM_6},
-                    Experience="W latach 2009-2019 praca w szpitalu w Węgrowie",
-                    //ImagePath="/img/MW/k/1.jpg",
-                    HiredSince=new DateTime(2015,5,5),
-                    IsCurrentlyHired=true,VisitReviews=visitRatings1,
-                    MedicalServices=new List<MedicalService>()
-                    {
-                        PrimaryMedicalServices[23]
-                    }
-
-                },
-                new DentalHygienist(Persons[33],"HASDUQ561613")
-                {
-                    Id = ++id,
-                                                        User=Users[userId++],
-
-                    Education =UM_1,// new List<string>() {UM_1,UM_2},
-                    Experience="W latach 2015-2021 praca w szpitalu uniwersyteckim w Poznaniu",
-                    //ImagePath="/img/MW/k/2.jpg",
-                    HiredSince=new DateTime(2015,10,1),
-                    IsCurrentlyHired=true,VisitReviews=visitRatings1,
-                    MedicalServices=new List<MedicalService>()
-                    {
-                        PrimaryMedicalServices[25]
-                    }
-
-                },
-                new Doctor(Persons[34],"JHSAD6564513")
-                {
-                    Id = ++id,
-                                                        User=Users[userId++],
-
-                    Education =UM_3,// new List<string>() {UM_3},
-                    Experience="W latach 2011-2021 praca w szpitalu miejskim w Łowiczu",
-                    //ImagePath="/img/MW/k/3.jpg",
-                    HiredSince=new DateTime(2015,1,1),
-                    IsCurrentlyHired=true,VisitReviews=visitRatings1,
-                    MedicalServices=new List<MedicalService>()
-                    {
-                        PrimaryMedicalServices[9]
-                    }
-
-                },
-                new Doctor(Persons[35],"GASHJD56441231")
-                {
-                    Id = ++id,
-                                                        User=Users[userId++],
-
-                    Education =UM_2,// new List<string>() {UM_1,UM_2},
-                    Experience="W latach 2008-2020 praca w szpitalu zakaźnym w Krakowie",
-                    //ImagePath="/img/mw/k/4.jpg",
-                    HiredSince=new DateTime(2018,8,11),
-                    IsCurrentlyHired=true,VisitReviews=visitRatings1,
-                    MedicalServices=new List<MedicalService>()
-                    {
-                        PrimaryMedicalServices[2],PrimaryMedicalServices[0]
-                    }
-
-                },
-                new Doctor(Persons[36],"HBJASD546132")
-                {
-                    Id = ++id,
-                                                        User=Users[userId++],
-
-                    Education =UM_4,// new List<string>() {UM_4},
-                    Experience="W latach 2007-2020 praca w szpitalu Bródnowskim",
-                    //ImagePath="/img/mw/k/5.jpg",
-                    HiredSince=new DateTime(2017,7,7),
-                    IsCurrentlyHired=true,VisitReviews=visitRatings1,
-                    MedicalServices=new List<MedicalService>()
-                    {
-                        PrimaryMedicalServices[7]
-                    }
-
-                },
-                new Doctor(Persons[37],"BIKDAS5416132")
-                {
-                    Id = ++id,
-                                                        User=Users[userId++],
-
-                    Education =UM_4,//  new List<string>() {UM_1,UM_2},
-                    Experience="W latach 2005-2020 praca w szpitalu Bródnowskim",
-                    //ImagePath="/img/mw/k/6.jpg",
-                    HiredSince=new DateTime(2017,4,4),
-                    IsCurrentlyHired=true,VisitReviews=visitRatings1,
-                    MedicalServices=new List<MedicalService>()
-                    {
-                        PrimaryMedicalServices[2],PrimaryMedicalServices[3]
-                    }
-
-                },
-                new Doctor(Persons[38],"HJGASW4654613")
-                {
-                    Id = ++id,
-                                                        User=Users[userId++],
-
-                    Education =UM_5,// new List<string>() {UM_1,UM_2},
-                    Experience="W latach 2012-2020 praca w szpitalu południowym w Warszawie",
-                    //ImagePath="/img/mw/k/7.jpg",
-                    HiredSince=new DateTime(2015,1,11),
-                    IsCurrentlyHired=true,VisitReviews=visitRatings1,
-                    MedicalServices=new List<MedicalService>()
-                    {
-                        PrimaryMedicalServices[11],PrimaryMedicalServices[14]
-                    }
-
-                },
-                new Nurse(Persons[39],"IOSHJD4613245")
-                {
-                    Id = ++id,
-                                                        User=Users[userId++],
-
-                    Education =UM_2,// new List<string>() {UM_1,UM_2},
-                    Experience="W latach 2005-2020 praca w szpitalu chorób serca w Gdańsku",
-                    //ImagePath="/img/mw/k/8.jpg",
-                    HiredSince=new DateTime(2018,8,8),
-                    IsCurrentlyHired=true,VisitReviews=visitRatings1,
-                    MedicalServices=new List<MedicalService>()
-                    {
-                        PrimaryMedicalServices[26],PrimaryMedicalServices[33]
-                    }
-
-                },
-                new Nurse(Persons[40],"UGHSDS56134564")
-                {
-                    Id = ++id,
-                                                        User=Users[userId++],
-
-                    Education =UM_6,// new List<string>() {UM_6},
-                    Experience="W latach 2007-2018 praca w szpitalu praskim w Warszawie",
-                    //ImagePath="/img/mw/k/9.jpg",
-                    HiredSince=new DateTime(2021,11,1),
-                    IsCurrentlyHired=true,VisitReviews=visitRatings1,
-                    MedicalServices=new List<MedicalService>()
-                    {
-                        PrimaryMedicalServices[26],PrimaryMedicalServices[33]
-                    }
-
-                },
-                new Doctor(Persons[41],"USHDKAS744561513")
-                {
-                    Id = ++id,
-                                                        User=Users[userId++],
-
-                    Education =UM_8,// new List<string>() {UM_8},
-                    Experience="W latach 2009-2019 praca w szpitalu praskim w Warszawie",
-                    //ImagePath="/img/mw/k/10.jpg",
-                    HiredSince=new DateTime(2012,11,11),
-                    IsCurrentlyHired=true,VisitReviews=visitRatings1,
-                    MedicalServices=new List<MedicalService>()
-                    {
-                        PrimaryMedicalServices[19]
-                    }
-
-                    },
-                new Doctor(Persons[42],"NMBVDSDA546123")
-                {
-                    Id = ++id,
-                                                        User=Users[userId++],
-
-                    Education =UM_5,// new List<string>() {UM_5},
-                    Experience="W latach 2005-2020 praca w szpitalu Bródnowskim",
-                    //ImagePath="/img/mw/k/11.jpg",
-                    HiredSince=new DateTime(2017,7,9),
-                    IsCurrentlyHired=true,VisitReviews=visitRatings1,
-                    MedicalServices=new List<MedicalService>()
-                    {
-                        PrimaryMedicalServices[20],PrimaryMedicalServices[21]
-                    }
-                },
-                new Doctor(Persons[43],"LKASJD465315")
-                {
-                    Id = ++id,
-                                                        User=Users[userId++],
-
-                    Education =UM_2,// new List<string>() {UM_1,UM_2},
-                    Experience="W latach 2012-2019 praca w szpitalu MSWIA w Warszawie",
-                    //ImagePath="/img/mw/k/12.jpg",
-                    HiredSince=new DateTime(2019,4,8),
-                    IsCurrentlyHired=true,VisitReviews=visitRatings1,
-                    MedicalServices=new List<MedicalService>()
-                    {
-                        PrimaryMedicalServices[10],PrimaryMedicalServices[5]
-                    }
-
-                },
-                new Doctor(Persons[44],"IOHDSFDS46132456")
-                {
-                    Id = ++id,
-                                                        User=Users[userId++],
-
-                    Education =UM_7,// new List<string>() {UM_7},
-                    Experience="W latach 2005-2020 praca w szpitalu centralnym w Krakowie",
-                    //ImagePath="/img/mw/k/13.jpg",
-                    HiredSince=new DateTime(2016,6,6),
-                    IsCurrentlyHired=true,VisitReviews=visitRatings1,
-                    MedicalServices=new List<MedicalService>()
-                    {
-                        PrimaryMedicalServices[2],PrimaryMedicalServices[30]
-                    }
-
-                },
-                new Doctor(Persons[45],"UHJDSF5645132")
-                {
-                    Id = ++id,
-                                                        User=Users[userId++],
-
-                    Education =UM_1,// new List<string>() {UM_1,UM_2},
-                    Experience="W latach 2019-2021 praca w szpitalu u Koziołka Matołka w Poznaniu",
-                    //ImagePath="/img/mw/k/14.jpg",
-                    HiredSince=new DateTime(2015,7,1),
-                    IsCurrentlyHired=true,VisitReviews=visitRatings1,
-                    MedicalServices=new List<MedicalService>()
-                    {
-                        PrimaryMedicalServices[2],PrimaryMedicalServices[30]
-                    }
-
-                },
-                new DentalHygienist(Persons[46],"SDFJL4654131")
-                {
-                    Id = ++id,
-                                                        User=Users[userId++],
-
-                    Education =UM_2 ,// new List<string>() {UM_1,UM_2},
-                    Experience="W latach 2005-2020 praca w szpitalu klinicznym we Wrocławiu",
-                    //ImagePath="/img/mw/k/15.jpg",
-                    HiredSince=new DateTime(2017,2,11),
-                    IsCurrentlyHired=true,VisitReviews=visitRatings1,
-                    MedicalServices=new List<MedicalService>()
-                    {
-                        PrimaryMedicalServices[25]
-                    }
-
-                },
-                new Doctor(Persons[47],"JBNBJHSD45642131")
-                {
-                    Id = ++id,
-                                                        User=Users[userId++],
-
-                    Education =UM_3,// new List<string>() {UM_1,UM_2},
-                    Experience="W latach 2018-2021 praca w szpitalu klinicznym we Wrocławiu",
-                    //ImagePath="/img/mw/k/16.jpg",
-                    HiredSince=new DateTime(2021,2,1),
-                    IsCurrentlyHired=true,VisitReviews=visitRatings1,
-                    MedicalServices=new List<MedicalService>()
-                    {
-                        PrimaryMedicalServices[5]
-                    }
-                },
-                new Doctor(Persons[48],"JHGFJDS564165412")
-                {
-                    Id = ++id,
-                                                        User=Users[userId++],
-
-                    Education =UM_8,// new List<string>() {UM_8},
-                    Experience="W latach 2019-2020 praca w szpitalu Bródnowskim",
-                    //ImagePath="/img/mw/k/17.jpg",
-                    HiredSince=new DateTime(2021,1,9),
-                    IsCurrentlyHired=true,VisitReviews=visitRatings1,
-                    MedicalServices=new List<MedicalService>()
-                    {
-                        PrimaryMedicalServices[10]
-                    }
-
-                },
-                new Doctor(Persons[49],"JHFDSF4561231")
-                {
-                    Id = ++id,
-                                                        User=Users[userId++],
-
-                    Education =UM_4,// new List<string>() {UM_4},
-                    Experience="W latach 2005-2020 praca w szpitalu Bródnowskim",
-                    //ImagePath="/img/mw/k/18.jpg",
-                    HiredSince=new DateTime(2015,1,1),
-                    IsCurrentlyHired=true,VisitReviews=visitRatings1,
-                    MedicalServices=new List<MedicalService>()
-                    {
-                        PrimaryMedicalServices[20],PrimaryMedicalServices[24]
-                    }
-
-                },
-                new Doctor(Persons[50],"UIFSDF4561321")
-                {
-                    Id = ++id,
-                                                        User=Users[userId++],
-
-                    Education =UM_7,// new List<string>() {UM_5,UM_7},
-                    Experience="W latach 2005-2020 praca w szpitalu Bródnowskim",
-                    //ImagePath="/img/mw/k/19.jpg",
-                    HiredSince=new DateTime(2019,4,4),
-                    IsCurrentlyHired=true,VisitReviews=visitRatings1,
-                    MedicalServices=new List<MedicalService>()
-                    {
-                        PrimaryMedicalServices[9]
-                    }
-
-                },
-                new ElectroradiologyTechnician(Persons[51],"DHJKFSD4564132")
-                {
-                    Id = ++id,
-                                                        User=Users[userId++],
-
-                    Education =UM_9,// new List<string>() {UM_7,UM_9},
-                    Experience="Staż odbyła w szpitalu Bródnowskim w Warszawie. Od 2016 roku pracuje w szpitalu Praskim w Warszawie.",
-                    //ImagePath="/img/mw/k/20.jpg",
-                    HiredSince=new DateTime(2018,9,11),
-                    IsCurrentlyHired=true,VisitReviews=visitRatings1,
-                    MedicalServices=new List<MedicalService>()
-                    {
-                        PrimaryMedicalServices[28]
-                    }
-
-                },
-                new Nurse(Persons[52],"HBJKSDF56413215")
-                {
-                    Id = ++id,
-                                                        User=Users[userId++],
-
-                    Education =UM_6,// new List<string>() {UM_6,UM_2},
-                    Experience="Staż odbyty w szpitalu akademickim w Białymstoku. Od 2018 roku praca w szpitalu powiatowym w Węgrowie",
-                    //ImagePath="/img/mw/k/21.jpg",
-                    HiredSince=new DateTime(2018,8,8),
-                    IsCurrentlyHired=true,VisitReviews=visitRatings1,
-                    MedicalServices=new List<MedicalService>()
-                    {
-                        PrimaryMedicalServices[26],PrimaryMedicalServices[33]
-                    }
-
-                },
-                new Doctor(Persons[53], "RERDSDF2134969")
-                {
-                    Id = ++id,
-                                                        User=Users[userId++],
-
-                    Education = UM_4,// new List<string>() {UM_4,UM_2},
-                    Experience="W latach 2005-2020 praca w szpitalu Bródnowskim",
-                    //ImagePath="/img/mw/k/22.jpg",
-                    HiredSince=new DateTime(2018,4,6),
-                    IsCurrentlyHired=true,VisitReviews=visitRatings1,
-                    MedicalServices=new List<MedicalService>()
-                    {
-                        PrimaryMedicalServices[2],PrimaryMedicalServices[18]
-                    }
-
-                },
-                new Nurse(Persons[54],"BNMDSF546123")
-                {
-                    Id = ++id,
-                                                        User=Users[userId++],
-
-                    Education =UM_1,// new List<string>() {UM_5},
-                    Experience="W latach 2005-2020 praca w szpitalu Bródnowskim",
-                    //ImagePath="/img/mw/k/23.jpg",
-                    HiredSince=new DateTime(2015,1,1),
-                    IsCurrentlyHired=true,VisitReviews=visitRatings1,
-                    MedicalServices=new List<MedicalService>()
-                    {
-                        PrimaryMedicalServices[33],PrimaryMedicalServices[26]
-                    }
-
-                },
-                new ElectroradiologyTechnician(Persons[55],"PODBASHJ4454321")
-                {
-                    Id = ++id,
-                                                        User=Users[userId++],
-
-                    Education =UM_3,// new List<string>() {UM_1,UM_2},
-                    Experience="W latach 2005-2020 praca w szpitalu Bródnowskim",
-                    //ImagePath="/img/mw/k/24.jpg",
-                    HiredSince=new DateTime(2019,1,1),
-                    IsCurrentlyHired=true,VisitReviews=visitRatings1,
-                    MedicalServices=new List<MedicalService>()
-                    {
-                        PrimaryMedicalServices[28],PrimaryMedicalServices[29]
-                    }
-
-                },
-                new Doctor(Persons[56],"YHBKASD5465123")
-                {
-                    Id = ++id,
-                                                        User=Users[userId++],
-
-                    Education =UM_1,// new List<string>() {UM_3},
-                    Experience="W latach 2014-2021 praca w szpitalu zielonogórskim",
-                    //ImagePath="/img/mw/k/25.jpg",
-                    HiredSince=new DateTime(2013,3,3),
-                    IsCurrentlyHired=true,VisitReviews=visitRatings1,
-                    MedicalServices=new List<MedicalService>()
-                    {
-                        PrimaryMedicalServices[11],PrimaryMedicalServices[14]
-                    }
-
-                },
-                new Doctor(Persons[57],"OPQEW6546132")
-                {
-                    Id = ++id,
-                                                        User=Users[userId++],
-
-                    Education =UM_4,// new List<string>() {UM_5},
-                    Experience="W latach 2005-2020 praca w szpitalu wojewódzkim w Olsztynie",
-                    //ImagePath="/img/mw/k/26.jpg",
-                    HiredSince=new DateTime(2018,4,3),
-                    IsCurrentlyHired=true,VisitReviews=visitRatings1,
-                    MedicalServices=new List<MedicalService>()
-                    {
-                        PrimaryMedicalServices[9]
-                    }
-
-                },
-                new Doctor(Persons[58],"OPNKWEJR546132")
-                {
-                    Id = ++id,
-                                                        User=Users[userId++],
-
-                    Education =UM_6,// new List<string>() {UM_8},
-                    Experience="Od 2010 roku pracuje jako ordynator w szpitalu Matki i Dziecka w Warszawie",
-                    //ImagePath="/img/mw/k/27.jpg",
-                    HiredSince=new DateTime(2018,6,7),
-                    IsCurrentlyHired=true,VisitReviews=visitRatings1,
-                        MedicalServices=new List<MedicalService>()
-                    {
-                        PrimaryMedicalServices[5],PrimaryMedicalServices[10]
-                    }
-
-                },
-                new Physiotherapist(Persons[59],"GVJDAS54645")
-                {
-                    Id = ++id,
-                                                        User=Users[userId++],
-
-                    Education =UM_7,// new List<string>() {UM_9},
-                    Experience="W latach 2016-2020 praca w szpitalu miejskim w Grudziądzu",
-                    //ImagePath="/img/mw/k/28.jpg",
-                    HiredSince=new DateTime(2019,8,11),
-                    IsCurrentlyHired=true,VisitReviews=visitRatings1,
-                        MedicalServices=new List<MedicalService>()
-                    {
-                        PrimaryMedicalServices[31],PrimaryMedicalServices[32],PrimaryMedicalServices[30]
-                    }
-
-                },
-                new Doctor(Persons[60],"UIHDAS546516")
-                {
-                    Id = ++id,
-                                                        User=Users[userId++],
-
-                    Education =UM_9,    // new List<string>() {UM_1,UM_9},
-                    Experience="W latach 2009-2020 praca w szpitalu miejskim w Suwałkach",
-                    //ImagePath="/img/mw/k/29.jpg",
-                    HiredSince=new DateTime(2015,1,1),
-                    IsCurrentlyHired=true,VisitReviews=visitRatings1,
-                    MedicalServices=new List<MedicalService>()
-                    {
-                        PrimaryMedicalServices[8]
-                    }
-
-                },
-                new Nurse(Persons[61],"ADASD46123")
-                {
-                    Id = ++id,
-                                                        User=Users[userId++],
-
-                    Education =UM_7,// new List<string>() {UM_7,UM_2},
-                    Experience="W latach 2009-2020 praca w szpitalu wojewódzkim w Toruniu",
-                    //ImagePath="/img/mw/k/30.jpg",
-                    HiredSince=new DateTime(2019,5,4),
-                    IsCurrentlyHired=true,VisitReviews=visitRatings1,
-                    MedicalServices=new List<MedicalService>()
-                    {
-                        PrimaryMedicalServices[26],PrimaryMedicalServices[33]
-                    }
-
-                },
-                new ElectroradiologyTechnician(Persons[62],"YUGDSD56131")
-                {
-                    Id = ++id,
-                                                        User=Users[userId++],
-
-                    Education =UM_2,// new List<string>() {UM_2,UM_4},
-                    Experience="Od 2016 pracuje w szpitalu Bródnowskim",
-                    //ImagePath="/img/mw/k/31.jpg",
-                    HiredSince=new DateTime(2015,5,1),
-                    IsCurrentlyHired=true,VisitReviews=visitRatings1,
-                    MedicalServices=new List<MedicalService>()
-                    {
-                        PrimaryMedicalServices[28],PrimaryMedicalServices[29]
-                    }
-                },
-                new Doctor(Persons[63],"YAJHD5461321")
-                {
-                    User=Users[userId++],
-                    Id = ++id,
-                    Education =UM_5,// new List<string>() {UM_5},
-                    Experience="W latach 2009-2021 praca w szpitalu w Przemyślu",
-                    //ImagePath="/img/mw/k/32.jpg",
-                    HiredSince=new DateTime(2019,9,8),
-                    IsCurrentlyHired=true,VisitReviews=visitRatings1,
-                    MedicalServices=new List<MedicalService>()
-                    {
-                        PrimaryMedicalServices[20],PrimaryMedicalServices[21]
-                    }
-                },
-                new Doctor(Persons[64],"OOXCZX6541546")
-                {
-                    Id = ++id,
-                    User=Users[userId++],
-                    Education =UM_3,// new List<string>() {UM_3},
-                    Experience="W latach 2008-2020 praca w szpitalu w Lublinie",
-                    //ImagePath="/img/mw/k/33.jpg",
-                    HiredSince=new DateTime(2019,4,7),
-                    IsCurrentlyHired=true,VisitReviews=visitRatings1,
-                    MedicalServices=new List<MedicalService>()
-                    {
-                        PrimaryMedicalServices[16],
-                    }
-                },
-                new Physiotherapist(Persons[65],"FSDRGD54543")
-                {
-                    Id = ++id,
-                    User=Users[userId++],
-                    Education =UM_2,// new List<string>() {UM_1,UM_2},
-                    Experience="W latach 2005-2020 praca w szpitalu Bródnowskim",
-                    //ImagePath="/img/mw/k/34.jpg",
-                    HiredSince=new DateTime(2015,9,1),
-                    IsCurrentlyHired=true,VisitReviews=visitRatings1,
-                    MedicalServices=new List<MedicalService>()
-                    {
-                        PrimaryMedicalServices[31],PrimaryMedicalServices[32],PrimaryMedicalServices[30]
-                    }
-                },
-                new Doctor(Persons[66],"UHJKSAD51321")
-                {
-                    Id = ++id,
-                    User=Users[userId++],
-                    Education =UM_3,// new List<string>() {UM_1,UM_2},
-                    Experience="W latach 2005-2020 praca w szpitalu Bródnowskim",
-                    //ImagePath="/img/mw/k/35.jpg",
-                    HiredSince=new DateTime(2019,4,3),
-                    IsCurrentlyHired=true,VisitReviews=visitRatings1,
-                    MedicalServices=new List<MedicalService>()
-                    {
-                        PrimaryMedicalServices[19]
-                    }
-                },
-                new Doctor(Persons[67],"BNSDSA546123")
-                {
-                    Id = ++id,
-                    User=Users[userId++],
-                    Education =UM_5,// new List<string>() {UM_5,UM_2},
-                    Experience="W latach 2005-2020 praca w szpitalu Bródnowskim",
-                    //ImagePath="/img/mw/k/36.jpg",
-                    HiredSince=new DateTime(2018,8,1),
-                    IsCurrentlyHired=true,VisitReviews=visitRatings1,                    MedicalServices=new List<MedicalService>()
-                    {
-                        PrimaryMedicalServices[9]
-                    }
-                },
-                new ElectroradiologyTechnician(Persons[68],"KLSAD546123")
-                {
-                    Id = ++id,
-                    User=Users[userId++],
-                    Education =UM_1,// new List<string>() {UM_1,UM_2},
-                    Experience="W latach 2016-2020 praca w szpitalu lwowskim na Ukrainie",
-                    //ImagePath="/img/mw/k/37.jpg",
-                    HiredSince=new DateTime(2020,8,1),
-                    IsCurrentlyHired=true,VisitReviews=visitRatings1,
-                    MedicalServices=new List<MedicalService>()
-                    {
-                        PrimaryMedicalServices[28],PrimaryMedicalServices[29]
-                    }
-                },
-                new DentalHygienist(Persons[69],"JHDAS4564231")
-                {
-                    Id = ++id,
-                    User=Users[userId++],
-                    Education =UM_3,// new List<string>() {UM_1,UM_2},
-                    Experience="W latach 2005-2020 praca w szpitalu Bródnowskim",
-                    ////ImagePath="/img/MW/k/38.jpg",
-                    HiredSince=new DateTime(2015,2,4),
-                    IsCurrentlyHired=true,VisitReviews=visitRatings1,
-                    MedicalServices=new List<MedicalService>()
-                    {
-                        PrimaryMedicalServices[25]
-                    }
-                },
-                new DentalHygienist(Persons[70],"JHDAS4564231")
-                {
-                    Id = ++id,
-                    User=Users[userId++],
-                    Education =UM_5,// new List<string>() {UM_1,UM_2},
-                    Experience="W latach 2016-2021 praca w szpitalu centralnym w Łodzi",
-                    ////ImagePath="/img/MW/k/38.jpg",
-                    HiredSince=new DateTime(2018,8,1),
-                    IsCurrentlyHired=true,VisitReviews=visitRatings3,
-                    MedicalServices=new List<MedicalService>()
-                    {
-                        PrimaryMedicalServices[26],
-                        PrimaryMedicalServices[33]
-                    }
-                },
-                new DentalHygienist(Persons[71],"JHDAS4564231")
-                {
-                    Id = ++id,
-                    User=Users[userId++],
-                    Education =UM_4,// new List<string>() {UM_1,UM_2},
-                    Experience="W latach 2013-2022 praca w Głównym Szpitalu Śląskim",
-                    ////ImagePath="/img/MW/k/38.jpg",
-                    HiredSince=new DateTime(2014,8,8),
-                    IsCurrentlyHired=true,VisitReviews=visitRatings1,
-                    MedicalServices=new List<MedicalService>()
-                    {
-                        PrimaryMedicalServices[26],
-                        PrimaryMedicalServices[33]
-                    }
-                },
-                new DentalHygienist(Persons[72],"HAISDAS465462")
-                {
-                    Id = ++id,
-                    User=Users[userId++],
-                    Education =UM_3,// new List<string>() {UM_1,UM_2},
-                    Experience="W latach 2015-2020 praca w szpitalu Wolskim",
-                    ////ImagePath="/img/MW/k/38.jpg",
-                    HiredSince=new DateTime(2015,1,1),
-                    IsCurrentlyHired=true,VisitReviews=visitRatings2,
-                    MedicalServices=new List<MedicalService>()
-                    {
-                        PrimaryMedicalServices[25]
-                    }
-                },
+                //new ElectroradiologyTechnician(Persons[27].Id, "HGSDAS545641231")
+                //{
+                //    Id=++id,
+                //                        UserId=Users[userId].Id,
+
+                //                                    User=Users[userId++],
+
+                //    Education=UM_9,// new List<string>() {UM_6},
+                //    Experience="W latach 2006-2019 praca w szpitalu świętokrzyskim",
+                //    //ImagePath="/img/MW/m/28.jpg",
+                //    //HiredSince=new DateTime(2020,8,8),
+                //    IsCurrentlyHired=true,VisitReviews=visitRatings1,
+                //    MedicalServices=new List<MedicalService>()
+                //    {
+                //        PrimaryMedicalServices[28],PrimaryMedicalServices[29]
+                //    }
+
+                //},
+                //new Doctor(Persons[28].Id,"BHJASGDJAS54613254")
+                //{
+                //    Id=++id,
+                //                        UserId=Users[userId].Id,
+
+                //                                        User=Users[userId++],
+
+                //    Education=UM_9,////new List<string>() {UM_8},
+                //    Experience="W latach 2005-2020 praca w szpitalu akademickim w Białymstoku",
+                //    //ImagePath="/img/MW/m/29.jpg",
+                //    //HiredSince=new DateTime(2018,1,1),
+                //    IsCurrentlyHired=true,VisitReviews=visitRatings1,
+                //    MedicalServices=new List<MedicalService>()
+                //    {
+                //        PrimaryMedicalServices[6],PrimaryMedicalServices[27]
+                //    }
+                //},
+                //new Doctor(Persons[29].Id,"OJIHJDAS543156")
+                //{
+                //Id=++id,
+                //                                    User=Users[userId++],
+                //    UserId=Users[userId].Id,
+
+                //    Education=UM_8,// new List<string>() {UM_6},
+                //    Experience="W latach 2005-2020 praca w szpitalu miejskim w Słupsku",
+                //    //ImagePath="/img/MW/m/30.jpg",
+                //    //HiredSince=new DateTime(2016,4,4),
+                //    IsCurrentlyHired=true,VisitReviews=visitRatings1,
+                //    MedicalServices=new List<MedicalService>()
+                //    {
+                //        PrimaryMedicalServices[7]
+                //    }
+
+                //},
+                //new Doctor(Persons[30].Id,"JHASKDAS65461321")
+                //{
+                //    Id = ++id,
+                //                        UserId=Users[userId].Id,
+
+                //                                        User=Users[userId++],
+
+                //    Education =UM_7,// new List<string>() {UM_3},
+                //    Experience="W latach 2005-2012 praca w szpitalu klinicznym w Gnieźnie. Wcześniej pracował w Zielonej górze.",
+                //    //ImagePath="/img/MW/m/31.jpg",
+                //    //HiredSince=new DateTime(2011,1,1),
+                //    IsCurrentlyHired=true,VisitReviews=visitRatings1,
+                //    MedicalServices=new List<MedicalService>()
+                //    {
+                //        PrimaryMedicalServices[11],PrimaryMedicalServices[12],PrimaryMedicalServices[13]
+                //    }
+                //},
+                //new Doctor(Persons[31].Id,"JHKSDASD546123")
+                //{
+                //    Id = ++id,
+                //                        UserId=Users[userId].Id,
+
+                //                                        User=Users[userId++],
+
+                //    Education =UM_6,// new List<string>() {UM_4},
+                //    Experience="W latach 2005-2020 praca w szpitalu akademickim w Krakowie",
+                //    //ImagePath="/img/MW/m/32.jpg",
+                //    //HiredSince=new DateTime(2019,8,1),
+                //    IsCurrentlyHired=true,VisitReviews=visitRatings1,
+                //    MedicalServices=new List<MedicalService>()
+                //    {
+                //        PrimaryMedicalServices[8]
+                //    }
+
+                //},
+                //new Doctor(Persons[32].Id,"JHASHJDGJA4516354")
+                //{
+                //    Id = ++id,
+                //                        UserId=Users[userId].Id,
+
+                //                                        User=Users[userId++],
+
+                //    Education = UM_6,//new List<string>() {UM_6},
+                //    Experience="W latach 2009-2019 praca w szpitalu w Węgrowie",
+                //    //ImagePath="/img/MW/k/1.jpg",
+                //    HiredSince=new DateTime(2015,5,5),
+                //    IsCurrentlyHired=true,VisitReviews=visitRatings1,
+                //    MedicalServices=new List<MedicalService>()
+                //    {
+                //        PrimaryMedicalServices[23]
+                //    }
+
+                //},
+                //new DentalHygienist(Persons[33].Id,"HASDUQ561613")
+                //{
+                //    Id = ++id,
+                //                                        User=Users[userId++],
+                //    UserId=Users[userId].Id,
+
+                //    Education =UM_1,// new List<string>() {UM_1,UM_2},
+                //    Experience="W latach 2015-2021 praca w szpitalu uniwersyteckim w Poznaniu",
+                //    //ImagePath="/img/MW/k/2.jpg",
+                //    HiredSince=new DateTime(2015,10,1),
+                //    IsCurrentlyHired=true,VisitReviews=visitRatings1,
+                //    MedicalServices=new List<MedicalService>()
+                //    {
+                //        PrimaryMedicalServices[25]
+                //    }
+
+                //},
+                //new Doctor(Persons[34].Id,"JHSAD6564513")
+                //{
+                //    Id = ++id,
+                //                        UserId=Users[userId].Id,
+
+                //                                        User=Users[userId++],
+
+                //    Education =UM_3,// new List<string>() {UM_3},
+                //    Experience="W latach 2011-2021 praca w szpitalu miejskim w Łowiczu",
+                //    //ImagePath="/img/MW/k/3.jpg",
+                //    HiredSince=new DateTime(2015,1,1),
+                //    IsCurrentlyHired=true,VisitReviews=visitRatings1,
+                //    MedicalServices=new List<MedicalService>()
+                //    {
+                //        PrimaryMedicalServices[9]
+                //    }
+
+                //},
+                //new Doctor(Persons[35].Id,"GASHJD56441231")
+                //{
+                //    Id = ++id,
+                //                        UserId=Users[userId].Id,
+
+                //                                        User=Users[userId++],
+
+                //    Education =UM_2,// new List<string>() {UM_1,UM_2},
+                //    Experience="W latach 2008-2020 praca w szpitalu zakaźnym w Krakowie",
+                //    //ImagePath="/img/mw/k/4.jpg",
+                //    HiredSince=new DateTime(2018,8,11),
+                //    IsCurrentlyHired=true,VisitReviews=visitRatings1,
+                //    MedicalServices=new List<MedicalService>()
+                //    {
+                //        PrimaryMedicalServices[2],PrimaryMedicalServices[0]
+                //    }
+
+                //},
+                //new Doctor(Persons[36].Id,"HBJASD546132")
+                //{
+                //    Id = ++id,
+                //                                        User=Users[userId++],
+                //    UserId=Users[userId].Id,
+
+                //    Education =UM_4,// new List<string>() {UM_4},
+                //    Experience="W latach 2007-2020 praca w szpitalu Bródnowskim",
+                //    //ImagePath="/img/mw/k/5.jpg",
+                //    HiredSince=new DateTime(2017,7,7),
+                //    IsCurrentlyHired=true,VisitReviews=visitRatings1,
+                //    MedicalServices=new List<MedicalService>()
+                //    {
+                //        PrimaryMedicalServices[7]
+                //    }
+
+                //},
+                //new Doctor(Persons[37].Id,"BIKDAS5416132")
+                //{
+                //    Id = ++id,                    UserId=Users[userId].Id,
+
+                //                                        User=Users[userId++],
+
+                //    Education =UM_4,//  new List<string>() {UM_1,UM_2},
+                //    Experience="W latach 2005-2020 praca w szpitalu Bródnowskim",
+                //    //ImagePath="/img/mw/k/6.jpg",
+                //    HiredSince=new DateTime(2017,4,4),
+                //    IsCurrentlyHired=true,VisitReviews=visitRatings1,
+                //    MedicalServices=new List<MedicalService>()
+                //    {
+                //        PrimaryMedicalServices[2],PrimaryMedicalServices[3]
+                //    }
+
+                //},
+                //new Doctor(Persons[38].Id,"HJGASW4654613")
+                //{
+                //    Id = ++id,                    UserId=Users[userId].Id,
+
+                //                                        User=Users[userId++],
+
+                //    Education =UM_5,// new List<string>() {UM_1,UM_2},
+                //    Experience="W latach 2012-2020 praca w szpitalu południowym w Warszawie",
+                //    //ImagePath="/img/mw/k/7.jpg",
+                //    HiredSince=new DateTime(2015,1,11),
+                //    IsCurrentlyHired=true,VisitReviews=visitRatings1,
+                //    MedicalServices=new List<MedicalService>()
+                //    {
+                //        PrimaryMedicalServices[11],PrimaryMedicalServices[14]
+                //    }
+
+                //},
+                //new Nurse(Persons[39].Id,"IOSHJD4613245")
+                //{
+                //    Id = ++id,                    UserId=Users[userId].Id,
+
+                //                                        User=Users[userId++],
+
+                //    Education =UM_2,// new List<string>() {UM_1,UM_2},
+                //    Experience="W latach 2005-2020 praca w szpitalu chorób serca w Gdańsku",
+                //    //ImagePath="/img/mw/k/8.jpg",
+                //    HiredSince=new DateTime(2018,8,8),
+                //    IsCurrentlyHired=true,VisitReviews=visitRatings1,
+                //    MedicalServices=new List<MedicalService>()
+                //    {
+                //        PrimaryMedicalServices[26],PrimaryMedicalServices[33]
+                //    }
+
+                //},
+                //new Nurse(Persons[40].Id,"UGHSDS56134564")
+                //{
+                //    Id = ++id,                 
+                //    UserId=Users[userId].Id,
+
+                //                                        User=Users[userId++],
+
+                //    Education =UM_6,// new List<string>() {UM_6},
+                //    Experience="W latach 2007-2018 praca w szpitalu praskim w Warszawie",
+                //    //ImagePath="/img/mw/k/9.jpg",
+                //    HiredSince=new DateTime(2021,11,1),
+                //    IsCurrentlyHired=true,VisitReviews=visitRatings1,
+                //    MedicalServices=new List<MedicalService>()
+                //    {
+                //        PrimaryMedicalServices[26],PrimaryMedicalServices[33]
+                //    }
+
+                //},
+                //new Doctor(Persons[41].Id,"USHDKAS744561513")
+                //{
+                //    Id = ++id,                    UserId=Users[userId].Id,
+
+                //                                        User=Users[userId++],
+                //    Education =UM_8,// new List<string>() {UM_8},
+                //    Experience="W latach 2009-2019 praca w szpitalu praskim w Warszawie",
+                //    //ImagePath="/img/mw/k/10.jpg",
+                //    HiredSince=new DateTime(2012,11,11),
+                //    IsCurrentlyHired=true,VisitReviews=visitRatings1,
+                //    MedicalServices=new List<MedicalService>()
+                //    {
+                //        PrimaryMedicalServices[19]
+                //    }
+
+                //    },
+                //new Doctor(Persons[42].Id,"NMBVDSDA546123")
+                //{
+                //    Id = ++id,                    UserId=Users[userId].Id,
+
+                //                                        User=Users[userId++],
+
+                //    Education =UM_5,// new List<string>() {UM_5},
+                //    Experience="W latach 2005-2020 praca w szpitalu Bródnowskim",
+                //    //ImagePath="/img/mw/k/11.jpg",
+                //    HiredSince=new DateTime(2017,7,9),
+                //    IsCurrentlyHired=true,VisitReviews=visitRatings1,
+                //    MedicalServices=new List<MedicalService>()
+                //    {
+                //        PrimaryMedicalServices[20],PrimaryMedicalServices[21]
+                //    }
+                //},
+                //new Doctor(Persons[43].Id,"LKASJD465315")
+                //{
+                //    Id = ++id,                    UserId=Users[userId].Id,
+
+                //                                        User=Users[userId++],
+
+                //    Education =UM_2,// new List<string>() {UM_1,UM_2},
+                //    Experience="W latach 2012-2019 praca w szpitalu MSWIA w Warszawie",
+                //    //ImagePath="/img/mw/k/12.jpg",
+                //    HiredSince=new DateTime(2019,4,8),
+                //    IsCurrentlyHired=true,VisitReviews=visitRatings1,
+                //    MedicalServices=new List<MedicalService>()
+                //    {
+                //        PrimaryMedicalServices[10],PrimaryMedicalServices[5]
+                //    }
+
+                //},
+                //new Doctor(Persons[44].Id,"IOHDSFDS46132456")
+                //{
+                //    Id = ++id,                    UserId=Users[userId].Id,
+
+                //                                        User=Users[userId++],
+                //    Education =UM_7,// new List<string>() {UM_7},
+                //    Experience="W latach 2005-2020 praca w szpitalu centralnym w Krakowie",
+                //    //ImagePath="/img/mw/k/13.jpg",
+                //    HiredSince=new DateTime(2016,6,6),
+                //    IsCurrentlyHired=true,VisitReviews=visitRatings1,
+                //    MedicalServices=new List<MedicalService>()
+                //    {
+                //        PrimaryMedicalServices[2],PrimaryMedicalServices[30]
+                //    }
+
+                //},
+                //new Doctor(Persons[45].Id,"UHJDSF5645132")
+                //{
+                //    Id = ++id,                    UserId=Users[userId].Id,
+
+                //                                        User=Users[userId++],
+
+                //    Education =UM_1,// new List<string>() {UM_1,UM_2},
+                //    Experience="W latach 2019-2021 praca w szpitalu u Koziołka Matołka w Poznaniu",
+                //    //ImagePath="/img/mw/k/14.jpg",
+                //    HiredSince=new DateTime(2015,7,1),
+                //    IsCurrentlyHired=true,VisitReviews=visitRatings1,
+                //    MedicalServices=new List<MedicalService>()
+                //    {
+                //        PrimaryMedicalServices[2],PrimaryMedicalServices[30]
+                //    }
+
+                //},
+                //new DentalHygienist(Persons[46].Id,"SDFJL4654131")
+                //{
+                //    Id = ++id,                    UserId=Users[userId].Id,
+
+                //                                        User=Users[userId++],
+
+                //    Education =UM_2 ,// new List<string>() {UM_1,UM_2},
+                //    Experience="W latach 2005-2020 praca w szpitalu klinicznym we Wrocławiu",
+                //    //ImagePath="/img/mw/k/15.jpg",
+                //    HiredSince=new DateTime(2017,2,11),
+                //    IsCurrentlyHired=true,VisitReviews=visitRatings1,
+                //    MedicalServices=new List<MedicalService>()
+                //    {
+                //        PrimaryMedicalServices[25]
+                //    }
+
+                //},
+                //new Doctor(Persons[47].Id,"JBNBJHSD45642131")
+                //{
+                //    Id = ++id,                    UserId=Users[userId].Id,
+
+                //                                        User=Users[userId++],
+
+                //    Education =UM_3,// new List<string>() {UM_1,UM_2},
+                //    Experience="W latach 2018-2021 praca w szpitalu klinicznym we Wrocławiu",
+                //    //ImagePath="/img/mw/k/16.jpg",
+                //    HiredSince=new DateTime(2021,2,1),
+                //    IsCurrentlyHired=true,VisitReviews=visitRatings1,
+                //    MedicalServices=new List<MedicalService>()
+                //    {
+                //        PrimaryMedicalServices[5]
+                //    }
+                //},
+                //new Doctor(Persons[48].Id,"JHGFJDS564165412")
+                //{
+                //    Id = ++id,                    UserId=Users[userId].Id,
+
+                //                                        User=Users[userId++],
+                //    Education =UM_8,// new List<string>() {UM_8},
+                //    Experience="W latach 2019-2020 praca w szpitalu Bródnowskim",
+                //    //ImagePath="/img/mw/k/17.jpg",
+                //    HiredSince=new DateTime(2021,1,9),
+                //    IsCurrentlyHired=true,VisitReviews=visitRatings1,
+                //    MedicalServices=new List<MedicalService>()
+                //    {
+                //        PrimaryMedicalServices[10]
+                //    }
+
+                //},
+                //new Doctor(Persons[49].Id,"JHFDSF4561231")
+                //{
+                //    Id = ++id,                    UserId=Users[userId].Id,
+
+                //                                        User=Users[userId++],
+
+                //    Education =UM_4,// new List<string>() {UM_4},
+                //    Experience="W latach 2005-2020 praca w szpitalu Bródnowskim",
+                //    //ImagePath="/img/mw/k/18.jpg",
+                //    HiredSince=new DateTime(2015,1,1),
+                //    IsCurrentlyHired=true,VisitReviews=visitRatings1,
+                //    MedicalServices=new List<MedicalService>()
+                //    {
+                //        PrimaryMedicalServices[20],PrimaryMedicalServices[24]
+                //    }
+
+                //},
+                //new Doctor(Persons[50].Id,"UIFSDF4561321")
+                //{
+                //    Id = ++id,                    UserId=Users[userId].Id,
+
+                //                                        User=Users[userId++],
+
+                //    Education =UM_7,// new List<string>() {UM_5,UM_7},
+                //    Experience="W latach 2005-2020 praca w szpitalu Bródnowskim",
+                //    //ImagePath="/img/mw/k/19.jpg",
+                //    HiredSince=new DateTime(2019,4,4),
+                //    IsCurrentlyHired=true,VisitReviews=visitRatings1,
+                //    MedicalServices=new List<MedicalService>()
+                //    {
+                //        PrimaryMedicalServices[9]
+                //    }
+
+                //},
+                //new ElectroradiologyTechnician(Persons[51].Id,"DHJKFSD4564132")
+                //{
+                //    Id = ++id,                    UserId=Users[userId].Id,
+
+                //                                        User=Users[userId++],
+                //    Education =UM_9,// new List<string>() {UM_7,UM_9},
+                //    Experience="Staż odbyła w szpitalu Bródnowskim w Warszawie. Od 2016 roku pracuje w szpitalu Praskim w Warszawie.",
+                //    //ImagePath="/img/mw/k/20.jpg",
+                //    HiredSince=new DateTime(2018,9,11),
+                //    IsCurrentlyHired=true,VisitReviews=visitRatings1,
+                //    MedicalServices=new List<MedicalService>()
+                //    {
+                //        PrimaryMedicalServices[28]
+                //    }
+
+                //},
+                //new Nurse(Persons[52].Id,"HBJKSDF56413215")
+                //{
+                //    Id = ++id,                    UserId=Users[userId].Id,
+
+                //                                        User=Users[userId++],
+                //    Education =UM_6,// new List<string>() {UM_6,UM_2},
+                //    Experience="Staż odbyty w szpitalu akademickim w Białymstoku. Od 2018 roku praca w szpitalu powiatowym w Węgrowie",
+                //    //ImagePath="/img/mw/k/21.jpg",
+                //    HiredSince=new DateTime(2018,8,8),
+                //    IsCurrentlyHired=true,VisitReviews=visitRatings1,
+                //    MedicalServices=new List<MedicalService>()
+                //    {
+                //        PrimaryMedicalServices[26],PrimaryMedicalServices[33]
+                //    }
+
+                //},
+                //new Doctor(Persons[53].Id, "RERDSDF2134969")
+                //{
+                //    Id = ++id,                    UserId=Users[userId].Id,
+
+                //                                        User=Users[userId++],
+                //    Education = UM_4,// new List<string>() {UM_4,UM_2},
+                //    Experience="W latach 2005-2020 praca w szpitalu Bródnowskim",
+                //    //ImagePath="/img/mw/k/22.jpg",
+                //    HiredSince=new DateTime(2018,4,6),
+                //    IsCurrentlyHired=true,VisitReviews=visitRatings1,
+                //    MedicalServices=new List<MedicalService>()
+                //    {
+                //        PrimaryMedicalServices[2],PrimaryMedicalServices[18]
+                //    }
+
+                //},
+                //new Nurse(Persons[54].Id,"BNMDSF546123")
+                //{
+                //    Id = ++id,                    UserId=Users[userId].Id,
+
+                //                                        User=Users[userId++],
+                //    Education =UM_1,// new List<string>() {UM_5},
+                //    Experience="W latach 2005-2020 praca w szpitalu Bródnowskim",
+                //    //ImagePath="/img/mw/k/23.jpg",
+                //    HiredSince=new DateTime(2015,1,1),
+                //    IsCurrentlyHired=true,VisitReviews=visitRatings1,
+                //    MedicalServices=new List<MedicalService>()
+                //    {
+                //        PrimaryMedicalServices[33],PrimaryMedicalServices[26]
+                //    }
+
+                //},
+                //new ElectroradiologyTechnician(Persons[55].Id,"PODBASHJ4454321")
+                //{
+                //    Id = ++id,                    UserId=Users[userId].Id,
+
+                //                                        User=Users[userId++],
+                    
+                //    Education =UM_3,// new List<string>() {UM_1,UM_2},
+                //    Experience="W latach 2005-2020 praca w szpitalu Bródnowskim",
+                //    //ImagePath="/img/mw/k/24.jpg",
+                //    HiredSince=new DateTime(2019,1,1),
+                //    IsCurrentlyHired=true,VisitReviews=visitRatings1,
+                //    MedicalServices=new List<MedicalService>()
+                //    {
+                //        PrimaryMedicalServices[28],PrimaryMedicalServices[29]
+                //    }
+
+                //},
+                //new Doctor(Persons[56].Id,"YHBKASD5465123")
+                //{
+                //    Id = ++id,                    UserId=Users[userId].Id,
+
+                //                                        User=Users[userId++],
+  
+                //    Education =UM_1,// new List<string>() {UM_3},
+                //    Experience="W latach 2014-2021 praca w szpitalu zielonogórskim",
+                //    //ImagePath="/img/mw/k/25.jpg",
+                //    HiredSince=new DateTime(2013,3,3),
+                //    IsCurrentlyHired=true,VisitReviews=visitRatings1,
+                //    MedicalServices=new List<MedicalService>()
+                //    {
+                //        PrimaryMedicalServices[11],PrimaryMedicalServices[14]
+                //    }
+
+                //},
+                //new Doctor(Persons[57].Id,"OPQEW6546132")
+                //{
+                //    Id = ++id,                    UserId=Users[userId].Id,
+
+                //                                        User=Users[userId++],
+                //    Education =UM_4,// new List<string>() {UM_5},
+                //    Experience="W latach 2005-2020 praca w szpitalu wojewódzkim w Olsztynie",
+                //    //ImagePath="/img/mw/k/26.jpg",
+                //    HiredSince=new DateTime(2018,4,3),
+                //    IsCurrentlyHired=true,VisitReviews=visitRatings1,
+                //    MedicalServices=new List<MedicalService>()
+                //    {
+                //        PrimaryMedicalServices[9]
+                //    }
+
+                //},
+                //new Doctor(Persons[58].Id,"OPNKWEJR546132")
+                //{
+                //    Id = ++id,                    UserId=Users[userId].Id,
+
+                //                                        User=Users[userId++],
+                //    Education =UM_6,// new List<string>() {UM_8},
+                //    Experience="Od 2010 roku pracuje jako ordynator w szpitalu Matki i Dziecka w Warszawie",
+                //    //ImagePath="/img/mw/k/27.jpg",
+                //    HiredSince=new DateTime(2018,6,7),
+                //    IsCurrentlyHired=true,VisitReviews=visitRatings1,
+                //        MedicalServices=new List<MedicalService>()
+                //    {
+                //        PrimaryMedicalServices[5],PrimaryMedicalServices[10]
+                //    }
+
+                //},
+                //new Physiotherapist(Persons[59].Id,"GVJDAS54645")
+                //{
+                //    Id = ++id,                    UserId=Users[userId].Id,
+
+                //                                        User=Users[userId++],
+                //    Education =UM_7,// new List<string>() {UM_9},
+                //    Experience="W latach 2016-2020 praca w szpitalu miejskim w Grudziądzu",
+                //    //ImagePath="/img/mw/k/28.jpg",
+                //    HiredSince=new DateTime(2019,8,11),
+                //    IsCurrentlyHired=true,VisitReviews=visitRatings1,
+                //        MedicalServices=new List<MedicalService>()
+                //    {
+                //        PrimaryMedicalServices[31],PrimaryMedicalServices[32],PrimaryMedicalServices[30]
+                //    }
+
+                //},
+                //new Doctor(Persons[60].Id,"UIHDAS546516")
+                //{
+                //    Id = ++id,
+                //                        UserId=Users[userId].Id,
+                //                                        User=Users[userId++],
+                //                        Education =UM_9,    // new List<string>() {UM_1,UM_9},
+                //    Experience="W latach 2009-2020 praca w szpitalu miejskim w Suwałkach",
+                //    //ImagePath="/img/mw/k/29.jpg",
+                //    HiredSince=new DateTime(2015,1,1),
+                //    IsCurrentlyHired=true,VisitReviews=visitRatings1,
+                //    MedicalServices=new List<MedicalService>()
+                //    {
+                //        PrimaryMedicalServices[8]
+                //    }
+
+                //},
+                //new Nurse(Persons[61].Id,"ADASD46123")
+                //{
+                //    Id = ++id,                    UserId=Users[userId].Id,
+
+                //                                        User=Users[userId++],
+                //    Education =UM_7,// new List<string>() {UM_7,UM_2},
+                //    Experience="W latach 2009-2020 praca w szpitalu wojewódzkim w Toruniu",
+                //    //ImagePath="/img/mw/k/30.jpg",
+                //    HiredSince=new DateTime(2019,5,4),
+                //    IsCurrentlyHired=true,VisitReviews=visitRatings1,
+                //    MedicalServices=new List<MedicalService>()
+                //    {
+                //        PrimaryMedicalServices[26],PrimaryMedicalServices[33]
+                //    }
+
+                //},
+                //new ElectroradiologyTechnician(Persons[62].Id,"YUGDSD56131")
+                //{
+                //    Id = ++id,                    UserId=Users[userId].Id,
+
+                //                                        User=Users[userId++],
+                //    Education =UM_2,// new List<string>() {UM_2,UM_4},
+                //    Experience="Od 2016 pracuje w szpitalu Bródnowskim",
+                //    //ImagePath="/img/mw/k/31.jpg",
+                //    HiredSince=new DateTime(2015,5,1),
+                //    IsCurrentlyHired=true,VisitReviews=visitRatings1,
+                //    MedicalServices=new List<MedicalService>()
+                //    {
+                //        PrimaryMedicalServices[28],PrimaryMedicalServices[29]
+                //    }
+                //},
+                //new Doctor(Persons[63].Id,"YAJHD5461321")
+                //{
+                //        UserId=Users[userId].Id,
+                //    User=Users[userId++],                
+
+                //    Id = ++id,
+                //    Education =UM_5,// new List<string>() {UM_5},
+                //    Experience="W latach 2009-2021 praca w szpitalu w Przemyślu",
+                //    //ImagePath="/img/mw/k/32.jpg",
+                //    HiredSince=new DateTime(2019,9,8),
+                //    IsCurrentlyHired=true,VisitReviews=visitRatings1,
+                //    MedicalServices=new List<MedicalService>()
+                //    {
+                //        PrimaryMedicalServices[20],PrimaryMedicalServices[21]
+                //    }
+                //},
+                //new Doctor(Persons[64].Id,"OOXCZX6541546")
+                //{
+                //    Id = ++id,                    UserId=Users[userId].Id,
+                //                                            User=Users[userId++],
+                //    Education =UM_3,// new List<string>() {UM_3},
+                //    Experience="W latach 2008-2020 praca w szpitalu w Lublinie",
+                //    //ImagePath="/img/mw/k/33.jpg",
+                //    HiredSince=new DateTime(2019,4,7),
+                //    IsCurrentlyHired=true,VisitReviews=visitRatings1,
+                //    MedicalServices=new List<MedicalService>()
+                //    {
+                //        PrimaryMedicalServices[16],
+                //    }
+                //},
+                //new Physiotherapist(Persons[65].Id,"FSDRGD54543")
+                //{
+                //    Id = ++id,                    UserId=Users[userId].Id,
+
+                //                                            User=Users[userId],
+                //    Education =UM_2,// new List<string>() {UM_1,UM_2},
+                //    Experience="W latach 2005-2020 praca w szpitalu Bródnowskim",
+                //    //ImagePath="/img/mw/k/34.jpg",
+                //    HiredSince=new DateTime(2015,9,1),
+                //    IsCurrentlyHired=true,
+                //    VisitReviews=visitRatings1,
+                //    MedicalServices=new List<MedicalService>()
+                //    {
+                //        PrimaryMedicalServices[31],PrimaryMedicalServices[32],PrimaryMedicalServices[30]
+                //    }
+                //},
+                //new Doctor(Persons[66].Id,"UHJKSAD51321")
+                //{
+                //    Id = ++id,                    UserId=Users[userId].Id,
+
+                //    User=Users[userId++],
+                //    Education =UM_3,// new List<string>() {UM_1,UM_2},
+                //    Experience="W latach 2005-2020 praca w szpitalu Bródnowskim",
+                //    //ImagePath="/img/mw/k/35.jpg",
+                //    HiredSince=new DateTime(2019,4,3),
+                //    IsCurrentlyHired=true,VisitReviews=visitRatings1,
+                //    MedicalServices=new List<MedicalService>()
+                //    {
+                //        PrimaryMedicalServices[19]
+                //    }
+                //},
+                //new Doctor(Persons[67].Id,"BNSDSA546123")
+                //{
+                //    Id = ++id,                    UserId=Users[userId].Id,
+
+                //    User=Users[userId++],
+                //    Education =UM_5,// new List<string>() {UM_5,UM_2},
+                //    Experience="W latach 2005-2020 praca w szpitalu Bródnowskim",
+                //    //ImagePath="/img/mw/k/36.jpg",
+                //    HiredSince=new DateTime(2018,8,1),
+                //    IsCurrentlyHired=true,VisitReviews=visitRatings1,                    MedicalServices=new List<MedicalService>()
+                //    {
+                //        PrimaryMedicalServices[9]
+                //    }
+                //},
+                //new ElectroradiologyTechnician(Persons[68].Id,"KLSAD546123")
+                //{
+                //    Id = ++id,                    UserId=Users[userId].Id,
+
+                //    User=Users[userId++],
+                //    Education =UM_1,// new List<string>() {UM_1,UM_2},
+                //    Experience="W latach 2016-2020 praca w szpitalu lwowskim na Ukrainie",
+                //    //ImagePath="/img/mw/k/37.jpg",
+                //    HiredSince=new DateTime(2020,8,1),
+                //    IsCurrentlyHired=true,VisitReviews=visitRatings1,
+                //    MedicalServices=new List<MedicalService>()
+                //    {
+                //        PrimaryMedicalServices[28],PrimaryMedicalServices[29]
+                //    }
+                //},
+                //new DentalHygienist(Persons[69].Id,"JHDAS4564231")
+                //{
+                //    Id = ++id,                    UserId=Users[userId].Id,
+
+                //    User=Users[userId++],
+                //    Education =UM_3,// new List<string>() {UM_1,UM_2},
+                //    Experience="W latach 2005-2020 praca w szpitalu Bródnowskim",
+                //    ////ImagePath="/img/MW/k/38.jpg",
+                //    HiredSince=new DateTime(2015,2,4),
+                //    IsCurrentlyHired=true,VisitReviews=visitRatings1,
+                //    MedicalServices=new List<MedicalService>()
+                //    {
+                //        PrimaryMedicalServices[25]
+                //    }
+                //},
+                //new DentalHygienist(Persons[70].Id,"JHDAS4564231")
+                //{
+                //    Id = ++id,                    UserId=Users[userId].Id,
+
+                //    User=Users[userId++],
+                //    Education =UM_5,// new List<string>() {UM_1,UM_2},
+                //    Experience="W latach 2016-2021 praca w szpitalu centralnym w Łodzi",
+                //    ////ImagePath="/img/MW/k/38.jpg",
+                //    HiredSince=new DateTime(2018,8,1),
+                //    IsCurrentlyHired=true,VisitReviews=visitRatings3,
+                //    MedicalServices=new List<MedicalService>()
+                //    {
+                //        PrimaryMedicalServices[26],
+                //        PrimaryMedicalServices[33]
+                //    }
+                //},
+                //new DentalHygienist(Persons[71].Id,"JHDAS4564231")
+                //{
+                //    Id = ++id,                    UserId=Users[userId].Id,
+
+                //    User=Users[userId++],
+                //    Education =UM_4,// new List<string>() {UM_1,UM_2},
+                //    Experience="W latach 2013-2022 praca w Głównym Szpitalu Śląskim",
+                //    ////ImagePath="/img/MW/k/38.jpg",
+                //    HiredSince=new DateTime(2014,8,8),
+                //    IsCurrentlyHired=true,VisitReviews=visitRatings1,
+                //    MedicalServices=new List<MedicalService>()
+                //    {
+                //        PrimaryMedicalServices[26],
+                //        PrimaryMedicalServices[33]
+                //    }
+                //},
+                //new DentalHygienist(Persons[72].Id,"HAISDAS465462")
+                //{
+                //    Id = ++id,                    UserId=Users[userId].Id,
+
+                //    User=Users[userId++],
+                //    Education =UM_3,// new List<string>() {UM_1,UM_2},
+                //    Experience="W latach 2015-2020 praca w szpitalu Wolskim",
+                //    ////ImagePath="/img/MW/k/38.jpg",
+                //    HiredSince=new DateTime(2015,1,1),
+                //    IsCurrentlyHired=true,VisitReviews=visitRatings2,
+                //    MedicalServices=new List<MedicalService>()
+                //    {
+                //        PrimaryMedicalServices[25]
+                //    }
+                //},
 
             };
+            MedicalServiceMedicalWorkers = new List<MedicalServiceMedicalWorker>();
+            long idMsMw = 0;
+            foreach (MedicalWorker mw in MedicalWorkers)
+            {
+                foreach (MedicalService ms in mw.MedicalServices)
+                {
+                    MedicalServiceMedicalWorkers.Add(new MedicalServiceMedicalWorker() { Id = ++idMsMw, MedicalServiceId = ms.Id, MedicalWorkerId = mw.Id });
+                }
+            }
+
             return MedicalWorkers;
         }
 
@@ -4178,15 +3459,16 @@ namespace Asklepios.Data.InMemoryContexts
                     VisitCategory=VisitCategories.ElementAt(0),
                 },
             };
-
-            patient.BookedVisits = plannedVisits;
-            patient.HistoricalVisits = patientHistoricalVisits;
+            patient.AllVisits.AddRange(plannedVisits);
+            patient.AllVisits.AddRange(patientHistoricalVisits);
+            // patient.BookedVisits = plannedVisits;
+            //patient.HistoricalVisits = patientHistoricalVisits;
             patient.MedicalPackage = MedicalPackages[0];
 
             return patient;
         }
 
-        private static List<MedicalReferral> GetDummyMedicalReferrals(Patient patient, DateTimeOffset now)
+        internal static List<MedicalReferral> GetDummyMedicalReferrals(Patient patient, DateTimeOffset now)
         {
             List<MedicalReferral> referrals = new List<MedicalReferral>()
             {
@@ -4296,7 +3578,7 @@ namespace Asklepios.Data.InMemoryContexts
                     MinorMedicalService=MedicalServices[9],
                     //VisitSummary=visitSummaries.ElementAt(7)
                 },
-
+               
                 //new ExaminationReferral()
                 //{
                 //    Id=8,
@@ -4328,6 +3610,7 @@ namespace Asklepios.Data.InMemoryContexts
                 //    //MedicalService=MedicalServices[10],
                 //},
             };
+            //referrals.ForEach(c=>c.IssuedToId=patient.Id);
             return referrals;
         }
 
@@ -4370,7 +3653,7 @@ namespace Asklepios.Data.InMemoryContexts
             };
         }
 
-        private static List<MedicalTestResult> GetSomeMedicalTestResults()
+        internal static List<MedicalTestResult> GetSomeMedicalTestResults()
         {
             List<MedicalTestResult> medicalTestResults = new List<MedicalTestResult>()
             {
@@ -4562,8 +3845,11 @@ namespace Asklepios.Data.InMemoryContexts
 
             //chirurgia
             services.Where(d => d.Id == 48).FirstOrDefault().SubServices = new List<MedicalService>(services.GetRange(33, 6));
+            services.Where(d => d.Id == 48).FirstOrDefault().SubServices.ForEach(c => c.PrimaryServiceId = 48);
+
             //services[48].SubServices.Append(services[10]);
             services.Where(d => d.Id == 50).FirstOrDefault().SubServices = new List<MedicalService>() { services.Where(c => c.Id == 95).FirstOrDefault() };
+            services.Where(d => d.Id == 50).FirstOrDefault().SubServices.ForEach(c => c.PrimaryServiceId = 50);
 
 
             //ortopeda
@@ -4572,14 +3858,16 @@ namespace Asklepios.Data.InMemoryContexts
             service.SubServices = new List<MedicalService>();
             service.SubServices.Add(subService);
             service.SubServices.Add(services.Where(c => c.Id == 9).FirstOrDefault());
+            service.SubServices.ForEach(c => c.PrimaryServiceId = service.Id);
 
             //gastrologia
 
             services[0].SubServices = new List<MedicalService>() { services.Where(c => c.Id == 6).FirstOrDefault(), services.Where(c => c.Id == 8).FirstOrDefault() };
-
+            services[0].SubServices.ForEach(c => c.PrimaryServiceId = services[0].Id);
             //okulista
             services[45].SubServices = new List<MedicalService>(services.GetRange(80, 5));
             services[45].SubServices.Add(services[5]);
+            services[0].SubServices.ForEach(c => c.PrimaryServiceId = services[45].Id);
 
 
             //laryngologia
@@ -4587,6 +3875,7 @@ namespace Asklepios.Data.InMemoryContexts
             service.SubServices = new List<MedicalService>();
             service.SubServices.Add(services.Where(c => c.Id == 37).First());
             service.SubServices.Add(services.Where(c => c.Id == 7).First());
+            service.SubServices.ForEach(c => c.PrimaryServiceId = service.Id);
 
 
             //stomatologia
@@ -4597,12 +3886,23 @@ namespace Asklepios.Data.InMemoryContexts
             services.Where(c => c.Id == 61).First().SubServices = new List<MedicalService>(services.Where(c => c.Id >= 63 && c.Id < 66));
             services.Where(c => c.Id == 57).First().SubServices = new List<MedicalService>(services.Where(c => c.Id >= 19 && c.Id < 24));
 
+            services.Where(c => c.Id == 62).First().SubServices.ForEach(c => c.PrimaryServiceId = 62);
+            services.Where(c => c.Id == 58).First().SubServices.ForEach(c => c.PrimaryServiceId = 58);
+            services.Where(c => c.Id == 59).First().SubServices.ForEach(c => c.PrimaryServiceId = 59);
+            services.Where(c => c.Id == 60).First().SubServices.ForEach(c => c.PrimaryServiceId = 60);
+            services.Where(c => c.Id == 61).First().SubServices.ForEach(c => c.PrimaryServiceId = 61);
+            services.Where(c => c.Id == 57).First().SubServices.ForEach(c => c.PrimaryServiceId = 57);
+
             //badania laboratoryjne oraz szczepienia
             services.Where(c => c.Id == 74).First().SubServices = new List<MedicalService>(services.Where(c => c.Id >= 24 && c.Id > 30));
             services.Where(c => c.Id == 76).First().SubServices = new List<MedicalService>(services.Where(c => c.Id >= 66 && c.Id < 73));
 
+            services.Where(c => c.Id == 74).First().SubServices.ForEach(c => c.PrimaryServiceId = 74);
+            services.Where(c => c.Id == 76).First().SubServices.ForEach(c => c.PrimaryServiceId = 76);
+
             //fizjoterapia
             services.Where(c => c.Id == 75).First().SubServices = new List<MedicalService>(services.Where(c => c.Id >= 32 && c.Id < 37));
+            services.Where(c => c.Id == 75).First().SubServices.ForEach(c => c.PrimaryServiceId = 75);
 
             //szczepienia
 
@@ -4610,6 +3910,7 @@ namespace Asklepios.Data.InMemoryContexts
 
             service = services.Where(c => c.Id == 38).First();
             service.SubServices = new List<MedicalService>(services.Where(c => c.Id >= 96 && c.Id <= 98));
+            service.SubServices.ForEach(c => c.PrimaryServiceId = service.Id);
 
 
             return services;
@@ -4626,6 +3927,7 @@ namespace Asklepios.Data.InMemoryContexts
                 new VisitCategory() { Id = 5, CategoryName = "Fizjoterapia", PrimaryMedicalServices = new List<MedicalService>(PrimaryMedicalServices.GetRange(30, 3)) { } },
                 new VisitCategory() { Id = 6, CategoryName = "Gabinet zabiegowy", PrimaryMedicalServices = new List<MedicalService>() { PrimaryMedicalServices[26], PrimaryMedicalServices[33] } },
             };
+            categories.ForEach(c => c.PrimaryMedicalServices.ForEach(d => d.VisitCategoryId = c.Id));
             //categories[0].PrimaryMedicalServices.Add(MedicalServices[0]);
             return categories;
         }
@@ -4954,6 +4256,9 @@ namespace Asklepios.Data.InMemoryContexts
 
             };
             patients.ForEach(c => c.User = Users.Where(d => d.Id == c.UserId).FirstOrDefault());
+            patients.ForEach(c => c.MedicalPackageId = c.MedicalPackage.Id);
+            patients.ForEach(c => c.NFZUnitId = c.NFZUnit.Id);
+
             return patients;
         }
 
@@ -4961,8 +4266,10 @@ namespace Asklepios.Data.InMemoryContexts
         {
 
             Patient patient = AllPatients.Where(c => c.Id == id).FirstOrDefault();
-            patient.BookedVisits = BookedVisits.Where(c => c.Patient.Id == patient.Id).ToList();
-            patient.HistoricalVisits = HistoricalVisits.Where(c => c.Patient.Id == patient.Id).ToList();
+            patient.AllVisits.AddRange(BookedVisits.Where(c => c.Patient.Id == patient.Id).ToList());
+            patient.AllVisits.AddRange(HistoricalVisits.Where(c => c.Patient.Id == patient.Id).ToList());
+            //patient.BookedVisits = BookedVisits.Where(c => c.Patient.Id == patient.Id).ToList();
+            //patient.HistoricalVisits = HistoricalVisits.Where(c => c.Patient.Id == patient.Id).ToList();
             //patient.MedicalReferrals = patient.HistoricalVisits?.Select(c => c.ExaminationReferrals).ToList();
             //patient.Prescriptions= patient.HistoricalVisits?.Select(c => c.ExaminationReferrals).ToList();
             //patient.TestsResults= patient.HistoricalVisits?.Select(c => c.MedicalResult).ToList();

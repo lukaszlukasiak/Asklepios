@@ -1,14 +1,17 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 using System.Text;
 
 namespace Asklepios.Core.Models
 {
     public class MedicalPackage
     {
+        [Key]
+        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
+        [Required]
         [Display(Name = "Id pakietu medycznego")]
-
         public long Id { get; set; }
         [Required(ErrorMessage ="Proszę podać nazwę pakietu medycznego")]
         [Display(Name="Nazwa pakietu medycznego")]

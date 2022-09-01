@@ -15,7 +15,7 @@ namespace Asklepios.Data.InMemoryContexts
         {
             if (!PatientMockDB.IsCreated)
             {
-                PatientMockDB.SetData();
+                PatientMockDB.SetDataHome();
             }
             //PatientMockDB.GetMedicalServices()
             _locations = PatientMockDB.GetAllLocations();

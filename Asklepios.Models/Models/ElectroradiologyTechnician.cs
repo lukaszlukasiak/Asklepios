@@ -11,12 +11,19 @@ namespace Asklepios.Core.Models
         //{
         //}
 
-        public ElectroradiologyTechnician(Person person, string profNumber ): base(person)
+        //public ElectroradiologyTechnician(Person person, string profNumber ): base(person)
+        //{
+        //    ProfessionalNumber = profNumber;
+        //    MedicalWorkerType = Enums.MedicalWorkerType.ElectroriadologyTechnician;
+        //    PersonId = person.Id;
+        //}
+        public ElectroradiologyTechnician(long personId, string professionalNumber) : base(personId)
         {
-            ProfessionalNumber = profNumber;
+            ProfessionalNumber = professionalNumber;
             MedicalWorkerType = Enums.MedicalWorkerType.ElectroriadologyTechnician;
-            PersonId = person.Id;
+            PersonId = personId;
         }
+
         public override string ProfessionalTitle => "Technik elektroradiolog";
     }
 }

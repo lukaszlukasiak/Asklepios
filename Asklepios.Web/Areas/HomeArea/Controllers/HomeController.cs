@@ -60,7 +60,6 @@ namespace Asklepios.Web.Areas.HomeArea.Controllers
         public IActionResult LogIn()
         {
             LogInViewModel model = new LogInViewModel();
-
             return View(model);
         }
         [HttpPost]
@@ -145,7 +144,6 @@ namespace Asklepios.Web.Areas.HomeArea.Controllers
                 model.AlertMessageType = Enums.AlertMessageType.Error;
                 model.AlertMessage = "Wystąpił błąd podczas próby wysłania wiadomości! Spróbuj jeszcze raz!";
                 ViewBag.Message = "Wystąpił błąd podczas próby wysłania wiadomości! Spróbuj jeszcze raz!";
-
             }
             return View(model);
         }

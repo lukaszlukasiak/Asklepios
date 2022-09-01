@@ -11,6 +11,23 @@ namespace Asklepios.Data
 {
     public class CustomerServiceDbContext : DbContext, ICustomerServiceModuleRepository
     {
+
+        public CustomerServiceDbContext()
+        {
+
+        }
+
+        // Metoda pozwala na wskazanie i konfigurację źródła danych
+        // Przykład użycia był doskonale widoczny w poprzednim wpisie
+        protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
+        {
+        }
+
+        // Metoda pozwala na konfigurację modelu przy wykorzystaniu Fluent API
+        protected override void OnModelCreating(ModelBuilder modelBuilder)
+        {
+        }
+
         public Patient CurrentPatient { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
 
         public void BookVisit(Patient selectedPatient, Visit newVisit)

@@ -3,15 +3,21 @@ using Asklepios.Core.Extensions;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 using System.Text;
 
 namespace Asklepios.Core.Models
 {
     public class MedicalRoom
     {
+        [Key]
+        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
+        [Required]
+
         public long Id { get; set; }
         [Display(Name = "Placówka")]
         public long LocationId { get; set; }
+        [ForeignKey("LocationId")]
         public Location Location { get; set; }
         [Required(ErrorMessage = "Wprowadź nazwę pokoju!")]
         [Display(Name = "Nazwa pokoju")]

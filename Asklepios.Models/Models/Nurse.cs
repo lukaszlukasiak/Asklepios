@@ -11,12 +11,19 @@ namespace Asklepios.Core.Models
         //{
         //    PWZNumber = pwzNumber;
         //}
-        public Nurse(Person person , string profNumber) :base(person)
+        //public Nurse(Person person , string profNumber) :base(person)
+        //{
+        //    ProfessionalNumber = profNumber;
+        //    MedicalWorkerType = Enums.MedicalWorkerType.Nurse;
+        //    PersonId = person.Id;
+        //}
+        public Nurse(long personId, string professionalNumber) : base(personId)
         {
-            ProfessionalNumber = profNumber;
+            ProfessionalNumber = professionalNumber;
             MedicalWorkerType = Enums.MedicalWorkerType.Nurse;
-            PersonId = person.Id;
+            PersonId = personId;
         }
+
         public override string ProfessionalTitle => "Pielęgniarka";
         //public string   PWZNumber { get;}
     }

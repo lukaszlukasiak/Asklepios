@@ -15,10 +15,24 @@ namespace Asklepios.Data
         public DbSet<MedicalRoom> MedicalRooms { get; set; }
         public DbSet<Visit> Visits { get; set; }
         public DbSet<MedicalPackage> MedicalPackages{ get; set; }
-
-
         public DbSet<User> Users { get; set; }
         public DbSet<Person> People{ get; set; }
+
+        public AdministrationDbContext()
+        {
+
+        }
+
+        // Metoda pozwala na wskazanie i konfigurację źródła danych
+        // Przykład użycia był doskonale widoczny w poprzednim wpisie
+        protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
+        {
+        }
+
+        // Metoda pozwala na konfigurację modelu przy wykorzystaniu Fluent API
+        protected override void OnModelCreating(ModelBuilder modelBuilder)
+        {
+        }
 
         public void AddLocation(Location location)
         {

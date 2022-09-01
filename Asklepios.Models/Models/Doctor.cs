@@ -7,19 +7,17 @@ namespace Asklepios.Core.Models
         public override string ProfessionalTitle => "Lekarz";
 
         
-        public Doctor(Person person, string doctorNumber) :base(person)
+        //public Doctor(Person person, string doctorNumber) :base(person)
+        //{
+        //    ProfessionalNumber = doctorNumber;
+        //    MedicalWorkerType = Enums.MedicalWorkerType.Doctor;
+        //    PersonId = person.Id;   
+        //}
+        public Doctor(long personId, string professionalNumber) : base(personId)
         {
-            ProfessionalNumber = doctorNumber;
+            ProfessionalNumber = professionalNumber;
             MedicalWorkerType = Enums.MedicalWorkerType.Doctor;
-            PersonId = person.Id;   
+            PersonId = personId;
         }
-        //public Doctor(string name, string surName, long id, string pesel, bool hasPolishCitizenship, string passportNumber, string passportCode, string email, Aglomeration aglomeration) : base(name, surName, id, pesel, hasPolishCitizenship, passportNumber, passportCode, email, aglomeration)
-        //{
-        //    this.MedicalWorkerType = Enums.MedicalWorkerType.Doctor;
-        //}
-
-        //public Doctor()
-        //{
-        //}
     }
 }

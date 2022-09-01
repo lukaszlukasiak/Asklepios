@@ -1,11 +1,16 @@
+using Asklepios.Data.DBContexts;
 using Asklepios.Data.InMemoryContexts;
 using Asklepios.Data.Interfaces;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using Microsoft.AspNetCore.Diagnostics;
+using Microsoft.AspNetCore.Diagnostics.HealthChecks;
+
 
 namespace Asklepios.Web
 {
@@ -21,6 +26,13 @@ namespace Asklepios.Web
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            services.AddDbContext<AsklepiosDbContext>(options =>
+    options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
+
+            // services.
+            //services.
+            //services.AddDatabaseDeveloperPageExceptionFilter();
+
             //services.
             services.AddControllersWithViews(options =>
             {
@@ -37,11 +49,17 @@ namespace Asklepios.Web
                 });
 
             });
-            services.AddScoped<IHomeModuleRepository, HomeInMemoryContext>();
-            services.AddScoped<IPatientModuleRepository, PatientInMemoryContext>();
-            services.AddScoped<IMedicalWorkerModuleRepository, MedicalWorkerInMemoryContext>();
-            services.AddScoped<ICustomerServiceModuleRepository, CustomerServiceInMemoryContext>();
-            services.AddScoped<IAdministrationModuleRepository, AdministrationInMemoryContext>();
+            //services.AddScoped<IHomeModuleRepository, HomeInMemoryContext>();
+            //services.AddScoped<IPatientModuleRepository, PatientInMemoryContext>();
+            //services.AddScoped<IMedicalWorkerModuleRepository, MedicalWorkerInMemoryContext>();
+            //services.AddScoped<ICustomerServiceModuleRepository, CustomerServiceInMemoryContext>();
+            //services.AddScoped<IAdministrationModuleRepository, AdministrationInMemoryContext>();
+
+            services.AddScoped<IHomeModuleRepository, AsklepiosDbContext>();
+            services.AddScoped<IPatientModuleRepository, AsklepiosDbContext>();
+            services.AddScoped<IMedicalWorkerModuleRepository, AsklepiosDbContext>();
+            services.AddScoped<ICustomerServiceModuleRepository, AsklepiosDbContext>();
+            services.AddScoped<IAdministrationModuleRepository, AsklepiosDbContext>();
 
 
         }

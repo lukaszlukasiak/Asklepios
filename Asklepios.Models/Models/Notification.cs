@@ -1,6 +1,8 @@
 ﻿using Asklepios.Core.Enums;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -9,11 +11,16 @@ namespace Asklepios.Core.Models
 {
     public class Notification
     {
-        public NotificationType NotificationType { get; set; }
+        [Key]
+        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
+        [Required]
         public long Id { get; set; }
+        public NotificationType NotificationType { get; set; }
+        [NotMapped]
         public object EventObject { get; set; }
         public bool IsRead { get; set; }
         public long PatientId {get;set;}
+        [ForeignKey("PatientId")]
         public Patient Patient { get; set; }
         public DateTimeOffset DateTimeAdded { get; set; }
         public string Description
@@ -53,7 +60,8 @@ namespace Asklepios.Core.Models
             }
         }
         public long VisitId { get; set; }
-        public Visit Visit
+        [ForeignKey("VisitId")]
+        public virtual Visit Visit
         {
             //get
             //{

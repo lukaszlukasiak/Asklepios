@@ -1,9 +1,13 @@
 ﻿using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Asklepios.Core.Models
 {
     public class IssuedMedicine
     {
+        [Key]
+        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
+        [Required]
         public long Id { get; set; }
         [Display(Name = "Nazwa leku")]
         [Required(ErrorMessage = "Proszę wprowadzić nazwę leku")]
@@ -21,5 +25,7 @@ namespace Asklepios.Core.Models
 
         //public string Dosage { get; set; }
         public float? PaymentDiscount { get; set; }
+        public long PrescriptionId { get; set; }
+        public Prescription Prescription { get; set; }
     }
 }

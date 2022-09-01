@@ -3,11 +3,15 @@
 using PdfSharpCore.Pdf;
 using System;
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Asklepios.Core.Models
 {
     public  class MedicalTestResult:ICloneable
     {
+        [Key]
+        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
+        [Required]
         public long Id { get; set; }
         [Display(Name = "Opis badania")]
         [Required(ErrorMessage = "Proszę wprowadzić opis/zakres badania")]
@@ -15,7 +19,9 @@ namespace Asklepios.Core.Models
 
 
         public string Description { get; set; }
-        public MedicalService MedicalService { get; set; }
+        public long MedicalServiceId { get; set; }
+        [ForeignKey("MedicalServiceId")]
+        public virtual MedicalService MedicalService { get; set; }
         //private byte[] _document;
         public byte[] Document 
         {
@@ -24,26 +30,33 @@ namespace Asklepios.Core.Models
         }
         public string DocumentPath { get; set; }
         //public VisitSummary VisitSummary { get; set; }
-        public MedicalWorker MedicalWorker { get; set; }
+        public long MedicalWorkerId { get; set; }
+        [ForeignKey("MedicalWorkerId")]
+        public virtual MedicalWorker MedicalWorker { get; set; }
         public DateTimeOffset ExamDate { get; set; }
         public DateTimeOffset UploadDate { get; set; }
-        public Patient Patient { get; set; }
+        public long PatientId { get; set; }
+        [ForeignKey("PatientId")]
+        public virtual Patient Patient { get; set; }
         public long VisitId { get; set; }
         public Visit _visit;
-        public Visit Visit
+        //[ForeignKey("VisitId")]
+        public virtual Visit Visit
         {
-            get
-            {
-                return _visit;
-            }
-            set
-            {
-                _visit = value;
-                MedicalWorker = value.MedicalWorker;
-                Patient = value.Patient;
-            }
+            get;set;
+            //get
+            //{
+            //    return _visit;
+            //}
+            //set
+            //{
+            //    _visit = value;
+            //    MedicalWorker = value.MedicalWorker;
+            //    Patient = value.Patient;
+            //}
         }
-
+        //public long MedicalTestResultId { get; set; }
+        //[ForeignKey("MedicalTestResultId")]
         public MedicalTestResult()
         {
 
