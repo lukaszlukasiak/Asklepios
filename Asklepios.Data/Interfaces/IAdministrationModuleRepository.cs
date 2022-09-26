@@ -24,7 +24,7 @@ namespace Asklepios.Data.Interfaces
         VisitCategory GetVisitCategoryById(long id);
         Patient GetPatientById(long id);
         User GetUser(int parsedId);
-        Person GetPerson(long personId);
+        Person GetPersonById(long personId);
         List<MedicalRoom> GetRoomsByLocationId();
         MedicalService GetMedicalServiceById(long v);
         List<MedicalRoom> GetAllRooms();

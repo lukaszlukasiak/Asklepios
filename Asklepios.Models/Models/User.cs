@@ -28,15 +28,15 @@ namespace Asklepios.Core.Models
         public UserType? UserType { get; set; }
         [Display(Name = "Typ modułu, do którego użytkownik ma dostęp")]
         public WorkerModuleType? WorkerModuleType { get; set; }
-        public long PersonId { get; set; }
+        public long?      PersonId { get; set; }
         [ForeignKey("PersonId")]
         public virtual Person Person { get; set; }
 
-        public long MedicalWorkerId { get; set; }
+        public long? MedicalWorkerId { get; set; }
         //[ForeignKey("MedicalWorkerId")]
 
         public virtual MedicalWorker MedicalWorker { get; set; }
-        public long PatientId { get; set; }
+        public long? PatientId { get; set; }
         //[ForeignKey("PatientId")]
 
         public virtual Patient Patient { get; set; }

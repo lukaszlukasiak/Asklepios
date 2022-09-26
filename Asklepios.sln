@@ -9,6 +9,12 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Asklepios.Web", "Asklepios.
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Asklepios.Data", "Asklepios.Data\Asklepios.Data.csproj", "{7D4DC751-179B-4721-824A-C808FED41390}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TestConsole", "TestConsole\TestConsole.csproj", "{7B803D07-D91C-43F5-97D0-19913F94FB9E}"
+	ProjectSection(ProjectDependencies) = postProject
+		{7D4DC751-179B-4721-824A-C808FED41390} = {7D4DC751-179B-4721-824A-C808FED41390}
+		{931F2CFB-AE85-4D06-BD27-8A0AA51B90A6} = {931F2CFB-AE85-4D06-BD27-8A0AA51B90A6}
+	EndProjectSection
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -27,6 +33,10 @@ Global
 		{7D4DC751-179B-4721-824A-C808FED41390}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{7D4DC751-179B-4721-824A-C808FED41390}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{7D4DC751-179B-4721-824A-C808FED41390}.Release|Any CPU.Build.0 = Release|Any CPU
+		{7B803D07-D91C-43F5-97D0-19913F94FB9E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{7B803D07-D91C-43F5-97D0-19913F94FB9E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{7B803D07-D91C-43F5-97D0-19913F94FB9E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{7B803D07-D91C-43F5-97D0-19913F94FB9E}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

@@ -16,13 +16,15 @@ namespace Asklepios.Core.Models
         [Display(Name = "Opis badania")]
         [Required(ErrorMessage = "Proszę wprowadzić opis/zakres badania")]
         [DataType(DataType.Text)]
-
-
         public string Description { get; set; }
-        public long MedicalServiceId { get; set; }
+
+        public long? MedicalServiceId { get; set; }
+
         [ForeignKey("MedicalServiceId")]
+
         public virtual MedicalService MedicalService { get; set; }
         //private byte[] _document;
+        [NotMapped]
         public byte[] Document 
         {
             get;
@@ -30,16 +32,19 @@ namespace Asklepios.Core.Models
         }
         public string DocumentPath { get; set; }
         //public VisitSummary VisitSummary { get; set; }
-        public long MedicalWorkerId { get; set; }
+        public long? MedicalWorkerId { get; set; }
         [ForeignKey("MedicalWorkerId")]
         public virtual MedicalWorker MedicalWorker { get; set; }
+
         public DateTimeOffset ExamDate { get; set; }
         public DateTimeOffset UploadDate { get; set; }
-        public long PatientId { get; set; }
+
+        public long? PatientId { get; set; }
         [ForeignKey("PatientId")]
         public virtual Patient Patient { get; set; }
-        public long VisitId { get; set; }
-        public Visit _visit;
+
+        public long? VisitId { get; set; }
+        //public Visit _visit;
         //[ForeignKey("VisitId")]
         public virtual Visit Visit
         {

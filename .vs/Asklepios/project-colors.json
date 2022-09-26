@@ -1,0 +1,36 @@
+{
+  "Version": 1,
+  "ProjectMap": {
+    "a2fe74e1-b743-11d0-ae1a-00a0c90fffc3": {
+      "ProjectGuid": "a2fe74e1-b743-11d0-ae1a-00a0c90fffc3",
+      "DisplayName": "Różne pliki",
+      "ColorIndex": -1
+    },
+    "7d4dc751-179b-4721-824a-c808fed41390": {
+      "ProjectGuid": "7d4dc751-179b-4721-824a-c808fed41390",
+      "DisplayName": "Asklepios.Data",
+      "ColorIndex": 0
+    },
+    "931f2cfb-ae85-4d06-bd27-8a0aa51b90a6": {
+      "ProjectGuid": "931f2cfb-ae85-4d06-bd27-8a0aa51b90a6",
+      "DisplayName": "Asklepios.Core",
+      "ColorIndex": 1
+    },
+    "442aa2c3-9eb8-457a-81e7-758fc7e34a74": {
+      "ProjectGuid": "442aa2c3-9eb8-457a-81e7-758fc7e34a74",
+      "DisplayName": "Asklepios.Web",
+      "ColorIndex": 2
+    },
+    "919fd655-f067-4ba2-b932-d926e85dd6b4": {
+      "ProjectGuid": "919fd655-f067-4ba2-b932-d926e85dd6b4",
+      "DisplayName": "Dokumenty skryptów",
+      "ColorIndex": 3
+    },
+    "7b803d07-d91c-43f5-97d0-19913f94fb9e": {
+      "ProjectGuid": "7b803d07-d91c-43f5-97d0-19913f94fb9e",
+      "DisplayName": "TestConsole",
+      "ColorIndex": 4
+    }
+  },
+  "NextColorIndex": 5
+}

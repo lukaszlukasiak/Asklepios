@@ -544,17 +544,17 @@
 
         }
         <div class="border border-secondary rounded w-100 flex-grow-0 mb-3  p-3">
-            @if (Model.Visit.MedicalResult != null)
+            @if (Model.Visit.MedicalTestResult != null)
             {
 
                 <div class="d-flex  m-auto flex-grow-1" >
                     <div class="d-flex flex-fill pt-2 flex-column">
                         <h2>
-                            Badanie: @Model.Visit.MedicalResult.MedicalService.Name
+                            Badanie: @Model.Visit.MedicalTestResult.MedicalService.Name
                         </h2>
 
                         <div>
-                            Wykonane: @Model.Visit.MedicalResult.ExamDate.ToString("dd-MM-yyyy")
+                            Wykonane: @Model.Visit.MedicalTestResult.ExamDate.ToString("dd-MM-yyyy")
                         </div>
                         @*<a class="btn btn-primary btn-icon-split mt-3 form-control" asp-area="MedicalWorkerArea" asp-controller="MedicalWorker" asp-action="DownloadFile" asp-route-id="@Model.Visit.MedicalResult.Id">
                                 <span class="icon text-white">
@@ -564,7 +564,7 @@
                             </a>*@
                     </div>
                 </div>
-                <form class="form" method="post" asp-area="MedicalWorkerArea" asp-controller="MedicalWorker" asp-action="DownloadTestResults" asp-route-id="@Model.Visit.MedicalResult.Id">
+                <form class="form" method="post" asp-area="MedicalWorkerArea" asp-controller="MedicalWorker" asp-action="DownloadTestResults" asp-route-id="@Model.Visit.MedicalTestResult.Id">
                     <button type="submit" class="btn btn-primary btn-icon-split form-control w-100 mt-3">
                         <span class="icon text-white left" style="text-align:left;float:left">
                             <i class="fas fa-file-download"></i>
@@ -572,8 +572,8 @@
                         <span class="text" style="float: left">Wyniki</span>
                     </button>
                 </form>
-                <form class="form" method="post" asp-area="MedicalWorkerArea" asp-controller="MedicalWorker" asp-action="RemoveTestResult" asp-route-id="@Model.Visit.MedicalResult.Id">
-                    <input type="text" class="form-control  mb-2" asp-for="MedicalTestFileIdToRemove" value="@Model.Visit.MedicalResult.Id" hidden />
+                <form class="form" method="post" asp-area="MedicalWorkerArea" asp-controller="MedicalWorker" asp-action="RemoveTestResult" asp-route-id="@Model.Visit.MedicalTestResult.Id">
+                    <input type="text" class="form-control  mb-2" asp-for="MedicalTestFileIdToRemove" value="@Model.Visit.MedicalTestResult.Id" hidden />
 
                     <button type="submit" class="btn btn-primary btn-icon-split form-control w-100 mt-3">
                         <span class="icon text-white left" style="text-align:left;float:left">

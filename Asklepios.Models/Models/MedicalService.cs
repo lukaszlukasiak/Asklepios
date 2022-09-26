@@ -18,12 +18,16 @@ namespace Asklepios.Core.Models
         public bool IsPrimaryService { get; set; }
         public bool RequireRefferal { get; set; }
         public long? PrimaryServiceId { get; set; }
-        public MedicalService PrimaryMedicalService { get; set; }
-        public virtual List< MedicalService> SubServices { get; set; }
-        //public virtual List<MedicalWorker> MedicalWorkers{ get; set; }
-        public long VisitCategoryId { get; set; }
+        public virtual MedicalService PrimaryService { get; set; }
+        public long? VisitCategoryId { get; set; }
         public virtual VisitCategory VisitCategory { get; set; }
-        public List<MedicalServiceMedicalWorker> MedicalServiceMedicalWorker { get; set; }
+
+        public virtual List< MedicalService> SubServices { get; set; }
+        public virtual List<MedicalWorker> MedicalWorkers { get; set; }
+        //public  virtual List<MedicalServiceToMedicalWorker> MedicalServiceMedicalWorker { get; set; }
+        public virtual List<Location> Locations { get; set; }
+        //public virtual List<Visit> Visits { get; set; }
+        public virtual List<MinorServiceToVisit> MinorServicesToVisit { get; set; }
 
     }
 }

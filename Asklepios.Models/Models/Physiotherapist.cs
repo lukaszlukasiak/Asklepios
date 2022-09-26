@@ -17,11 +17,15 @@ namespace Asklepios.Core.Models
         //    MedicalWorkerType = Enums.MedicalWorkerType.Physiotherapist;
         //    PersonId = person.Id;
         //}
-        public Physiotherapist(long personId, string professionalNumber) : base(personId)
+        public Physiotherapist()
         {
-            ProfessionalNumber = professionalNumber;
+
+        }
+        public Physiotherapist(long personId, string professionalNumber) : base(personId, professionalNumber)
+        {
+            //ProfessionalNumber = professionalNumber;
             MedicalWorkerType = Enums.MedicalWorkerType.Physiotherapist;
-            PersonId = personId;
+            //PersonId = personId;
         }
 
         public override string ProfessionalTitle => "Fizjoterapeuta";

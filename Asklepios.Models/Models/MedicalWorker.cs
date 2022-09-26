@@ -14,13 +14,18 @@ namespace Asklepios.Core.Models
         //    : base(name, surName, id, pesel, hasPolishCitizenship, passportNumber, passportCode, email, aglomeration)
         //{
         //}
+        public MedicalWorker()
+        {
+
+        }
         public MedicalWorker(Person person)
         {
             Person = person;
         }
-        public MedicalWorker(long personId)
+        public MedicalWorker(long personId, string professionalNumber)
         {
             PersonId = personId;
+            ProfessionalNumber = professionalNumber;
         }
 
         //public MedicalWorker(Person person,DateTime hiredSince, string professionlTitle, MedicalWorkerType medicalWorkerType,List<string> education ,string experience, string imaagePath)
@@ -32,10 +37,10 @@ namespace Asklepios.Core.Models
         [Required]
 
         public long Id { get; set; }
-        public long PersonId { get; set; }
+        public long? PersonId { get; set; }
         [ForeignKey("PersonId")]
         public virtual Person Person { get; set; }
-        public long UserId { get; set; }
+        public long? UserId { get; set; }
         [ForeignKey("UserId")]
         public virtual User User { get; set; }
         [Required(ErrorMessage = "Wprowadź numer zawodowy!")]
@@ -80,6 +85,7 @@ namespace Asklepios.Core.Models
             //}
         }
         public virtual List<VisitReview> VisitReviews { get; set; }
+        [NotMapped]
         public float AverageRating
         {
             get
@@ -96,6 +102,7 @@ namespace Asklepios.Core.Models
             }
         }
         [Required(ErrorMessage = "Wprowadź typ pracownika medycznego!")]
+        
         [Display(Name = "Typ pracownika medycznego")]
 
         public MedicalWorkerType? MedicalWorkerType { get; set; }
@@ -118,7 +125,7 @@ namespace Asklepios.Core.Models
         [Display(Name = "Usługi")]
 
         public virtual List<MedicalService> MedicalServices { get; set; }
-        public virtual List<MedicalServiceMedicalWorker> MedicalServiceMedicalWorker { get; set; }
+        //public virtual List<MedicalServiceToMedicalWorker> MedicalServicesToMedicalWorkers { get; set; }
 
 
         public void UpdateWith(MedicalWorker worker)
@@ -139,10 +146,10 @@ namespace Asklepios.Core.Models
             {
                 this.MedicalServiceIds = worker.MedicalServiceIds;
             }
-            if (worker.MedicalServices!=null)
-            {
-                this.MedicalServices = worker.MedicalServices;
-            }
+            //if (worker.MedicalServicesToMedicalWorkers!=null)
+            //{
+            //    this.MedicalServicesToMedicalWorkers = worker.MedicalServicesToMedicalWorkers;
+            //}
             if (worker.MedicalWorkerType.HasValue)
             {
                 this.MedicalWorkerType = worker.MedicalWorkerType;
@@ -160,7 +167,7 @@ namespace Asklepios.Core.Models
                 this.User = worker.User;
             }
         }
-
+        [NotMapped]
         public string RatingDescription
         {
             get
@@ -188,19 +195,20 @@ namespace Asklepios.Core.Models
                 }
             }
         }
+        [NotMapped]
         public bool IsValid
         {
             get
             {
                 if (MedicalWorkerType.HasValue)
                 {
-                    if (MedicalServices!=null)
-                    {
-                        if (!string.IsNullOrWhiteSpace( Experience))
-                        {
-                            return true;
-                        }
-                    }
+                    //if (MedicalServicesToMedicalWorkers!=null)
+                    //{
+                    //    if (!string.IsNullOrWhiteSpace( Experience))
+                    //    {
+                    //        return true;
+                    //    }
+                    //}
                 }
                 return false;
             }

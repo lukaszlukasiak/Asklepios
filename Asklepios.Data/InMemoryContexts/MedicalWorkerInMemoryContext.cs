@@ -263,14 +263,14 @@ namespace Asklepios.Data.InMemoryContexts
             Visit visit = PatientMockDB.FutureVisits.Where(c=>c.Id==visitId).First();
             if (visit!=null)
             {
-                if (visit.MedicalResult!=null)
+                if (visit.MedicalTestResult!=null)
                 {
-                    if (visit.MedicalResult.Id==testResultId)
+                    if (visit.MedicalTestResult.Id==testResultId)
                     {
-                        PatientMockDB.RemoveFile(visit.MedicalResult.DocumentPath);
+                        PatientMockDB.RemoveFile(visit.MedicalTestResult.DocumentPath);
                         int index = PatientMockDB.MedicalTestResults.FindIndex(c => c.Id == testResultId);
                         PatientMockDB.MedicalTestResults.RemoveAt(index);
-                        string fullPath = webRootPath + visit.MedicalResult.DocumentPath;// Path.Combine(webRootPath, documentPath);
+                        string fullPath = webRootPath + visit.MedicalTestResult.DocumentPath;// Path.Combine(webRootPath, documentPath);
                         if (File.Exists(fullPath))
                         {
                             File.Delete(fullPath);
@@ -279,7 +279,7 @@ namespace Asklepios.Data.InMemoryContexts
                         {
 
                         }
-                        visit.MedicalResult = null;
+                        visit.MedicalTestResult = null;
 
                     }
                 }

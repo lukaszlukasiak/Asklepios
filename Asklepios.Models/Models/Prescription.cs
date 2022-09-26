@@ -15,14 +15,14 @@ namespace Asklepios.Core.Models
 
         public DateTimeOffset IssueDate { get; set; }
         public DateTimeOffset ExpirationDate { get; set; }
-        public long IssuedById { get; set; }
+        public long? IssuedById { get; set; }
         [ForeignKey("IssuedById")]
         public MedicalWorker IssuedBy { get; set; }
-        public long IssuedToId { get; set; }
+        public long? IssuedToId { get; set; }
         [ForeignKey("IssuedToId")]
         public Patient IssuedTo { get; set; }
         
-        public virtual List<IssuedMedicine> IssuedMedicines { get; set; } = new List<IssuedMedicine>();
+        public virtual List<IssuedMedicine> IssuedMedicines { get; set; }
         
         [Display(Name = "Kod dostępu")]
         [Required(ErrorMessage = "Proszę wprowadzić kod dostępu")]
@@ -37,7 +37,7 @@ namespace Asklepios.Core.Models
         [StringLength(20, ErrorMessage ="Numer identyfikacyjny powinien się składać z 20 znaków")]
 
         public string IdentificationCode { get; set; }
-        public long VisitId { get; set; }
+        public long? VisitId { get; set; }
         //private Visit _visit;
         //[ForeignKey("VisitId")]
         public Visit Visit

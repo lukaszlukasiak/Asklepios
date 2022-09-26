@@ -17,11 +17,15 @@ namespace Asklepios.Core.Models
         //    MedicalWorkerType = Enums.MedicalWorkerType.Nurse;
         //    PersonId = person.Id;
         //}
-        public Nurse(long personId, string professionalNumber) : base(personId)
+        public Nurse()
         {
-            ProfessionalNumber = professionalNumber;
+
+        }
+        public Nurse(long personId, string professionalNumber) : base(personId, professionalNumber)
+        {
+            //ProfessionalNumber = professionalNumber;
             MedicalWorkerType = Enums.MedicalWorkerType.Nurse;
-            PersonId = personId;
+            //PersonId = personId;
         }
 
         public override string ProfessionalTitle => "Pielęgniarka";
