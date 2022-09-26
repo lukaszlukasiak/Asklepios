@@ -17,10 +17,10 @@ namespace Asklepios.Core.Models
 
         public long Id { get; set; }
         [Required]
-        public long PersonId { get; set; }
+        public long? PersonId { get; set; }
         [ForeignKey("PersonId")]
         public Person Person { get; set; }
-        public long UserId { get; set; }
+        public long? UserId { get; set; }
         [ForeignKey("UserId")]
         public User User { get; set; }
 
@@ -29,7 +29,7 @@ namespace Asklepios.Core.Models
         [Display(Name = "Pakiet medyczny")]
         [Range(1,long.MaxValue, ErrorMessage ="Wybierz pakiet medyczny")]
         
-        public long MedicalPackageId
+        public long? MedicalPackageId
         {
             get;set;
             //get
@@ -59,7 +59,7 @@ namespace Asklepios.Core.Models
         [Display(Name = "Oddział NFZ")]
         [Range(1, long.MaxValue, ErrorMessage = "Wybierz oddział NFZ")]
 
-        public long NFZUnitId
+        public long?     NFZUnitId
         {
             get;set;
             //get
@@ -98,7 +98,7 @@ namespace Asklepios.Core.Models
             {
                 if (HistoricalVisits != null)
                 {
-                    List<MedicalTestResult> results = HistoricalVisits.Where(c => c.MedicalResult != null).Select(c => c.MedicalResult).ToList();
+                    List<MedicalTestResult> results = HistoricalVisits.Where(c => c.MedicalTestResult != null).Select(c => c.MedicalTestResult).ToList();
                     return results;
                 }
                 else

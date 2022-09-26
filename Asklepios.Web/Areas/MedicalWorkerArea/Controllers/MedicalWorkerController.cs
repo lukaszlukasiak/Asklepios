@@ -63,7 +63,7 @@ namespace Asklepios.Web.Areas.MedicalWorkerArea.Controllers
                 {
                     User user = JsonConvert.DeserializeObject<User>((string)TempData["User"]);
                     _loggedUser = user;
-                    _loggedUser.Person = _context.GetPersonById(_loggedUser.PersonId);
+                    _loggedUser.Person = _context.GetPersonById(_loggedUser.PersonId.Value);
                     _medicalWorker = _context.GetMedicalWorkerByPersonId(_loggedUser.Id);
                     ViewData["UserName"] = _loggedUser.Person.FullName;
                 }
@@ -352,7 +352,7 @@ namespace Asklepios.Web.Areas.MedicalWorkerArea.Controllers
                         };
                         medicalTestResult.Document = _context.GetDocument(medicalTestResult.DocumentPath, _hostEnvironment.WebRootPath);
                         _context.AddMedicalTestResult(medicalTestResult, model.MedicalTestFile, _hostEnvironment.WebRootPath);
-                        visit.MedicalResult = medicalTestResult;
+                        visit.MedicalTestResult = medicalTestResult;
 
                         //_context.UpdatePersonImage(model.Person.ImageFile, model.Person, _hostEnvironment.WebRootPath);
                     }
@@ -460,7 +460,7 @@ namespace Asklepios.Web.Areas.MedicalWorkerArea.Controllers
 
                     Visit visit = _context.GetBookedVisitById(CurrentVisitId);
                     _medicalWorker.AllVisits = _context.GetHistoricalVisitsByMedicalWorkerId(_medicalWorker.Id);
-                    MedicalTestResult testResult = _medicalWorker.AllVisits.Where(c => c.MedicalResult != null && c.MedicalResult.Id == idL).FirstOrDefault().MedicalResult;
+                    MedicalTestResult testResult = _medicalWorker.AllVisits.Where(c => c.MedicalTestResult != null && c.MedicalTestResult.Id == idL).FirstOrDefault().MedicalTestResult;
 
                     if (testResult != null)
                     {
@@ -499,7 +499,7 @@ namespace Asklepios.Web.Areas.MedicalWorkerArea.Controllers
 
                 Visit visit = _context.GetBookedVisitById(CurrentVisitId);
                 _medicalWorker.AllVisits.AddRange( _context.GetHistoricalVisitsByMedicalWorkerId(_medicalWorker.Id));
-                MedicalTestResult testResult = _medicalWorker.AllVisits.Where(c => c.MedicalResult != null && c.MedicalResult.Id == id).FirstOrDefault().MedicalResult;
+                MedicalTestResult testResult = _medicalWorker.AllVisits.Where(c => c.MedicalTestResult != null && c.MedicalTestResult.Id == id).FirstOrDefault().MedicalTestResult;
 
                 if (testResult != null)
                 {
@@ -623,9 +623,9 @@ namespace Asklepios.Web.Areas.MedicalWorkerArea.Controllers
                 if (visit != null)
                 {
                     visit.VisitStatus = Core.Enums.VisitStatus.Finished;
-                    if (visit.MedicalResult!=null)
+                    if (visit.MedicalTestResult!=null)
                     {
-                        _context.AddNotification(visit.MedicalResult.Id,NotificationType.TestResult,visit.Patient.Id, DateTimeOffset.Now, visit.Id);
+                        _context.AddNotification(visit.MedicalTestResult.Id,NotificationType.TestResult,visit.Patient.Id, DateTimeOffset.Now, visit.Id);
                     }
                     if (visit.Prescription!=null)
                     {

@@ -9,26 +9,21 @@ var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 builder.Services.AddControllersWithViews();
-//builder.Services.AddControllersWithViews(options =>
-//{
-//    options.CacheProfiles.Add("Caching", new CacheProfile()
-//    {
-//        Duration = 120,
-//        Location = ResponseCacheLocation.Any,
-//        VaryByHeader = "cookie"
-//    });
-//    options.CacheProfiles.Add("NoCaching", new CacheProfile()
-//    {
-//        NoStore = true,
-//        Location = ResponseCacheLocation.None
-//    });
 
-//});
+
 builder.Services.AddScoped<IHomeModuleRepository, HomeInMemoryContext>();
 builder.Services.AddScoped<IPatientModuleRepository, PatientInMemoryContext>();
 builder.Services.AddScoped<IMedicalWorkerModuleRepository, MedicalWorkerInMemoryContext>();
 builder.Services.AddScoped<ICustomerServiceModuleRepository, CustomerServiceInMemoryContext>();
 builder.Services.AddScoped<IAdministrationModuleRepository, AdministrationInMemoryContext>();
+
+
+builder.Services.AddScoped<IHomeModuleRepository, AsklepiosDBContext>();
+builder.Services.AddScoped<IPatientModuleRepository, AsklepiosDBContext>();
+builder.Services.AddScoped<IMedicalWorkerModuleRepository, AsklepiosDBContext>();
+builder.Services.AddScoped<ICustomerServiceModuleRepository, AsklepiosDBContext>();
+builder.Services.AddScoped<IAdministrationModuleRepository, AsklepiosDBContext>();
+
 
 builder.Services.AddSession();
 builder.Services.AddHttpContextAccessor();

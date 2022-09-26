@@ -9,9 +9,18 @@
 
 <div class="container"  style="margin-top:120px">
 
-    @foreach (var loc in Model.Locations)
-    {
+        @if(Model.Locations.Count > 0)
+        {
+            @foreach (var loc in Model.Locations)
+            {
+                <partial name="_Location" model="loc" />
+        }
 
-        <partial name="_Location" model="loc" />
-    }}
+    }
+    else
+    {
+       <div>Brak odziałów</div>;
+    }
+
+    }      
 </div>

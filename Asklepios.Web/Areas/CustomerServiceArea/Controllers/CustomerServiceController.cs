@@ -73,7 +73,7 @@ namespace Asklepios.Web.Areas.CustomerServiceArea.Controllers
             if (int.TryParse(id, out int parsedId))
             {
                 loggedUser = _context.GetUser(parsedId);
-                person = _context.GetPerson(loggedUser.PersonId);
+                person = _context.GetPersonById(loggedUser.PersonId.Value);
                 //_selectedPatient = _context.GetCurrentPatientData();
                 //SelectPatientViewModel model = new SelectPatientViewModel(_selectedPatient, _context.GetAllPatients().ToList());
                 ////model.AllPatients = _context.GetAllPatients().ToList();

@@ -147,7 +147,7 @@ namespace Asklepios.Data.InMemoryContexts
             return PatientMockDB.AllPatients.Where(c => c.Id == id).FirstOrDefault();
         }
 
-        public Person GetPerson(long personId)
+        public Person GetPersonById(long personId)
         {
             return PatientMockDB.Persons.Where(c=>c.Id==personId).FirstOrDefault();
         }

@@ -240,6 +240,7 @@ namespace Asklepios.Core.Models
             }
             
         }
+        [NotMapped]
         public string ValidationError { get; set; }
         public bool IsValid
         {

@@ -16,7 +16,7 @@ namespace Asklepios.Core.Models
 
         public long Id { get; set; }
         [Display(Name = "Placówka")]
-        public long LocationId { get; set; }
+        public long? LocationId { get; set; }
         [ForeignKey("LocationId")]
         public Location Location { get; set; }
         [Required(ErrorMessage = "Wprowadź nazwę pokoju!")]

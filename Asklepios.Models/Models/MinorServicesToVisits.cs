@@ -8,18 +8,18 @@ using System.Threading.Tasks;
 
 namespace Asklepios.Core.Models
 {
-    public  class MinorServiceVisit
+    public  class MedicalServiceToMedicalWorker
     {
         [Key]
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         [Required]
-
         public long Id { get; set; }
-        public long MedicalServiceId { get; set; }
+
+        public long? MedicalServiceId { get; set; }
         public MedicalService MedicalService { get; set; }
 
-        public long VisitId { get; set; }
-        public Visit Visit { get; set; }
+        public long? MedicalWorkerId { get; set; }
+        public MedicalWorker MedicalWorker { get; set; }
 
     }
 }

@@ -1261,7 +1261,7 @@ namespace Asklepios.Web.Areas.AdministrativeArea.Controllers
                     {
                         if (model.SelectedRoom.LocationId > 0)
                         {
-                            model.SelectedRoom.Location = _context.GetLocationById(model.SelectedRoom.LocationId);
+                            model.SelectedRoom.Location = _context.GetLocationById(model.SelectedRoom.LocationId.Value);
                         }
                         _context.UpdateRoom(model.SelectedRoom);
                         model.Locations = _context.GetAllLocations();

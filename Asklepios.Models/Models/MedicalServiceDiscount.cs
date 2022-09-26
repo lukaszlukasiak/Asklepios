@@ -12,7 +12,7 @@ namespace Asklepios.Core.Models
 
         public long Id { get; set; }
         [Display(Name = "Usługa")]
-        public long MedicalServiceId { get; set; }
+        public long? MedicalServiceId { get; set; }
         [ForeignKey("MedicalServiceId")]
         public virtual MedicalService MedicalService {get;set;}
         [Required(ErrorMessage = "Proszę podać wysokość rabatu (0-100%)")]
@@ -21,7 +21,7 @@ namespace Asklepios.Core.Models
         [DisplayFormat(DataFormatString = "{0:P2}")]
 
         public decimal Discount { get; set; }
-        public long MedicalPackageId { get; set; }
+        public long? MedicalPackageId { get; set; }
         [ForeignKey("MedicalPackageId")]
         public virtual MedicalPackage MedicalPackage { get; set; }
     }

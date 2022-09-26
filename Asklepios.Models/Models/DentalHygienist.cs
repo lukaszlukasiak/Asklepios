@@ -4,11 +4,15 @@ namespace Asklepios.Core.Models
 {
     public class DentalHygienist : MedicalWorker
     {
-        public DentalHygienist(long personId, string professionalNumber) : base(personId)
+        public DentalHygienist()
         {
-            ProfessionalNumber = professionalNumber;
+
+        }
+        public DentalHygienist(long personId, string professionalNumber) : base(personId, professionalNumber)
+        {
+            //ProfessionalNumber = professionalNumber;
             MedicalWorkerType = Enums.MedicalWorkerType.DentalHygienist;
-            PersonId = personId;
+            //PersonId = personId;
         }
         public override string ProfessionalTitle => "Higienistka Dentystyczna";
     }

@@ -13,11 +13,15 @@ namespace Asklepios.Core.Models
         //    MedicalWorkerType = Enums.MedicalWorkerType.Doctor;
         //    PersonId = person.Id;   
         //}
-        public Doctor(long personId, string professionalNumber) : base(personId)
+        public Doctor()
         {
-            ProfessionalNumber = professionalNumber;
+
+        }
+        public Doctor(long personId, string professionalNumber) : base(personId, professionalNumber)
+        {
+            //ProfessionalNumber = professionalNumber;
             MedicalWorkerType = Enums.MedicalWorkerType.Doctor;
-            PersonId = personId;
+            //PersonId = personId;
         }
     }
 }

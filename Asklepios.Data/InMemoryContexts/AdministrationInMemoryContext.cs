@@ -52,7 +52,7 @@ namespace Asklepios.Data.InMemoryContexts
         }
 
 
-        public Person GetPerson(long personId)
+        public Person GetPersonById(long personId)
         {
             return PatientMockDB.Persons.Where(c => c.Id == personId).FirstOrDefault();
         }
@@ -171,14 +171,14 @@ namespace Asklepios.Data.InMemoryContexts
             {
                 if (patient.NFZUnit==null)
                 {
-                    patient.NFZUnit = GetNFZUnitById(patient.NFZUnitId);
+                    patient.NFZUnit = GetNFZUnitById(patient.NFZUnitId.Value);
                 }
             }
             if (patient.MedicalPackageId>0)
             {
                 if (patient.MedicalPackage==null)
                 {
-                    patient.MedicalPackage = GetMedicalPackageById(patient.MedicalPackageId);
+                    patient.MedicalPackage = GetMedicalPackageById(patient.MedicalPackageId.Value);
                 }
             }
             
@@ -203,7 +203,7 @@ namespace Asklepios.Data.InMemoryContexts
             {
                 if (patient.MedicalPackage==null && patient.MedicalPackageId>0)
                 {
-                    MedicalPackage medicalPackage = GetMedicalPackageById(patient.MedicalPackageId);
+                    MedicalPackage medicalPackage = GetMedicalPackageById(patient.MedicalPackageId.Value);
                     if (medicalPackage!=null)
                     {
                         patient.MedicalPackage = medicalPackage;
@@ -211,7 +211,7 @@ namespace Asklepios.Data.InMemoryContexts
                 }
                 if (patient.NFZUnit==null && patient.NFZUnitId>0)
                 {
-                    NFZUnit unit = GetNFZUnitById(patient.NFZUnitId);
+                    NFZUnit unit = GetNFZUnitById(patient.NFZUnitId.Value);
                     if (unit!=null)
                     {
                         patient.NFZUnit = unit;
@@ -368,7 +368,7 @@ namespace Asklepios.Data.InMemoryContexts
             room.Id = id;
             if (room.LocationId>0 && room.Location==null)
             {
-                room.Location = GetLocationById(room.LocationId);
+                room.Location = GetLocationById(room.LocationId.Value);
                 //room.LocationId = room.Location.Id;
             }
 

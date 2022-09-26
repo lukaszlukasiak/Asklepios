@@ -25,7 +25,7 @@ namespace Asklepios.Core.Models
         [Display(Name = "Treść rekomendacji")]
 
         public string Description { get; set; }
-        public long VisitId { get; set; }
+        public long? VisitId { get; set; }
         [ForeignKey("VisitId")]
         public Visit Visit { get; set; }
 

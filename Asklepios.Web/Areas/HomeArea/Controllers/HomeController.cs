@@ -55,6 +55,10 @@ namespace Asklepios.Web.Areas.HomeArea.Controllers
         {
             LocationsViewModel model = new LocationsViewModel();
             model.Locations = _context.GetAllLocations().ToList();
+            //foreach (Location item in model.Locations)
+            //{
+            //    item.Services= _context.GetLocationServices(item.Id);
+            //}
             return View(model);
         }
         public IActionResult LogIn()

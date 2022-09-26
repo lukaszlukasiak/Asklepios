@@ -16,10 +16,13 @@ namespace Asklepios.Core.Models
 
         public long Id { get; set; }
 
+        public long? PrimaryMedicalServiceId { get; set; }
         public MedicalService PrimaryMedicalService { get; set; }
+        public long? MinorMedicalServiceId { get; set; }
         public MedicalService MinorMedicalService { get; set; }
         public DateTimeOffset IssueDate { get; set; }
         public DateTimeOffset ExpireDate { get; set; }
+        [NotMapped]
         public bool IsActive 
         {
             get
@@ -34,6 +37,7 @@ namespace Asklepios.Core.Models
                 }
             }
         }
+        [NotMapped]
         public bool HasExpired
         {
             get
@@ -51,52 +55,56 @@ namespace Asklepios.Core.Models
 
         public bool HasBeenUsed { get; set; }
 
-        public long IssuedById { get; set; }
-        [ForeignKey("IssuedById")]
-        public MedicalWorker IssuedBy { get; set; }
-        [ForeignKey("IssuedToId")]
+        public long? IssuedById { get; set; }
+        //[ForeignKey("IssuedById")]
+        public  MedicalWorker IssuedBy { get; set; }
+        //[ForeignKey("IssuedToId")]
 
         public Patient IssuedTo { get; set; }
-        public long IssuedToId { get; set; }
+        public long? IssuedToId { get; set; }
 
         [Display(Name = "Komentarz")]
         [DataType(DataType.Text)]
         public string Comment { get; set; }
 
-        private Visit _visitUsed;
-        [ForeignKey("VisitWhenUsedId")]
+
+        public long? VisitWhenUsedId { get; set; }
+
+        //private Visit _visitUsed;
+        //[ForeignKey("VisitWhenUsedId")]
         public Visit VisitWhenUsed
         {
-            get
-            {
-                return _visitUsed;
-            }
-            set
-            {
-                _visitUsed = value;
-            }
+            get;set;
+            //get
+            //{
+            //    return _visitUsed;
+            //}
+            //set
+            //{
+            //    _visitUsed = value;
+            //}
         }
-        public long VisitWhenUsedId { get; set; }
 
-        public Visit _visitWhenIssued;
+        //public Visit _visitWhenIssued;
 
-        [ForeignKey("VisitWhenIssuedId")]
+        //[ForeignKey("VisitWhenIssuedId")]
+        public long? VisitWhenIssuedId { get; set; }
 
         public Visit VisitWhenIssued 
         {
-            get
-            {
-                return _visitWhenIssued;
-            }
-            set
-            {
-                _visitWhenIssued = value;
-                //IssuedBy = value.MedicalWorker;
-                //IssuedTo = value.Patient;
-                //IssueDate = value.DateTimeSince;
-            }
+            get; set;
+            //get
+            //{
+            //    return _visitWhenIssued;
+            //}
+            //set
+            //{
+            //    _visitWhenIssued = value;
+            //    //IssuedBy = value.MedicalWorker;
+            //    //IssuedTo = value.Patient;
+            //    //IssueDate = value.DateTimeSince;
+            //}
         }
-        public long VisitWhenIssuedId { get; set; }
 
         public MedicalReferral MockClone(long id)
         {
@@ -107,7 +115,9 @@ namespace Asklepios.Core.Models
             referral.IssueDate= IssueDate;
             referral.PrimaryMedicalService = PrimaryMedicalService;
             referral.MinorMedicalService = MinorMedicalService;
-            
+            referral.PrimaryMedicalServiceId = PrimaryMedicalServiceId;
+            referral.MinorMedicalServiceId = MinorMedicalServiceId;
+
             return referral;
         }
         //public VisitSummary VisitSummary { get; set; }

@@ -17,98 +17,50 @@ namespace Asklepios.Core.Models
         [Required]
 
         public long Id { get; set; }
-        public long VisitCategoryId { get; set; }
+        public long? VisitCategoryId { get; set; }
         [ForeignKey("VisitCategoryId")]
         public virtual VisitCategory VisitCategory { get; set; }
         public VisitStatus VisitStatus { get; set; }
-        public long PatientId { get; set; }
+        public long? PatientId { get; set; }
         [ForeignKey("PatientId")]
-        private  Patient _Patient;
         public virtual Patient Patient 
         {
             get;set;
-            //get
-            //{
-            //    return _Patient;
-            //}
-            //set
-            //{
-            //    if (value!=null)
-            //    {
-            //        _Patient = value;
-            //        VisitStatus = VisitStatus.Booked;
-            //    }
-            //    else
-            //    {
-            //        _patien
-            //    }
-            //}
+
         }
-        public long MedicalWorkerId { get; set; }
+        public long? MedicalWorkerId { get; set; }
         [ForeignKey("MedicalWorkerId")]
         public virtual MedicalWorker MedicalWorker { get; set; }
         public DateTimeOffset DateTimeSince { get; set; }
         public DateTimeOffset DateTimeTill { get; set; }
         [NotMapped]
         public List<long> MinorMedicalServicesIds { get; set; }
+        [NotMapped]
         public virtual List<MedicalService> MinorMedicalServices { get; set; }
-        public long PrimaryServiceId { get; set; }
+        public virtual List<MinorServiceToVisit> MinorServicesToVisits { get; set; }
+
+        public long? PrimaryServiceId { get; set; }
         [ForeignKey("PrimaryServiceId")]
         public virtual MedicalService PrimaryService { get; set; }
-        public long LocationId { get; set; }
+        public long? LocationId { get; set; }
         [ForeignKey("LocationId")]
         public virtual Location Location { get; set; }
-        public long MedicalRoomId { get; set; }
+        public long? MedicalRoomId { get; set; }
         [ForeignKey("MedicalRoomId")]
         public MedicalRoom MedicalRoom { get; set; }
         
         public string MedicalHistory { get; set; }
-        public long MedicalResultId { get; set; }
+        public long? MedicalTestResultId { get; set; }
         
-        private MedicalTestResult _medicalTestResult;
-        [ForeignKey("MedicalResultId")]
-        public virtual MedicalTestResult MedicalResult 
-        { 
-            get
-            {
-                return _medicalTestResult;
-            }
-            set
-            {
-                _medicalTestResult = value;
-                if (_medicalTestResult!=null)
-                {
-                    _medicalTestResult.ExamDate = DateTimeOffset.Now;
-                    MedicalResultId = _medicalTestResult.Id;
-                }
-            }
+        //private MedicalTestResult _medicalTestResult;
+        [ForeignKey("MedicalTestResultId")]
+        public virtual MedicalTestResult MedicalTestResult 
+        {
+            get;set;
+
         }
-        //public IFormFile ImageFile { get; set; }
-        //public string ImageFilePath { get; set; }
-        //public string ImageSource
-        //{
-        //    get
-        //    {
-        //        if (ImageFile != null)
-        //        {
-        //            if (ImageFile.Length > 0)
-        //            {
-        //                using (var ms = new MemoryStream())
-        //                {
-        //                    ImageFile.CopyTo(ms);
-        //                    var fileBytes = ms.ToArray();
-        //                    string s = Convert.ToBase64String(fileBytes);
 
-
-        //                    return string.Format("data:image/jpg;base64,{0}", s);
-        //                    // act on the Base64 data
-        //                }
-        //            }
-
-        //        }
-        //        return ImageFilePath;
-        //    }
-        //}
+      
         private List<Recommendation> _recommendations;
         public virtual List<Recommendation> Recommendations 
         {
@@ -132,7 +84,7 @@ namespace Asklepios.Core.Models
         [NotMapped]
         public List<long> RecommendationIds { get; set; }
 
-        public long PrescriptionId { get; set; }
+        public long? PrescriptionId { get; set; }
 
         private Prescription _prescription;
         [ForeignKey("PrescriptionId")]
@@ -153,58 +105,22 @@ namespace Asklepios.Core.Models
                 
             }
         }
-        public long UsedExaminationReferralId { get; set; }
+        public long? UsedExaminationReferralId { get; set; }
 
-        private MedicalReferral _usedExaminationReferral;
         [ForeignKey("UsedExaminationReferralId")]
         public virtual MedicalReferral UsedExaminationReferral
         {
-            get
-            {
-                return _usedExaminationReferral;
-            }
-            set
-            {
-                _usedExaminationReferral = value;
-                if (_usedExaminationReferral != null)
-                {
-                    //foreach (var item in _examinationReferrals)
-                    //{
-                    _usedExaminationReferral.VisitWhenIssued = this;
-                    //item.VisitWhenIssued = this;
-                    //item.IssuedBy = this.MedicalWorker;
-                    //item.IssuedTo = this.Patient;
-                    //}
-                    UsedExaminationReferralId = _usedExaminationReferral.Id;
-                }
-            }
+            get;set;
+
         }
 
-        private List<MedicalReferral> _examinationReferrals;
         public virtual List<MedicalReferral> ExaminationReferrals 
-        { 
-            get
-            {
-                return _examinationReferrals;
-            }
-            set
-            {
-                _examinationReferrals = value;
-                if (_examinationReferrals!=null)
-                {
-                    foreach (var item in _examinationReferrals)
-                    {
-                        item.VisitWhenIssued = this;
-                        //item.IssuedBy = this.MedicalWorker;
-                        //item.IssuedTo = this.Patient;
-                    }
-                    ExaminatinoReferralsIds = _examinationReferrals.Select(c => c.Id).ToList();
-                }              
-            }
+        {
+            get;set;
         }
         [NotMapped]
         public List<long> ExaminatinoReferralsIds { get; set; }
-        public long VisitReviewId { get; set; }
+        public long? VisitReviewId { get; set; }
 
         public VisitReview _visitReview;
         [ForeignKey("VisitReviewId")]
@@ -229,21 +145,6 @@ namespace Asklepios.Core.Models
                 }
             }
         }
-        //public bool IsBooked
-        //{
-        //    get
-        //    {
-        //        if (Patient!=null)
-        //        {
-        //            return true;
-        //        }
-        //        else
-        //        {
-        //            return false;
-        //        }
-        //    }
-        //}
-        //public VisitSummary VisitSummary { get; set; }
         public string GetVisitDateDescription()
         {
             string dateDescription = DateTimeSince.ToString("dd-MM-yyyy") + " " + DateTimeSince.ToString("HH:mm");// + "-" + DateTimeTill.ToString("HH:mm");
@@ -302,7 +203,7 @@ namespace Asklepios.Core.Models
                 }
                 if (VisitCategory.Type == VisitCategoryType.MedicalImaging || VisitCategory.Type == VisitCategoryType.MedicalImaging)
                 {
-                    if (this.MedicalResult == null)
+                    if (this.MedicalTestResult == null)
                     {
                         return true;
                     }
@@ -403,7 +304,7 @@ namespace Asklepios.Core.Models
         }
         public Visit()
         {
-            MinorMedicalServices = new List<MedicalService>();
+            //MinorMedicalServices = new List<MedicalService>();
             Recommendations = new List<Recommendation>();
             ExaminationReferrals = new List<MedicalReferral>();
         }

@@ -172,7 +172,7 @@
             </div>
         </div>
     }
-    @if (Model.Visit.MedicalResult != null)
+    @if (Model.Visit.MedicalTestResult != null)
     {
         <div class="d-flex flex-column m-2">
             <h5>Wyniki badań</h5>
@@ -182,13 +182,13 @@
                 <div class="d-flex p-2  pt-3 m-auto flex-grow-1" >
                     <div class="d-flex flex-fill pt-2 flex-column">
                         <h5>
-                            Badanie: @Model.Visit.MedicalResult.MedicalService.Name
+                            Badanie: @Model.Visit.MedicalTestResult.MedicalService.Name
                         </h5>
 
                         <div>
-                            Wykonane: @Model.Visit.MedicalResult.ExamDate.ToString("dd-MM-yyyy")
+                            Wykonane: @Model.Visit.MedicalTestResult.ExamDate.ToString("dd-MM-yyyy")
                         </div>
-                        <a class="btn btn-primary btn-icon-split mt-3 form-control" asp-area="PatientArea" asp-controller="Patient" asp-action="DownloadFile" asp-route-id="@Model.Visit.MedicalResult.Id">
+                        <a class="btn btn-primary btn-icon-split mt-3 form-control" asp-area="PatientArea" asp-controller="Patient" asp-action="DownloadFile" asp-route-id="@Model.Visit.MedicalTestResult.Id">
                             <span class="icon text-white-50">
                                 <i class="fas fa-download"></i>
                             </span>
