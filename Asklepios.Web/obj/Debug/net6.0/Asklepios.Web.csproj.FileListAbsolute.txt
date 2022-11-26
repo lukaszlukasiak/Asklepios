@@ -1,10 +1,10 @@
+C:\Users\lukas\source\repos\Asklepios8\Asklepios.Web\bin\Debug\net6.0\Asklepios.Web.dll
 C:\Users\lukas\source\repos\Asklepios8\Asklepios.Web\bin\Debug\net6.0\appsettings.Development.json
 C:\Users\lukas\source\repos\Asklepios8\Asklepios.Web\bin\Debug\net6.0\appsettings.json
 C:\Users\lukas\source\repos\Asklepios8\Asklepios.Web\bin\Debug\net6.0\Asklepios.Web.staticwebassets.runtime.json
 C:\Users\lukas\source\repos\Asklepios8\Asklepios.Web\bin\Debug\net6.0\Asklepios.Web.exe
 C:\Users\lukas\source\repos\Asklepios8\Asklepios.Web\bin\Debug\net6.0\Asklepios.Web.deps.json
 C:\Users\lukas\source\repos\Asklepios8\Asklepios.Web\bin\Debug\net6.0\Asklepios.Web.runtimeconfig.json
-C:\Users\lukas\source\repos\Asklepios8\Asklepios.Web\bin\Debug\net6.0\Asklepios.Web.dll
 C:\Users\lukas\source\repos\Asklepios8\Asklepios.Web\bin\Debug\net6.0\ref\Asklepios.Web.dll
 C:\Users\lukas\source\repos\Asklepios8\Asklepios.Web\bin\Debug\net6.0\Asklepios.Web.pdb
 C:\Users\lukas\source\repos\Asklepios8\Asklepios.Web\bin\Debug\net6.0\refs\Microsoft.AspNetCore.Antiforgery.dll

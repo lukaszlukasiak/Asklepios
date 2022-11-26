@@ -93,10 +93,15 @@ namespace Asklepios.Web.Areas.MedicalWorkerArea.Controllers
         {
             if (_loggedUser != null)
             {
-                _medicalWorker.AllVisits.AddRange( _context.GetFutureVisitsByMedicalWorkerId(_medicalWorker.Id));
 
-                DashboardViewModel model = new DashboardViewModel(_medicalWorker);
-                model.UserName = _loggedUser.Person.FullName;
+                //_medicalWorker.AllVisits.AddRange( _context.GetFutureVisitsByMedicalWorkerId(_medicalWorker.Id));
+                List<Visit> visits= _context.GetVisitsByMedicalWorkerId(_loggedUser.Id);
+                _medicalWorker.AllVisits=(visits);
+
+                DashboardViewModel model = new DashboardViewModel(_medicalWorker)
+                {
+                    UserName = _loggedUser.Person.FullName
+                };
                 return View(model);
             }
             else
@@ -115,6 +120,13 @@ namespace Asklepios.Web.Areas.MedicalWorkerArea.Controllers
                 if (CurrentVisitId > 0)
                 {
                     Visit visit = _context.GetBookedVisitById(CurrentVisitId);
+                    visit.Patient=_context.GetPatientById(visit.PatientId.Value);
+                    visit.Patient.MedicalPackage = _context.GetMedicalPackageById(visit.Patient.MedicalPackageId);
+
+                    visit.MedicalWorker = _medicalWorker;
+                    visit.Location = _context.GetLocationById(visit.LocationId);
+                    visit.MedicalRoom=_context.GetMedicalRoomById(visit.MedicalRoomId.Value);
+                    visit.VisitCategory = _context.GetVisitCategoryById(visit.VisitCategoryId);
                     if (visit == null)
                     {
                         return NotFound();
@@ -149,8 +161,11 @@ namespace Asklepios.Web.Areas.MedicalWorkerArea.Controllers
             if (_loggedUser != null)
             {
                 //MedicalWorker medicalWorker = _context.GetMedicalWorkerByUserId(User.);
-                MedicalWorkerViewModel model = new MedicalWorkerViewModel();
-                model.MedicalWorker = _medicalWorker;
+                MedicalWorkerViewModel model = new MedicalWorkerViewModel
+                {
+                    MedicalWorker = _medicalWorker
+                };
+                model.MedicalWorker.User = _context.GetUserById(_medicalWorker.UserId.Value);
                 model.UserName = _loggedUser.Person.FullName;
                 return View(model);
             }
@@ -540,7 +555,7 @@ namespace Asklepios.Web.Areas.MedicalWorkerArea.Controllers
                 return View(model);
             }
             else
-            {
+            { 
                 return NotFound();
             }
         }
@@ -552,8 +567,10 @@ namespace Asklepios.Web.Areas.MedicalWorkerArea.Controllers
             {
                 List<Visit> historicalVisits = _context.GetHistoricalVisitsByMedicalWorkerId(_medicalWorker.Id);
                 _medicalWorker.AllVisits.AddRange( historicalVisits);
-                HistoricalVisitsViewModel model = new HistoricalVisitsViewModel(_medicalWorker);
-                model.UserName = _loggedUser.Person.FullName;
+                HistoricalVisitsViewModel model = new HistoricalVisitsViewModel(_medicalWorker)
+                {
+                    UserName = _loggedUser.Person.FullName
+                };
 
                 return View(model);
             }
@@ -568,7 +585,7 @@ namespace Asklepios.Web.Areas.MedicalWorkerArea.Controllers
         {
             if (_loggedUser != null)
             {
-
+                _medicalWorker.User=_context.GetUserById(_medicalWorker.Id);
                 ContactMessageViewModel model = new ContactMessageViewModel(_medicalWorker);
                 model.UserName = _loggedUser.Person.FullName;
 
@@ -851,14 +868,17 @@ namespace Asklepios.Web.Areas.MedicalWorkerArea.Controllers
                         MedicalService medicalService = _context.GetMedicalServiceById(model.ServiceToAdd);
                         if (medicalService != null)
                         {
+                            if (visit.MinorMedicalServices==null)
+                            {
+                                visit.MinorMedicalServices = new List<MedicalService>();
+                            }
                             visit.MinorMedicalServices.Add(medicalService);
+                            _context.UpdateVisit(visit);
                             return RedirectToAction("CurrentVisit");
                         }
                     }
-
                 }
                 return NotFound();
-
             }
             else
             {
@@ -958,7 +978,7 @@ namespace Asklepios.Web.Areas.MedicalWorkerArea.Controllers
                 _medicalWorker.VisitReviews = visitReviews;
                 ReviewsViewModel model = new ReviewsViewModel(_medicalWorker);
                 model.UserName = _loggedUser.Person.FullName;
-
+                model.VisitReviews.ForEach(c => c.Reviewer.Person = _context.GetPersonById(c.Reviewer.PersonId.Value));
                 return View(model);
             }
             else
@@ -989,23 +1009,36 @@ namespace Asklepios.Web.Areas.MedicalWorkerArea.Controllers
         {
             if (_loggedUser != null)
             {
-                Visit visit = _context.GetHistoricalVisitById(id);
-                if (visit == null)
+                //Visit visit = _context.GetHistoricalVisitById(id);
+                //if (visit == null)
+                //{
+                   Visit visit = _context.GetVisitById(id); // GetFutureVisitsByMedicalWorkerId(_medicalWorker.Id).Where(c => c.Id == id).FirstOrDefault();
+                if (visit.MedicalWorkerId == _medicalWorker.Id)
                 {
-                    visit = _context.GetFutureVisitsByMedicalWorkerId(_medicalWorker.Id).Where(c => c.Id == id).FirstOrDefault();
+                    //}
+                    if (visit.Patient != null)
+                    {
+                        visit.Patient.MedicalPackage = _context.GetMedicalPackageById(visit.Patient.MedicalPackageId);
+                    }
+                    CurrentVisitViewModel model = new CurrentVisitViewModel();
+                    model.Visit = visit;
+                    model.UserName = _loggedUser.Person.FullName;
+                    model.Visit.MedicalRoom = _context.GetMedicalRoomById(model.Visit.MedicalRoomId);
+                    model.Visit.VisitCategory = _context.GetVisitCategoryById(model.Visit.VisitCategoryId);
+                    model.Visit.PrimaryService = _context.GetMedicalServiceById(model.Visit.PrimaryServiceId.Value);
+                    // model.Visit.Patient.MedicalPackage = _context.GetMedicalPackageById(model.Visit.Patient.MedicalPackageId);
+                    //Models.LocationsViewModel model = new Models.LocationsViewModel(locations);
+                    return View(model);
                 }
-                CurrentVisitViewModel model = new CurrentVisitViewModel();
-                model.Visit = visit;
-                model.UserName = _loggedUser.Person.FullName;
-
-                //Models.LocationsViewModel model = new Models.LocationsViewModel(locations);
-                return View(model);
+                else
+                {
+                    return NotFound();
+                }
             }
             else
             {
                 return NotFound();
             }
-
         }
         [HttpGet]
         public IActionResult PatientDetails(int id)
@@ -1013,6 +1046,9 @@ namespace Asklepios.Web.Areas.MedicalWorkerArea.Controllers
             if (_loggedUser != null)
             {
                 Patient patient = _context.GetPatientById(id);
+                patient.NFZUnit = _context.GetNFZUnitById(patient.NFZUnitId);
+                patient.MedicalPackage = _context.GetMedicalPackageById(patient.MedicalPackageId);
+
                 MedicalWorkerArea.Models.PatientViewModel model = new MedicalWorkerArea.Models.PatientViewModel(patient);
                 model.UserName = _loggedUser.Person.FullName;
 
@@ -1034,9 +1070,12 @@ namespace Asklepios.Web.Areas.MedicalWorkerArea.Controllers
                 //Models.LocationsViewModel model = new Models.LocationsViewModel(locations);
                 Models.MedicalWorkerViewModel model = new Models.MedicalWorkerViewModel();
                 model.MedicalWorker = medicalWorker;
+                model.MedicalWorker.Person=_context.GetPersonById(medicalWorker.PersonId.Value);
+                model.MedicalWorker.VisitReviews = _context.GetReviewsByMedicalWorkerId(model.MedicalWorker.Id);
+                //model.MedicalWorker.MedicalServices = model.MedicalWorker.MedicalServiceIds.Select(c => _context.GetMedicalServiceById(c)).ToList();
                 model.UserName = _loggedUser.Person.FullName;
 
-                return View(medicalWorker);
+                return View(model);
             }
             else
             {

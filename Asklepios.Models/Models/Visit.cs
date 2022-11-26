@@ -35,7 +35,7 @@ namespace Asklepios.Core.Models
         public DateTimeOffset DateTimeTill { get; set; }
         [NotMapped]
         public List<long> MinorMedicalServicesIds { get; set; }
-        [NotMapped]
+        //[NotMapped]
         public virtual List<MedicalService> MinorMedicalServices { get; set; }
         public virtual List<MinorServiceToVisit> MinorServicesToVisits { get; set; }
 
@@ -219,7 +219,7 @@ namespace Asklepios.Core.Models
 
             if (VisitStatus==VisitStatus.Booked)
             {
-                MedicalPackage package = Patient.MedicalPackage;
+                MedicalPackage package =  Patient.MedicalPackage;
                 //price = decimal.MinusOne;
                 discount = package.ServiceDiscounts.First(c => c.MedicalService == service);
                 price = service.StandardPrice * (1 - discount.Discount);//package.ServicesDiscounts[service];
@@ -238,8 +238,7 @@ namespace Asklepios.Core.Models
             if (VisitStatus==VisitStatus.Booked)
             {
                 MedicalPackage package = Patient.MedicalPackage;
-
-                MedicalServiceDiscount discount = package.ServiceDiscounts.First(c => c.MedicalService.Id == PrimaryService.Id);
+                MedicalServiceDiscount discount = package.ServiceDiscounts.First(c => c.MedicalServiceId == PrimaryService.Id);
                 if (discount != null)
                 {
                     decimal priceP = PrimaryService.StandardPrice * (1 - discount.Discount); //package.ServicesDiscounts[PrimaryService];

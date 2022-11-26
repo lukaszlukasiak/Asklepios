@@ -449,5 +449,15 @@ namespace Asklepios.Data.InMemoryContexts
         {
             return PatientMockDB.FutureVisits.Where(c => c.Id == id).FirstOrDefault();
         }
+
+        public User GetUserById(int parsedId)
+        {
+            throw new NotImplementedException();
+        }
+
+        public User GetUserById(long parsedId)
+        {
+            throw new NotImplementedException();
+        }
     }
 }

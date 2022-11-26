@@ -297,4 +297,3 @@ C:\Users\lukas\source\repos\Asklepios8\Asklepios.Models\obj\Debug\net6.0\Asklepi
 C:\Users\lukas\source\repos\Asklepios8\Asklepios.Models\obj\Debug\net6.0\Asklepios.Core.dll
 C:\Users\lukas\source\repos\Asklepios8\Asklepios.Models\obj\Debug\net6.0\ref\Asklepios.Core.dll
 C:\Users\lukas\source\repos\Asklepios8\Asklepios.Models\obj\Debug\net6.0\Asklepios.Core.pdb
-C:\Users\lukas\source\repos\Asklepios8\Asklepios.Models\obj\Debug\net6.0\Asklepios.Core.csproj.AssemblyReference.cache

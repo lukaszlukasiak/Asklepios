@@ -27,12 +27,12 @@ namespace Asklepios.Data.Interfaces
         Visit GetHistoricalVisitById(long id);
         MedicalService GetMedicalServiceById(long id);
         MedicalPackage GetMedicalPackageById(long id);
-        NFZUnit GetNFZUnitById(string id);
+        NFZUnit GetNFZUnitById(long id);
         VisitCategory GetVisitCategoryById(long id);
         //Patient CurrentPatient { get; set; }
         void UpdateReferral(MedicalReferral referral);
         void UpdateVisit(Visit visit);
-        User GetUser(int parsedId);
+        User GetUserById(long parsedId);
         Person GetPersonById(long personId);
         void ResignFromVisit(Visit plannedVisit, Patient selectedPatient);
         void BookVisit(Patient selectedPatient, Visit newVisit);

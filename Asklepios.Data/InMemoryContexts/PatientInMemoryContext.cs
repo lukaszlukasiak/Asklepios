@@ -17,16 +17,6 @@ namespace Asklepios.Data.InMemoryContexts
         readonly IEnumerable<Location> locations;
         //public  Patient Patient { get; set; }
         private readonly IEnumerable<MedicalWorker> medicalWorkers;
-        private List<MedicalService> medicalServices { get; set; }
-        private List<MedicalService> primaryMedicalServices { get; set; }
-        private List<VisitCategory> visitCategories { get; set; }
-        private List<MedicalPackage> medicalPackages { get; set; }
-        private List<NFZUnit> nfzUnits { get; set; }
-        private List<Patient> allPatients { get; set; }
-        private List<List<MedicalRoom>> medicalRooms { get; set; }
-        //public Patient CurrentPatient { get; set; }
-        //static string lol;
-
         public PatientInMemoryContext()
         {
             if (!PatientMockDB.IsCreated)
@@ -46,45 +36,25 @@ namespace Asklepios.Data.InMemoryContexts
             //CurrentPatient = GetPatientData();
         }
 
+        private List<Patient> allPatients { get; set; }
+        private List<MedicalPackage> medicalPackages { get; set; }
+        private List<List<MedicalRoom>> medicalRooms { get; set; }
+        private List<MedicalService> medicalServices { get; set; }
+        private List<NFZUnit> nfzUnits { get; set; }
+        private List<MedicalService> primaryMedicalServices { get; set; }
+        private List<VisitCategory> visitCategories { get; set; }
+        //public Patient CurrentPatient { get; set; }
+        //static string lol;
         //public Patient GetPatientData()
         //{
         //    return PatientMockDB.CurrentPatient;
         //}
 
-        public IEnumerable<Visit> GetAvailableVisits()
+        public void BookVisit(Patient selectedPatient, Visit selectedVisit)
         {
-            return PatientMockDB.AvailableVisits;
-        }
-
-        public IEnumerable<MedicalWorker> GetMedicalWorkers()
-        {
-            return PatientMockDB.MedicalWorkers;
-        }
-
-        //public IEnumerable<Visit> GetHistoricalVisits(long patientId)
-        //{
-        //    GetHistoricalVisitsByPatientId
-        //    return PatientMockDB.CurrentPatient.HistoricalVisits;
-        //}
-
-        public IEnumerable<MedicalService> GetMedicalServices()
-        {
-            return PatientMockDB.MedicalServices;
-        }
-
-        public IEnumerable<MedicalPackage> GetMedicalPackages()
-        {
-            return PatientMockDB.MedicalPackages;
-        }
-
-        public IEnumerable<NFZUnit> GetNFZUnits()
-        {
-            return PatientMockDB.NfzUnits;
-        }
-
-        public IEnumerable<VisitCategory> GetVisitCategories()
-        {
-            return PatientMockDB.VisitCategories;
+            selectedVisit.Patient = selectedPatient;
+            //selectedPatient.BookedVisits.Add(selectedVisit);
+            //PatientMockDB.BookedVisits.Add(selectedVisit);
         }
 
         public IEnumerable<Location> GetAllLocations()
@@ -97,24 +67,20 @@ namespace Asklepios.Data.InMemoryContexts
             return PatientMockDB.AllPatients;
         }
 
-        public Patient GetPatientById(long id)
-        {
-            return PatientMockDB.GetPatientById(id);
-        }
-
-        public Location GetLocationById(long locationId)
-        {
-            return PatientMockDB.GetLocationById(locationId);
-        }
-
         public Visit GetAvailableVisitById(long id)
         {
             return GetAvailableVisits().Where(c => c.Id == id).FirstOrDefault();
         }
 
-        public MedicalWorker GetMedicalWorkerById(long id)
+        public IEnumerable<Visit> GetAvailableVisits()
         {
-            return PatientMockDB.GetMedicalWorkerById(id);
+            return PatientMockDB.AvailableVisits;
+        }
+
+        public List<Visit> GetBookedVisitsByPatientId(long id)
+        {
+            List<Visit> visits = PatientMockDB.BookedVisits.Where(c => c.Patient.Id == id).ToList();
+            return visits;
         }
 
         public Visit GetHistoricalVisitById(long id)
@@ -122,9 +88,15 @@ namespace Asklepios.Data.InMemoryContexts
             return PatientMockDB.GetHistoricalVisitById(id);
         }
 
-        public MedicalService GetMedicalServiceById(long id)
+        public List<Visit> GetHistoricalVisitsByPatientId(long id)
         {
-            return PatientMockDB.GetMedicalServiceById(id);
+            List<Visit> visits = PatientMockDB.HistoricalVisits.Where(c => c.Patient.Id == id).ToList();
+            return visits;
+        }
+
+        public Location GetLocationById(long locationId)
+        {
+            return PatientMockDB.GetLocationById(locationId);
         }
 
         public MedicalPackage GetMedicalPackageById(long id)
@@ -132,14 +104,94 @@ namespace Asklepios.Data.InMemoryContexts
             return PatientMockDB.GetMedicalPackageById(id);
         }
 
+        public IEnumerable<MedicalPackage> GetMedicalPackages()
+        {
+            return PatientMockDB.MedicalPackages;
+        }
+
+        public MedicalService GetMedicalServiceById(long id)
+        {
+            return PatientMockDB.GetMedicalServiceById(id);
+        }
+
+        public IEnumerable<MedicalService> GetMedicalServices()
+        {
+            return PatientMockDB.MedicalServices;
+        }
+
+        public MedicalWorker GetMedicalWorkerById(long id)
+        {
+            return PatientMockDB.GetMedicalWorkerById(id);
+        }
+
+        public IEnumerable<MedicalWorker> GetMedicalWorkers()
+        {
+            return PatientMockDB.MedicalWorkers;
+        }
+
         public NFZUnit GetNFZUnitById(long id)
         {
             return PatientMockDB.GetNFZUnitById(id);
         }
 
+        //public IEnumerable<Visit> GetHistoricalVisits(long patientId)
+        //{
+        //    GetHistoricalVisitsByPatientId
+        //    return PatientMockDB.CurrentPatient.HistoricalVisits;
+        //}
+        public IEnumerable<NFZUnit> GetNFZUnits()
+        {
+            return PatientMockDB.NfzUnits;
+        }
+
+        public Notification GetNotificationById(long id)
+        {
+            Notification notification = PatientMockDB.Notifications.Where(c => c.Id == id).FirstOrDefault();
+            return notification;
+        }
+
+        public List<Notification> GetNotificationsByPatientId(long id)
+        {
+            List<Notification> notifications = PatientMockDB.Notifications.Where(c => c.PatientId == id).ToList();
+            return notifications;
+        }
+
+        public Patient GetPatientById(long id)
+        {
+            return PatientMockDB.GetPatientById(id);
+        }
+
+        public Patient GetPatientByUserId(long userId)
+        {
+            Patient patient = PatientMockDB.AllPatients.Where(c => c.User.Id == userId).FirstOrDefault();
+            return patient;
+        }
+
+        public User GetUserById(long parsedId)
+        {
+            throw new NotImplementedException();
+        }
+
+        public IEnumerable<VisitCategory> GetVisitCategories()
+        {
+            return PatientMockDB.VisitCategories;
+        }
         public VisitCategory GetVisitCategoryById(long id)
         {
             return PatientMockDB.GetVisitCategoryById(id);
+        }
+
+        public void ResignFromVisit(long plannedVisitId)
+        {
+            Visit visit = PatientMockDB.FutureVisits.First(c => c.Id == plannedVisitId);
+            if (visit != null)
+            {
+                visit.Patient = null;
+                visit.UsedExaminationReferral = null;
+                visit.VisitStatus = Core.Enums.VisitStatus.AvailableNotBooked;
+            }
+            //patient.BookedVisits.Remove(plannedVisit);
+            //PatientMockDB.BookedVisits.Remove(plannedVisit);
         }
 
         public void UpdateReferral(MedicalReferral referral)
@@ -155,61 +207,6 @@ namespace Asklepios.Data.InMemoryContexts
             //PatientMockDB.CurrentPatient.BookedVisits.Add(visit);
             //PatientMockDB.AvailableVisits.
             //throw new NotImplementedException();
-        }
-        public User GetUser(int parsedId)
-        {
-            User user = PatientMockDB.GetUserById(parsedId);
-            return user;
-        }
-
-        public void ResignFromVisit(long plannedVisitId)
-        {
-            Visit visit = PatientMockDB.FutureVisits.First(c => c.Id == plannedVisitId);
-            if (visit!=null)
-            {
-                visit.Patient = null;
-                visit.UsedExaminationReferral = null;
-                visit.VisitStatus = Core.Enums.VisitStatus.AvailableNotBooked;
-            }
-            //patient.BookedVisits.Remove(plannedVisit);
-            //PatientMockDB.BookedVisits.Remove(plannedVisit);
-        }
-
-        public void BookVisit(Patient selectedPatient, Visit selectedVisit)
-        {
-            selectedVisit.Patient = selectedPatient;
-            //selectedPatient.BookedVisits.Add(selectedVisit);
-            //PatientMockDB.BookedVisits.Add(selectedVisit);
-        }
-
-        public Patient GetPatientByUserId(long userId)
-        {
-            Patient patient = PatientMockDB.AllPatients.Where(c => c.User.Id == userId).FirstOrDefault();
-            return patient;
-        }
-
-        public List<Notification> GetNotificationsByPatientId(long id)
-        {
-            List<Notification> notifications = PatientMockDB.Notifications.Where(c => c.PatientId == id).ToList();
-            return notifications;
-        }
-
-        public List<Visit> GetHistoricalVisitsByPatientId(long id)
-        {
-            List<Visit> visits= PatientMockDB.HistoricalVisits.Where(c => c.Patient.Id == id).ToList();
-            return visits;
-        }
-
-        public List<Visit> GetBookedVisitsByPatientId(long id)
-        {
-            List<Visit> visits= PatientMockDB.BookedVisits.Where(c => c.Patient.Id == id).ToList();
-            return visits;
-        }
-
-        public Notification GetNotificationById(long id)
-        {
-            Notification notification = PatientMockDB.Notifications.Where(c => c.Id == id).FirstOrDefault();
-            return notification;
         }
     }
 }

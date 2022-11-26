@@ -1,6 +1,12 @@
 {
   "ExpandedNodes": [
-    ""
+    "",
+    "\\Asklepios.Data",
+    "\\Asklepios.Data\\DBContexts",
+    "\\Asklepios.Web",
+    "\\Asklepios.Web\\Areas",
+    "\\Asklepios.Web\\Areas\\MedicalWorkerArea",
+    "\\Asklepios.Web\\Areas\\MedicalWorkerArea\\Controllers"
   ],
   "SelectedNode": "\\Asklepios.sln",
   "PreviewInSolutionExplorer": false

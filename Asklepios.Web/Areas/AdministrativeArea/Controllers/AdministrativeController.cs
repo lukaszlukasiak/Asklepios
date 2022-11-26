@@ -51,7 +51,7 @@ namespace Asklepios.Web.Areas.AdministrativeArea.Controllers
         {
             if (int.TryParse(id, out int parsedId))
             {
-                _loggedUser = _context.GetUser(parsedId);
+                _loggedUser = _context.GetUserById(parsedId);
                 //_person = _context.GetPerson(_loggedUser.PersonId);
                 //return View();
                 return RedirectToAction("ScheduleItemsManage");

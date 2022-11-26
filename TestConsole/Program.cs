@@ -1,10 +1,5 @@
 ﻿using Asklepios.Core.Models;
 using Asklepios.Data.InMemoryContexts;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace TestConsole
 {
@@ -15,6 +10,5 @@ namespace TestConsole
             PatientMockDB.SetData();
             List<Patient> patients = PatientMockDB.AllPatients;
         }
-
     }
 }
