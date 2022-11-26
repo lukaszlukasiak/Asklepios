@@ -7,7 +7,7 @@
                 @if (Model.VisitStatus==Asklepios.Core.Enums.VisitStatus.Booked)
                 {
                     <h3 style="font-weight:900;">
-                        <a asp-action="PatientDetails" asp-controller="MedicalWorker" asp-route-id="@Model.Patient.Id">
+                        <a asp-action="PatientDetails" asp-controller="MedicalWorker" asp-route-id="@Model.PatientId">
 
                             @Model.Patient.Person.FullName
                         </a>

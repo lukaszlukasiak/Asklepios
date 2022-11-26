@@ -40,7 +40,7 @@ namespace Asklepios.Data.InMemoryContexts
             throw new NotImplementedException();
         }
 
-        public Patient GetPatientById(int id)
+        public Patient GetPatientById(long id)
         {
             Patient patient = PatientMockDB.GetPatientById(id);
             return patient;
@@ -60,7 +60,7 @@ namespace Asklepios.Data.InMemoryContexts
         }
 
         public Visit GetAvailableVisitById(long currentVisitId)
-        {
+        {           
             Visit visit = PatientMockDB.GetAvailableVisitById(currentVisitId);
             return visit;
         }
@@ -70,7 +70,7 @@ namespace Asklepios.Data.InMemoryContexts
             return visit;
         }
 
-        public MedicalWorker GetMedicalWorkerById(int id)
+        public MedicalWorker GetMedicalWorkerById(long id)
         {
             List<MedicalWorker> medicalWorkers = PatientMockDB.GetMedicalWorkers().ToList();
             MedicalWorker medicalWorker = medicalWorkers.Where(c => c.Id == id).FirstOrDefault();
@@ -153,10 +153,6 @@ namespace Asklepios.Data.InMemoryContexts
             }
         }
 
-        public void UpdatePrescription(Prescription prescription)
-        {
-
-        }
 
         public List<Prescription> GetPrescriptions()
         {
@@ -222,6 +218,14 @@ namespace Asklepios.Data.InMemoryContexts
         public void UpdateTestResultFile(IFormFile medicalTestFile, Visit visit, string webRootPath)
         {
             throw new NotImplementedException();
+        }
+        public void UpdatePrescription(Prescription prescription)
+        {
+
+        }
+        public void UpdateVisit(Visit visit)
+        {
+            //int index=
         }
 
         //public byte[] GetDocument(string documentPath)
@@ -295,14 +299,78 @@ namespace Asklepios.Data.InMemoryContexts
 
         public void AddNotification(long id1, NotificationType testResult, long id2, DateTimeOffset dateTimeOffset, long visitId)
         {
-            Notification notification = new Notification();
-            notification.EventObjectId = id1;
-            notification.PatientId = id2;
-            notification.VisitId = visitId;
-            notification.Id = PatientMockDB.Notifications.Max(c => c.Id) + 1;
-            notification.DateTimeAdded = dateTimeOffset;
+            Notification notification = new Notification
+            {
+                EventObjectId = id1,
+                PatientId = id2,
+                VisitId = visitId,
+                Id = PatientMockDB.Notifications.Max(c => c.Id) + 1,
+                DateTimeAdded = dateTimeOffset
+            };
             PatientMockDB.Notifications.Add(notification);
         }
+
+        public List<Visit> GetVisitsByMedicalWorkerId(long id)
+        {
+            return PatientMockDB.AllVisits.Where(c=>c.MedicalWorkerId==id).ToList();
+        }
+
+        public Visit GetVisitById(long id)
+        {
+            Visit visit = PatientMockDB.AllVisits.Where(c => c.Id == id).FirstOrDefault();
+            return visit;
+        }
+
+        public MedicalRoom GetMedicalRoomById(long? medicalRoomId)
+        {
+            MedicalRoom medicalRoom = PatientMockDB.MedicalRooms.Where(c => c.Id == medicalRoomId).FirstOrDefault();
+            return medicalRoom;
+        }
+
+        public VisitCategory GetVisitCategoryById(long? visitCategoryId)
+        {
+            throw new NotImplementedException();
+        }
+
+        public MedicalPackage GetMedicalPackageById(long? medicalPackageId)
+        {
+            MedicalPackage medicalPackage = PatientMockDB.MedicalPackages.Where(c => c.Id == medicalPackageId).FirstOrDefault();
+            return medicalPackage;
+        }
+
+        public User GetUserById(long? userId)
+        {
+            User user = PatientMockDB.Users.Where(c => c.Id == userId).FirstOrDefault();
+            return user;
+        }
+
+        public NFZUnit GetNFZUnitById(long? nFZUnitId)
+        {
+            if (nFZUnitId.HasValue)
+            {
+                NFZUnit unit = PatientMockDB.NfzUnits.Where(c => c.Id == nFZUnitId).FirstOrDefault();
+                return unit;
+
+            }
+            else
+            {
+                return null;
+            }
+        }
+
+        public Location GetLocationById(long? locationId)
+        {
+            if (locationId.HasValue)
+            {
+                Location location = PatientMockDB.Locations.Where(c => c.Id == locationId).FirstOrDefault();
+                return location;
+            }
+            else
+            {
+                return null;
+            }
+        }
+
 
         //public void AddPrescription(Recommendation recommendationToAdd)
         //{

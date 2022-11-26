@@ -103,9 +103,19 @@
 @{
     if (Model.Patient.MedicalReferrals != null)
     {
-        <h2 class="text-center">
-            Skierowania
-        </h2>
+        @if (Model.Patient.MedicalReferrals.Count>0)
+        {
+            <h2 class="text-center">
+                Skierowania
+            </h2>
+            }
+    else
+                {
+            <h2 class="text-center">
+                Brak skierowań...
+            </h2>
+
+                }
         foreach (var item in Model.Patient.MedicalReferrals)
         {
             <partial name="_MedicalReferral" model="item" />
@@ -117,9 +127,19 @@
 @{
     if (Model.Patient.Prescriptions != null)
     {
-        <h2 class="text-center">
-            Recepty
-        </h2>
+        @if (Model.Patient.MedicalReferrals.Count>0)
+        {
+            <h2 class="text-center">
+                Recepty
+            </h2>
+            }
+    else
+                {
+            <h2 class="text-center">
+                Brak recept...
+            </h2>
+
+                }
         foreach (var item in Model.Patient.Prescriptions)
         {
             <partial name="_Prescription" model="item" />
@@ -132,9 +152,19 @@
 @{
     if (Model.Patient.HistoricalVisits != null)
     {
-        <h2 class="text-center">
-            Wizyty
+        @if (Model.Patient.MedicalReferrals.Count>0)
+        {
+            <h2 class="text-center">
+                Wizyty
             </h2>
+            }
+    else
+                {
+            <h2 class="text-center">
+                Brak wizyt...
+            </h2>
+
+                }
             foreach (var item in Model.Patient.HistoricalVisits)
             {
                 <partial name="_HistoricalVisitPatient" model="item" />

@@ -11,35 +11,77 @@ namespace Asklepios.Data.Interfaces
 {
     public interface IMedicalWorkerModuleRepository
     {
-        MedicalWorker GetMedicalWorkerByPersonId(long personId);
-        Visit GetAvailableVisitById(long currentVisitId);
-        List<Visit> GetFutureVisitsByMedicalWorkerId(long id);
-        List<Visit> GetHistoricalVisitsByMedicalWorkerId(long id);
-        List<Location> GetLocations();
-        List<VisitReview> GetReviewsByMedicalWorkerId(long id);
-        Patient GetPatientById(int id);
-        Visit GetHistoricalVisitById(long currentVisitId);
-        MedicalWorker GetMedicalWorkerById(int id);
-        Visit GetBookedVisitById(long currentVisitId);
-        MedicalService GetMedicalServiceById(long serviceToAdd);
+        void AddMedicalReferral(MedicalReferral medicalReferral);
+
+        void AddMedicalTestResult(MedicalTestResult medicalTestResult, IFormFile formFile, string hostPath);
+
+        void AddMedicine(IssuedMedicine issuedMedicineToAdd);
+
+        void AddNotification(long id1, NotificationType testResult, long id2, DateTimeOffset now, long visitId);
+
+        void AddPrescription(Prescription prescription);
+
         void AddRecommendation(Recommendation recommendationToAdd);
         void DeleteRecommendation(long id);
-        List<MedicalService> GetMedicalServices();
-        void AddMedicalReferral(MedicalReferral medicalReferral);
-        MedicalReferral GetMedicalReferralById(long medicalReferralIdToRemove);
-        void RemoveMedicalReferralById(long medicalReferralIdToRemove);
-        void AddPrescription(Prescription prescription);
-        void AddMedicine(IssuedMedicine issuedMedicineToAdd);
-        void RemoveIssuedMedicineById(long medicineIdToRemove);
-        void UpdatePrescription(Prescription prescription);
-        List<Prescription> GetPrescriptions();
-        Prescription GetPrescriptionById(long prescriptionIdToRemove);
-        void RemovePrescriptionById(long prescriptionIdToRemove);
-        void AddMedicalTestResult(MedicalTestResult medicalTestResult, IFormFile formFile,string hostPath);
-        void UpdateTestResultFile(IFormFile medicalTestFile, Visit visit, string webRootPath);
+        List<Visit> GetVisitsByMedicalWorkerId(long id);
+
+        Visit GetAvailableVisitById(long currentVisitId);
+
+        Visit GetBookedVisitById(long currentVisitId);
+
         byte[] GetDocument(string documentPath, string webRootPath);
-        void RemoveTestResult(long id, long id1, string webRootPath);
+
+        List<Visit> GetFutureVisitsByMedicalWorkerId(long id);
+
+        Visit GetHistoricalVisitById(long currentVisitId);
+
+        List<Visit> GetHistoricalVisitsByMedicalWorkerId(long id);
+
+        Location GetLocationById(long locationId);
+
+        List<Location> GetLocations();
+
+        MedicalPackage GetMedicalPackageById(long medicalPackageId);
+
+        MedicalReferral GetMedicalReferralById(long medicalReferralIdToRemove);
+
+        MedicalRoom GetMedicalRoomById(long medicalRoomId);
+
+        MedicalService GetMedicalServiceById(long serviceToAdd);
+
+        List<MedicalService> GetMedicalServices();
+
+        MedicalWorker GetMedicalWorkerById(long id);
+
+        MedicalWorker GetMedicalWorkerByPersonId(long personId);
+
+        NFZUnit GetNFZUnitById(long nFZUnitId);
+
+        Patient GetPatientById(long id);
+
         Person GetPersonById(long personId);
-        void AddNotification(long id1, NotificationType testResult, long id2, DateTimeOffset now,long visitId);
+
+        Prescription GetPrescriptionById(long prescriptionIdToRemove);
+
+        List<Prescription> GetPrescriptions();
+
+        List<VisitReview> GetReviewsByMedicalWorkerId(long id);
+
+        User GetUserById(long userId);
+
+        Visit GetVisitById(long id);
+
+        VisitCategory GetVisitCategoryById(long visitCategoryId);
+
+        void RemoveIssuedMedicineById(long medicineIdToRemove);
+
+        void RemoveMedicalReferralById(long medicalReferralIdToRemove);
+        void RemovePrescriptionById(long prescriptionIdToRemove);
+
+        void RemoveTestResult(long id, long id1, string webRootPath);
+
+        void UpdatePrescription(Prescription prescription);
+        void UpdateTestResultFile(IFormFile medicalTestFile, Visit visit, string webRootPath);
+        void UpdateVisit(Visit visit);
     }
 }

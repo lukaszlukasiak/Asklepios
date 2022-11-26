@@ -9,37 +9,56 @@ namespace Asklepios.Data.Interfaces
 {
     public interface IPatientModuleRepository
     {
+        void BookVisit(Patient selectedPatient, Visit selectedVisit);
+
+        IEnumerable<Location> GetAllLocations();
+
+        IEnumerable<Patient> GetAllPatients();
+
+        Visit GetAvailableVisitById(long id);
+
         //Patient GetPatientData();
         IEnumerable<Visit> GetAvailableVisits();
-        IEnumerable<MedicalWorker> GetMedicalWorkers();
+        List<Visit> GetBookedVisitsByPatientId(long id);
+
+        Visit GetHistoricalVisitById(long id);
+
+        List<Visit> GetHistoricalVisitsByPatientId(long id);
+
+        Location GetLocationById(long locationId);
+
+        MedicalPackage GetMedicalPackageById(long id);
+
+        IEnumerable<MedicalPackage> GetMedicalPackages();
+
+        MedicalService GetMedicalServiceById(long id);
+
         //IEnumerable<Visit> GetHistoricalVisits();
         IEnumerable<MedicalService> GetMedicalServices();
-        IEnumerable<MedicalPackage> GetMedicalPackages();
-        IEnumerable<NFZUnit> GetNFZUnits();
-        IEnumerable<VisitCategory> GetVisitCategories();
-        IEnumerable<Location> GetAllLocations();
-        IEnumerable<Patient> GetAllPatients();
-        Patient GetPatientById(long id);
-        Location GetLocationById(long locationId);
-        Visit GetAvailableVisitById(long id);
+
         MedicalWorker GetMedicalWorkerById(long id);
-        Visit GetHistoricalVisitById(long id);
-        MedicalService GetMedicalServiceById(long id);
-        MedicalPackage GetMedicalPackageById(long id);
+
+        IEnumerable<MedicalWorker> GetMedicalWorkers();
         NFZUnit GetNFZUnitById(long id);
-        VisitCategory GetVisitCategoryById(long id);
+
+        IEnumerable<NFZUnit> GetNFZUnits();
+        Notification GetNotificationById(long id);
+
+        List<Notification> GetNotificationsByPatientId(long id);
+
+        Patient GetPatientById(long id);
+
+        Patient GetPatientByUserId(long userId);
+
         //Patient CurrentPatient { get; set; }
-        User GetUser(int parsedId);
+        User GetUserById(long parsedId);
+
+        IEnumerable<VisitCategory> GetVisitCategories();
+        VisitCategory GetVisitCategoryById(long id);
+        void ResignFromVisit(long id);
 
         void UpdateReferral(MedicalReferral referral);
-        Patient GetPatientByUserId(long personId);
         void UpdateVisit(Visit visit);
-        void BookVisit(Patient selectedPatient, Visit selectedVisit);
-        List<Notification> GetNotificationsByPatientId(long id);
-        List<Visit> GetHistoricalVisitsByPatientId(long id);
-        List<Visit> GetBookedVisitsByPatientId(long id);
-        Notification GetNotificationById(long id);
-        void ResignFromVisit(long id);
         //void ResignFromVisit(Visit plannedVisit, Patient patient);
 
         //IEnumerable<MedicalRoom> GetMedicalRooms();

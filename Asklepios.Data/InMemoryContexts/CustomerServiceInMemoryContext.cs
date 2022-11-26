@@ -208,5 +208,20 @@ namespace Asklepios.Data.InMemoryContexts
         {
             throw new NotImplementedException();
         }
+
+        public NFZUnit GetNFZUnitById(long id)
+        {
+            throw new NotImplementedException();
+        }
+
+        public User GetUserById(int parsedId)
+        {
+            throw new NotImplementedException();
+        }
+
+        public User GetUserById(long parsedId)
+        {
+            throw new NotImplementedException();
+        }
     }
 }

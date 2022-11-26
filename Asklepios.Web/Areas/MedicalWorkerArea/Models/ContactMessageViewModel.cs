@@ -68,6 +68,7 @@ namespace Asklepios.Web.Areas.MedicalWorkerArea.Models
         {
             UserType = Core.Enums.UserType.Employee;
             ContactName = worker.Person.FullName;
+            //worker.User=_conte
             ContactEMailAddress = worker.User.EmailAddress;
             UserId = worker.Id;
         }

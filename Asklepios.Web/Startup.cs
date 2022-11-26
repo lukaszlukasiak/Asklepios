@@ -10,7 +10,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.AspNetCore.Diagnostics;
 using Microsoft.AspNetCore.Diagnostics.HealthChecks;
-
+using System;
 
 namespace Asklepios.Web
 {
@@ -27,7 +27,7 @@ namespace Asklepios.Web
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddDbContext<AsklepiosDbContext>(options =>
-    options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
+            options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
 
             // services.
             //services.
@@ -61,6 +61,17 @@ namespace Asklepios.Web
             services.AddScoped<ICustomerServiceModuleRepository, AsklepiosDbContext>();
             services.AddScoped<IAdministrationModuleRepository, AsklepiosDbContext>();
 
+            //services.AddDbContext<AsklepiosDbContext>(options =>
+            //{
+            //    options.UseSqlServer(Configuration["DefaultConnection"],
+            //    sqlServerOptionsAction: sqlOptions =>
+            //    {
+            //        sqlOptions.EnableRetryOnFailure(
+            //        maxRetryCount: 10,
+            //        maxRetryDelay: TimeSpan.FromSeconds(30),
+            //        errorNumbersToAdd: null);
+            //    });
+            //});
 
         }
 
@@ -84,7 +95,7 @@ namespace Asklepios.Web
             }
             app.UseHttpsRedirection();
             app.UseStaticFiles();
-
+            
             app.UseRouting();
 
             app.UseAuthorization();

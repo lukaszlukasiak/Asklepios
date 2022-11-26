@@ -21,7 +21,7 @@ namespace Asklepios.Web
                 .ConfigureWebHostDefaults(webBuilder =>
                 {
                     webBuilder.UseStartup<Startup>();
-                    
+
                 });
     }
 }
