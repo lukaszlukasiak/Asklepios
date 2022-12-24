@@ -91,5 +91,7 @@ namespace Asklepios.Data.Interfaces
         void UpdatePatient(Patient patient);
         void UpdatePersonImage(IFormFile imageFile, Person person, string hostEnvironmentPath);
         void UpdateRoom(MedicalRoom newRoom);
+        List<Visit> GetFutureVisitsChunk(int currentPageNumId, int itemsPerPage);
+        MedicalWorker GetMedicalWorkerDetailsById(long id    );
     }
 }

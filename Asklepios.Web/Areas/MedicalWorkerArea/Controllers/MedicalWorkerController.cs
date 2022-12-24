@@ -121,12 +121,12 @@ namespace Asklepios.Web.Areas.MedicalWorkerArea.Controllers
                 {
                     Visit visit = _context.GetBookedVisitById(CurrentVisitId);
                     visit.Patient=_context.GetPatientById(visit.PatientId.Value);
-                    visit.Patient.MedicalPackage = _context.GetMedicalPackageById(visit.Patient.MedicalPackageId);
+                    visit.Patient.MedicalPackage = _context.GetMedicalPackageById(visit.Patient.MedicalPackageId.Value);
 
                     visit.MedicalWorker = _medicalWorker;
-                    visit.Location = _context.GetLocationById(visit.LocationId);
+                    visit.Location = _context.GetLocationById(visit.LocationId.Value);
                     visit.MedicalRoom=_context.GetMedicalRoomById(visit.MedicalRoomId.Value);
-                    visit.VisitCategory = _context.GetVisitCategoryById(visit.VisitCategoryId);
+                    visit.VisitCategory = _context.GetVisitCategoryById(visit.VisitCategoryId.Value);
                     if (visit == null)
                     {
                         return NotFound();
@@ -1018,13 +1018,13 @@ namespace Asklepios.Web.Areas.MedicalWorkerArea.Controllers
                     //}
                     if (visit.Patient != null)
                     {
-                        visit.Patient.MedicalPackage = _context.GetMedicalPackageById(visit.Patient.MedicalPackageId);
+                        visit.Patient.MedicalPackage = _context.GetMedicalPackageById(visit.Patient.MedicalPackageId.Value);
                     }
                     CurrentVisitViewModel model = new CurrentVisitViewModel();
                     model.Visit = visit;
                     model.UserName = _loggedUser.Person.FullName;
-                    model.Visit.MedicalRoom = _context.GetMedicalRoomById(model.Visit.MedicalRoomId);
-                    model.Visit.VisitCategory = _context.GetVisitCategoryById(model.Visit.VisitCategoryId);
+                    model.Visit.MedicalRoom = _context.GetMedicalRoomById(model.Visit.MedicalRoomId.Value);
+                    model.Visit.VisitCategory = _context.GetVisitCategoryById(model.Visit.VisitCategoryId.Value);
                     model.Visit.PrimaryService = _context.GetMedicalServiceById(model.Visit.PrimaryServiceId.Value);
                     // model.Visit.Patient.MedicalPackage = _context.GetMedicalPackageById(model.Visit.Patient.MedicalPackageId);
                     //Models.LocationsViewModel model = new Models.LocationsViewModel(locations);
@@ -1046,11 +1046,13 @@ namespace Asklepios.Web.Areas.MedicalWorkerArea.Controllers
             if (_loggedUser != null)
             {
                 Patient patient = _context.GetPatientById(id);
-                patient.NFZUnit = _context.GetNFZUnitById(patient.NFZUnitId);
-                patient.MedicalPackage = _context.GetMedicalPackageById(patient.MedicalPackageId);
+                patient.NFZUnit = _context.GetNFZUnitById(patient.NFZUnitId.Value);
+                patient.MedicalPackage = _context.GetMedicalPackageById(patient.MedicalPackageId.Value);
 
-                MedicalWorkerArea.Models.PatientViewModel model = new MedicalWorkerArea.Models.PatientViewModel(patient);
-                model.UserName = _loggedUser.Person.FullName;
+                MedicalWorkerArea.Models.PatientViewModel model = new MedicalWorkerArea.Models.PatientViewModel(patient)
+                {
+                    UserName = _loggedUser.Person.FullName
+                };
 
                 //patient.HistoricalVisits
                 //Models.LocationsViewModel model = new Models.LocationsViewModel(locations);

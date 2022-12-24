@@ -10,16 +10,16 @@ namespace Asklepios.Data.Interfaces
     public interface ICustomerServiceModuleRepository
     {
         //Patient GetCurrentPatientData();
-        IEnumerable<Visit> GetAvailableVisits();
-        IEnumerable<Location> GetLocations();
-        IEnumerable<MedicalWorker> GetMedicalWorkers();
-        IEnumerable<Visit> GetHistoricalVisits();
-        IEnumerable<MedicalService> GetMedicalServices();
-        IEnumerable<MedicalPackage> GetMedicalPackages();
-        IEnumerable<NFZUnit> GetNFZUnits();
-        IEnumerable<VisitCategory> GetVisitCategories();
-        IEnumerable<Location> GetAllLocations();
-        IEnumerable<Patient> GetAllPatients();
+        List<Visit> GetAvailableVisits();
+        List<Location> GetLocations();
+        List<MedicalWorker> GetMedicalWorkers();
+        List<Visit> GetHistoricalVisits();
+        List<MedicalService> GetMedicalServices();
+        List<MedicalPackage> GetMedicalPackages();
+        List<NFZUnit> GetNFZUnits();
+        List<VisitCategory> GetVisitCategories();
+        List<Location> GetAllLocations();
+        List<Patient> GetAllPatients();
         Patient GetPatientById(long id);
         Location GetLocationById(long locationId);
         Visit GetAvailableVisitById(long id);

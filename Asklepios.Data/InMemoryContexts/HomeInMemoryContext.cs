@@ -10,7 +10,7 @@ namespace Asklepios.Data.InMemoryContexts
 {
     public class HomeInMemoryContext : IHomeModuleRepository
     {
-        private IEnumerable<Location> _locations;
+        private List<Location> _locations;
         public HomeInMemoryContext()
         {
             if (!PatientMockDB.IsCreated)
@@ -18,10 +18,10 @@ namespace Asklepios.Data.InMemoryContexts
                 PatientMockDB.SetDataHome();
             }
             //PatientMockDB.GetMedicalServices()
-            _locations = PatientMockDB.GetAllLocations();
+            _locations = PatientMockDB.GetAllLocations().ToList();
 
         }
-        public IEnumerable<Location> GetAllLocations()
+        public List<Location> GetAllLocations()
         {
             return _locations;
         }
@@ -43,10 +43,10 @@ namespace Asklepios.Data.InMemoryContexts
             throw new NotImplementedException();
         }
 
-        public Patient GetUserById(string userId)
-        {
-            throw new NotImplementedException();
-        }
+        //public Patient GetUserById(long userId)
+        //{
+        //    throw new NotImplementedException();
+        //}
 
         public User LogIn(User user)
         {

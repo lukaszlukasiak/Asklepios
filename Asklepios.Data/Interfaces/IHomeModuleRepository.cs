@@ -10,10 +10,10 @@ namespace Asklepios.Data.Interfaces
 {
     public interface IHomeModuleRepository
     {
-        IEnumerable<Location> GetAllLocations();
+        List<Location> GetAllLocations();
         Location GetLocationById(long locationId);
         User LogIn(User user);
-        Patient GetUserById(string userId);
+        //Patient GetUserById(long userId);
         List<MedicalService> GetLocationServices(long id);
     }
 }

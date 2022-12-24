@@ -38,7 +38,7 @@ namespace Asklepios.Web.Areas.AdministrativeArea.Models
                     }
                     else
                     {
-                        if (CurrentPageNumId<=0)
+                        if (CurrentPageNumId <= 0)
                         {
                             CurrentPageNumId = 1;
                         }
@@ -158,7 +158,7 @@ namespace Asklepios.Web.Areas.AdministrativeArea.Models
         public int ItemsPerPage { get; private set; } = 100;
         [Display(Name = "Numer strony z wynikami")]
 
-        public long CurrentPageNumId { get;  set; } 
+        public int CurrentPageNumId { get; set; }
         public string UserName { get; set; }
 
         //public void SetSearchOptions(ISearchVisit iSearch)
@@ -175,6 +175,7 @@ namespace Asklepios.Web.Areas.AdministrativeArea.Models
 
         private List<Visit> GetFilteredSchedule()
         {
+
             List<Visit> filteredVisits = Schedule;
             if (Schedule == null)
             {
@@ -262,7 +263,6 @@ namespace Asklepios.Web.Areas.AdministrativeArea.Models
                 {
                     return null;
                 }
-
             }
             if (VisitsDateTo.HasValue)
             {
@@ -295,19 +295,32 @@ namespace Asklepios.Web.Areas.AdministrativeArea.Models
             }
             else
             {
-                if (CurrentPageNumId ==0)
+                if (CurrentPageNumId == 0)
                 {
                     CurrentPageNumId = 1;
                 }
-                if (CurrentPageNumId* ItemsPerPage>filteredVisits.Count)
+                if (CurrentPageNumId * ItemsPerPage > filteredVisits.Count)
                 {
-                    int lastPage = (int)Math.Ceiling(filteredVisits.Count / (ItemsPerPage+0.0));
+                    int lastPage = (int)Math.Ceiling(filteredVisits.Count / (ItemsPerPage + 0.0));
                     int itemsNumber = filteredVisits.Count - (lastPage - 1) * ItemsPerPage;
-                    return filteredVisits.GetRange(((lastPage-1) * ItemsPerPage), itemsNumber);
-
+                    return filteredVisits.GetRange(((lastPage - 1) * ItemsPerPage), itemsNumber);
                 }
                 return filteredVisits.GetRange(((int)CurrentPageNumId - 1) * ItemsPerPage, ItemsPerPage);
             }
+
+        }
+        public async Task<List<Book>> GetListAsync(int skipCount, int maxResultCount, string sorting= "Name", BookFilter filter= null) 
+        {
+            var dbSet = await GetDbSetAsync(); 
+            var books = await dbSet
+                .WhereIf(!filter.Id.IsNullOrWhiteSpace(),x => x.Id.ToString().Contains(filter.Id))
+                .WhereIf(!filter.Name.IsNullOrWhiteSpace(), x => x.Name.Contains(filter.Name))
+                .WhereIf(!filter.Price.IsNullOrWhiteSpace(), x => x.Price.ToString().Contains(filter.Price))
+                .WhereIf(!filter.PublishDate.IsNullOrWhiteSpace(), x => x.PublishDate.ToString().Contains(filter.PublishDate))
+                .OrderBy(sorting)
+                .Skip(skipCount)
+                .Take(maxResultCount).ToListAsync(); 
+            return books; 
         }
 
     }
