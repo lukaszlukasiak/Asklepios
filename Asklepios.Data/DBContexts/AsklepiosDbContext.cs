@@ -167,65 +167,71 @@ namespace Asklepios.Data.DBContexts
 
         public List<Location> GetAllLocations()
         {
-            throw new NotImplementedException();
+            return Locations.Include(c => c.Services).Include(d=>d.MedicalRooms).ToList();
         }
 
-        IEnumerable<Location> ICustomerServiceModuleRepository.GetAllLocations()
-        {
-            throw new NotImplementedException();
-        }
+        //IEnumerable<Location> ICustomerServiceModuleRepository.GetAllLocations()
+        //{
+        //    throw new NotImplementedException();
+        //}
+        //List<Location> GetAllLocations()
+        //{
+        //    return Locations.Include(c => c.Services).ToList();
+        //}
 
-        IEnumerable<Location> IPatientModuleRepository.GetAllLocations()
-        {
-            throw new NotImplementedException();
-        }
+        //IEnumerable<Location> IPatientModuleRepository.GetAllLocations()
+        //{
+        //    throw new NotImplementedException();
+        //}
 
-        IEnumerable<Location> IHomeModuleRepository.GetAllLocations()
-        {
-            //List<Location> location = Locations;
-            //location.ForEach(l =>GetLocationServices
-            return Locations.Include(c => c.Services).ToList();
-        }
+        //IEnumerable<Location> IHomeModuleRepository.GetAllLocations()
+        //{
+        //    //List<Location> location = Locations;
+        //    //location.ForEach(l =>GetLocationServices
+        //    return Locations.Include(c => c.Services).ToList();
+        //}
 
         public List<Patient> GetAllPatients()
         {
-            throw new NotImplementedException();
+            return Patients.Include(c => c.Person).Include(d => d.User).ToList();
         }
 
-        IEnumerable<Patient> ICustomerServiceModuleRepository.GetAllPatients()
-        {
-            throw new NotImplementedException();
-        }
+        //IEnumerable<Patient> ICustomerServiceModuleRepository.GetAllPatients()
+        //{
+        //    return Patients.Include(c => c.Person).Include(d => d.User).ToList();
+        //}
 
-        IEnumerable<Patient> IPatientModuleRepository.GetAllPatients()
-        {
-            return Patients.ToList();
-        }
+        //IEnumerable<Patient> IPatientModuleRepository.GetAllPatients()
+        //{
+        //    return Patients.ToList();
+        //}
 
         public List<MedicalRoom> GetAllRooms()
         {
-            throw new NotImplementedException();
+            return MedicalRooms.ToList();
         }
 
         public Visit GetAvailableVisitById(long id)
         {
-            throw new NotImplementedException();
+            Visit visit = Visits.Where(c => c.Id == id).Include(d => d.MinorMedicalServices).Include(e => e.MinorServicesToVisits).FirstOrDefault();
+            return visit;
         }
 
         public List<Visit> GetAvailableVisits()
         {
-            throw new NotImplementedException();
+            List<Visit> visits = Visits.Where(c => c.VisitStatus == VisitStatus.AvailableNotBooked).Include(d => d.MinorMedicalServices).Include(e => e.MinorServicesToVisits).Include(e => e.MedicalRoom).ToList();
+            return visits;
         }
 
-        IEnumerable<Visit> ICustomerServiceModuleRepository.GetAvailableVisits()
-        {
-            throw new NotImplementedException();
-        }
+        //IEnumerable<Visit> ICustomerServiceModuleRepository.GetAvailableVisits()
+        //{
+        //    throw new NotImplementedException();
+        //}
 
-        IEnumerable<Visit> IPatientModuleRepository.GetAvailableVisits()
-        {
-            throw new NotImplementedException();
-        }
+        //IEnumerable<Visit> IPatientModuleRepository.GetAvailableVisits()
+        //{
+        //    throw new NotImplementedException();
+        //}
 
         public Visit GetBookedVisitById(long currentVisitId)
         {
@@ -257,8 +263,33 @@ namespace Asklepios.Data.DBContexts
         {
             //List<Visit> visits=    Visits.Where(c => c.PatientId == id).Where(d => d.DateTimeSince > DateTimeOffset.Now).ToList();
             List<Visit> visits = Visits.Where(c => c.MedicalWorkerId == id).Where(d => d.DateTimeSince.Day >= DateTimeOffset.Now.Day && d.VisitStatus == VisitStatus.Booked && d.VisitStatus == VisitStatus.AvailableNotBooked).Include(a => a.VisitCategory).Include(b => b.Location).Include(c => c.PrimaryService).Include(d => d.Patient).ThenInclude(e => e.Person).ToList();
-
             return visits;
+        }
+
+        public List<Visit> GetFutureVisitsChunk(int currentPageNumId, int itemsPerPage)
+        {
+            IEnumerable<Visit> visits = Visits.Where(c => c.DateTimeSince > DateTime.Now);
+
+            int numberOfVisits = visits.Count();
+
+            int currentPageVisitsNumber = numberOfVisits % itemsPerPage;
+
+            if (currentPageNumId * itemsPerPage < Visits.Count())
+            {
+                return Visits
+                .Skip((currentPageNumId - 1) * itemsPerPage)
+                .Take(itemsPerPage)
+                .AsNoTracking()
+                .ToList();
+            }
+            else
+            {
+                return Visits
+                .Skip((currentPageNumId - 1) * itemsPerPage)
+                .Take(currentPageVisitsNumber)
+                .AsNoTracking()
+                .ToList();
+            }
         }
 
         public Visit GetHistoricalVisitById(long id)
@@ -267,7 +298,7 @@ namespace Asklepios.Data.DBContexts
             return visit;
         }
 
-        public IEnumerable<Visit> GetHistoricalVisits()
+        public List<Visit> GetHistoricalVisits()
         {
             List<Visit> visits = Visits.Where(d => d.VisitStatus == VisitStatus.Finished).Include(a => a.VisitCategory).Include(b => b.Location).Include(c => c.PrimaryService).Include(d => d.Patient).ThenInclude(e => e.Person).ToList();
             return visits;
@@ -291,14 +322,19 @@ namespace Asklepios.Data.DBContexts
             return location;
         }
 
-        public IEnumerable<Location> GetLocations()
-        {
-            return Locations;
-        }
-
-        List<Location> IMedicalWorkerModuleRepository.GetLocations()
+        public List<Location> GetLocations()
         {
             return Locations.Include(a => a.Services).Include(b => b.MedicalRooms).ToList();
+        }
+
+        //List<Location> IMedicalWorkerModuleRepository.GetLocations()
+        //{
+        //    return Locations.Include(a => a.Services).Include(b => b.MedicalRooms).ToList();
+        //}
+
+        List<Location> ICustomerServiceModuleRepository.GetLocations()
+        {
+            throw new NotImplementedException();
         }
 
         public List<MedicalService> GetLocationServices(long id)
@@ -338,12 +374,12 @@ namespace Asklepios.Data.DBContexts
             return MedicalPackages.ToList();
         }
 
-        IEnumerable<MedicalPackage> ICustomerServiceModuleRepository.GetMedicalPackages()
+        List<MedicalPackage> ICustomerServiceModuleRepository.GetMedicalPackages()
         {
             throw new NotImplementedException();
         }
 
-        IEnumerable<MedicalPackage> IPatientModuleRepository.GetMedicalPackages()
+        List<MedicalPackage> IPatientModuleRepository.GetMedicalPackages()
         {
             throw new NotImplementedException();
         }
@@ -377,21 +413,30 @@ namespace Asklepios.Data.DBContexts
             return MedicalServices.ToList();
         }
 
-        IEnumerable<MedicalService> ICustomerServiceModuleRepository.GetMedicalServices()
-        {
-            throw new NotImplementedException();
-        }
+        //IEnumerable<MedicalService> ICustomerServiceModuleRepository.GetMedicalServices()
+        //{
+        //    throw new NotImplementedException();
+        //}
 
-        IEnumerable<MedicalService> IPatientModuleRepository.GetMedicalServices()
-        {
-            throw new NotImplementedException();
-        }
+        //IEnumerable<MedicalService> IPatientModuleRepository.GetMedicalServices()
+        //{
+        //    throw new NotImplementedException();
+        //}
 
         public MedicalWorker GetMedicalWorkerById(long id)
         {
-            MedicalWorker medicalWorker = MedicalWorkers.Where(c => c.Id == id).Include(c => c.MedicalServices).FirstOrDefault();
+            MedicalWorker medicalWorker = MedicalWorkers.Where(c => c.Id == id).Include(c => c.MedicalServices).Include(d => d.Person).FirstOrDefault();
             return medicalWorker;
         }
+        public MedicalWorker GetMedicalWorkerDetailsById(long id)
+        {
+            MedicalWorker medicalWorker = MedicalWorkers.Where(c => c.Id == id).Include(c => c.MedicalServices).Include(d => d.Person).Include(e=>e.VisitReviews).FirstOrDefault();
+            return medicalWorker;
+        }
+        //public MedicalWorker GetMedicalWorkerDetailsById(long id)
+        //{
+        //    throw new NotImplementedException();
+        //}
 
         public MedicalWorker GetMedicalWorkerByPersonId(long personId)
         {
@@ -401,18 +446,18 @@ namespace Asklepios.Data.DBContexts
 
         public List<MedicalWorker> GetMedicalWorkers()
         {
-            throw new NotImplementedException();
+            return MedicalWorkers.Include(c => c.Person).ToList();
         }
 
-        IEnumerable<MedicalWorker> ICustomerServiceModuleRepository.GetMedicalWorkers()
-        {
-            throw new NotImplementedException();
-        }
+        //IEnumerable<MedicalWorker> ICustomerServiceModuleRepository.GetMedicalWorkers()
+        //{
+        //    return MedicalWorkers.ToList();
+        //}
 
-        IEnumerable<MedicalWorker> IPatientModuleRepository.GetMedicalWorkers()
-        {
-            throw new NotImplementedException();
-        }
+        //IEnumerable<MedicalWorker> IPatientModuleRepository.GetMedicalWorkers()
+        //{
+        //    return MedicalWorkers.ToList();
+        //}
 
         public NFZUnit GetNFZUnitById(long id)
         {
@@ -424,15 +469,15 @@ namespace Asklepios.Data.DBContexts
             throw new NotImplementedException();
         }
 
-        IEnumerable<NFZUnit> ICustomerServiceModuleRepository.GetNFZUnits()
-        {
-            throw new NotImplementedException();
-        }
+        //IEnumerable<NFZUnit> ICustomerServiceModuleRepository.GetNFZUnits()
+        //{
+        //    throw new NotImplementedException();
+        //}
 
-        IEnumerable<NFZUnit> IPatientModuleRepository.GetNFZUnits()
-        {
-            throw new NotImplementedException();
-        }
+        //IEnumerable<NFZUnit> IPatientModuleRepository.GetNFZUnits()
+        //{
+        //    throw new NotImplementedException();
+        //}
 
         public Notification GetNotificationById(long id)
         {
@@ -495,14 +540,14 @@ namespace Asklepios.Data.DBContexts
             throw new NotImplementedException();
         }
 
-        public Patient GetUserById(string userId)
-        {
-            throw new NotImplementedException();
-        }
+        //public Patient GetUserById(string userId)
+        //{
+        //    throw new NotImplementedException();
+        //}
 
         public User GetUserById(long userId)
         {
-            User user = Users.Where(c => c.Id == userId).FirstOrDefault();
+            User user = Users.Where(c => c.Id == userId).Include(d => d.Person).FirstOrDefault();
             return user;
         }
 
@@ -518,18 +563,18 @@ namespace Asklepios.Data.DBContexts
         //}
         public List<VisitCategory> GetVisitCategories()
         {
-            throw new NotImplementedException();
+            return VisitCategories.ToList();
         }
 
-        IEnumerable<VisitCategory> ICustomerServiceModuleRepository.GetVisitCategories()
-        {
-            throw new NotImplementedException();
-        }
+        //IEnumerable<VisitCategory> ICustomerServiceModuleRepository.GetVisitCategories()
+        //{
+        //    throw new NotImplementedException();
+        //}
 
-        IEnumerable<VisitCategory> IPatientModuleRepository.GetVisitCategories()
-        {
-            throw new NotImplementedException();
-        }
+        //IEnumerable<VisitCategory> IPatientModuleRepository.GetVisitCategories()
+        //{
+        //    throw new NotImplementedException();
+        //}
 
         //public VisitCategory GetVisitCategoryById(long id)
         //{
@@ -916,5 +961,6 @@ namespace Asklepios.Data.DBContexts
             modelBuilder.Entity<MinorServiceToVisit>().HasData(PatientMockDB.MinorServicesToVisits.Take(107));
             // modelBuilder.Entity<Recommendation>().HasData(PatientMockDB.Recommendations);
         }
+
     }
 }

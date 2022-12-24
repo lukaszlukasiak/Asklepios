@@ -321,54 +321,54 @@ namespace Asklepios.Data.InMemoryContexts
             return visit;
         }
 
-        public MedicalRoom GetMedicalRoomById(long? medicalRoomId)
+        public MedicalRoom GetMedicalRoomById(long medicalRoomId)
         {
             MedicalRoom medicalRoom = PatientMockDB.MedicalRooms.Where(c => c.Id == medicalRoomId).FirstOrDefault();
             return medicalRoom;
         }
 
-        public VisitCategory GetVisitCategoryById(long? visitCategoryId)
+        public VisitCategory GetVisitCategoryById(long visitCategoryId)
         {
             throw new NotImplementedException();
         }
 
-        public MedicalPackage GetMedicalPackageById(long? medicalPackageId)
+        public MedicalPackage GetMedicalPackageById(long medicalPackageId)
         {
             MedicalPackage medicalPackage = PatientMockDB.MedicalPackages.Where(c => c.Id == medicalPackageId).FirstOrDefault();
             return medicalPackage;
         }
 
-        public User GetUserById(long? userId)
+        public User GetUserById(long userId)
         {
             User user = PatientMockDB.Users.Where(c => c.Id == userId).FirstOrDefault();
             return user;
         }
 
-        public NFZUnit GetNFZUnitById(long? nFZUnitId)
+        public NFZUnit GetNFZUnitById(long nFZUnitId)
         {
-            if (nFZUnitId.HasValue)
-            {
+            //if (nFZUnitId.HasValue)
+            //{
                 NFZUnit unit = PatientMockDB.NfzUnits.Where(c => c.Id == nFZUnitId).FirstOrDefault();
                 return unit;
 
-            }
-            else
-            {
-                return null;
-            }
+            //}
+            //else
+            //{
+            //    return null;
+            //}
         }
 
-        public Location GetLocationById(long? locationId)
+        public Location GetLocationById(long locationId)
         {
-            if (locationId.HasValue)
-            {
+            //if (locationId.HasValue)
+            //{
                 Location location = PatientMockDB.Locations.Where(c => c.Id == locationId).FirstOrDefault();
                 return location;
-            }
-            else
-            {
-                return null;
-            }
+            //}
+            //else
+            //{
+            //    return null;
+            //}
         }
 
 

@@ -154,7 +154,7 @@ namespace Asklepios.Web.Areas.AdministrativeArea.Controllers
         {
             if (_loggedUser != null)
             {
-                List<Visit> visits = _context.GetFutureVisits();
+                List<Visit> visits = _context.GetFutureVisitsChunk(model.CurrentPageNumId,model.ItemsPerPage);
                 model.Schedule = visits;
                 model.Locations = _context.GetAllLocations();
                 //model.MedicalRooms=_context
@@ -400,7 +400,8 @@ namespace Asklepios.Web.Areas.AdministrativeArea.Controllers
         {
             if (_loggedUser != null)
             {
-                MedicalWorker worker = _context.GetMedicalWorkers().Where(c => c.Id.ToString() == id).FirstOrDefault();
+                MedicalWorker worker = _context.GetMedicalWorkerDetailsById(long.Parse(id));
+                worker.VisitReviews.ForEach(c => c.Reviewer = _context.GetPatientById(c.ReviewerId));
                 MedicalWorkerViewModel model = new MedicalWorkerViewModel(worker);
                 model.UserName = _loggedUser.Person.FullName;
 
@@ -408,7 +409,7 @@ namespace Asklepios.Web.Areas.AdministrativeArea.Controllers
             }
             else
             {
-                return NotFound();
+                return NotFound(); 
             }
         }
         [HttpPost]

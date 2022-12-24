@@ -11,14 +11,14 @@ namespace Asklepios.Data.Interfaces
     {
         void BookVisit(Patient selectedPatient, Visit selectedVisit);
 
-        IEnumerable<Location> GetAllLocations();
+        List<Location> GetAllLocations();
 
-        IEnumerable<Patient> GetAllPatients();
+        List<Patient> GetAllPatients();
 
         Visit GetAvailableVisitById(long id);
 
         //Patient GetPatientData();
-        IEnumerable<Visit> GetAvailableVisits();
+        List<Visit> GetAvailableVisits();
         List<Visit> GetBookedVisitsByPatientId(long id);
 
         Visit GetHistoricalVisitById(long id);
@@ -29,19 +29,19 @@ namespace Asklepios.Data.Interfaces
 
         MedicalPackage GetMedicalPackageById(long id);
 
-        IEnumerable<MedicalPackage> GetMedicalPackages();
+        List<MedicalPackage> GetMedicalPackages();
 
         MedicalService GetMedicalServiceById(long id);
 
         //IEnumerable<Visit> GetHistoricalVisits();
-        IEnumerable<MedicalService> GetMedicalServices();
+        List<MedicalService> GetMedicalServices();
 
         MedicalWorker GetMedicalWorkerById(long id);
 
-        IEnumerable<MedicalWorker> GetMedicalWorkers();
+        List<MedicalWorker> GetMedicalWorkers();
         NFZUnit GetNFZUnitById(long id);
 
-        IEnumerable<NFZUnit> GetNFZUnits();
+        List<NFZUnit> GetNFZUnits();
         Notification GetNotificationById(long id);
 
         List<Notification> GetNotificationsByPatientId(long id);
@@ -53,7 +53,7 @@ namespace Asklepios.Data.Interfaces
         //Patient CurrentPatient { get; set; }
         User GetUserById(long parsedId);
 
-        IEnumerable<VisitCategory> GetVisitCategories();
+        List<VisitCategory> GetVisitCategories();
         VisitCategory GetVisitCategoryById(long id);
         void ResignFromVisit(long id);
 

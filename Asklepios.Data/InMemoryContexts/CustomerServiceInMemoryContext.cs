@@ -10,10 +10,10 @@ namespace Asklepios.Data.InMemoryContexts
 {
     public class CustomerServiceInMemoryContext : ICustomerServiceModuleRepository
     {
-        readonly IEnumerable<Visit> availableVisits;
+        private List<Visit> availableVisits;
         //readonly IEnumerable<Visit> historicalVisits;
 
-        readonly IEnumerable<Location> locations;
+        private List<Location> locations;
         //public  Patient Patient { get; set; }
         private readonly IEnumerable<MedicalWorker> medicalWorkers;
         private List<MedicalService> medicalServices { get; set; }
@@ -51,12 +51,12 @@ namespace Asklepios.Data.InMemoryContexts
         //    return CurrentPatient;
         //}
 
-        public IEnumerable<Location> GetAllLocations()
+        public List<Location> GetAllLocations()
         {
             return PatientMockDB.Locations;
         }
 
-        public IEnumerable<Patient> GetAllPatients()
+        public List<Patient> GetAllPatients()
         {
             return PatientMockDB.AllPatients;
         }
@@ -66,9 +66,9 @@ namespace Asklepios.Data.InMemoryContexts
             return PatientMockDB.AvailableVisits.Where(c => c.Id == id).FirstOrDefault();
         }
 
-        public IEnumerable<Visit> GetAvailableVisits()
+        public List<Visit> GetAvailableVisits()
         {
-            return PatientMockDB.AvailableVisits;
+            return PatientMockDB.AvailableVisits.ToList();
         }
 
         //public Patient GetCurrentPatientData()
@@ -87,7 +87,7 @@ namespace Asklepios.Data.InMemoryContexts
             return PatientMockDB.GetHistoricalVisitById(id);
         }
 
-        public IEnumerable<Visit> GetHistoricalVisits()
+        public List<Visit> GetHistoricalVisits()
         {
             return PatientMockDB.HistoricalVisits;
         }
@@ -97,7 +97,7 @@ namespace Asklepios.Data.InMemoryContexts
             return PatientMockDB.Locations.Where(c=>c.Id==locationId).FirstOrDefault();
         }
 
-        public IEnumerable<Location> GetLocations()
+        public List<Location> GetLocations()
         {
             return PatientMockDB.Locations;
         }
@@ -107,7 +107,7 @@ namespace Asklepios.Data.InMemoryContexts
             return PatientMockDB.MedicalPackages.Where(c => c.Id == id).FirstOrDefault();
         }
 
-        public IEnumerable<MedicalPackage> GetMedicalPackages()
+        public List<MedicalPackage> GetMedicalPackages()
         {
             return PatientMockDB.MedicalPackages;
         }
@@ -117,9 +117,9 @@ namespace Asklepios.Data.InMemoryContexts
             return PatientMockDB.GetMedicalServices().Where(c => c.Id == id).FirstOrDefault(); 
         }
 
-        public IEnumerable<MedicalService> GetMedicalServices()
+        public List<MedicalService> GetMedicalServices()
         {
-            return PatientMockDB.GetMedicalServices();
+            return PatientMockDB.GetMedicalServices().ToList();
         }
 
         public MedicalWorker GetMedicalWorkerById(long id)
@@ -127,7 +127,7 @@ namespace Asklepios.Data.InMemoryContexts
             return PatientMockDB.GetMedicalWorkerById(id);
         }
 
-        public IEnumerable<MedicalWorker> GetMedicalWorkers()
+        public List<MedicalWorker> GetMedicalWorkers()
         {
             return PatientMockDB.MedicalWorkers;
         }
@@ -137,7 +137,7 @@ namespace Asklepios.Data.InMemoryContexts
             return PatientMockDB.NfzUnits.Where(c => c.Code == code).FirstOrDefault();
         }
 
-        public IEnumerable<NFZUnit> GetNFZUnits()
+        public List<NFZUnit> GetNFZUnits()
         {
             return PatientMockDB.NfzUnits;
         }
@@ -158,7 +158,7 @@ namespace Asklepios.Data.InMemoryContexts
             return user;    
         }
 
-        public IEnumerable<VisitCategory> GetVisitCategories()
+        public List<VisitCategory> GetVisitCategories()
         {
             return PatientMockDB.VisitCategories;
         }
