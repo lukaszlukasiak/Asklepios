@@ -1,6 +1,6 @@
 {
   "Version": 1,
-  "Hash": "lFj9LWWKL4NmM6QAIH2/x94fXnixojostFNpxGS7Dx8=",
+  "Hash": "5UlD7kN2hx+OkDgJxPood+rtya21g/tMdHi4510VRMs=",
   "Source": "Asklepios.Web",
   "BasePath": "_content/Asklepios.Web",
   "Mode": "Default",
@@ -2057,6 +2057,23 @@
       "OriginalItemSpec": "wwwroot\\img\\MW\\k\\31.jpg"
     },
     {
+      "Identity": "C:\\Users\\lukas\\source\\repos\\Asklepios8\\Asklepios.Web\\wwwroot\\img\\MW\\k\\32.jpg",
+      "SourceId": "Asklepios.Web",
+      "SourceType": "Discovered",
+      "ContentRoot": "C:\\Users\\lukas\\source\\repos\\Asklepios8\\Asklepios.Web\\wwwroot\\",
+      "BasePath": "_content/Asklepios.Web",
+      "RelativePath": "img/MW/k/32.jpg",
+      "AssetKind": "All",
+      "AssetMode": "All",
+      "AssetRole": "Primary",
+      "RelatedAsset": "",
+      "AssetTraitName": "",
+      "AssetTraitValue": "",
+      "CopyToOutputDirectory": "Never",
+      "CopyToPublishDirectory": "PreserveNewest",
+      "OriginalItemSpec": "wwwroot\\img\\MW\\k\\32.jpg"
+    },
+    {
       "Identity": "C:\\Users\\lukas\\source\\repos\\Asklepios8\\Asklepios.Web\\wwwroot\\img\\MW\\k\\33.jpg",
       "SourceId": "Asklepios.Web",
       "SourceType": "Discovered",
@@ -3568,6 +3585,23 @@
       "CopyToOutputDirectory": "Never",
       "CopyToPublishDirectory": "PreserveNewest",
       "OriginalItemSpec": "wwwroot\\img\\Persons\\39aaf263-2eeb-450f-8b06-4ad7daa2ad36.jpg"
+    },
+    {
+      "Identity": "C:\\Users\\lukas\\source\\repos\\Asklepios8\\Asklepios.Web\\wwwroot\\img\\Persons\\3e97e84e-a274-4dee-9e9d-381fcd345058.webp",
+      "SourceId": "Asklepios.Web",
+      "SourceType": "Discovered",
+      "ContentRoot": "C:\\Users\\lukas\\source\\repos\\Asklepios8\\Asklepios.Web\\wwwroot\\",
+      "BasePath": "_content/Asklepios.Web",
+      "RelativePath": "img/Persons/3e97e84e-a274-4dee-9e9d-381fcd345058.webp",
+      "AssetKind": "All",
+      "AssetMode": "All",
+      "AssetRole": "Primary",
+      "RelatedAsset": "",
+      "AssetTraitName": "",
+      "AssetTraitValue": "",
+      "CopyToOutputDirectory": "Never",
+      "CopyToPublishDirectory": "PreserveNewest",
+      "OriginalItemSpec": "wwwroot\\img\\Persons\\3e97e84e-a274-4dee-9e9d-381fcd345058.webp"
     },
     {
       "Identity": "C:\\Users\\lukas\\source\\repos\\Asklepios8\\Asklepios.Web\\wwwroot\\img\\Persons\\488f3772-a04c-49f2-b434-eabb554862c7.webp",

@@ -59,6 +59,7 @@ namespace Asklepios.Data.Interfaces
 
         void UpdateReferral(MedicalReferral referral);
         void UpdateVisit(Visit visit);
+        IQueryable<Visit> GetAvailableVisitsQuery();
         //void ResignFromVisit(Visit plannedVisit, Patient patient);
 
         //IEnumerable<MedicalRoom> GetMedicalRooms();

@@ -282,15 +282,41 @@ namespace Asklepios.Data.DBContexts
 
         public Visit GetAvailableVisitById(long id)
         {
-            Visit visit = Visits.Where(c => c.Id == id).Include(d => d.MinorMedicalServices).Include(e => e.MinorServicesToVisits).FirstOrDefault();
+            Visit visit = Visits
+                .Where(c => c.Id == id)
+                .Include(d => d.MinorMedicalServices)
+                .Include(e => e.MinorServicesToVisits)
+                .Include(f=>f.PrimaryService)
+                .Include(g=>g.MedicalWorker)
+                .FirstOrDefault();
             return visit;
         }
 
         public List<Visit> GetAvailableVisits()
         {
-            List<Visit> visits = Visits.Where(c => c.VisitStatus == VisitStatus.AvailableNotBooked).Include(d => d.MinorMedicalServices).Include(e => e.MinorServicesToVisits).Include(e => e.MedicalRoom).ToList();
+            List<Visit> visits = Visits
+                .Where(c => c.VisitStatus == VisitStatus.AvailableNotBooked)
+                .Include(d => d.MinorMedicalServices)
+                .Include(e => e.MinorServicesToVisits)
+                .Include(e => e.MedicalRoom)
+                .Include(f => f.MedicalWorker).ThenInclude(g => g.Person)
+
+                .ToList();
             return visits;
         }
+
+        public IQueryable<Visit> GetAvailableVisitsQuery()
+        {
+            IQueryable<Visit> visits = Visits
+                .Where(c => c.VisitStatus == VisitStatus.AvailableNotBooked)
+                .Include(d => d.MinorMedicalServices)
+                .Include(e => e.MinorServicesToVisits)
+                .Include(e => e.MedicalRoom)
+                .Include(f=>f.MedicalWorker).ThenInclude(g=>g.Person)
+                .AsQueryable();
+            return visits;
+        }
+
 
         //IEnumerable<Visit> ICustomerServiceModuleRepository.GetAvailableVisits()
         //{
@@ -310,7 +336,16 @@ namespace Asklepios.Data.DBContexts
 
         public List<Visit> GetBookedVisitsByPatientId(long id)
         {
-            throw new NotImplementedException();
+            List<Visit> bookedVisits = Visits
+                .Where(c => c.PatientId == id && c.VisitStatus == VisitStatus.Booked)
+                .Include(d => d.MedicalWorker).ThenInclude(f => f.Person)
+                .Include(e => e.Patient).ThenInclude(f => f.Person)
+                .Include(g => g.Location)
+                .Include(h=>h.VisitCategory)
+                .Include(k=>k.PrimaryService)
+                .Include(l=>l.MinorMedicalServices)
+                .ToList();
+            return bookedVisits;
         }
 
         public Patient GetCurrentPatient()
@@ -377,7 +412,16 @@ namespace Asklepios.Data.DBContexts
 
         public Visit GetHistoricalVisitById(long id)
         {
-            Visit visit = Visits.Where(c => c.Id == id).Include(a => a.VisitCategory).Include(b => b.Location).Include(c => c.PrimaryService).Include(d => d.Patient).ThenInclude(e => e.Person).FirstOrDefault();
+            Visit visit = Visits
+                .Where(c => c.Id == id)
+                .Include(a => a.VisitCategory)
+                .Include(b => b.Location)
+                .Include(c => c.PrimaryService)
+                .Include(d => d.Patient).ThenInclude(e => e.Person)
+                .Include(e => e.MedicalWorker).ThenInclude(f => f.Person)
+                .Include(k=>k.MedicalRoom)
+                .Include(l=>l.ExaminationReferrals).ThenInclude(m=>m.PrimaryMedicalService).Include(n=>n.MinorMedicalServices)
+                .FirstOrDefault();
             return visit;
         }
 
@@ -578,9 +622,10 @@ namespace Asklepios.Data.DBContexts
             return Patients.Where(c => c.Id == id).Include(a => a.Person).Include(b => b.User).FirstOrDefault();
         }
 
-        public Patient GetPatientByUserId(long personId)
+        public Patient GetPatientByUserId(long userId)
         {
-            throw new NotImplementedException();
+            Patient patient = Patients.FirstOrDefault(c => c.UserId == userId);
+            return patient;
         }
 
         public Patient GetPatientData()
@@ -593,14 +638,16 @@ namespace Asklepios.Data.DBContexts
             return People.Where(c => c.Id == personId).FirstOrDefault();
         }
 
-        public Prescription GetPrescriptionById(long prescriptionIdToRemove)
+        public Prescription GetPrescriptionById(long id)
         {
-            throw new NotImplementedException();
+            Prescription prescription= Prescriptions.Find(id);
+            return prescription;
         }
 
         public List<Prescription> GetPrescriptions()
         {
-            throw new NotImplementedException();
+            List<Prescription> prescriptions = Prescriptions.ToList();
+            return prescriptions;
         }
 
         public List<VisitReview> GetReviewsByMedicalWorkerId(long id)
@@ -803,7 +850,11 @@ namespace Asklepios.Data.DBContexts
 
         public void ResignFromVisit(long id)
         {
-            throw new NotImplementedException();
+            Visit visit = Visits.Find(id);
+            visit.PatientId = null;
+            visit.Patient = null;
+            visit.VisitStatus = VisitStatus.AvailableNotBooked;
+            SaveChanges();
         }
 
         public void UpdateLocation(Location selectedLocation,  string webrootPath )
@@ -969,12 +1020,12 @@ namespace Asklepios.Data.DBContexts
         {
             Update(visitToUpdate);
 
-            Visit visit = Visits.Find(visitToUpdate.Id);
+           // Visit visit = Visits.Find(visitToUpdate.Id);
             //if (visit != null)
             //{
             //    visit=visitToUpdate;
             //}
-            SaveChangesAsync();
+            SaveChanges();
         }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
@@ -1218,5 +1269,6 @@ namespace Asklepios.Data.DBContexts
         {
             return Visits.Where(k=>k.DateTimeSince>DateTimeOffset.Now).AsQueryable<Visit>().Include(a=>a.MedicalWorker).ThenInclude(b=>b.Person).Include(c=>c.Patient).ThenInclude(d=>d.Person);
         }
+
     }
 }
