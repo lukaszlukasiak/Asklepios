@@ -202,13 +202,13 @@ namespace Asklepios.Core.Models
             {
                 if (MedicalWorkerType.HasValue)
                 {
-                    //if (MedicalServicesToMedicalWorkers!=null)
-                    //{
-                    //    if (!string.IsNullOrWhiteSpace( Experience))
-                    //    {
-                    //        return true;
-                    //    }
-                    //}
+                    if (MedicalServices != null)
+                    {
+                        if (!string.IsNullOrWhiteSpace(Experience))
+                        {
+                            return true;
+                        }
+                    }
                 }
                 return false;
             }

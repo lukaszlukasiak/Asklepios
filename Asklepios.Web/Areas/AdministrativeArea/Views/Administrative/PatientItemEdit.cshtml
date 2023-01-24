@@ -13,7 +13,7 @@
         if (!string.IsNullOrWhiteSpace(Model.SuccessMessage))
         {
             <div class="messages" id="MessageSpan" style="margin-top: 10px; text-align: center ">
-                <p class="alert alert-danger">
+                <p class="alert alert-success">
                     @Model.SuccessMessage
                 </p>
             </div>
@@ -21,6 +21,19 @@
                 <span class="text" style="float: left">Resetuj dane</span>
             </a>*@
             }
+
+        if (!string.IsNullOrWhiteSpace(Model.ErrorMessage))
+        {
+            <div class="messages" id="MessageSpan" style="margin-top: 10px; text-align: center ">
+                <p class="alert error">
+                    @Model.ErrorMessage
+                </p>
+            </div>
+            @*@*<a asp-controller="Administrative" asp-action="PatientItemsAdd"  class="btn btn-outline-secondary btn-icon-split ">
+                <span class="text" style="float: left">Resetuj dane</span>
+            </a>*@
+            }
+
     }
 
     <form class="form my-2" asp-action="PatientItemEdit" method="post" enctype="multipart/form-data">

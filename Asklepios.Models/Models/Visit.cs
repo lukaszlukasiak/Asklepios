@@ -111,7 +111,6 @@ namespace Asklepios.Core.Models
         public virtual MedicalReferral UsedExaminationReferral
         {
             get;set;
-
         }
 
         public virtual List<MedicalReferral> ExaminationReferrals 

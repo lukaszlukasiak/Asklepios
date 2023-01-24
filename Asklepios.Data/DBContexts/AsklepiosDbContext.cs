@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 
 namespace Asklepios.Data.DBContexts
@@ -17,6 +18,7 @@ namespace Asklepios.Data.DBContexts
         //public Patient CurrentPatient { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
         public AsklepiosDbContext(DbContextOptions<AsklepiosDbContext> options) : base(options)
         {
+            string lol = Environment.GetEnvironmentVariable("WEBSITE_SITE_NAME");
         }
 
         public DbSet<IssuedMedicine> IssuedMedicines { get; set; }
@@ -57,50 +59,66 @@ namespace Asklepios.Data.DBContexts
 
         public DbSet<Visit> Visits { get; set; }
 
-        public void AddLocation(Location location)
+        public void AddLocation(Location location, IFormFile formFile, string hostPath)
         {
+            string filePath = SaveFile(formFile, StorageFolderType.Locations, hostPath);
+            location.ImagePath = filePath;
+
             Locations.Add(location);
-            SaveChangesAsync();
+
+            SaveChanges();
         }
 
         //public DbSet<MedicalServiceToMedicalWorker> MedicalServicesToMedicalWorkers { get; set; }
         //public DbSet<MedicalServiceToLocation> MedicalServicesToLocations { get; set; }
         public void AddMedicalPackage(MedicalPackage newPackage)
         {
-            MedicalPackages.AddAsync(newPackage);
-            SaveChangesAsync();
+            MedicalPackages.Add(newPackage);
+            SaveChanges();
         }
 
         public void AddMedicalReferral(MedicalReferral medicalReferral)
         {
             MedicalReferrals.Add(medicalReferral);
-            SaveChangesAsync();
+            SaveChanges();
         }
 
         public void AddMedicalRoom(MedicalRoom room)
         {
-            MedicalRooms.AddAsync(room);
-            SaveChangesAsync();
+            MedicalRooms.Add(room);
+            SaveChanges();
         }
 
         public void AddMedicalTestResult(MedicalTestResult medicalTestResult, IFormFile formFile, string hostPath)
         {
-            //MedicalTestResults.AddAsync()
-            throw new NotImplementedException();
+            string filePath= SaveFile(formFile,StorageFolderType.TestResult, hostPath);
+            medicalTestResult.DocumentPath= filePath;
+            medicalTestResult.UploadDate = DateTimeOffset.Now;
+
+            MedicalTestResults.Add(medicalTestResult);
+            SaveChanges();
+            //throw new NotImplementedException();
         }
 
-        public void AddMedicalWorkerObjects(User user, Person person, MedicalWorker medicalWorker)
+        public void AddMedicalWorkerObjects( MedicalWorker medicalWorker, string hostPath)
         {
-            Users.AddAsync(user);
-            People.AddAsync(person);
-            MedicalWorkers.AddAsync(medicalWorker);
-            SaveChangesAsync();
+            //Users.AddAsync(user);
+
+            //People.AddAsync(person);
+            if (medicalWorker.Person.ImageFile != null)
+            {
+                string filePath = SaveFile(medicalWorker.Person.ImageFile, StorageFolderType.Persons, hostPath);
+                medicalWorker.Person.ImageFilePath = filePath;
+            }
+
+            MedicalWorkers.Add(medicalWorker);
+            SaveChanges();
         }
 
         public void AddMedicine(IssuedMedicine issuedMedicineToAdd)
         {
-            IssuedMedicines.AddAsync(issuedMedicineToAdd);
-            SaveChangesAsync();
+            IssuedMedicines.Add(issuedMedicineToAdd);
+            SaveChanges();
         }
 
         public void AddNotification(long referencedItemId, NotificationType type, long patientId, DateTimeOffset now, long visitId)
@@ -111,34 +129,40 @@ namespace Asklepios.Data.DBContexts
             notification.DateTimeAdded = now;
             notification.VisitId = visitId;
             notification.EventObjectId = referencedItemId;
-            Notifications.AddAsync(notification);
-            SaveChangesAsync();
+            Notifications.Add(notification);
+            SaveChanges();
         }
 
-        public void AddPatientObjects(User user, Person person, Patient patient)
+        public void AddPatientObjects(Patient patient, string hostPath)
         {
-            Users.AddAsync(user);
-            People.AddAsync(person);
-            Patients.AddAsync(patient);
-            SaveChangesAsync();
+            //Users.AddAsync(user);
+            //People.AddAsync(person);
+            if (patient.Person.ImageFile!=null)
+            {
+                string filePath = SaveFile(patient.Person.ImageFile, StorageFolderType.Persons, hostPath);
+                patient.Person.ImageFilePath = filePath;
+            }
+
+            Patients.Add(patient);
+            SaveChanges();
         }
 
         public void AddPrescription(Prescription prescription)
         {
             Prescriptions.AddAsync(prescription);
-            SaveChangesAsync();
+            SaveChanges();
         }
 
         public void AddRecommendation(Recommendation recommendationToAdd)
         {
             Recommendations.AddAsync(recommendationToAdd);
-            SaveChangesAsync();
+            SaveChanges();
         }
 
         public void AddVisitsToSchedule(List<Visit> visitsToAdd)
         {
             Visits.AddRange(visitsToAdd);
-            SaveChangesAsync();
+            SaveChanges();
         }
 
         public void BookVisit(Patient selectedPatient, Visit newVisit)
@@ -146,7 +170,7 @@ namespace Asklepios.Data.DBContexts
             newVisit.PatientId = selectedPatient.Id;
             newVisit.VisitStatus = VisitStatus.Booked;
             Visits.Update(newVisit);
-            SaveChangesAsync();
+            SaveChanges();
         }
 
         public void DeleteRecommendation(long id)
@@ -156,7 +180,7 @@ namespace Asklepios.Data.DBContexts
             Visit visit = Visits.Where(c => c.Id == visitId).FirstOrDefault();
             visit.Recommendations.Remove(recommendation);
             Recommendations.Remove(recommendation);
-            SaveChangesAsync();
+            SaveChanges();
         }
 
         public Visit FutureVisitById(long id)
@@ -169,7 +193,52 @@ namespace Asklepios.Data.DBContexts
         {
             return Locations.Include(c => c.Services).Include(d=>d.MedicalRooms).ToList();
         }
+        private string SaveFile(IFormFile formFile, StorageFolderType type, string basePath)
+        {
+            string path = null;
+            switch (type)
+            {
+                // _hostEnvironment
+                case StorageFolderType.Persons:
+                    path = Path.Combine("img", "Persons"); //Directory.GetCurrentDirectory() + "\\Persons";
+                    break;
+                case StorageFolderType.Locations:
+                    path = Path.Combine("img", "Locations"); //Directory.GetCurrentDirectory() + "\\Locations";
+                    break;
+                case StorageFolderType.TestResult:
+                    path = "MedicalTestResults"; //Directory.GetCurrentDirectory() + "\\Locations";
+                    break;
+                default:
+                    break;
+            }
+            string extension = Path.GetExtension(formFile.FileName);
+            //string resourcePath=Path.Combine(basePath,)
+            string myUniqueFileName = null;//string.Format(@"{0}{1}" , Guid.NewGuid(), extension);
+            string fullFileName = null;// Path.Combine(path, myUniqueFileName);
 
+            do
+            {
+                myUniqueFileName = string.Format(@"{0}{1}", Guid.NewGuid(), extension);
+                fullFileName = Path.Combine(basePath, path, myUniqueFileName);
+
+            } while (System.IO.File.Exists(fullFileName));
+            //if (System.IO.File.Exists(fullFileName))
+            //{
+            //    string myUniqueFileName = string.Format(@"{0}{1}", Guid.NewGuid(), extension);
+            //    string fullFileName = Path.Combine(path, myUniqueFileName);
+
+            //}
+            string relativePath = Path.Combine("/",path, myUniqueFileName);
+            using (var fileStream = new FileStream(fullFileName, FileMode.Create))
+            {
+
+                formFile.CopyTo(fileStream);
+            }
+            string serverFileName = relativePath;//Path.Combine("\\", path, myUniqueFileName);
+
+            return serverFileName;
+
+        }
         //IEnumerable<Location> ICustomerServiceModuleRepository.GetAllLocations()
         //{
         //    throw new NotImplementedException();
@@ -268,25 +337,39 @@ namespace Asklepios.Data.DBContexts
 
         public List<Visit> GetFutureVisitsChunk(int currentPageNumId, int itemsPerPage)
         {
-            IEnumerable<Visit> visits = Visits.Where(c => c.DateTimeSince > DateTime.Now);
+            //IEnumerable<Visit> visits = Visits.Where(c => c.DateTimeSince > DateTime.Now).Include(d=>d.MedicalWorker).Include();
 
-            int numberOfVisits = visits.Count();
+            int numberOfVisits = Visits.Where(c => c.DateTimeSince > DateTime.Now).Count();
 
             int currentPageVisitsNumber = numberOfVisits % itemsPerPage;
 
-            if (currentPageNumId * itemsPerPage < Visits.Count())
+            if (currentPageNumId * itemsPerPage < numberOfVisits)
             {
                 return Visits
-                .Skip((currentPageNumId - 1) * itemsPerPage)
+                .Where(c => c.DateTimeSince > DateTime.Now)
+                .Skip((currentPageNumId-1 ) * itemsPerPage)
                 .Take(itemsPerPage)
+                .Include(d => d.MedicalWorker)
+                .ThenInclude(h => h.Person)
+                .Include(e => e.Patient)
+                .ThenInclude(i => i.Person)
+                .Include(f => f.VisitCategory)
+                .Include(g => g.PrimaryService)
                 .AsNoTracking()
                 .ToList();
             }
             else
             {
                 return Visits
+                .Where(c => c.DateTimeSince > DateTime.Now)
                 .Skip((currentPageNumId - 1) * itemsPerPage)
                 .Take(currentPageVisitsNumber)
+                .Include(d => d.MedicalWorker)
+                .ThenInclude(h => h.Person)
+                .Include(e => e.Patient)
+                .ThenInclude(i => i.Person)
+                .Include(f => f.VisitCategory)
+                .Include(g => g.PrimaryService)
                 .AsNoTracking()
                 .ToList();
             }
@@ -318,7 +401,7 @@ namespace Asklepios.Data.DBContexts
 
         public Location GetLocationById(long id)
         {
-            Location location = Locations.Where(c => c.Id == id).FirstOrDefault();
+            Location location = Locations.Where(c => c.Id == id).Include(d=>d.Services).Include(e=>e.MedicalRooms).FirstOrDefault();
             return location;
         }
 
@@ -430,7 +513,7 @@ namespace Asklepios.Data.DBContexts
         }
         public MedicalWorker GetMedicalWorkerDetailsById(long id)
         {
-            MedicalWorker medicalWorker = MedicalWorkers.Where(c => c.Id == id).Include(c => c.MedicalServices).Include(d => d.Person).Include(e=>e.VisitReviews).FirstOrDefault();
+            MedicalWorker medicalWorker = MedicalWorkers.Where(c => c.Id == id).Include(c => c.MedicalServices).Include(d => d.Person).Include(e=>e.VisitReviews).Include(g=>g.MedicalServices).Include(k=>k.User).FirstOrDefault();
             return medicalWorker;
         }
         //public MedicalWorker GetMedicalWorkerDetailsById(long id)
@@ -446,7 +529,7 @@ namespace Asklepios.Data.DBContexts
 
         public List<MedicalWorker> GetMedicalWorkers()
         {
-            return MedicalWorkers.Include(c => c.Person).ToList();
+            return MedicalWorkers.Include(c => c.Person).Include(d=>d.MedicalServices).Include(e=>e.VisitReviews).ToList();
         }
 
         //IEnumerable<MedicalWorker> ICustomerServiceModuleRepository.GetMedicalWorkers()
@@ -461,12 +544,13 @@ namespace Asklepios.Data.DBContexts
 
         public NFZUnit GetNFZUnitById(long id)
         {
-            throw new NotImplementedException();
+            return NFZUnits.Find(id);
         }
 
         public List<NFZUnit> GetNFZUnits()
         {
-            throw new NotImplementedException();
+            return NFZUnits.ToList();
+            //throw new NotImplementedException();
         }
 
         //IEnumerable<NFZUnit> ICustomerServiceModuleRepository.GetNFZUnits()
@@ -481,12 +565,12 @@ namespace Asklepios.Data.DBContexts
 
         public Notification GetNotificationById(long id)
         {
-            throw new NotImplementedException();
+            return Notifications.Find(id);
         }
 
         public List<Notification> GetNotificationsByPatientId(long id)
         {
-            throw new NotImplementedException();
+            return Notifications.Where(c => c.PatientId == id).ToList();
         }
 
         public Patient GetPatientById(long id)
@@ -527,18 +611,20 @@ namespace Asklepios.Data.DBContexts
 
         public MedicalRoom GetRoomById(long id)
         {
-            throw new NotImplementedException();
+            MedicalRoom room= MedicalRooms.Find(id);
+            return room;
         }
 
-        public List<MedicalRoom> GetRoomsByLocationId()
+        public List<MedicalRoom> GetRoomsByLocationId(long id)
         {
-            throw new NotImplementedException();
+            List<MedicalRoom> rooms = MedicalRooms.Where(c => c.LocationId == id).ToList();
+            return rooms;
         }
 
-        public List<MedicalRoom> GetUnasignedRooms()
-        {
-            throw new NotImplementedException();
-        }
+        //public List<MedicalRoom> GetUnasignedRooms()
+        //{
+        //    throw new NotImplementedException();
+        //}
 
         //public Patient GetUserById(string userId)
         //{
@@ -615,52 +701,99 @@ namespace Asklepios.Data.DBContexts
 
         public void RemoveIssuedMedicineById(long medicineIdToRemove)
         {
-            throw new NotImplementedException();
+            IssuedMedicine medicine = IssuedMedicines.Find(medicineIdToRemove);
+            IssuedMedicines.Remove(medicine);
+            SaveChanges();
         }
 
         public void RemoveLocationById(long selectedLocationId)
         {
-            throw new NotImplementedException();
+            Location location = Locations.Find(selectedLocationId);
+            Locations.Remove(location);
+            SaveChanges();
         }
 
         public void RemoveMedicalPackageById(long selectedPackageId)
         {
-            throw new NotImplementedException();
+            MedicalPackage package = MedicalPackages.Find(selectedPackageId);
+            MedicalPackages.Remove(package);
+                SaveChanges();
         }
 
         public void RemoveMedicalReferralById(long medicalReferralIdToRemove)
         {
-            throw new NotImplementedException();
+            MedicalReferral referral = MedicalReferrals.Find(medicalReferralIdToRemove);
+            MedicalReferrals.Remove(referral);
+            SaveChanges();
         }
 
         public void RemoveMedicalRoomById(long selectedRoomId)
         {
-            throw new NotImplementedException();
+            MedicalRoom room = MedicalRooms.Find(selectedRoomId);
+            MedicalRooms.Remove(room);
+            SaveChanges();
         }
 
         public void RemoveMedicalWorkerById(long selectedWorkerId)
         {
-            throw new NotImplementedException();
+            MedicalWorker worker = MedicalWorkers.Find(selectedWorkerId);
+            MedicalWorkers.Remove(worker);
+            SaveChanges();
         }
 
         public void RemovePatientById(long id)
         {
-            throw new NotImplementedException();
+            Patient patient = Patients.Find(id);
+            Patients.Remove(patient);
+            SaveChanges();
         }
 
         public void RemovePrescriptionById(long prescriptionIdToRemove)
         {
-            throw new NotImplementedException();
+            Prescription prescription = Prescriptions.Find(prescriptionIdToRemove);
+            Prescriptions.Remove(prescription);
+            SaveChanges();
         }
 
-        public void RemoveTestResult(long id, long id1, string webRootPath)
+        public void RemoveTestResult(long testResultId, long visitId, string webRootPath)
         {
-            throw new NotImplementedException();
+            Visit visit = PatientMockDB.FutureVisits.Where(c => c.Id == visitId).First();
+            if (visit != null)
+            {
+
+                //if (visit.MedicalTestResult != null)
+                //{
+                //    if (visit.MedicalTestResult.Id == testResultId)
+                //    {
+                //        PatientMockDB.RemoveFile(visit.MedicalTestResult.DocumentPath);
+                //        int index = PatientMockDB.MedicalTestResults.FindIndex(c => c.Id == testResultId);
+                //        PatientMockDB.MedicalTestResults.RemoveAt(index);
+                //        string fullPath = webRootPath + visit.MedicalTestResult.DocumentPath;// Path.Combine(webRootPath, documentPath);
+                //        if (File.Exists(fullPath))
+                //        {
+                //            File.Delete(fullPath);
+                //        }
+                //        else
+                //        {
+
+                //        }
+                //        visit.MedicalTestResult = null;
+
+                //    }
+                //}
+            }
+
+
+            //MedicalPackage package = MedicalPackages.Find(selectedPackageId);
+            //MedicalPackages.Remove(package);
+            //SaveChanges();
         }
 
         public void RemoveVisitById(long id)
         {
-            throw new NotImplementedException();
+            Visit visit = Visits.Find(id);
+            Visits.Remove(visit);
+            SaveChanges();
         }
 
         public void ResignFromVisit(Visit plannedVisit, Patient selectedPatient)
@@ -673,29 +806,111 @@ namespace Asklepios.Data.DBContexts
             throw new NotImplementedException();
         }
 
-        public void UpdateLocation(Location selectedLocation, long selectedLocationId)
+        public void UpdateLocation(Location selectedLocation,  string webrootPath )
         {
-            throw new NotImplementedException();
+            if (selectedLocation.ImageFile!=null)
+            {
+                string fullImagePath = Path.Combine(webrootPath+ selectedLocation.ImagePath);
+                if (File.Exists(fullImagePath))
+                {
+                    File.Delete(fullImagePath);
+                }
+                string newLocation = SaveFile(selectedLocation.ImageFile, StorageFolderType.Locations, webrootPath);
+                selectedLocation.ImagePath = newLocation;
+            }
+            Locations.Update(selectedLocation);
+            SaveChanges();
+
+            //string filePath = SaveFile(formFile, StorageFolderType.Locations, hostPath);
+            //location.ImagePath = filePath;
+
+            //Locations.Add(location);
+
+            //SaveChanges();
+
         }
 
-        public void UpdateLocationImage(IFormFile imageFile, Location location, string webRootPath)
-        {
-            throw new NotImplementedException();
-        }
+        //public void UpdateLocationImage(IFormFile imageFile, Location location, string webRootPath)
+        //{
+        //    string path = SaveFile(imageFile, StorageFolderType.Locations, webRootPath);              
+        //    Path.Combine(webRootPath, webRootPath);
+        //}
 
         public void UpdateMedicalPackage(MedicalPackage newPackage)
         {
-            throw new NotImplementedException();
+            var existingOrder = MedicalPackages.Local.SingleOrDefault(o => o.Id == newPackage.Id);
+            newPackage.ServiceDiscounts.ForEach(c => c.Discount = decimal.Multiply(c.Discount, (decimal)0.01));//  (decimal)(((double)c.Discount) * 0.01));
+            
+            if (existingOrder != null)
+            {
+                Entry(existingOrder).State = EntityState.Detached;
+            }
+
+
+            //Attach(newPackage);
+            //Entry(newPackage).State = EntityState.Modified;
+
+            MedicalPackages.Update(newPackage);
+            SaveChanges();
         }
 
-        public void UpdateMedicalWorker(MedicalWorker selectedWorker, long selectedWorkerId)
+        public void UpdateMedicalWorker(MedicalWorker selectedWorker, string webrootPath)
         {
-            throw new NotImplementedException();
+            if (selectedWorker.Person.ImageFile != null)
+            {
+                string fullImagePath = Path.Combine(webrootPath + selectedWorker.Person.ImageFilePath);
+                if (File.Exists(fullImagePath))
+                {
+                    File.Delete(fullImagePath);
+                }
+                string newLocation = SaveFile(selectedWorker.Person.ImageFile, StorageFolderType.Persons, webrootPath);
+                selectedWorker.Person.ImageFilePath = newLocation;
+            }
+            //MedicalWorker existingMW = MedicalWorkers.Local.SingleOrDefault(o => o.Id == selectedWorker.Id);
+
+            //if (existingMW != null)
+            //{
+            //    Entry(existingMW).State = EntityState.Detached;
+            //}
+
+            MedicalWorkers.Update(selectedWorker);
+            SaveChanges();
         }
 
-        public void UpdatePatient(Patient patient)
+        public void UpdatePatient(Patient patient, string webrootPath)
         {
-            throw new NotImplementedException();
+            if (patient.Person.ImageFile != null)
+            {
+                //string fullImagePath = Path.Combine( patient.Person.ImageFilePath);
+                if (File.Exists(patient.Person.ImageFilePath))
+                {
+                    File.Delete(patient.Person.ImageFilePath);
+                }
+                string newLocation = SaveFile(patient.Person.ImageFile, StorageFolderType.Persons, webrootPath);
+                patient.Person.ImageFilePath = newLocation;
+            }
+
+            Patient existingPatient = Patients.Local.SingleOrDefault(o => o.Id == patient.Id);
+
+            if (existingPatient != null)
+            {
+                Entry(existingPatient).State = EntityState.Detached;
+            }
+            Person existingPerson = People.Local.SingleOrDefault(o => o.Id == patient.PersonId.Value);
+
+            if (existingPerson != null)
+            {
+                Entry(existingPerson).State = EntityState.Detached;
+            }
+            User existingUser = Users.Local.SingleOrDefault(o => o.Id == patient.UserId);
+
+            if (existingUser != null)
+            {
+                Entry(existingUser).State = EntityState.Detached;
+            }
+
+            Patients.Update(patient);
+            SaveChanges();
         }
 
         public void UpdatePersonImage(IFormFile imageFile, Person person, string hostEnvironmentPath)
@@ -705,17 +920,44 @@ namespace Asklepios.Data.DBContexts
 
         public void UpdatePrescription(Prescription prescription)
         {
-            throw new NotImplementedException();
+            Prescription existingPrescription = Prescriptions.Local.SingleOrDefault(o => o.Id == prescription.Id);
+
+            if (existingPrescription != null)
+            {
+                Entry(existingPrescription).State = EntityState.Detached;
+            }
+
+            Prescriptions.Update(prescription);
+            SaveChanges();
         }
 
         public void UpdateReferral(MedicalReferral referral)
         {
-            throw new NotImplementedException();
+            MedicalReferral existingReferral = MedicalReferrals.Local.SingleOrDefault(o => o.Id == referral.Id);
+
+            if (existingReferral != null)
+            {
+                Entry(existingReferral).State = EntityState.Detached;
+            }
+
+            MedicalReferrals.Update(referral);
+            SaveChanges();
         }
 
         public void UpdateRoom(MedicalRoom newRoom)
         {
-            throw new NotImplementedException();
+            var room = MedicalRooms.Local.SingleOrDefault(o => o.Id == newRoom.Id);
+
+            if (room != null)
+            {
+                Entry(room).State = EntityState.Detached;
+            }
+            if (newRoom.LocationId==-1)
+            {
+                newRoom.LocationId = null;
+            }
+            MedicalRooms.Update(newRoom);
+            SaveChanges();
         }
 
         public void UpdateTestResultFile(IFormFile medicalTestFile, Visit visit, string webRootPath)
@@ -787,7 +1029,7 @@ namespace Asklepios.Data.DBContexts
                 .WithMany(b => b.Locations);
 
             modelBuilder.Entity<VisitCategory>()
-                .HasMany<MedicalService>(c => c.PrimaryMedicalServices)
+                .HasMany<MedicalService>(c => c.MedicalServices)
                 .WithOne(e => e.VisitCategory)
                 .HasForeignKey(d => d.VisitCategoryId)
                 .OnDelete(DeleteBehavior.Restrict)
@@ -918,7 +1160,7 @@ namespace Asklepios.Data.DBContexts
             PatientMockDB.Recommendations.ForEach(c => c.Visit = null);
             PatientMockDB.Recommendations.ForEach(c => c.Visit = null);
 
-            PatientMockDB.VisitCategories.ForEach(c => c.PrimaryMedicalServices = null);
+            PatientMockDB.VisitCategories.ForEach(c => c.MedicalServices = null);
 
             PatientMockDB.MinorServicesToVisits.ForEach(c => c.MedicalService = null);
             PatientMockDB.MinorServicesToVisits.ForEach(c => c.Visit = null);
@@ -962,5 +1204,19 @@ namespace Asklepios.Data.DBContexts
             // modelBuilder.Entity<Recommendation>().HasData(PatientMockDB.Recommendations);
         }
 
+        public bool HasMedicalWorkerVisits(long id)
+        {
+            return MedicalWorkers.Any(x => x.Id == id);
+        }
+
+        public bool HasPatientVisits(long id)
+        {
+            return Visits.Any(x => x.PatientId == id);
+        }
+
+        public IQueryable<Visit> GetFutureVisitsQuery()
+        {
+            return Visits.Where(k=>k.DateTimeSince>DateTimeOffset.Now).AsQueryable<Visit>().Include(a=>a.MedicalWorker).ThenInclude(b=>b.Person).Include(c=>c.Patient).ThenInclude(d=>d.Person);
+        }
     }
 }

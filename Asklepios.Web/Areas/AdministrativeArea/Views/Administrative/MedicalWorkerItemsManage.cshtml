@@ -1,10 +1,48 @@
-﻿@model Asklepios.Web.Areas.AdministrativeArea.Models.MedicalWorkersManageViewModel 
+﻿@model Asklepios.Web.Areas.AdministrativeArea.Models.MedicalWorkersManageViewModel
 @{
     SelectList services = new SelectList(Model.PrimaryServices, "Id", "Name");
 
 }
 
 <div class="d-flex flex-column">
+
+
+    @{
+        //if (!string.IsNullOrWhiteSpace(Model.SuccessMessage))
+        //{
+        //    <div class="messages" style="margin-top:10px;text-align:center">
+        //        <p class="alert alert-success">
+        //            @Model.SuccessMessage
+        //        </p>
+        //    </div>
+        //}
+        //else if (!string.IsNullOrWhiteSpace(Model.ErrorMessage))
+        //{
+        //    <div class="messages" style="margin-top: 10px; text-align: center ">
+        //        <p class="alert alert-danger">
+        //            @Model.ErrorMessage
+        //        </p>
+        //    </div>
+
+        //}
+        if (TempData.ContainsKey("successMessage"))
+        {
+            <div class="messages" id="MessageSpan" style="margin-top: 10px; text-align: center ">
+                <p class="alert alert-success">
+                    @TempData["successMessage"].ToString()
+                </p>
+            </div>
+        }
+        if (TempData.ContainsKey("errorMessage"))
+        {
+            <div class="messages" id="MessageSpan" style="margin-top: 10px; text-align: center ">
+                <p class="alert alert-danger">
+                    @TempData["errorMessage"].ToString()
+                </p>
+            </div>
+        }
+
+    }
 
     <form class="form my-2" asp-action="MedicalWorkerItemsManage" method="post">
         <div class="form-group d-flex flex-column">
@@ -49,10 +87,10 @@
             <span asp-validation-for="SearchOptions.SelectedSurname" class="text-danger"></span>
 
             @*<div class="d-flex flex-row">
-            <label asp-for="HasPolishCitizenship"></label>
-            <input type="checkbox" asp-for="HasPolishCitizenship" class="custom-control ml-2 " style="height:20px;width:20px" checked />
-            <span asp-validation-for="HasPolishCitizenship" class="text-danger"></span>
-        </div>*@
+                <label asp-for="HasPolishCitizenship"></label>
+                <input type="checkbox" asp-for="HasPolishCitizenship" class="custom-control ml-2 " style="height:20px;width:20px" checked />
+                <span asp-validation-for="HasPolishCitizenship" class="text-danger"></span>
+                </div>*@
 
 
             <label asp-for="SearchOptions.SelectedPESEL" class="control-label"></label>
@@ -78,23 +116,6 @@
         </div>
     </form>
     @{
-        if (!string.IsNullOrWhiteSpace(Model.SuccessMessage))
-        {
-            <div class="messages" style="margin-top:10px;text-align:center">
-                <p class="alert alert-success">
-                    @Model.SuccessMessage
-                </p>
-            </div>
-        }
-        else if (!string.IsNullOrWhiteSpace(Model.ErrorMessage))
-        {
-            <div class="messages" style="margin-top: 10px; text-align: center ">
-                <p class="alert alert-danger">
-                    @Model.ErrorMessage
-                </p>
-            </div>
-
-        }
 
 
 

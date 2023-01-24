@@ -7,7 +7,25 @@
 }
 
 <div class="d-flex flex-column">
+    @{
+        if (!string.IsNullOrWhiteSpace(Model.SuccessMessage))
+        {
+            <div class="messages" style="margin-top:10px;text-align:center">
+                <p class="alert alert-success">
+                    @Model.SuccessMessage
+                </p>
+            </div>
+        }
+        else if (!string.IsNullOrWhiteSpace(Model.ErrorMessage))
+        {
+            <div class="messages" style="margin-top: 10px; text-align: center ">
+                <p class="alert alert-danger">
+                    @Model.ErrorMessage
+                </p>
+            </div>
 
+        }
+    }
     <form class="form my-2" asp-action="PatientItemsManage" method="post">
         <div class="form-group d-flex flex-column">
 
@@ -54,9 +72,9 @@
             <span asp-validation-for="SelectedSurname" class="text-danger"></span>
 
             @*<div class="d-flex flex-row">
-                    <label asp-for="HasPolishCitizenship"></label>
-                    <input type="checkbox" asp-for="HasPolishCitizenship" class="custom-control ml-2 " style="height:20px;width:20px" checked />
-                    <span asp-validation-for="HasPolishCitizenship" class="text-danger"></span>
+                <label asp-for="HasPolishCitizenship"></label>
+                <input type="checkbox" asp-for="HasPolishCitizenship" class="custom-control ml-2 " style="height:20px;width:20px" checked />
+                <span asp-validation-for="HasPolishCitizenship" class="text-danger"></span>
                 </div>*@
 
 
@@ -82,23 +100,6 @@
         </div>
     </form>
     @{
-        if (!string.IsNullOrWhiteSpace(Model.SuccessMessage))
-        {
-            <div class="messages" style="margin-top:10px;text-align:center">
-                <p class="alert alert-success">
-                    @Model.SuccessMessage
-                </p>
-            </div>
-        }
-        else if (!string.IsNullOrWhiteSpace(Model.ErrorMessage))
-        {
-            <div class="messages" style="margin-top: 10px; text-align: center ">
-                <p class="alert alert-danger">
-                    @Model.ErrorMessage
-                </p>
-            </div>
-
-        }
 
 
 

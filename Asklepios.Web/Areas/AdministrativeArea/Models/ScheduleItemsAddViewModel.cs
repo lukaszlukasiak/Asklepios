@@ -60,12 +60,12 @@ namespace Asklepios.Web.Areas.AdministrativeArea.Models
         public string Guard { get; set; }
 
 
-        private DateTimeOffset? _firstVisitInitialDateTime;
+        private DateTime? _firstVisitInitialDateTime;
         [Required(ErrorMessage = "Proszę wybierz datę")]
         [DataType(DataType.Date)]
         [DisplayFormat(ApplyFormatInEditMode = true)]
         [Display(Name = "Data dodawanych wizyt")]
-        public DateTimeOffset VisitsDate
+        public DateTime VisitsDate
         {
             get
             {
@@ -75,7 +75,7 @@ namespace Asklepios.Web.Areas.AdministrativeArea.Models
                 }
                 else
                 {
-                    return DateTimeOffset.Now.Date.AddDays(1);
+                    return DateTime.Now.Date.AddDays(1);
                 }
             }
             set
@@ -133,30 +133,36 @@ namespace Asklepios.Web.Areas.AdministrativeArea.Models
         }
 
 
-        public bool IsDuplicated(List<Visit> visits)
+        public bool IsDuplicated(IQueryable<Visit> visits)
         {
+
+            DateTime startDate = VisitsDate.Add(FirstVisitTime);
+            DateTime endDate = startDate.Add(new TimeSpan(0, NumberOfVisitsToAdd * DurationOfVisit, 0));
             if (long.TryParse(SelectedRoomId, out long roomdId))
             {
                 if (long.TryParse(SelectedMedicalWorkerId, out long workerId))
                 {
                     if (roomdId > 0 && workerId > 0)
                     {
-                        List<Visit> filteredVisits = visits.Where(c => c.DateTimeSince.Date == VisitsDate.Date && c.MedicalRoom.Id == roomdId).ToList();
-                        TimeSpan start = VisitsDate.TimeOfDay;
-                        TimeSpan end = VisitsDate.TimeOfDay.Add(new TimeSpan(0, NumberOfVisitsToAdd * DurationOfVisit, 0));
+                        IQueryable<Visit> filteredVisits = visits.Where(c => c.DateTimeSince.Date == VisitsDate.Date  && c.MedicalRoom.Id == roomdId).AsQueryable(); //.ToList();
+                   //     List<Visit> fvisits= visits.Where(c => c.DateTimeSince.Date == VisitsDate.Date && c.MedicalRoom.Id == roomdId).ToList(); //.ToList();
+
+                        TimeSpan start = FirstVisitTime;
+                        TimeSpan end = VisitsDate.TimeOfDay.Add(new TimeSpan(0, NumberOfVisitsToAdd * DurationOfVisit, 0)).Add(FirstVisitTime);
 
 
-                        List<Visit> duplicates = filteredVisits.Where(c => (c.DateTimeSince.TimeOfDay > start && c.DateTimeSince.TimeOfDay < end) || (c.DateTimeTill.TimeOfDay > start && c.DateTimeTill.TimeOfDay < end)).ToList();
-
-                        if (duplicates != null && duplicates?.Count > 0)
+                        IQueryable<Visit> duplicates = filteredVisits.Where(c => (c.DateTimeSince.TimeOfDay >= start && c.DateTimeSince.TimeOfDay < end) || (c.DateTimeTill.TimeOfDay > start && c.DateTimeTill.TimeOfDay <= end)).AsQueryable();// .ToList();
+                      //  fvisits= filteredVisits.Where(c => (c.DateTimeSince.TimeOfDay > start && c.DateTimeSince.TimeOfDay < end) || (c.DateTimeTill.TimeOfDay > start && c.DateTimeTill.TimeOfDay < end)).ToList();
+                        if (duplicates != null && duplicates.Count() > 0)
                         {
                             ErrorMessage = ERROR_MESSAGE_ROOM;
                             return true;
                         }
 
-                        filteredVisits = visits.Where(c => c.DateTimeSince.Date == VisitsDate.Date && c.MedicalWorker.Id == workerId).ToList();
-                        duplicates = filteredVisits.Where(c => (c.DateTimeSince.TimeOfDay > start && c.DateTimeSince.TimeOfDay < end) || (c.DateTimeTill.TimeOfDay > start && c.DateTimeTill.TimeOfDay < end)).ToList();
-                        if (duplicates != null && duplicates?.Count > 0)
+                        filteredVisits = visits.Where(c => c.DateTimeSince.Date == VisitsDate.Date && c.MedicalWorker.Id == workerId).AsQueryable();//.ToList();
+                      //  fvisits = visits.Where(c => c.DateTimeSince.Date == VisitsDate.Date && c.MedicalWorker.Id == workerId).ToList();
+                        duplicates = filteredVisits.Where(c => (c.DateTimeSince.TimeOfDay >= start && c.DateTimeSince.TimeOfDay < end) || (c.DateTimeTill.TimeOfDay > start && c.DateTimeTill.TimeOfDay <= end)).AsQueryable(); //.ToList();
+                        if (duplicates != null && duplicates.Count() > 0)
                         {
                             ErrorMessage = ERROR_MESSAGE_WORKER;
                             return true;

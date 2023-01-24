@@ -27,8 +27,10 @@ namespace Asklepios.Web
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddDbContext<AsklepiosDbContext>(options =>
-            options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
-
+            options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")),ServiceLifetime.Scoped);
+            
+            
+            //app.UseHttpsRedirection();
             // services.
             //services.
             //services.AddDatabaseDeveloperPageExceptionFilter();

@@ -40,7 +40,8 @@ namespace Asklepios.Data.InMemoryContexts
         private List<NFZUnit> nfzUnits { get; set; }
         private List<MedicalService> primaryMedicalServices { get; set; }
         private List<VisitCategory> visitCategories { get; set; }
-        public void AddLocation(Location location)
+
+        public void AddLocation(Location location, IFormFile file, string path)
         {
             long id = PatientMockDB.Locations.Max(c => c.Id) + 1;
             location.Id = id;
@@ -76,7 +77,7 @@ namespace Asklepios.Data.InMemoryContexts
             PatientMockDB.MedicalRooms.Add(room);
         }
 
-        public void AddMedicalWorkerObjects(User user, Person person, MedicalWorker medicalWorker)
+        public void AddMedicalWorkerObjects( MedicalWorker medicalWorker, string webRootPath)
         {
             //if (medicalWorker.ser > 0)
             //{
@@ -93,13 +94,13 @@ namespace Asklepios.Data.InMemoryContexts
             //    }
             //}
 
-            PatientMockDB.AddUser(user);
+            PatientMockDB.AddUser(medicalWorker.User);
             PatientMockDB.AddMedicalWorker(medicalWorker);
-            PatientMockDB.AddPerson(person);
+            PatientMockDB.AddPerson(medicalWorker.Person);
 
         }
 
-        public void AddPatientObjects(User user, Person person, Patient patient)
+        public void AddPatientObjects( Patient patient, string webRootPath)
         {
             if (patient.NFZUnitId > 0)
             {
@@ -116,9 +117,9 @@ namespace Asklepios.Data.InMemoryContexts
                 }
             }
 
-            PatientMockDB.AddUser(user);
+            PatientMockDB.AddUser(patient.User);
             PatientMockDB.AddPatient(patient);
-            PatientMockDB.AddPerson(person);
+            PatientMockDB.AddPerson(patient.Person);
         }
 
         public void AddVisitsToSchedule(List<Visit> visitsToAdd)
@@ -175,6 +176,11 @@ namespace Asklepios.Data.InMemoryContexts
                 .Skip((currentPageNumId - 1) * itemsPerPage)
                 .Take(itemsPerPage)
                 .ToList();
+        }
+
+        public IQueryable<Visit> GetFutureVisitsQuery()
+        {
+            throw new NotImplementedException();
         }
 
         public Location GetLocationById(long id)
@@ -247,20 +253,20 @@ namespace Asklepios.Data.InMemoryContexts
             return PatientMockDB.MedicalRooms.First(c => c.Id == id);
         }
 
-        public List<MedicalRoom> GetRoomsByLocationId()
+        public List<MedicalRoom> GetRoomsByLocationId(long id)
         {
-            throw new NotImplementedException();
+            return medicalRooms.FindAll(c => c.LocationId == id);
         }
 
-        public List<MedicalRoom> GetUnasignedRooms()
-        {
-            List<MedicalRoom> rooms = GetMedicalRooms();
-            List<long> usedIds = GetAllLocations().SelectMany(c => c.MedicalRooms.Select(d => d.Id).ToList()).ToList();
-            List<long> allIds = rooms.Select(c => c.Id).ToList();
-            List<long> unusedIds = allIds.Except(usedIds).ToList();
+        //public List<MedicalRoom> GetUnasignedRooms()
+        //{
+        //    List<MedicalRoom> rooms = GetMedicalRooms();
+        //    List<long> usedIds = GetAllLocations().SelectMany(c => c.MedicalRooms.Select(d => d.Id).ToList()).ToList();
+        //    List<long> allIds = rooms.Select(c => c.Id).ToList();
+        //    List<long> unusedIds = allIds.Except(usedIds).ToList();
 
-            return rooms.Where(c => unusedIds.Contains(c.Id))?.ToList();
-        }
+        //    return rooms.Where(c => unusedIds.Contains(c.Id))?.ToList();
+        //}
 
         public User GetUser(int parsedId)
         {
@@ -286,6 +292,16 @@ namespace Asklepios.Data.InMemoryContexts
         public VisitCategory GetVisitCategoryById(long id)
         {
             return PatientMockDB.VisitCategories.Where(c => c.Id == id).FirstOrDefault();
+        }
+
+        public bool HasMedicalWorkerVisits(long id)
+        {
+            throw new NotImplementedException();
+        }
+
+        public bool HasPatientVisits(long id)
+        {
+            throw new NotImplementedException();
         }
 
         public void RemoveLocationById(long selectedLocationId)
@@ -331,9 +347,9 @@ namespace Asklepios.Data.InMemoryContexts
             PatientMockDB.RemoveVisitById(id);
         }
 
-        public void UpdateLocation(Location selectedLocation, long selectedLocationId)
+        public void UpdateLocation(Location selectedLocation,  string path)
         {
-            Location oldLocation = locations.Where(c => c.Id == selectedLocationId).FirstOrDefault();
+            Location oldLocation = locations.Where(c => c.Id == selectedLocation.Id).FirstOrDefault();
             if (oldLocation != null)
             {
                 PatientMockDB.UpdateLocation(selectedLocation, oldLocation);
@@ -343,7 +359,7 @@ namespace Asklepios.Data.InMemoryContexts
 
         public void UpdateLocationImage(IFormFile imageFile, Location location, string hostEnvironmentPath)
         {
-            string imagePath = SaveImage(location.ImageFile, ImageFolderType.Locations, hostEnvironmentPath);
+            string imagePath = SaveImage(location.ImageFile, StorageFolderType.Locations, hostEnvironmentPath);
             location.ImagePath = imagePath;
             location.ImageFile = null;
         }
@@ -357,16 +373,16 @@ namespace Asklepios.Data.InMemoryContexts
             }
         }
 
-        public void UpdateMedicalWorker(MedicalWorker selectedWorker, long selectedWorkerId)
+        public void UpdateMedicalWorker(MedicalWorker selectedWorker,string webRoothPath)
         {
-            MedicalWorker oldWorker = medicalWorkers.Where(c => c.Id == selectedWorkerId).FirstOrDefault();
+            MedicalWorker oldWorker = medicalWorkers.Where(c => c.Id == selectedWorker.Id).FirstOrDefault();
             if (oldWorker != null)
             {
                 PatientMockDB.UpdateMedicalWorker(selectedWorker, oldWorker);
             }
         }
 
-        public void UpdatePatient(Patient patient)
+        public void UpdatePatient(Patient patient, string webRoothPath)
         {
             Patient oldPatient = allPatients.Where(c => c.Id == patient.Id).FirstOrDefault();
             if (patient.Person.ImageFile != null)
@@ -398,7 +414,7 @@ namespace Asklepios.Data.InMemoryContexts
 
         public void UpdatePersonImage(IFormFile imageFile, Person person, string hostEnvironmentPath)
         {
-            string imagePath = SaveImage(person.ImageFile, ImageFolderType.Persons, hostEnvironmentPath);
+            string imagePath = SaveImage(person.ImageFile, StorageFolderType.Persons, hostEnvironmentPath);
             person.ImageFilePath = imagePath;
         }
 
@@ -428,16 +444,16 @@ namespace Asklepios.Data.InMemoryContexts
         //    string imagePath = SaveImage(person.ImageFile, ImageFolderType.Persons, _hostEnvironment.WebRootPath);
         //    person.ImageFilePath = imagePath;
         //}
-        private string SaveImage(IFormFile formFile, ImageFolderType type, string basePath)
+        private string SaveImage(IFormFile formFile, StorageFolderType type, string basePath)
         {
             string path = null;
             switch (type)
             {
                 // _hostEnvironment
-                case ImageFolderType.Persons:
+                case StorageFolderType.Persons:
                     path = Path.Combine("img", "Persons"); //Directory.GetCurrentDirectory() + "\\Persons";
                     break;
-                case ImageFolderType.Locations:
+                case StorageFolderType.Locations:
                     path = Path.Combine("img", "Locations"); //Directory.GetCurrentDirectory() + "\\Locations";
                     break;
                 default:

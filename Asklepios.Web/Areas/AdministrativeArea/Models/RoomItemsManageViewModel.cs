@@ -90,7 +90,7 @@ namespace Asklepios.Web.Areas.AdministrativeArea.Models
         public List<MedicalRoom> AllRooms { get; set; }
         public ViewMode ViewMode { get; set; }
         public bool IsValid { get; internal set; }
-        public List<MedicalRoom> UnasignedRooms { get; set; }
+        //public List<MedicalRoom> UnasignedRooms { get; set; }
         public string UserName { get; set; }
     }
 }
