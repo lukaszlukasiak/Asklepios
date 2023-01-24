@@ -547,7 +547,7 @@ namespace Asklepios.Data.InMemoryContexts
                     int servicesCounter = medicalWorker.MedicalServices.Where(c => c.IsPrimaryService).Count();
                     int serviceIndex = (servicesCounter - 1) % (i + 1);
                     MedicalService service = medicalWorker.MedicalServices.Where(c => c.IsPrimaryService).ToList().ElementAt(serviceIndex);
-                    List<VisitCategory> categories = VisitCategories.Where(c => c.PrimaryMedicalServices.Any(d => d.Id == service.Id)).ToList();
+                    List<VisitCategory> categories = VisitCategories.Where(c => c.MedicalServices.Any(d => d.Id == service.Id)).ToList();
                     VisitCategory visitCategory = categories[(categories.Count - 1) % (i + 1)];
                     Location location = Locations.ElementAt((locationsNumber - 1) % (j + 1));
                     int roomsCounter = location.MedicalRooms.Count;
@@ -744,7 +744,7 @@ namespace Asklepios.Data.InMemoryContexts
                         testResultId = testResult.Id;
                         MedicalTestResults.Add(testResult);
                     }
-                    VisitCategory visitCategory = VisitCategories.Where(c => c.PrimaryMedicalServices.Any(d => d.Id == medicalService.Id)).FirstOrDefault();
+                    VisitCategory visitCategory = VisitCategories.Where(c => c.MedicalServices.Any(d => d.Id == medicalService.Id)).FirstOrDefault();
                     long visitCategoryId = -1;
                     if (visitCategory != null)
                     {
@@ -2947,10 +2947,9 @@ namespace Asklepios.Data.InMemoryContexts
                     }
                 },
                 new Doctor(Persons[63].Id,"YAJHD5461321")
-                {
-            
+                {           
                     Id = ++id,
-                                        UserId=Users[userId++].Id,
+                    UserId=Users[userId++].Id,
                     Education =UM_5,// new List<string>() {UM_5},
                     Experience="W latach 2009-2021 praca w szpitalu w Przemyślu",
                     //ImagePath="/img/mw/k/32.jpg",
@@ -2965,8 +2964,8 @@ namespace Asklepios.Data.InMemoryContexts
                 new Doctor(Persons[64].Id,"OOXCZX6541546")
                 {
                     Id = ++id,
-                                        UserId=Users[userId++].Id,
-        User=Users[userId++],
+                    UserId=Users[userId++].Id,
+                    //User=Users[userId++],
                     Education =UM_3,// new List<string>() {UM_3},
                     Experience="W latach 2008-2020 praca w szpitalu w Lublinie",
                     //ImagePath="/img/mw/k/33.jpg",
@@ -2981,7 +2980,7 @@ namespace Asklepios.Data.InMemoryContexts
                 new Physiotherapist(Persons[65].Id,"FSDRGD54543")
                 {
                     Id = ++id,
-                                        UserId=Users[userId++].Id,
+                    UserId=Users[userId++].Id,
 
                     Education =UM_2,// new List<string>() {UM_1,UM_2},
                     Experience="W latach 2005-2020 praca w szpitalu Bródnowskim",
@@ -2997,7 +2996,7 @@ namespace Asklepios.Data.InMemoryContexts
                 new Doctor(Persons[66].Id,"UHJKSAD51321")
                 {
                     Id = ++id,
-                                        UserId=Users[userId++].Id,
+                    UserId=Users[userId++].Id,
 
                     Education =UM_3,// new List<string>() {UM_1,UM_2},
                     Experience="W latach 2005-2020 praca w szpitalu Bródnowskim",
@@ -4013,14 +4012,14 @@ namespace Asklepios.Data.InMemoryContexts
         {
             List<VisitCategory> categories = new()
             {
-                new VisitCategory() { Id = 1, CategoryName = "Konsultacje stacjonarne", PrimaryMedicalServices = new List<MedicalService>(PrimaryMedicalServices.GetRange(0, 20)),Type=Core.Enums.VisitCategoryType.Consultations },
-                new VisitCategory() { Id = 2, CategoryName = "E-konsultacje", PrimaryMedicalServices = new List<MedicalService>(PrimaryMedicalServices.Where(c=>c.Id>=100)), Type = Core.Enums.VisitCategoryType.EConsultations },
-                new VisitCategory() { Id = 3, CategoryName = "Stomatologia", PrimaryMedicalServices = new List<MedicalService>(PrimaryMedicalServices.GetRange(20, 6)), Type = Core.Enums.VisitCategoryType.Stomatology },
-                new VisitCategory() { Id = 4, CategoryName = "Diagnostyka obrazowa ", PrimaryMedicalServices = new List<MedicalService>(PrimaryMedicalServices.GetRange(27, 3)), Type = Core.Enums.VisitCategoryType.MedicalImaging },
-                new VisitCategory() { Id = 5, CategoryName = "Fizjoterapia", PrimaryMedicalServices = new List<MedicalService>(PrimaryMedicalServices.GetRange(30, 3)), Type = Core.Enums.VisitCategoryType.Physiotherapy},
-                new VisitCategory() { Id = 6, CategoryName = "Gabinet zabiegowy", PrimaryMedicalServices = new List<MedicalService>() { PrimaryMedicalServices[26], PrimaryMedicalServices[33] }, Type = Core.Enums.VisitCategoryType.TreatmentRoom},
+                new VisitCategory() { Id = 1, CategoryName = "Konsultacje stacjonarne", MedicalServices = new List<MedicalService>(PrimaryMedicalServices.GetRange(0, 20)),Type=Core.Enums.VisitCategoryType.Consultations },
+                new VisitCategory() { Id = 2, CategoryName = "E-konsultacje", MedicalServices = new List<MedicalService>(PrimaryMedicalServices.Where(c=>c.Id>=100)), Type = Core.Enums.VisitCategoryType.EConsultations },
+                new VisitCategory() { Id = 3, CategoryName = "Stomatologia", MedicalServices = new List<MedicalService>(PrimaryMedicalServices.GetRange(20, 6)), Type = Core.Enums.VisitCategoryType.Stomatology },
+                new VisitCategory() { Id = 4, CategoryName = "Diagnostyka obrazowa ", MedicalServices = new List<MedicalService>(PrimaryMedicalServices.GetRange(27, 3)), Type = Core.Enums.VisitCategoryType.MedicalImaging },
+                new VisitCategory() { Id = 5, CategoryName = "Fizjoterapia", MedicalServices = new List<MedicalService>(PrimaryMedicalServices.GetRange(30, 3)), Type = Core.Enums.VisitCategoryType.Physiotherapy},
+                new VisitCategory() { Id = 6, CategoryName = "Gabinet zabiegowy", MedicalServices = new List<MedicalService>() { PrimaryMedicalServices[26], PrimaryMedicalServices[33] }, Type = Core.Enums.VisitCategoryType.TreatmentRoom},
             };
-            categories.ForEach(c => c.PrimaryMedicalServices.ForEach(d => d.VisitCategoryId = c.Id));
+            categories.ForEach(c => c.MedicalServices.ForEach(d => d.VisitCategoryId = c.Id));
             PrimaryMedicalServices.Where(c=>c.SubServices!=null).ToList().ForEach(d => d.SubServices.ForEach(c=>c.VisitCategoryId=d.VisitCategoryId));
 
             //categories[0].PrimaryMedicalServices.Add(MedicalServices[0]);

@@ -1,7 +1,7 @@
 ﻿@model Asklepios.Web.Areas.AdministrativeArea.Models.LocationsManageViewModel
 @{
     SelectList servicesList = new SelectList(Model.PrimaryServices, "Id", "Name");
-    SelectList roomsList = new SelectList(Model.UnasignedRooms, "Id", "LongDescription");
+    //SelectList roomsList = new SelectList(Model.UnasignedRooms, "Id", "LongDescription");
 }
 
 
@@ -25,7 +25,7 @@
     if (TempData.ContainsKey("errorMessage"))
     {
         <div class="messages" id="MessageSpan" style="margin-top: 10px; text-align: center ">
-            <p class="alert alert-success">
+            <p class="alert alert-danger">
                 @*@Model.ErrorMessage*@
                 @TempData["errorMessage"].ToString()
 
@@ -77,11 +77,11 @@
         </select>
         <span asp-validation-for="SelectedLocation.MedicalServiceIds" class="text-danger"></span>
 
-        <label asp-for="SelectedLocation.MedicalRoomIds" class="control-label"></label>
-        <select class="form-control  mb-2" asp-for="SelectedLocation.MedicalRoomIds" asp-items="roomsList" multiple>
-            @*<option value="">Wybierz usługi</option>*@
-        </select>
-        <span asp-validation-for="SelectedLocation.MedicalRoomIds" class="text-danger"></span>
+@*//        <label asp-for="SelectedLocation.MedicalRoomIds" class="control-label"></label>
+  //      <select class="form-control  mb-2" asp-for="SelectedLocation.MedicalRoomIds" asp-items="roomsList" multiple>
+            //<option value="">Wybierz usługi</option>
+        //</select>
+        //<span asp-validation-for="SelectedLocation.MedicalRoomIds" class="text-danger"></span>*@
 
         <label asp-for="SelectedLocation.ImageFile" class="control-label"></label>
         <input asp-for="SelectedLocation.ImageFile" accept="image/*" class="form-control-file btn btn-secondary" style="text-align:center" />

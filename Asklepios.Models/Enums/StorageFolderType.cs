@@ -6,9 +6,10 @@ using System.Threading.Tasks;
 
 namespace Asklepios.Core.Enums
 {
-    public enum ImageFolderType
+    public enum StorageFolderType
     {
         Persons,
-        Locations
+        Locations,
+        TestResult
     }
 }

@@ -75,7 +75,7 @@
             <input asp-for="VisitsDateTo" class="form-control mb-2">
             <span asp-validation-for="VisitsDateTo" class="text-danger"></span>
 
-            <label asp-for="CurrentPageNumId" class="control-label"></label>
+            <label asp-for="CurrentPageNum" class="control-label"></label>
 
             <div class="d-flex">
                 <div class="form-group d-flex flex-column ">
@@ -86,7 +86,7 @@
                     </button>
                 </div>
 
-                <select class="form-control mx-2" asp-for="CurrentPageNumId" asp-items="ViewBag.PagesList" onchange="document.getElementById('btnSubmit').click();" onselect="Refresh()">
+                <select class="form-control mx-2" asp-for="CurrentPageNum" asp-items="ViewBag.PagesList" onchange="document.getElementById('btnSubmit').click();" onselect="Refresh()">
                 </select>
 
                 @*<select class="form-control  mb-2" asp-for="CurrentPageNum" asp-items="ViewBag.PagesList">
@@ -117,7 +117,7 @@
         </div>
     </form>
     @{
-        List<Visit> visits = Model.FilteredSchedule;
+        List<Visit> visits = Model.PageVisits;
 
         for (int i = 0; i < visits.Count; i++)
         {
@@ -134,23 +134,23 @@
         document.getElementById('btnSubmit').click();
     }
     function MoveToNextPage() {
-        var pageNum = document.getElementById('CurrentPageNumId').selectedIndex;
+        var pageNum = document.getElementById('CurrentPageNum').selectedIndex;
 
         var max = -1;
-        var ddl = document.getElementById('CurrentPageNumId');
+        var ddl = document.getElementById('CurrentPageNum');
         for (i = 0; i < ddl.options.length; i++) {
             if (max < ddl.options[i].index) {
                 max = ddl.options[i].index;
             }
         }
         if (pageNum < max) {
-            document.getElementById('CurrentPageNumId').selectedIndex  = pageNum + 1;
+            document.getElementById('CurrentPageNum').selectedIndex  = pageNum + 1;
         }
     }
     function MovetToPreviousPage(){
-        var pageNum = document.getElementById('CurrentPageNumId').selectedIndex;
+        var pageNum = document.getElementById('CurrentPageNum').selectedIndex;
         if (pageNum - 1 > -1) {
-            document.getElementById('CurrentPageNumId').selectedIndex  = pageNum - 1;
+            document.getElementById('CurrentPageNum').selectedIndex  = pageNum - 1;
         }
     }
 

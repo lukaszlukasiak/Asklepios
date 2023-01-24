@@ -8,7 +8,7 @@
 <div class="d-flex flex-column">
     @{
 
-        if (!string.IsNullOrWhiteSpace(Model.SuccessMessage))
+        if (TempData.ContainsKey("successMessage"))
         {
             <div class="messages" id="MessageSpan" style="margin-top: 10px; text-align: center ">
                 <p class="alert alert-success">
@@ -20,7 +20,7 @@
             </a>
 
         }
-        if (!string.IsNullOrWhiteSpace(Model.ErrorMessage))
+        if (TempData.ContainsKey("errorMessage"))
         {
             <div class="messages" id="MessageSpan" style="margin-top: 10px; text-align: center ">
                 <p class="alert alert-success">

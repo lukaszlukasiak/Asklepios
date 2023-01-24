@@ -372,14 +372,6 @@ namespace Asklepios.Web.Areas.MedicalWorkerArea.Controllers
                         //_context.UpdatePersonImage(model.Person.ImageFile, model.Person, _hostEnvironment.WebRootPath);
                     }
 
-                    //prescription.IssuedMedicines.Add(model.IssuedMedicineToAdd);
-                    //_context.AddMedicine(model.IssuedMedicineToAdd);
-                    ////prescription.IssuedMedicines.Add(model.IssuedMedicineToAdd);
-
-                    //_context.AddPrescription(prescription);
-
-                    //visit.Prescription = prescription;// model.PrescriptionToAdd;
-                    //model.IssuedMedicineToAdd = new IssuedMedicine();
                     ModelState.Clear();
                 }
 

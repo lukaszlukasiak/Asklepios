@@ -58,18 +58,18 @@ namespace Asklepios.Core.Models
                             {
                                 if (WorkerModuleType.HasValue)
                                 {
-                                    if (Person != null)
-                                    {
+                                    //if (Person != null)
+                                    //{
                                         return true;
-                                    }
+                                    //}
                                 }
                             }
                             else
                             {
-                                if (Person != null)
-                                {
+                                //if (Person != null)
+                                //{
                                     return true;
-                                }
+                                //}
                             }
                         }
                     }

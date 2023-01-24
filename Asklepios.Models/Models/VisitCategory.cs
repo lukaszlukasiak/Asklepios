@@ -16,6 +16,6 @@ namespace Asklepios.Core.Models
         public long Id { get; set; }
         public string CategoryName { get; set; }
         public VisitCategoryType Type { get; set; }
-        public List<MedicalService> PrimaryMedicalServices {get;set;}
+        public List<MedicalService> MedicalServices {get;set;}
     }
 }

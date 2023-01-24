@@ -59,7 +59,11 @@ namespace Asklepios.Core.Models
                     {
                         if (MedicalRoomType.HasValue)
                         {
-                            return true;
+                            if (LocationId.HasValue)
+                            {
+                                return true;
+
+                            }
                         }
                     }
                 }

@@ -26,6 +26,7 @@ namespace Asklepios.Core.Models
         public IFormFile ImageFile { get; set; }
         [Display(Name = "Zdjęcie (300x500 pikseli)")]
         public string ImagePath { get; set; }
+        //source for web image
         public string ImageSource
         {
             get
@@ -117,7 +118,7 @@ namespace Asklepios.Core.Models
                             {
                                 if (!string.IsNullOrWhiteSpace(StreetAndNumber))
                                 {
-                                    if (Services?.Count>0)
+                                    if (Services?.Count>0 || MedicalServiceIds?.Count>0)
                                     {
                                         return true;
                                     }

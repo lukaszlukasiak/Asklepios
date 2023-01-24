@@ -1,0 +1,56 @@
+﻿@model Asklepios.Web.Areas.AdministrativeArea.Models.LocationsManageViewModel
+@{
+    IEnumerable<SelectListItem>
+        removeMode = Html.GetEnumSelectListWithOneValue(Asklepios.Web.Areas.AdministrativeArea.Models.ViewMode.Remove).ToList();
+    IEnumerable<SelectListItem>
+        readMode = Html.GetEnumSelectListWithOneValue(Asklepios.Web.Areas.AdministrativeArea.Models.ViewMode.Read).ToList();
+    IEnumerable<SelectListItem>
+        editMode = Html.GetEnumSelectListWithOneValue(Asklepios.Web.Areas.AdministrativeArea.Models.ViewMode.Edit).ToList();
+    if (Model.SelectedLocation!=null)
+    {
+        Model.SelectedLocationId = Model.SelectedLocation.Id;
+    }
+}
+<div class="d-flex jumbotron w-100 mx-auto" style="padding:20px;align-content:center;">
+    <div class="d-flex flex-row w-100 justify-content-between">
+        <div class="d-flex flex-column justify-content-center align-items-center center-block flex-grow-1 w-50">
+            <h2 style="text-align:center;">Nazwa: @Model.SelectedLocation.Name</h2>
+            <h4 style="text-align:center;">Aglomeracja: @Model.SelectedLocation.Aglomeration.Value.GetDescription()</h4>
+            <h4 style="text-align:center;">Miasto: @Model.SelectedLocation.City</h4>
+            <h4 style="text-align:center;">Adres: @Model.SelectedLocation.StreetAndNumber</h4>
+            
+        </div>
+        <div class="d-flex flex-column  align-content-center align-items-stretch   w-25 align-self-center">
+
+            <form class="d-flex  flex-column" asp-action="LocationItemEdit" method="post">
+                <div>
+                    <input asp-for="SelectedLocationId" hidden />
+                    <select asp-for="ViewMode" asp-items="readMode" hidden></select>
+                </div>
+                <div class="form-group d-flex flex-column">
+                    <button type="submit" class="btn btn-primary btn-icon-split d-flex">
+                        <span class="icon text-white-50 left" style="text-align:left;float:left">
+                            <i class="fas fa-pen-square"></i>
+                        </span>
+                        <span class="text" style="float: left">Edytuj</span>
+                    </button>
+                </div>
+
+            </form>
+            <form class="d-flex my-0 flex-column" asp-action="LocationItemRemove" method="post">
+                <div class="form-group d-flex flex-column">
+                    <input asp-for="SelectedLocationId" hidden />
+                    <select asp-for="ViewMode" asp-items="removeMode" hidden></select>
+                </div>
+                <div class="form-group d-flex flex-column">
+                    <button type="submit" class="btn btn-primary btn-icon-split d-flex">
+                        <span class="icon text-white-50 left" style="text-align:left;float:left">
+                            <i class="fas fa-minus-square"></i>
+                        </span>
+                        <span class="text" style="float: left">Usuń</span>
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>

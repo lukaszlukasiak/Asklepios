@@ -11,9 +11,9 @@
     }
     //Model.MedicalRoomIdsCurrent.ToArray()
     SelectList servicesList = new SelectList(Model.PrimaryServices, "Id", "Name");
-    SelectList unasignedRoomsList = new SelectList(Model.UnasignedRooms, "Id", "LongDescription");
-    SelectList locationRoomsList = new SelectList(Model.SelectedLocation.MedicalRooms, "Id", "LongDescription", Model.MedicalRoomIdsCurrent);
-    MultiSelectList multiSelect = new SelectList(Model.SelectedLocation.MedicalRooms, "Id", "LongDescription", Model.MedicalRoomIdsCurrent);
+    //SelectList unasignedRoomsList = new SelectList(Model.UnasignedRooms, "Id", "LongDescription");
+    SelectList locationRoomsList = new SelectList(Model.SelectedLocation.MedicalRooms, "Id", "LongDescription");//, Model.MedicalRoomIdsCurrent);
+                                                                                                                  //MultiSelectList multiSelect = new SelectList(Model.SelectedLocation.MedicalRooms, "Id", "LongDescription", Model.MedicalRoomIdsCurrent);
     List<string> serviceIds = Model.SelectedLocation.Services.Select(c => c.Id.ToString()).ToList();
     //List<long>      , Model.SelectedLocation.MedicalRooms.Select(c => c.Id.ToString()).ToArray()
     //locationRoomsList
@@ -97,11 +97,18 @@ editMode = Html.GetEnumSelectListWithOneValue(Asklepios.Web.Areas.Administrative
             <span asp-validation-for="MedicalServiceIds" class="text-danger"></span>
 
             <label asp-for="MedicalRoomIdsCurrent" class="control-label"></label>
-            <select class="form-control  mb-2" asp-for="MedicalRoomIdsCurrent" style="height:100px;" asp-items="locationRoomsList" multiple>
-                @*<option value="">Wybierz usługi</option>*@
-            </select>
-            <span asp-validation-for="MedicalRoomIdsCurrent" class="text-danger"></span>
+            @{
+                foreach   (MedicalRoom room in Model.SelectedLocation.MedicalRooms)
+                {
+                    <span>
+                        <a asp-action="RoomItemEdit" asp-controller="Administrative" asp-route-id="@room.Id">
+                        @room.LongDescription
+                        </a>
 
+                    </span>
+                    
+                }
+            }
             @*<label asp-for="MedicalRoomIdsCurrent" class="control-label"></label>
                 <multiselect class="form-control  mb-2" asp-for="MedicalRoomIdsCurrent" style="height:100px;" asp-items="multiSelect" multiple>*@
             @*<option value="">Wybierz usługi</option>*@
@@ -109,15 +116,9 @@ editMode = Html.GetEnumSelectListWithOneValue(Asklepios.Web.Areas.Administrative
                 <span asp-validation-for="MedicalRoomIdsCurrent" class="text-danger"></span>*@
 
 
-            <label asp-for="MedicalRoomIdsToAdd" class="control-label"></label>
-            <select class="form-control  mb-2" asp-for="MedicalRoomIdsToAdd" style="height:100px;" asp-items="unasignedRoomsList" multiple>
-                @*<option value="">Wybierz usługi</option>*@
-            </select>
-            <span asp-validation-for="MedicalRoomIdsToAdd" class="text-danger"></span>
-            @*<select class="form-control  mb-2" asp-for="MedicalRoomIdsCurrent" style="height:100px;" asp-items="locationRoomsList" multiple><</select>>*@
 
             @*@Html.ListBoxFor(Model => Model.MedicalRoomIdsCurrent, locationRoomsList);*@
-
+            <p></p>
             <label asp-for="SelectedLocation.ImageFile" class="control-label"></label>
             <input asp-for="SelectedLocation.ImageFile" accept="image/*" class="form-control-file btn btn-secondary" style="text-align:center" />
             @*<input asp-for="ImageFile" type="file" class="form-control-file" >*@

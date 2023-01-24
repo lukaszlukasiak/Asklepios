@@ -5,7 +5,7 @@
         <div class="p-2   align-content-center align-items-center align-self-center mx-auto" style="width:400px; text-align:center">
             <div class="d-flex flex-fill flex-column justify-content-center" style="text-align:center">
                 <h3 style="font-weight:900;">
-                    <a asp-action="MedicalWorkerDetails" asp-controller="Administrative" asp-route-id="@Model.Visit.MedicalWorker.Id">
+                    <a asp-action="MedicalWorkerDetails" asp-controller="Administrative" asp-route-id="@Model.Visit.MedicalWorkerId">
 
                         @Model.Visit.MedicalWorker.FullProffesionalName
                     </a>
@@ -78,6 +78,8 @@
                         <input asp-for="VisitsDateFrom" type="hidden">
                         <input asp-for="VisitsDateTo" type="hidden">
                         <input asp-for="Visit.Id" type="hidden">
+@*                        <input asp-for="" type="hidden">
+*@
                         @*<input asp-for="ViewMode" value="ViewMode.Remove" type="hidden"/>*@
                         <div class="form-group d-flex flex-column">
                             <button id="btnSubmit" type="submit" class="btn btn-primary btn-icon-split d-flex">

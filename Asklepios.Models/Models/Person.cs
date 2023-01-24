@@ -210,9 +210,9 @@ namespace Asklepios.Core.Models
             //{
                 this.HasPolishCitizenship = person.HasPolishCitizenship;
             //}
-            if (!string.IsNullOrWhiteSpace(person.ImageFilePath))
+            if (person.ImageFile!=null)
             {
-                this.ImageFilePath = person.ImageFilePath;
+                this.ImageFile = person.ImageFile;
             }
             if (!string.IsNullOrWhiteSpace( person.Name))
             {

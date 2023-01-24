@@ -1,26 +1,28 @@
 ﻿using Asklepios.Core.Models;
 using Microsoft.AspNetCore.Http;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace Asklepios.Data.Interfaces
 {
     public interface IAdministrationModuleRepository
     {
-        void AddLocation(Location location);
+        void AddLocation(Location location, IFormFile file, string webRootPath);
 
         void AddMedicalPackage(MedicalPackage newPackage);
 
         void AddMedicalRoom(MedicalRoom room);
 
-        void AddMedicalWorkerObjects(User user, Person person, MedicalWorker medicalWorker);
+        void AddMedicalWorkerObjects(MedicalWorker medicalWorker, string webRootPath);
 
-        void AddPatientObjects(User user, Person person, Patient patient);
+        void AddPatientObjects(Patient patient, string webRootPath);
 
         //List<MedicalServiceDiscount> GetMedicalServiceDiscounts();
         void AddVisitsToSchedule(List<Visit> visitsToAdd);
 
         Visit FutureVisitById(long id);
-
+        bool HasMedicalWorkerVisits(long id);
+        bool HasPatientVisits(long id);
         //medicalRooms = GetMedicalRooms().ToList();
         List<Location> GetAllLocations();
 
@@ -59,9 +61,9 @@ namespace Asklepios.Data.Interfaces
 
         MedicalRoom GetRoomById(long id);
 
-        List<MedicalRoom> GetRoomsByLocationId();
+        List<MedicalRoom> GetRoomsByLocationId(long id);
 
-        List<MedicalRoom> GetUnasignedRooms();
+        //List<MedicalRoom> GetUnasignedRooms();
 
         User GetUserById(long parsedId);
 
@@ -80,18 +82,17 @@ namespace Asklepios.Data.Interfaces
         void RemovePatientById(long id);
 
         void RemoveVisitById(long id);
-        void UpdateLocation(Location selectedLocation, long selectedLocationId);
+        void UpdateLocation(Location selectedLocation, string webrootPath);
 
-        void UpdateLocationImage(IFormFile imageFile, Location location, string webRootPath);
+        //void UpdateLocationImage(IFormFile imageFile, Location location, string webRootPath);
 
         void UpdateMedicalPackage(MedicalPackage newPackage);
-
-        void UpdateMedicalWorker(MedicalWorker selectedWorker, long selectedWorkerId);
-
-        void UpdatePatient(Patient patient);
+        void UpdateMedicalWorker(MedicalWorker selectedWorker, string webrootPath);
+        void UpdatePatient(Patient patient, string webrootPath);
         void UpdatePersonImage(IFormFile imageFile, Person person, string hostEnvironmentPath);
         void UpdateRoom(MedicalRoom newRoom);
         List<Visit> GetFutureVisitsChunk(int currentPageNumId, int itemsPerPage);
         MedicalWorker GetMedicalWorkerDetailsById(long id    );
+        IQueryable<Visit> GetFutureVisitsQuery();
     }
 }

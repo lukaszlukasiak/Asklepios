@@ -1,5 +1,6 @@
 ﻿using Asklepios.Core.Models;
 using Asklepios.Web.Areas.AdministrativeArea.Interfaces;
+using Asklepios.Web.ServiceClasses;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
@@ -10,7 +11,14 @@ namespace Asklepios.Web.Areas.AdministrativeArea.Models
 {
     public class ScheduleManageViewModel : ISearchVisit, IBaseViewModel
     {
-        public List<Visit> Schedule { get; set; }
+        const int PageSize = 100;
+        [Display(Name = "Numer strony z wynikami")]
+
+        public int CurrentPageNum { get; set; } 
+        //public int ItemsPerPage { get; private set; } = 100;
+
+        //public int CurrentPageNumId { get; set; }
+
         public ViewMode ViewMode { get; set; }
         public List<MedicalRoom> MedicalRooms { get; set; }
         public List<MedicalWorker> MedicalWorkers { get; set; }
@@ -18,76 +26,86 @@ namespace Asklepios.Web.Areas.AdministrativeArea.Models
         public List<Location> Locations { get; set; }
         public List<VisitCategory> VisitCategories { get; set; }
         public MedicalWorker SelectedMedicalWorker { get; set; }
-        public List<Visit> FilteredSchedule
+
+        //public List<Visit> Schedule { get; set; }
+        public IQueryable<Visit> FilteredVisits { get; private set; }
+        public List<Visit> PageVisits { get; private set; }
+
+        public void FilterSchedule(IQueryable<Visit> allVisitsQuery)
         {
-            get
+            
+            if (allVisitsQuery == null)
             {
-                if (Schedule == null)
-                {
-                    return null;
-                }
-                if (IsFilterOn)
-                {
-                    return GetFilteredSchedule();
-                }
-                else
-                {
-                    if (Schedule.Count < ItemsPerPage)
-                    {
-                        return Schedule;
-                    }
-                    else
-                    {
-                        if (CurrentPageNumId <= 0)
-                        {
-                            CurrentPageNumId = 1;
-                        }
-                        return Schedule.GetRange(((int)CurrentPageNumId - 1) * ItemsPerPage, ItemsPerPage);
-                    }
-                }
+                return ;
             }
+            if (IsFilterOn)
+            {
+                allVisitsQuery=GetFilteredSchedule(allVisitsQuery);
+            }
+            FilteredVisits = allVisitsQuery;
+
+            List<Visit> pageVisits = Pagination.GetPageItems(CurrentPageNum, PageSize, allVisitsQuery).ToList();
+
+            PageVisits = pageVisits;
+
+            //else
+            //{
+            //    if (Schedule.Count < ItemsPerPage)
+            //    {
+            //        return Schedule;
+            //    }
+            //    else
+            //    {
+            //        if (CurrentPageNumId <= 0)
+            //        {
+            //            CurrentPageNumId = 1;
+            //        }
+            //        return Schedule.GetRange(((int)CurrentPageNumId - 1) * ItemsPerPage, ItemsPerPage);
+            //    }
+            //}
+            
         }
         public int NumberOfPages
         {
             get
             {
-                if (Schedule == null)
+                if (FilteredVisits == null)
                 {
                     return -1;
                 }
-                int itemsNum = Schedule.Count;
+                int itemsNum = FilteredVisits.Count();
                 if (itemsNum == 0)
                 {
                     return -1;
                 }
-                int pagesNum = (int)Math.Ceiling((double)itemsNum / (double)ItemsPerPage);
+                int pagesNum = (int)Math.Ceiling((double)itemsNum / (double)PageSize);
                 return pagesNum;
             }
         }
-        public List<int> PageNums
-        {
-            get
-            {
-                if (Schedule == null)
-                {
-                    return null;
-                }
-                int itemsNum = Schedule.Count;
-                if (itemsNum == 0)
-                {
-                    return null;
-                }
-                int pagesNum = (int)Math.Ceiling((double)itemsNum / (double)ItemsPerPage);
-                List<int> pages = new List<int>();
+        //public List<int> PageNums
+        //{
+        //    get
+        //    {
+        //        if (Schedule == null)
+        //        {
+        //            return null;
+        //        }
+        //        int itemsNum = Schedule.Count;
+        //        if (itemsNum == 0)
+        //        {
+        //            return null;
+        //        }
+        //        int pagesNum = (int)Math.Ceiling((double)itemsNum / (double)ItemsPerPage);
+        //        List<int> pages = new List<int>();
 
 
-                for (int i = 1; i < pagesNum; i++)
-                {
-                    pages.Add(i);
-                }
-                return pages;
-            }
-        }
+        //        for (int i = 1; i < pagesNum; i++)
+        //        {
+        //            pages.Add(i);
+        //        }
+        //        return pages;
+        //    }
+        //}
         //private DateTimeOffset? _firstVisitInitialDateTime;
         [DataType(DataType.Date)]
         [DisplayFormat(ApplyFormatInEditMode = true)]
@@ -155,10 +173,6 @@ namespace Asklepios.Web.Areas.AdministrativeArea.Models
             }
         }
 
-        public int ItemsPerPage { get; private set; } = 100;
-        [Display(Name = "Numer strony z wynikami")]
-
-        public int CurrentPageNumId { get; set; }
         public string UserName { get; set; }
 
         //public void SetSearchOptions(ISearchVisit iSearch)
@@ -173,14 +187,19 @@ namespace Asklepios.Web.Areas.AdministrativeArea.Models
         //    thisSearch.VisitsDateTo = iSearch.VisitsDateTo;
         //}
 
-        private List<Visit> GetFilteredSchedule()
+        public IQueryable<Visit> GetFilteredSchedule(IQueryable<Visit> allVisits)
         {
 
-            List<Visit> filteredVisits = Schedule;
-            if (Schedule == null)
+            IQueryable<Visit> filteredVisits = allVisits;//     Schedule;
+            //if (Schedule == null)
+            //{
+            //    return null;
+            //}
+            if (allVisits == null)
             {
                 return null;
             }
+
             else
             {
                 if (SelectedMedicalWorkerId != null)
@@ -189,7 +208,7 @@ namespace Asklepios.Web.Areas.AdministrativeArea.Models
                     {
                         if (lid > 0)
                         {
-                            filteredVisits = filteredVisits.Where(c => c.MedicalWorker.Id == lid).ToList();
+                            filteredVisits = filteredVisits.Where(c => c.MedicalWorker.Id == lid);
                             if (filteredVisits == null)
                             {
                                 return null;
@@ -204,7 +223,7 @@ namespace Asklepios.Web.Areas.AdministrativeArea.Models
                 {
                     if (lid > 0)
                     {
-                        filteredVisits = filteredVisits.Where(c => c.Location.Id == lid).ToList();
+                        filteredVisits = filteredVisits.Where(c => c.Location.Id == lid);
                         if (filteredVisits == null)
                         {
                             return null;
@@ -218,7 +237,7 @@ namespace Asklepios.Web.Areas.AdministrativeArea.Models
                 {
                     if (lid > 0)
                     {
-                        filteredVisits = filteredVisits.Where(c => c.MedicalRoom.Id == lid).ToList();
+                        filteredVisits = filteredVisits.Where(c => c.MedicalRoom.Id == lid);
                         if (filteredVisits == null)
                         {
                             return null;
@@ -233,7 +252,7 @@ namespace Asklepios.Web.Areas.AdministrativeArea.Models
                 {
                     if (lid > 0)
                     {
-                        filteredVisits = filteredVisits.Where(c => c.PrimaryService.Id == lid).ToList();
+                        filteredVisits = filteredVisits.Where(c => c.PrimaryService.Id == lid);
                         if (filteredVisits == null)
                         {
                             return null;
@@ -248,7 +267,7 @@ namespace Asklepios.Web.Areas.AdministrativeArea.Models
                 {
                     if (lid > 0)
                     {
-                        filteredVisits = filteredVisits.Where(c => c.VisitCategory.Id == int.Parse(SelectedVisitCategoryId)).ToList();
+                        filteredVisits = filteredVisits.Where(c => c.VisitCategory.Id == int.Parse(SelectedVisitCategoryId));
                         if (filteredVisits == null)
                         {
                             return null;
@@ -258,7 +277,7 @@ namespace Asklepios.Web.Areas.AdministrativeArea.Models
             }
             if (VisitsDateFrom.HasValue)
             {
-                filteredVisits = filteredVisits.Where(c => c.DateTimeSince >= VisitsDateFrom).ToList();
+                filteredVisits = filteredVisits.Where(c => c.DateTimeSince >= VisitsDateFrom);
                 if (filteredVisits == null)
                 {
                     return null;
@@ -266,7 +285,7 @@ namespace Asklepios.Web.Areas.AdministrativeArea.Models
             }
             if (VisitsDateTo.HasValue)
             {
-                filteredVisits = filteredVisits.Where(c => c.DateTimeSince <= VisitsDateTo.Value.AddDays(1)).ToList();
+                filteredVisits = filteredVisits.Where(c => c.DateTimeSince <= VisitsDateTo.Value.AddDays(1));
                 if (filteredVisits == null)
                 {
                     return null;
@@ -276,11 +295,11 @@ namespace Asklepios.Web.Areas.AdministrativeArea.Models
             {
                 if (IsBooked.Value)
                 {
-                    filteredVisits = filteredVisits.Where(c => c.VisitStatus == Core.Enums.VisitStatus.Booked).ToList();
+                    filteredVisits = filteredVisits.Where(c => c.VisitStatus == Core.Enums.VisitStatus.Booked);
                 }
                 else
                 {
-                    filteredVisits = filteredVisits.Where(c => c.VisitStatus == Core.Enums.VisitStatus.AvailableNotBooked).ToList();
+                    filteredVisits = filteredVisits.Where(c => c.VisitStatus == Core.Enums.VisitStatus.AvailableNotBooked);
                 }
                 if (filteredVisits == null)
                 {
@@ -288,40 +307,46 @@ namespace Asklepios.Web.Areas.AdministrativeArea.Models
                 }
             }
 
-            filteredVisits = filteredVisits.OrderBy(c => c.DateTimeSince).ToList();
-            if (filteredVisits.Count < ItemsPerPage)
-            {
-                return filteredVisits;
-            }
-            else
-            {
-                if (CurrentPageNumId == 0)
-                {
-                    CurrentPageNumId = 1;
-                }
-                if (CurrentPageNumId * ItemsPerPage > filteredVisits.Count)
-                {
-                    int lastPage = (int)Math.Ceiling(filteredVisits.Count / (ItemsPerPage + 0.0));
-                    int itemsNumber = filteredVisits.Count - (lastPage - 1) * ItemsPerPage;
-                    return filteredVisits.GetRange(((lastPage - 1) * ItemsPerPage), itemsNumber);
-                }
-                return filteredVisits.GetRange(((int)CurrentPageNumId - 1) * ItemsPerPage, ItemsPerPage);
-            }
+            filteredVisits = filteredVisits.OrderBy(c => c.DateTimeSince);
+            //if (filteredVisits.Count < ItemsPerPage)
+            //{
+            //    return filteredVisits;
+            //}
+            //else
+            //{
+            //    if (CurrentPageNumId == 0)
+            //    {
+            //        CurrentPageNumId = 1;
+            //    }
+            //    if (CurrentPageNumId * ItemsPerPage > filteredVisits.Count)
+            //    {
+            //        int lastPage = (int)Math.Ceiling(filteredVisits.Count / (ItemsPerPage + 0.0));
+            //        int itemsNumber = filteredVisits.Count - (lastPage - 1) * ItemsPerPage;
+            //        return filteredVisits.GetRange(((lastPage - 1) * ItemsPerPage), itemsNumber);
+            //    }
+            //    return filteredVisits.GetRange(((int)CurrentPageNumId - 1) * ItemsPerPage, ItemsPerPage);
+            //}
+            return filteredVisits;
 
         }
-        public async Task<List<Book>> GetListAsync(int skipCount, int maxResultCount, string sorting= "Name", BookFilter filter= null) 
-        {
-            var dbSet = await GetDbSetAsync(); 
-            var books = await dbSet
-                .WhereIf(!filter.Id.IsNullOrWhiteSpace(),x => x.Id.ToString().Contains(filter.Id))
-                .WhereIf(!filter.Name.IsNullOrWhiteSpace(), x => x.Name.Contains(filter.Name))
-                .WhereIf(!filter.Price.IsNullOrWhiteSpace(), x => x.Price.ToString().Contains(filter.Price))
-                .WhereIf(!filter.PublishDate.IsNullOrWhiteSpace(), x => x.PublishDate.ToString().Contains(filter.PublishDate))
-                .OrderBy(sorting)
-                .Skip(skipCount)
-                .Take(maxResultCount).ToListAsync(); 
-            return books; 
-        }
+
+        //internal void FilterAndPage(IQueryable<Visit> queryVisits)
+        //{
+        //    throw new NotImplementedException();
+        //}
+        //public async Task<List<Book>> GetListAsync(int skipCount, int maxResultCount, string sorting= "Name", BookFilter filter= null) 
+        //{
+        //    var dbSet = await GetDbSetAsync(); 
+        //    var books = await dbSet
+        //        .WhereIf(!filter.Id.IsNullOrWhiteSpace(),x => x.Id.ToString().Contains(filter.Id))
+        //        .WhereIf(!filter.Name.IsNullOrWhiteSpace(), x => x.Name.Contains(filter.Name))
+        //        .WhereIf(!filter.Price.IsNullOrWhiteSpace(), x => x.Price.ToString().Contains(filter.Price))
+        //        .WhereIf(!filter.PublishDate.IsNullOrWhiteSpace(), x => x.PublishDate.ToString().Contains(filter.PublishDate))
+        //        .OrderBy(sorting)
+        //        .Skip(skipCount)
+        //        .Take(maxResultCount).ToListAsync(); 
+        //    return books; 
+        //}
 
     }
 }

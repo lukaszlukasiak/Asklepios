@@ -39,7 +39,11 @@ namespace Asklepios.Web.Areas.AdministrativeArea.Models
 
            // SelectedLocation.MedicalRooms = new List<MedicalRoom>();
             List<MedicalRoom> newRoomsList = new List<MedicalRoom>();
-            if (SelectedLocation.MedicalRooms?.Count>0)
+            if (SelectedLocation.MedicalRooms==null)
+            {
+                
+            }
+            if (MedicalRoomIdsCurrent?.Count>0)
             {
                 foreach (long itemNum in MedicalRoomIdsCurrent)
                 {
@@ -73,7 +77,12 @@ namespace Asklepios.Web.Areas.AdministrativeArea.Models
 
         internal void GetRooms(IAdministrationModuleRepository context, Location selectedLocation)
         {
+            if (SelectedLocation.MedicalRoomIds==null)
+            {
+                return;
+            }
             SelectedLocation.MedicalRooms = new List<MedicalRoom>();
+
             foreach (long id in SelectedLocation.MedicalRoomIds)
             {
                 MedicalRoom medicalRoom = context.GetRoomById(id);
