@@ -1,8 +1,8 @@
 ﻿@model Asklepios.Web.Areas.AdministrativeArea.Models.ScheduleManageViewModel
 @{
-    SelectList workersItems = new SelectList(Model.MedicalWorkers, "Id", "FullProffesionalName");
-    SelectList locationItems = new SelectList(Model.Locations, "Id", "Name");
-    SelectList categoriesList = new SelectList(Model.VisitCategories, "Id", "CategoryName");
+    SelectList workersItems = new SelectList(Model.MedicalWorkers.OrderBy(c=>c.FullProffesionalName), "Id", "FullProffesionalName");
+    SelectList locationItems = new SelectList(Model.Locations.OrderBy(c=>c.Name), "Id", "Name");
+    SelectList categoriesList = new SelectList(Model.VisitCategories.OrderBy(c=>c.CategoryName), "Id", "CategoryName");
     SelectList roomsList = null;
 
     if (long.TryParse(Model.SelectedLocationId, out long lid))
@@ -118,6 +118,11 @@
     </form>
     @{
         List<Visit> visits = Model.PageVisits;
+
+        if (visits.Count== 0)
+        {
+            <h3 style="text-align:center">Brak dostępnych wizyt przy założonych kryteriach...</h3>
+        }     
 
         for (int i = 0; i < visits.Count; i++)
         {

@@ -9,10 +9,10 @@
 
 <form asp-action="BookVisit" method="post">
     @{
-        SelectList workersItems = new SelectList(Model.GetMedicalWorkers, "Id", "FullProffesionalName");
-        SelectList locationItems = new SelectList(Model.GetLocations, "Id", "Name");
-        SelectList categoriesList = new SelectList(Model.GetVisitCategories, "Id", "CategoryName");
-        SelectList servicesList = new SelectList(Model.GetMedicalServices, "Id", "Name");
+        SelectList workersItems = new SelectList(Model.GetMedicalWorkers.OrderBy(c=>c.FullProffesionalName), "Id", "FullProffesionalName");
+        SelectList locationItems = new SelectList(Model.GetLocations.OrderBy(c=>c.Name), "Id", "Name");
+        SelectList categoriesList = new SelectList(Model.GetVisitCategories.OrderBy(c=>c.CategoryName), "Id", "CategoryName");
+        SelectList servicesList = new SelectList(Model.GetMedicalServices.OrderBy(c=>c.Name), "Id", "Name");
     }
     <select class="form-control  mb-1" asp-for="SelectedLocationId" asp-items="locationItems">
         <option value="0">Wybierz oddział</option>
