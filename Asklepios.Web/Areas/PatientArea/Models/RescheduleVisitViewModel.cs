@@ -8,7 +8,12 @@ namespace Asklepios.Web.Areas.PatientArea.Models
 {
     public class RescheduleVisitViewModel: IBaseViewModel
     {
-        public List<Visit> AllVisitsList { get; set; }
+        public IQueryable<Visit> _allVisitsList;
+        public IQueryable<Visit> AllVisitsList 
+        {
+            get { return _allVisitsList; }
+            set { _allVisitsList = value; }
+        }
         public List<Visit> _filteredVisits;
         public List<Visit> FilteredVisits
         {
@@ -42,11 +47,31 @@ namespace Asklepios.Web.Areas.PatientArea.Models
         public string SelectedVisitCategoryId
         { get; set; }
         public long RescheduledVisitId { get; set; }
-        public int CurrentPageNum { get; set; } = 0;
+        private Visit _rescheduledVisit;
+        public Visit RescheduledVisit 
+        {
+            get
+            {
+                //if (_rescheduledVisit==null)
+                //{
+                //    _rescheduledVisit =AllVisitsList.FirstOrDefault(c => c.Id == RescheduledVisitId);
+                //}
+                return _rescheduledVisit;
+            }
+            set 
+            { 
+                _rescheduledVisit = value; 
+            }
+        }
+        public int CurrentPageNum { get; set; } 
         public int NumberOfPages
         {
             get
             {
+                if (FilteredVisits==null)
+                {
+                    return 0;
+                }
                 return FilteredVisits.Count / ItemsPerPage;
             }
         }
@@ -57,6 +82,7 @@ namespace Asklepios.Web.Areas.PatientArea.Models
 
         public RescheduleVisitViewModel()
         {
+            CurrentPageNum = 1;
             //SearchOptions = new VisitSearchOptions();
 
         }
@@ -71,9 +97,16 @@ namespace Asklepios.Web.Areas.PatientArea.Models
         {
             get
             {
-                if (AllVisitsList?.Count > 0)
+                if (FilteredVisits == null)
                 {
-                    List<Location> locations = AllVisitsList.Select(c => c.Location).Distinct().ToList();
+                    return null;
+                }
+                if (FilteredVisits.Count() > 0)
+                {
+                    List<Location> locations = FilteredVisits
+                        .Select(c => c.Location)
+                        .Distinct()
+                        .ToList();
                     return locations;
                 }
                 else
@@ -86,9 +119,18 @@ namespace Asklepios.Web.Areas.PatientArea.Models
         {
             get
             {
-                if (AllVisitsList?.Count > 0)
+                if (FilteredVisits == null)
                 {
-                    List<MedicalWorker> workers = AllVisitsList.Select(c => c.MedicalWorker).Distinct().ToList();
+                    return null;
+                }
+
+                if (FilteredVisits.Count() > 0)
+                {
+                    List<MedicalWorker> workers = FilteredVisits
+                        .Where(c => c.PrimaryServiceId == RescheduledVisit.PrimaryServiceId)
+                        .Select(e => e.MedicalWorker)
+                        .Distinct()
+                        .ToList();
                     return workers;
                 }
                 else
@@ -101,7 +143,12 @@ namespace Asklepios.Web.Areas.PatientArea.Models
         {
             get
             {
-                if (AllVisitsList?.Count > 0)
+                if (AllVisitsList == null)
+                {
+                    return null;
+                }
+
+                if (AllVisitsList.Count() > 0)
                 {
                     List<MedicalService> services = AllVisitsList.Select(c => c.PrimaryService).Distinct().ToList();
                     return services;
@@ -132,9 +179,14 @@ namespace Asklepios.Web.Areas.PatientArea.Models
         {
             get
             {
-                if (AllVisitsList?.Count > 0)
+                if (AllVisitsList == null)
                 {
-                    List<VisitCategory> categories = AllVisitsList.Select(c => c.VisitCategory).Distinct().ToList();
+                    return null;
+                }
+
+                if (AllVisitsList.Count() > 0)
+                {
+                    List<VisitCategory> categories =  AllVisitsList.Where(d=>d.VisitCategoryId==RescheduledVisit.VisitCategoryId).Select(c => c.VisitCategory).Distinct().ToList();
                     return categories;
                 }
                 else
@@ -153,7 +205,7 @@ namespace Asklepios.Web.Areas.PatientArea.Models
             //{
             //    return AllVisitsList;
             //}
-            List<Visit> filteredVisits = AllVisitsList;
+            IQueryable<Visit> filteredVisits = AllVisitsList;
             if (AllVisitsList == null)
             {
                 return null;
@@ -166,7 +218,7 @@ namespace Asklepios.Web.Areas.PatientArea.Models
                     {
                         if (lid>0)
                         {
-                            filteredVisits = filteredVisits.Where(c => c.MedicalWorker.Id == lid).ToList();
+                            filteredVisits = filteredVisits.Where(c => c.MedicalWorker.Id == lid).AsQueryable();
                             if (filteredVisits == null)
                             {
                                 return null;
@@ -181,7 +233,7 @@ namespace Asklepios.Web.Areas.PatientArea.Models
                 {
                     if (lid>0)
                     {
-                        filteredVisits = filteredVisits.Where(c => c.Location.Id == lid).ToList();
+                        filteredVisits = filteredVisits.Where(c => c.Location.Id == lid).AsQueryable();
                         if (filteredVisits == null)
                         {
                             return null;
@@ -196,7 +248,7 @@ namespace Asklepios.Web.Areas.PatientArea.Models
                 {
                     if (lid>0)
                     {
-                        filteredVisits = filteredVisits.Where(c => c.PrimaryService.Id == lid).ToList();
+                        filteredVisits = filteredVisits.Where(c => c.PrimaryService.Id == lid).AsQueryable();
                         if (filteredVisits == null)
                         {
                             return null;
@@ -211,7 +263,7 @@ namespace Asklepios.Web.Areas.PatientArea.Models
                 {
                     if (lid>0)
                     {
-                        filteredVisits = filteredVisits.Where(c => c.VisitCategory.Id == int.Parse(SelectedVisitCategoryId)).ToList();
+                        filteredVisits = filteredVisits.Where(c => c.VisitCategory.Id == int.Parse(SelectedVisitCategoryId)).AsQueryable();
                         if (filteredVisits == null)
                         {
                             return null;
@@ -219,14 +271,14 @@ namespace Asklepios.Web.Areas.PatientArea.Models
                     }                    
                 }
             }
-            filteredVisits = filteredVisits.OrderBy(c => c.DateTimeSince).ToList();
-            if (filteredVisits.Count<ItemsPerPage)
+            filteredVisits = filteredVisits.OrderBy(c => c.DateTimeSince).AsQueryable();
+            if (filteredVisits.Count()<ItemsPerPage)
             {
-                return filteredVisits;
+                return filteredVisits.ToList();
             }
             else
             {
-                return filteredVisits.GetRange(CurrentPageNum, ItemsPerPage);
+                return filteredVisits.Skip((CurrentPageNum-1)*ItemsPerPage).Take( ItemsPerPage).ToList();
             }           
         }
     }

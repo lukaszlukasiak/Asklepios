@@ -50,9 +50,13 @@ namespace Asklepios.Data.InMemoryContexts
         //    return PatientMockDB.CurrentPatient;
         //}
 
-        public void BookVisit(Patient selectedPatient, Visit selectedVisit)
+        public void BookVisit(long patientId, long visitId)
         {
-            selectedVisit.Patient = selectedPatient;
+            Visit visit = PatientMockDB.AllVisits.First(c => c.Id == visitId);
+            Patient patient = PatientMockDB.AllPatients.First(c => c.Id == patientId);
+            visit.Patient = patient;
+            visit.PatientId = patientId;
+            visit.VisitStatus = Core.Enums.VisitStatus.Booked;
             //selectedPatient.BookedVisits.Add(selectedVisit);
             //PatientMockDB.BookedVisits.Add(selectedVisit);
         }
@@ -65,6 +69,16 @@ namespace Asklepios.Data.InMemoryContexts
         public List<Patient> GetAllPatients()
         {
             return PatientMockDB.AllPatients;
+        }
+
+        public IQueryable<Visit> GetAllVisitsByPatientId(long id)
+        {
+            throw new NotImplementedException();
+        }
+
+        public IQueryable<Visit> GetAllVisitsByPatientIdQuery(long id)
+        {
+            throw new NotImplementedException();
         }
 
         public Visit GetAvailableVisitById(long id)
@@ -88,6 +102,11 @@ namespace Asklepios.Data.InMemoryContexts
             return visits;
         }
 
+        public byte[] GetDocument(string documentPath, string webRootPath)
+        {
+            throw new NotImplementedException();
+        }
+
         public Visit GetHistoricalVisitById(long id)
         {
             return PatientMockDB.GetHistoricalVisitById(id);
@@ -97,6 +116,11 @@ namespace Asklepios.Data.InMemoryContexts
         {
             List<Visit> visits = PatientMockDB.HistoricalVisits.Where(c => c.Patient.Id == id).ToList();
             return visits;
+        }
+
+        public IQueryable<Visit> GetHistoricalVisitsByPatientIdQuery(long id)
+        {
+            throw new NotImplementedException();
         }
 
         public Location GetLocationById(long locationId)
@@ -114,6 +138,11 @@ namespace Asklepios.Data.InMemoryContexts
             return PatientMockDB.MedicalPackages;
         }
 
+        public IQueryable<MedicalReferral> GetMedicalReferralsByPatientIdQuery(long id)
+        {
+            throw new NotImplementedException();
+        }
+
         public MedicalService GetMedicalServiceById(long id)
         {
             return PatientMockDB.GetMedicalServiceById(id);
@@ -122,6 +151,16 @@ namespace Asklepios.Data.InMemoryContexts
         public List<MedicalService> GetMedicalServices()
         {
             return PatientMockDB.MedicalServices;
+        }
+
+        public MedicalTestResult GetMedicalTestResultById(long idL)
+        {
+            throw new NotImplementedException();
+        }
+
+        public IQueryable<MedicalTestResult> GetMedicalTestResultsByPatientIdQuery(long id)
+        {
+            throw new NotImplementedException();
         }
 
         public MedicalWorker GetMedicalWorkerById(long id)
@@ -172,6 +211,11 @@ namespace Asklepios.Data.InMemoryContexts
             return patient;
         }
 
+        public IQueryable<Prescription> GetPrescriptionsByPatientIdQuery(long id)
+        {
+            throw new NotImplementedException();
+        }
+
         public User GetUserById(long parsedId)
         {
             throw new NotImplementedException();
@@ -197,6 +241,11 @@ namespace Asklepios.Data.InMemoryContexts
             }
             //patient.BookedVisits.Remove(plannedVisit);
             //PatientMockDB.BookedVisits.Remove(plannedVisit);
+        }
+
+        public void UpdateNotification(Notification notification)
+        {
+            throw new NotImplementedException();
         }
 
         public void UpdateReferral(MedicalReferral referral)

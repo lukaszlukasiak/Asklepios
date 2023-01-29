@@ -64,6 +64,10 @@ namespace Asklepios.Web.Areas.PatientArea.Models
         {
             get
             {
+                if (AllVisitsList==null)
+                {
+                    return null;
+                }
                 if (AllVisitsList.Count() > 0)
                 {
                     List<Location> locations = AllVisitsList.Select(c => c.Location).Distinct().ToList();
@@ -79,6 +83,10 @@ namespace Asklepios.Web.Areas.PatientArea.Models
         {
             get
             {
+                if (AllVisitsList == null)
+                {
+                    return null;
+                }
                 if (AllVisitsList.Count() > 0)
                 {
                     List<MedicalWorker> workers = AllVisitsList.Select(c => c.MedicalWorker).Distinct().ToList();
@@ -94,6 +102,10 @@ namespace Asklepios.Web.Areas.PatientArea.Models
         {
             get
             {
+                if (AllVisitsList == null)
+                {
+                    return null;
+                }
                 if (AllVisitsList.Count() > 0)
                 {
                     List<MedicalService> services = AllVisitsList.Select(c => c.PrimaryService).Distinct().ToList();
@@ -109,6 +121,10 @@ namespace Asklepios.Web.Areas.PatientArea.Models
         {
             get
             {
+                if (AllVisitsList == null)
+                {
+                    return null;
+                }
                 if (AllVisitsList.Count() > 0)
                 {
                     List<VisitCategory> categories = AllVisitsList.Select(c => c.VisitCategory).Distinct().ToList();

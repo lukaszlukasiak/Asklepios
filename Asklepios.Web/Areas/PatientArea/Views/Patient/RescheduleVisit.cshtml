@@ -7,7 +7,7 @@
     Przełóż wizytę
 </h1>
 
-<form asp-action="BookVisit" method="post">
+<form asp-action="RescheduleVisit" method="post">
     @{
         SelectList workersItems = new SelectList(Model.GetMedicalWorkers, "Id", "FullProffesionalName");
         SelectList locationItems = new SelectList(Model.GetLocations, "Id", "Name");
@@ -23,8 +23,8 @@
     </select>
 
     <select class="form-control  mb-1" asp-for="SelectedVisitCategoryId" asp-items="categoriesList">
-        <option value="0">Wybierz kategorię wizyty</option>
-    </select>
+@*        <option value="0">Wybierz kategorię wizyty</option>
+*@    </select>
     @*<label for="SelectedPassportNumber">Wybierz specjalność</label>*@
     @*@Html.TextBoxFor(m => m.SelectedPrimaryServiceId, new { @class = "form-control mb-2", @readonly = "readonly" })*@
     <select class="form-control mb-1" asp-for="SelectedPrimaryServiceId" asp-items="servicesList">

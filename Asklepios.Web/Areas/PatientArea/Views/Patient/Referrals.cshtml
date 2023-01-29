@@ -1,10 +1,12 @@
 ﻿@model Asklepios.Web.Areas.PatientArea.Models.PatientViewModel
 @{
     ViewData["Title"] = "View";
+        List<MedicalReferral> list = Model.GetReferrals();
+
 }
 
 
-@if (Model.Patient.MedicalReferrals?.Count > 0)
+@if (list?.Count > 0)
 {
     <h1 style="text-align:center">Skierowania</h1>
 
@@ -13,7 +15,6 @@
 
         <partial name="_MedicalReferral" model="referrals" />
     }*@
-    List<MedicalReferral> list = Model.GetReferrals();
     for (int i = 0; i < list.Count; i++)
     {
         MedicalReferral referral = list.ElementAt(i);
