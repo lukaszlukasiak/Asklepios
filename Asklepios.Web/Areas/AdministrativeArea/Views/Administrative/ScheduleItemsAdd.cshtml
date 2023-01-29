@@ -1,21 +1,21 @@
 ﻿@model Asklepios.Web.Areas.AdministrativeArea.Models.ScheduleItemsAddViewModel
 @{
-    SelectList workersItems = new SelectList(Model.MedicalWorkers, "Id", "FullProffesionalName");
-    SelectList locationItems = new SelectList(Model.Locations, "Id", "Name");
-    SelectList categoriesList = new SelectList(Model.VisitCategories, "Id", "CategoryName");
+    SelectList workersItems = new SelectList(Model.MedicalWorkers.OrderBy(c=>c.FullProffesionalName), "Id", "FullProffesionalName");
+    SelectList locationItems = new SelectList(Model.Locations.OrderBy(c=>c.Name), "Id", "Name");
+    SelectList categoriesList = new SelectList(Model.VisitCategories.OrderBy(c=>c.CategoryName), "Id", "CategoryName");
     SelectList roomsList = null;
     if (long.TryParse(Model.SelectedLocationId, out long lid))
     {
         if (lid > 0)
         {
-            roomsList = new SelectList(Model.MedicalRooms, "Id", "LongDescription");
+            roomsList = new SelectList(Model.MedicalRooms.OrderBy(c=>c.Name), "Id", "LongDescription");
 
         }
     }
     //SelectList servicesList = new SelectList(Model.GetMedicalServices, "Id", "Name");
     //IEnumerable<MedicalService> services = Model.MedicalServices.Where(c => c.Id == long.Parse(Model.SelectedPrimaryServiceId)).ToList();
 
-    SelectList servicesList = new SelectList(Model.PrimaryMedicalServices, "Id", "Name");
+    SelectList servicesList = new SelectList(Model.PrimaryMedicalServices.OrderBy(c=>c.Name), "Id", "Name");
     Model.Guard = null;
 }
 

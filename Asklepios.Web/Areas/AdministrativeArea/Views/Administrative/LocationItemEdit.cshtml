@@ -10,9 +10,9 @@
 
     }
     //Model.MedicalRoomIdsCurrent.ToArray()
-    SelectList servicesList = new SelectList(Model.PrimaryServices, "Id", "Name");
+    SelectList servicesList = new SelectList(Model.PrimaryServices.OrderBy(c=>c.Name), "Id", "Name");
     //SelectList unasignedRoomsList = new SelectList(Model.UnasignedRooms, "Id", "LongDescription");
-    SelectList locationRoomsList = new SelectList(Model.SelectedLocation.MedicalRooms, "Id", "LongDescription");//, Model.MedicalRoomIdsCurrent);
+    SelectList locationRoomsList = new SelectList(Model.SelectedLocation.MedicalRooms.OrderBy(c=>c.FloorNumber).ThenBy(d=>d.Name), "Id", "LongDescription");//, Model.MedicalRoomIdsCurrent);
                                                                                                                   //MultiSelectList multiSelect = new SelectList(Model.SelectedLocation.MedicalRooms, "Id", "LongDescription", Model.MedicalRoomIdsCurrent);
     List<string> serviceIds = Model.SelectedLocation.Services.Select(c => c.Id.ToString()).ToList();
     //List<long>      , Model.SelectedLocation.MedicalRooms.Select(c => c.Id.ToString()).ToArray()

@@ -1,6 +1,6 @@
 ﻿@model Asklepios.Web.Areas.AdministrativeArea.Models.MedicalWorkersManageViewModel
 @{
-    SelectList services = new SelectList(Model.PrimaryServices, "Id", "Name");
+    SelectList services = new SelectList(Model.PrimaryServices.OrderBy(c=>c.Name), "Id", "Name");
 
 }
 

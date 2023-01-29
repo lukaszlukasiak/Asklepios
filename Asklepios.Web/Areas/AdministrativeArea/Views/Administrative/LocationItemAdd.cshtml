@@ -1,6 +1,6 @@
 ﻿@model Asklepios.Web.Areas.AdministrativeArea.Models.LocationsManageViewModel
 @{
-    SelectList servicesList = new SelectList(Model.PrimaryServices, "Id", "Name");
+    SelectList servicesList = new SelectList(Model.PrimaryServices.OrderBy(c=>c.Name), "Id", "Name");
     //SelectList roomsList = new SelectList(Model.UnasignedRooms, "Id", "LongDescription");
 }
 

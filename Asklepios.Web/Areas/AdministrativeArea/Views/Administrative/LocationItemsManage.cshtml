@@ -33,7 +33,7 @@
     }
 
 }
-@foreach (var loc in Model.AllLocations)
+@foreach (var loc in Model.AllLocations.OrderBy(c=>c.Name))
 {
     Model.SelectedLocation = loc;
     <partial name="_LocationItem" model="Model" />
