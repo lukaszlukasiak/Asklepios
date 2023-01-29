@@ -1,7 +1,7 @@
 ﻿@model Asklepios.Web.Areas.AdministrativeArea.Models.PatientsManageViewModel
 @{
-    SelectList medicalPackagesList = new SelectList(Model.MedicalPackages, "Id", "Name");
-    SelectList nfzUnits = new SelectList(Model.NFZUnits, "Id", "Description");
+    SelectList medicalPackagesList = new SelectList(Model.MedicalPackages.OrderBy(c=>c.Name), "Id", "Name");
+    SelectList nfzUnits = new SelectList(Model.NFZUnits.OrderBy(c=>c.Description), "Id", "Description");
     //Model.Person.HasPolishCitizenship = true;
 
 }

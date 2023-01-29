@@ -2,7 +2,7 @@
 
 @{
     ViewData["Title"] = "View";
-    SelectList locations = new SelectList(Model.SortedLocations, "Id", "Name");
+    SelectList locations = new SelectList(Model.SortedLocations.OrderBy(c=>c.Name), "Id", "Name");
 
 }
 
