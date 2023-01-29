@@ -180,19 +180,23 @@ namespace Asklepios.Data.InMemoryContexts
             oldVisit = visit;
         }
 
-        public void ResignFromVisit(Visit plannedVisit, Patient selectedPatient)
+        public void ResignFromVisit(long visitId)
         {
+
+            Visit plannedVisit = PatientMockDB.AllVisits.First(c=>c.Id==visitId);
             plannedVisit.Patient = null;
             plannedVisit.Id = 0;
             plannedVisit.VisitStatus = Core.Enums.VisitStatus.AvailableNotBooked;
             //PatientMockDB.BookedVisits.Remove(plannedVisit);
         }
 
-        public void BookVisit(Patient selectedPatient, Visit newVisit)
+        public void BookVisit(long patientId, long visitId)
         {
-            newVisit.Patient = selectedPatient;
-            newVisit.PatientId = selectedPatient.Id;
-            newVisit.VisitStatus = Core.Enums.VisitStatus.Booked;
+            Visit visit = PatientMockDB.AllVisits.First(c=>c.Id== visitId);
+            Patient patient = PatientMockDB.AllPatients.First(c => c.Id == patientId);
+            visit.Patient = patient;
+            visit.PatientId = patient.Id;
+            visit.VisitStatus = Core.Enums.VisitStatus.Booked;
             //PatientMockDB.CurrentPatient.BookedVisits.Add(newVisit);
         }
 

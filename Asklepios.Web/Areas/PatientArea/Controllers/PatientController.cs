@@ -3,6 +3,7 @@ using Asklepios.Data.Interfaces;
 using Asklepios.Web.Areas.HomeArea.Models;
 using Asklepios.Web.Areas.PatientArea.Models;
 using Asklepios.Web.Models;
+using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
 using System;
@@ -20,10 +21,13 @@ namespace Asklepios.Web.Areas.PatientArea.Controllers
         private static User _loggedUser { get; set; }
         private static Person _person { get; set; }
         private static Patient _selectedPatient { get; set; }
-        public PatientController(IPatientModuleRepository context)
+
+        IWebHostEnvironment _hostEnvironment { get; set; }
+
+        public PatientController(IPatientModuleRepository context, IWebHostEnvironment hostEnvironment)
         {
             _context = context;
-
+            _hostEnvironment = hostEnvironment;
         }
 
         internal static void LogOut()
@@ -35,7 +39,7 @@ namespace Asklepios.Web.Areas.PatientArea.Controllers
 
         public IActionResult Index()
         {
-            if (_loggedUser==null)
+            if (_loggedUser == null)
             {
                 if (TempData.ContainsKey("User") == true)
                 {
@@ -67,9 +71,12 @@ namespace Asklepios.Web.Areas.PatientArea.Controllers
                 //_selectedPatient.HistoricalVisits = _context.GetHistoricalVisitsByPatientId(_selectedPatient.Id);
                 //_selectedPatient.BookedVisits = _context.GetBookedVisitsByPatientId(_selectedPatient.Id);
                 Patient patient = _context.GetPatientById(_selectedPatient.Id);
-                PatientArea.Models.PatientViewModel viewModel = new Models.PatientViewModel(_selectedPatient);
-                viewModel.UserName = _loggedUser.Person.FullName;
-                viewModel.Notifications = _context.GetNotificationsByPatientId(_selectedPatient.Id);
+                PatientArea.Models.PatientViewModel viewModel = new Models.PatientViewModel(patient)
+                {
+                    Visits = _context.GetAllVisitsByPatientIdQuery(patient.Id),
+                    UserName = _loggedUser.Person.FullName,
+                    Notifications = _context.GetNotificationsByPatientId(_selectedPatient.Id)
+                };
                 //viewModel.
                 return View(viewModel);
             }
@@ -104,9 +111,12 @@ namespace Asklepios.Web.Areas.PatientArea.Controllers
             if (_loggedUser != null)
             {
                 //MedicalWorker medicalWorker = _context.GetMedicalWorkerByUserId(User.);
-                PatientViewModel model = new PatientViewModel(_selectedPatient);
+                Patient patient=_context.GetPatientById(_selectedPatient.Id);
+
+                PatientViewModel model = new PatientViewModel(patient);
                 model.UserName = _loggedUser.Person.FullName;
                 model.Notifications = _context.GetNotificationsByPatientId(_selectedPatient.Id);
+                
 
                 return View(model);
             }
@@ -117,7 +127,7 @@ namespace Asklepios.Web.Areas.PatientArea.Controllers
         }
         public IActionResult Locations()
         {
-            
+
             if (_loggedUser != null)
             {
 
@@ -181,10 +191,10 @@ namespace Asklepios.Web.Areas.PatientArea.Controllers
                             {
                                 referral.HasBeenUsed = true;
                                 referral.VisitWhenUsed = visit;
-                                _selectedPatient.BookVisit(visit);
+                                //_selectedPatient.BookVisit(visit);
 
                                 _context.UpdateReferral(referral);
-                                _context.UpdateVisit(visit);
+                                _context.BookVisit(_selectedPatient.Id, visit.Id);
                                 return RedirectToAction("PlannedVisits");
                             }
                             else
@@ -199,8 +209,9 @@ namespace Asklepios.Web.Areas.PatientArea.Controllers
                     }
                     else
                     {
-                        _selectedPatient.BookVisit(visit);
-                        _context.UpdateVisit(visit);
+                        //_selectedPatient.BookVisit(visit);
+                        _context.BookVisit(_selectedPatient.Id, visit.Id);
+                        //_context.UpdateVisit(visit);
                         return RedirectToAction("PlannedVisits");
                     }
 
@@ -221,9 +232,9 @@ namespace Asklepios.Web.Areas.PatientArea.Controllers
         {
             if (_loggedUser != null)
             {
-                BookVisitViewModel model2 = new BookVisitViewModel() 
-                { 
-                    AllVisitsList = _context.GetAvailableVisitsQuery() 
+                BookVisitViewModel model2 = new BookVisitViewModel()
+                {
+                    AllVisitsList = _context.GetAvailableVisitsQuery()
                 }; //(_context.GetAvailableVisits().ToList(),new VisitSearchOptions());
                 if (!string.IsNullOrWhiteSpace(model.SelectedCategoryId))
                 {
@@ -281,9 +292,9 @@ namespace Asklepios.Web.Areas.PatientArea.Controllers
         {
             if (_loggedUser != null)
             {
-                BookVisitViewModel model = new BookVisitViewModel() 
-                { 
-                    AllVisitsList = _context.GetAvailableVisitsQuery() 
+                BookVisitViewModel model = new BookVisitViewModel()
+                {
+                    AllVisitsList = _context.GetAvailableVisitsQuery()
                 }; //(_context.GetAvailableVisits().ToList(),new VisitSearchOptions());
                 model.UserName = _loggedUser.Person.FullName;
                 model.Notifications = _context.GetNotificationsByPatientId(_selectedPatient.Id);
@@ -379,11 +390,12 @@ namespace Asklepios.Web.Areas.PatientArea.Controllers
             {
                 VisitViewModel model = new VisitViewModel();
                 Notification notification = _context.GetNotificationById(id);
-                if (notification==null)
+                if (notification == null)
                 {
                     return NotFound();
                 }
                 notification.IsRead = true;
+                _context.UpdateNotification(notification);
                 //List<MedicalWorker> medicalWorkers = _context.GetMedicalWorkers().ToList();
                 model.UserName = _loggedUser.Person.FullName;
                 model.Notifications = _context.GetNotificationsByPatientId(_selectedPatient.Id);
@@ -414,7 +426,7 @@ namespace Asklepios.Web.Areas.PatientArea.Controllers
 
                 return RedirectToAction("VisitDetails", "Patient", new { area = "PatientArea", id = notification.VisitId });
 
-               // return RedirectToAction("VisitDetails");
+                // return RedirectToAction("VisitDetails");
             }
             else
             {
@@ -428,7 +440,7 @@ namespace Asklepios.Web.Areas.PatientArea.Controllers
             {
                 MedicalWorkersListViewModel model = new MedicalWorkersListViewModel();
                 //List<MedicalWorker> medicalWorkers = _context.GetMedicalWorkers().ToList();
-                model.MedicalWorkers= _context.GetMedicalWorkers().ToList();
+                model.MedicalWorkers = _context.GetMedicalWorkers().ToList();
                 model.UserName = _loggedUser.Person.FullName;
                 model.Notifications = _context.GetNotificationsByPatientId(_selectedPatient.Id);
 
@@ -471,7 +483,7 @@ namespace Asklepios.Web.Areas.PatientArea.Controllers
                     return NotFound();
                 }
                 //RateVisitViewModel model = new RateVisitViewModel() { VisitId = m.VisitId };
-                model.MedicalWorker = _context.GetHistoricalVisitById(model.VisitId).MedicalWorker;
+                //model.MedicalWorker = _context.GetHistoricalVisitById(model.VisitId).MedicalWorker;
                 if (model.IsDataProper)
                 {
                     visit.VisitReview = model.GetVisitReview();
@@ -571,6 +583,7 @@ namespace Asklepios.Web.Areas.PatientArea.Controllers
 
                 //Patient patient = _context.CurrentPatient;
                 PatientArea.Models.PatientViewModel model = new Models.PatientViewModel(_selectedPatient);
+                model.Visits = _context.GetHistoricalVisitsByPatientIdQuery(_selectedPatient.Id);
                 model.UserName = _loggedUser.Person.FullName;
                 model.Notifications = _context.GetNotificationsByPatientId(_selectedPatient.Id);
 
@@ -588,12 +601,15 @@ namespace Asklepios.Web.Areas.PatientArea.Controllers
             {
 
                 //Patient patient = _context.CurrentPatient;
-                _selectedPatient.AllVisits.AddRange(_context.GetBookedVisitsByPatientId(_selectedPatient.Id));
-
+                //_selectedPatient.AllVisits.AddRange(_context.GetBookedVisitsByPatientId(_selectedPatient.Id));
+                //_selectedPatient.AllVisits = _context.GetBookedVisitsByPatientId(_selectedPatient.Id);
                 //_selectedPatient.BookedVisits = _context.GetBookedVisitsByPatientId(_selectedPatient.Id);
-                PatientArea.Models.PatientViewModel model = new PatientViewModel(_selectedPatient);
-                model.UserName = _loggedUser.Person.FullName;
-                model.Notifications = _context.GetNotificationsByPatientId(_selectedPatient.Id);
+                PatientArea.Models.PatientViewModel model = new PatientViewModel(_selectedPatient)
+                {
+                    Visits = _context.GetAllVisitsByPatientIdQuery(_selectedPatient.Id),
+                    UserName = _loggedUser.Person.FullName,
+                    Notifications = _context.GetNotificationsByPatientId(_selectedPatient.Id)
+                };
 
                 return View(model);
             }
@@ -609,7 +625,9 @@ namespace Asklepios.Web.Areas.PatientArea.Controllers
             {
                 if (long.TryParse(id, out long lid))
                 {
-                    Visit plannedVisit = _selectedPatient.BookedVisits.Where(c => c.Id == lid).FirstOrDefault();
+                 //   Visit plannedVisit = _selectedPatient.BookedVisits.Where(c => c.Id == lid).FirstOrDefault();
+                    Visit plannedVisit = _context.GetBookedVisitsByPatientId(_selectedPatient.Id).FirstOrDefault(c => c.Id == lid);//_selectedPatient.BookedVisits.Where(c => c.Id == lid).FirstOrDefault();
+
                     if (plannedVisit != null)
                     {
                         if (plannedVisit.DateTimeSince > DateTimeOffset.Now)
@@ -638,18 +656,21 @@ namespace Asklepios.Web.Areas.PatientArea.Controllers
             {
                 if (long.TryParse(id, out long lid))
                 {
-                    Visit plannedVisit = _selectedPatient.BookedVisits.Where(c => c.Id == lid).FirstOrDefault();
+                    Visit plannedVisit = _context.GetBookedVisitsByPatientId(_selectedPatient.Id).FirstOrDefault(c => c.Id == lid);//_selectedPatient.BookedVisits.Where(c => c.Id == lid).FirstOrDefault();
                     if (plannedVisit != null)
                     {
                         if (plannedVisit.DateTimeSince > DateTimeOffset.Now)
                         {
                             RescheduleVisitViewModel model = new RescheduleVisitViewModel();
-                            model.SelectedPrimaryServiceId = plannedVisit.PrimaryService.Id.ToString();
-                            model.RescheduledVisitId = lid;
+                            model.AllVisitsList = _context.GetAvailableVisitsQuery();
                             model.MedicalServices = _context.GetMedicalServices();
-                            model.AllVisitsList = _context.GetAvailableVisits().ToList();
-                            model.UserName = _loggedUser.Person.FullName;
                             model.Notifications = _context.GetNotificationsByPatientId(_selectedPatient.Id);
+
+                            model.RescheduledVisitId = lid;
+                            model.RescheduledVisit = plannedVisit;
+
+                            model.SelectedPrimaryServiceId = plannedVisit.PrimaryService.Id.ToString();
+                            model.UserName = _loggedUser.Person.FullName;
 
                             return View(model);
                         }
@@ -657,7 +678,6 @@ namespace Asklepios.Web.Areas.PatientArea.Controllers
                         {
                             return NotFound();
                         }
-                        //plannedVisit.Patient = null;
                     }
                 }
                 return NotFound();
@@ -672,16 +692,24 @@ namespace Asklepios.Web.Areas.PatientArea.Controllers
         {
             if (_loggedUser != null)
             {
-
-                Visit plannedVisit = _selectedPatient.BookedVisits.Where(c => c.Id == model.RescheduledVisitId).FirstOrDefault();
+                Visit plannedVisit = _context.GetBookedVisitsByPatientId(_selectedPatient.Id).FirstOrDefault(c => c.Id == model.RescheduledVisitId);// _selectedPatient.BookedVisits.Where(c => c.Id == model.RescheduledVisitId).FirstOrDefault();
                 if (plannedVisit != null)
                 {
                     if (plannedVisit.DateTimeSince > DateTimeOffset.Now)
                     {
+                        model.AllVisitsList = _context.GetAvailableVisitsQuery();
+
+                        model.MedicalServices = _context.GetMedicalServices();
+                        model.Notifications = _context.GetNotificationsByPatientId(_selectedPatient.Id);
+
+                        //model.RescheduledVisitId = lid;
+                        model.RescheduledVisit = plannedVisit;
+
+                        model.SelectedPrimaryServiceId = plannedVisit.PrimaryService.Id.ToString();
+
                         //RescheduleVisitViewModel model = new RescheduleVisitViewModel();
                         //model.SelectedPrimaryServiceId = plannedVisit.PrimaryService.Id.ToString();
                         model.UserName = _loggedUser.Person.FullName;
-                        model.Notifications = _context.GetNotificationsByPatientId(_selectedPatient.Id);
 
                         return View(model);
                     }
@@ -704,19 +732,21 @@ namespace Asklepios.Web.Areas.PatientArea.Controllers
         {
             if (_loggedUser != null)
             {
-                Visit visitToReschedule = _selectedPatient.BookedVisits.Where(c => c.Id == model.RescheduledVisitId).FirstOrDefault();
-                if (visitToReschedule!=null)
+                //Visit visitToReschedule = _selectedPatient.BookedVisits.Where(c => c.Id == model.RescheduledVisitId).FirstOrDefault();
+                Visit visitToReschedule = _context.GetBookedVisitsByPatientId(_selectedPatient.Id).FirstOrDefault(c => c.Id == model.RescheduledVisitId);// _selectedPatient.BookedVisits.Where(c => c.Id == model.RescheduledVisitId).FirstOrDefault();
+
+                if (visitToReschedule != null)
                 {
-                    Visit newVisit = _context.GetAvailableVisitById( model.SelectedNewVisitId);
-                    if (newVisit!=null)
+                    Visit newVisit = _context.GetAvailableVisitById(model.SelectedNewVisitId);
+                    if (newVisit != null)
                     {
 
                         newVisit.Patient = _selectedPatient;
-                        if (visitToReschedule.UsedExaminationReferral!=null)
+                        if (visitToReschedule.UsedExaminationReferral != null)
                         {
                             newVisit.UsedExaminationReferral = visitToReschedule.UsedExaminationReferral;
                         }
-                        _context.BookVisit(_selectedPatient, newVisit);
+                        _context.BookVisit(_selectedPatient.Id, newVisit.Id);
                         _context.ResignFromVisit(visitToReschedule.Id);//, _selectedPatient);
                         return RedirectToAction("PlannedVisits", "Patient", new { area = "PatientArea" });
                     }
@@ -738,9 +768,14 @@ namespace Asklepios.Web.Areas.PatientArea.Controllers
             if (_loggedUser != null)
             {
                 //Patient patient = _context.CurrentPatient;
-                PatientArea.Models.PatientViewModel model = new Models.PatientViewModel(_selectedPatient);
-                model.UserName = _loggedUser.Person.FullName;
-                model.Notifications = _context.GetNotificationsByPatientId(_selectedPatient.Id);
+                PatientArea.Models.PatientViewModel model = new Models.PatientViewModel(_selectedPatient)
+                {
+                    Visits = _context.GetAllVisitsByPatientIdQuery(_selectedPatient.Id),
+                    Prescriptions = _context.GetPrescriptionsByPatientIdQuery(_selectedPatient.Id),
+                    UserName = _loggedUser.Person.FullName,
+                    Notifications = _context.GetNotificationsByPatientId(_selectedPatient.Id)
+                };
+
 
                 return View(model);
             }
@@ -755,10 +790,13 @@ namespace Asklepios.Web.Areas.PatientArea.Controllers
             if (_loggedUser != null)
             {
 
-                //Patient patient = _context.CurrentPatient;
-                PatientArea.Models.PatientViewModel model = new Models.PatientViewModel(_selectedPatient);
-                model.UserName = _loggedUser.Person.FullName;
-                model.Notifications = _context.GetNotificationsByPatientId(_selectedPatient.Id);
+                PatientArea.Models.PatientViewModel model = new Models.PatientViewModel(_selectedPatient)
+                {
+                    Visits = _context.GetAllVisitsByPatientIdQuery(_selectedPatient.Id),
+                    MedicalReferrals = _context.GetMedicalReferralsByPatientIdQuery(_selectedPatient.Id),
+                    UserName = _loggedUser.Person.FullName,
+                    Notifications = _context.GetNotificationsByPatientId(_selectedPatient.Id)
+                };
 
                 return View(model);
             }
@@ -773,10 +811,13 @@ namespace Asklepios.Web.Areas.PatientArea.Controllers
             if (_loggedUser != null)
             {
 
-                //Patient patient = _context.CurrentPatient;
-                PatientArea.Models.PatientViewModel model = new Models.PatientViewModel(_selectedPatient);
-                model.UserName = _loggedUser.Person.FullName;
-                model.Notifications = _context.GetNotificationsByPatientId(_selectedPatient.Id);
+                PatientArea.Models.PatientViewModel model = new Models.PatientViewModel(_selectedPatient)
+                {
+                    Visits = _context.GetAllVisitsByPatientIdQuery(_selectedPatient.Id),
+                    MedicalTestResults = _context.GetMedicalTestResultsByPatientIdQuery(_selectedPatient.Id),
+                    UserName = _loggedUser.Person.FullName,
+                    Notifications = _context.GetNotificationsByPatientId(_selectedPatient.Id)
+                };
 
                 return View(model);
             }
@@ -829,11 +870,12 @@ namespace Asklepios.Web.Areas.PatientArea.Controllers
                     //PdfSharpCore.Pdf.PdfDocument pdf = _context.CurrentPatient.TestsResults.Where(c => c.Id == idL).FirstOrDefault().PdfDocument;
 
                     //Read the File data into Byte Array.
-                    byte[] bytes = _selectedPatient.TestsResults.Where(c => c.Id == idL).FirstOrDefault()?.Document;//pdf.  System.IO.File.ReadAllBytes(pdf);
+                    MedicalTestResult medicalTestResult = _context.GetMedicalTestResultById(idL);
+
+                    byte[] bytes = _context.GetDocument(medicalTestResult.DocumentPath, _hostEnvironment.WebRootPath);// _context.//_selectedPatient.TestsResults.Where(c => c.Id == idL).FirstOrDefault()?.Document;//pdf.  System.IO.File.ReadAllBytes(pdf);
 
                     //Send the File to Download.
                     return File(bytes, "application/octet-stream", "results.pdf");
-
                 }
                 else
                 {

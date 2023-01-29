@@ -9,7 +9,7 @@ namespace Asklepios.Data.Interfaces
 {
     public interface IPatientModuleRepository
     {
-        void BookVisit(Patient selectedPatient, Visit selectedVisit);
+        void BookVisit(long patientId, long visitId);
 
         List<Location> GetAllLocations();
 
@@ -60,6 +60,15 @@ namespace Asklepios.Data.Interfaces
         void UpdateReferral(MedicalReferral referral);
         void UpdateVisit(Visit visit);
         IQueryable<Visit> GetAvailableVisitsQuery();
+        IQueryable<Visit> GetAllVisitsByPatientIdQuery(long id);
+        IQueryable<Visit> GetHistoricalVisitsByPatientIdQuery(long id);
+        IQueryable<MedicalReferral> GetMedicalReferralsByPatientIdQuery(long id);
+        IQueryable<MedicalTestResult> GetMedicalTestResultsByPatientIdQuery(long id);
+        IQueryable<Prescription> GetPrescriptionsByPatientIdQuery(long id);
+        MedicalTestResult GetMedicalTestResultById(long idL);
+        byte[] GetDocument(string documentPath, string webRootPath);
+        void UpdateNotification(Notification notification);
+
         //void ResignFromVisit(Visit plannedVisit, Patient patient);
 
         //IEnumerable<MedicalRoom> GetMedicalRooms();

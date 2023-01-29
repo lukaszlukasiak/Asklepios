@@ -3,11 +3,11 @@
     ViewData["Title"] = "Wyniki badań";
 }
 @{
-    List<Asklepios.Core.Models.MedicalTestResult> results = null;
-    if (Model.Patient.TestsResults != null)
-    {
-        results = Model.Patient.TestsResults.Where(c => c.Document != null).ToList();
-    }
+    List<Asklepios.Core.Models.MedicalTestResult> results = Model.GetMedicalTestResults();
+    //if (Model.Patient.TestsResults != null)
+    //{
+    //    results = Model.Patient.TestsResults.Where(c => c.Document != null).ToList();
+    //}
 
     if (results!=null)
     {

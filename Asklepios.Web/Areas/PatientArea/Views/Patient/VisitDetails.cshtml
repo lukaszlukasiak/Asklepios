@@ -14,7 +14,6 @@
                     <img alt="@Model.Visit.MedicalWorker.FullProffesionalName" src="@Model.Visit.MedicalWorker.Person.ImageSource" class="mx-auto d-block" style="display: block; max-height:50% ; max-width:50%;
         border-radius: 6px; ">
                 </div>
-
             </div>
         </div>
         <div class="p-2 flex-grow-1 pt-3 mx-auto flex-grow-1" style="min-width: 400px; text-align: center">
@@ -58,6 +57,30 @@
         </div>
     </div>
     <div></div>
+        @if (Model.Visit.Recommendations != null)
+    {
+        if(Model.Visit.Recommendations.Count()>0)
+        {
+        <div class="d-flex flex-column m-2">
+            <h5>Zalecenia</h5>
+
+            @for (var i = 0; i < Model.Visit.Recommendations.Count; i++)
+            {
+                Recommendation recommendation = Model.Visit.Recommendations[i];
+
+                <div class="border border-secondary rounded w-100 flex-grow-0 p-3">
+
+                <div class="d-flex flex-column">
+                    <div class="mr-auto, mb-2" style="font-size:large"> @recommendation.Title</div>
+                    <div class="mr-auto" style=""> @recommendation.Description</div>
+                </div>
+                </div>
+            }
+
+        </div>
+        }
+    }
+
     @if (Model.Visit.VisitReview != null)
     {
         <div class="d-flex flex-column m-2">
@@ -66,29 +89,37 @@
             <partial name="_MedicalReview" model="@Model.Visit.VisitReview" />
         </div>
         @*<div class="d-flex flex-column flex-fill flex-grow-1 m-auto" style="min-width: 400px; text-align: center">
-                <div class="d-flex flex-column">
-                    <p>
-                        Atmosfera:
-                        <partial name="_Stars" model="@Model.Visit.VisitReview.AtmosphereRate" />
-                    </p>
-                    <p>
-                        Kompetencje:
-                        <partial name="_Stars" model="@Model.Visit.VisitReview.CompetenceRate" />
-                    </p>
-                    <p>
-                        Ocena ogólna: <partial name="_Stars" model="@Model.Visit.VisitReview.GeneralRate" />
-                    </p>
-                    <p>
-                        Opis:
-                        @Model.Visit.VisitReview.ShortDescription
-                    </p>
-                </div>
+            <div class="d-flex flex-column">
+            <p>
+            Atmosfera:
+            <partial name="_Stars" model="@Model.Visit.VisitReview.AtmosphereRate" />
+            </p>
+            <p>
+            Kompetencje:
+            <partial name="_Stars" model="@Model.Visit.VisitReview.CompetenceRate" />
+            </p>
+            <p>
+            Ocena ogólna: <partial name="_Stars" model="@Model.Visit.VisitReview.GeneralRate" />
+            </p>
+            <p>
+            Opis:
+            @Model.Visit.VisitReview.ShortDescription
+            </p>
+            </div>
             </div>*@
     }
     @if (Model.Visit.ExaminationReferrals != null)
     {
         <div class="d-flex flex-column m-2">
-            <h5>Wystawione skierowania</h5>
+            @if (Model.Visit.ExaminationReferrals != null)
+            {
+                if  (Model.Visit.ExaminationReferrals.Count>0)
+                {
+                    <h5>Wystawione skierowania</h5>    
+                }
+                
+            }
+
             @for (int i = 0; i < Model.Visit.ExaminationReferrals.Count; i++)
             {
                 <div class="border border-secondary rounded w-100 flex-grow-0 p-3">
@@ -113,7 +144,8 @@
                             Ważne do: @referral.ExpireDate.ToString("dd-MM-yyyy")
                         </div>
                         if (referral.HasBeenUsed)
-                        {<p>
+                        {
+                            <p>
                                 Skierowanie zostało wykorzystane
                             </p>
                         }
@@ -179,7 +211,7 @@
 
             <div class="border border-secondary rounded w-100 flex-grow-0 mb-2  p-3">
 
-                <div class="d-flex p-2  pt-3 m-auto flex-grow-1" >
+                <div class="d-flex p-2  pt-3 m-auto flex-grow-1">
                     <div class="d-flex flex-fill pt-2 flex-column">
                         <h5>
                             Badanie: @Model.Visit.MedicalTestResult.MedicalService.Name
@@ -204,10 +236,10 @@
         <div class="d-flex flex-column">
 
             @*<a asp-area="PatientArea" asp-controller="Patient" asp-action="BookVisit" class="btn btn-primary btn-icon-split  flex-grow-1 m-2">
-                    <span class="icon text-white-50">
-                        <i class="fas fa-book"></i>
-                    </span>
-                    <span class="text">Zarezerwuj ponownie</span>
+                <span class="icon text-white-50">
+                <i class="fas fa-book"></i>
+                </span>
+                <span class="text">Zarezerwuj ponownie</span>
                 </a>*@
             <!--<a asp-area="PatientArea" asp-controller="Patient" asp-action="BookVisit" class="btn btn-primary btn-icon-split  flex-grow-1 m-2">
                 <span class="icon text-white-50">

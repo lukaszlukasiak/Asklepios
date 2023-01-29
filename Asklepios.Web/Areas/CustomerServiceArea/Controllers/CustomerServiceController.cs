@@ -486,7 +486,7 @@ namespace Asklepios.Web.Areas.CustomerServiceArea.Controllers
                     {
                         if (plannedVisit.DateTimeSince > DateTimeOffset.Now)
                         {
-                            _context.ResignFromVisit(plannedVisit, selectedPatient);
+                            _context.ResignFromVisit(plannedVisit.Id);
                             return RedirectToAction("PlannedVisits", "CustomerService", new { area = "CustomerServiceArea" });
                         }
                         else
@@ -580,8 +580,8 @@ namespace Asklepios.Web.Areas.CustomerServiceArea.Controllers
                     {
 
                         newVisit.Patient = selectedPatient;
-                        _context.BookVisit(selectedPatient, newVisit);
-                        _context.ResignFromVisit(visitToReschedule, selectedPatient);
+                        _context.BookVisit(selectedPatient.Id, newVisit.Id);
+                        _context.ResignFromVisit(visitToReschedule.Id);
                         return RedirectToAction("PlannedVisits", "CustomerService", new { area = "CustomerServiceArea" });
                     }
                     else

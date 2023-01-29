@@ -63,7 +63,6 @@ namespace Asklepios.Data.DBContexts
         {
             string filePath = SaveFile(formFile, StorageFolderType.Locations, hostPath);
             location.ImagePath = filePath;
-
             Locations.Add(location);
 
             SaveChanges();
@@ -165,11 +164,16 @@ namespace Asklepios.Data.DBContexts
             SaveChanges();
         }
 
-        public void BookVisit(Patient selectedPatient, Visit newVisit)
+        public void BookVisit(long patientId, long visitId)
         {
-            newVisit.PatientId = selectedPatient.Id;
-            newVisit.VisitStatus = VisitStatus.Booked;
-            Visits.Update(newVisit);
+            Visit visit = Visits.Find(visitId);
+
+            visit.PatientId = patientId;
+            visit.VisitStatus = VisitStatus.Booked;
+            //visit.PrimaryService = null;
+            Visits.Update(visit);
+
+            ServiceClasses.EFDebugging.ListChanges(this);
             SaveChanges();
         }
 
@@ -287,7 +291,10 @@ namespace Asklepios.Data.DBContexts
                 .Include(d => d.MinorMedicalServices)
                 .Include(e => e.MinorServicesToVisits)
                 .Include(f=>f.PrimaryService)
-                .Include(g=>g.MedicalWorker)
+                .Include(i=>i.Location)
+                .Include(m=>m.MedicalRoom)
+                .Include(k=>k.VisitCategory)
+                .Include(g=>g.MedicalWorker).ThenInclude(h=>h.Person)
                 .FirstOrDefault();
             return visit;
         }
@@ -312,6 +319,7 @@ namespace Asklepios.Data.DBContexts
                 .Include(d => d.MinorMedicalServices)
                 .Include(e => e.MinorServicesToVisits)
                 .Include(e => e.MedicalRoom)
+                .Include(g=>g.Location)
                 .Include(f=>f.MedicalWorker).ThenInclude(g=>g.Person)
                 .AsQueryable();
             return visits;
@@ -355,7 +363,12 @@ namespace Asklepios.Data.DBContexts
 
         public byte[] GetDocument(string documentPath, string webRootPath)
         {
-            throw new NotImplementedException();
+            string fullFilePath = Path.Combine(webRootPath + documentPath);
+
+            byte[] file= File.ReadAllBytes(fullFilePath);
+
+            return file;
+
         }
 
         public List<Visit> GetFutureVisits()
@@ -420,6 +433,10 @@ namespace Asklepios.Data.DBContexts
                 .Include(d => d.Patient).ThenInclude(e => e.Person)
                 .Include(e => e.MedicalWorker).ThenInclude(f => f.Person)
                 .Include(k=>k.MedicalRoom)
+                .Include(p=>p.Prescription).ThenInclude(m=>m.IssuedMedicines)
+                .Include(t=>t.MedicalTestResult)
+                .Include(v=>v.VisitReview)
+                .Include(r=>r.Recommendations)
                 .Include(l=>l.ExaminationReferrals).ThenInclude(m=>m.PrimaryMedicalService).Include(n=>n.MinorMedicalServices)
                 .FirstOrDefault();
             return visit;
@@ -433,13 +450,43 @@ namespace Asklepios.Data.DBContexts
 
         public List<Visit> GetHistoricalVisitsByMedicalWorkerId(long id)
         {
-            List<Visit> visits = Visits.Where(c => c.MedicalWorkerId == id).Where(d => d.VisitStatus == VisitStatus.Finished).Include(a => a.VisitCategory).Include(b => b.Location).Include(c => c.PrimaryService).Include(d => d.Patient).ThenInclude(e => e.Person).ToList();
+            List<Visit> visits = Visits
+                .Where(c => c.MedicalWorkerId == id)
+                .Where(d => d.VisitStatus == VisitStatus.Finished)
+                .Include(a => a.VisitCategory)
+                .Include(b => b.Location)
+                .Include(c => c.PrimaryService)
+                .Include(d => d.Patient)
+                .ThenInclude(e => e.Person)
+                .ToList();
             return visits;
         }
 
         public List<Visit> GetHistoricalVisitsByPatientId(long id)
         {
-            List<Visit> visits = Visits.Where(c => c.PatientId == id).Where(d => d.VisitStatus == VisitStatus.Finished).Include(a => a.VisitCategory).Include(b => b.Location).Include(c => c.PrimaryService).Include(d => d.Patient).ThenInclude(e => e.Person).ToList();
+            List<Visit> visits = Visits
+                .Where(c => c.PatientId == id)
+                .Where(d => d.VisitStatus == VisitStatus.Finished)
+                .Include(a => a.VisitCategory)
+                .Include(b => b.Location)
+                .Include(c => c.PrimaryService)
+                .Include(d => d.Patient)
+                .ThenInclude(e => e.Person)
+                .ToList();
+            return visits;
+        }
+        public IQueryable<Visit> GetHistoricalVisitsByPatientIdQuery(long id)
+        {
+            IQueryable<Visit> visits = Visits
+                .Where(c => c.PatientId == id)
+                .Where(d => d.VisitStatus == VisitStatus.Finished)
+                .Include(a => a.VisitCategory)
+                .Include(b => b.Location)
+                .Include(c => c.PrimaryService)
+                .Include(d => d.Patient).ThenInclude(e => e.Person)
+                .Include(g=>g.MedicalWorker).ThenInclude(h=>h.Person)
+                .Include(k=>k.ExaminationReferrals)
+                .AsQueryable();
             return visits;
         }
 
@@ -619,12 +666,18 @@ namespace Asklepios.Data.DBContexts
 
         public Patient GetPatientById(long id)
         {
-            return Patients.Where(c => c.Id == id).Include(a => a.Person).Include(b => b.User).FirstOrDefault();
+            return Patients
+                .Where(c => c.Id == id)
+                .Include(c=>c.MedicalPackage)
+                .Include(d=>d.NFZUnit)
+                .Include(a => a.Person)
+                .Include(b => b.User)
+                .FirstOrDefault();
         }
 
         public Patient GetPatientByUserId(long userId)
         {
-            Patient patient = Patients.FirstOrDefault(c => c.UserId == userId);
+            Patient patient = Patients.Where(c => c.UserId == userId).Include(d => d.Person).FirstOrDefault();
             return patient;
         }
 
@@ -728,8 +781,15 @@ namespace Asklepios.Data.DBContexts
 
         public User LogIn(User user)
         {
-            List<User> users;//= Users;
-            users = Users.Where(c => c.UserType == user.UserType)?.Where(d => d.WorkerModuleType == user.WorkerModuleType).ToList();
+            System.Linq.IQueryable<User> users;//= Users;
+            if (user.UserType==UserType.Patient)
+            {
+                users = Users.Where(c => c.UserType == user.UserType).AsQueryable();
+            }
+            else
+            {
+                users = Users.Where(c => c.UserType == user.UserType)?.Where(d => d.WorkerModuleType == user.WorkerModuleType).AsQueryable();
+            }
             string emailAddressUpper = user.EmailAddress.ToUpper();
             User user1 = users.Where(c => c.EmailAddress.ToUpper() == emailAddressUpper).FirstOrDefault();
             if (user1 == null)
@@ -854,6 +914,8 @@ namespace Asklepios.Data.DBContexts
             visit.PatientId = null;
             visit.Patient = null;
             visit.VisitStatus = VisitStatus.AvailableNotBooked;
+            Visits.Update(visit);
+
             SaveChanges();
         }
 
@@ -1039,6 +1101,8 @@ namespace Asklepios.Data.DBContexts
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
+            bool feedDatabase =false;
+            
             modelBuilder.Entity<MedicalWorker>()
             .HasDiscriminator<string>("Discriminator")
             .HasValue<Doctor>("1")
@@ -1142,117 +1206,123 @@ namespace Asklepios.Data.DBContexts
             .OnDelete(DeleteBehavior.Restrict)
             .IsRequired(false);
 
-            PatientMockDB.SetData();
 
-            var location2MedicalServiceData = new List<object>();
 
-            foreach (Location item in PatientMockDB.Locations)
+            if (feedDatabase)
             {
-                foreach (MedicalService ms in item.Services)
+
+                PatientMockDB.SetData();
+
+                var location2MedicalServiceData = new List<object>();
+
+                foreach (Location item in PatientMockDB.Locations)
                 {
-                    location2MedicalServiceData.Add(new { LocationsId = item.Id, ServicesId = ms.Id });
+                    foreach (MedicalService ms in item.Services)
+                    {
+                        location2MedicalServiceData.Add(new { LocationsId = item.Id, ServicesId = ms.Id });
+                    }
                 }
-            }
-            var medicalService2MedicalWorker = new List<object>();
+                var medicalService2MedicalWorker = new List<object>();
 
-            foreach (MedicalWorker item in PatientMockDB.MedicalWorkers)
-            {
-                foreach (MedicalService ms in item.MedicalServices)
+                foreach (MedicalWorker item in PatientMockDB.MedicalWorkers)
                 {
-                    medicalService2MedicalWorker.Add(new { MedicalServicesId = ms.Id, MedicalWorkersId = item.Id });
+                    foreach (MedicalService ms in item.MedicalServices)
+                    {
+                        medicalService2MedicalWorker.Add(new { MedicalServicesId = ms.Id, MedicalWorkersId = item.Id });
+                    }
                 }
+
+                //Data cleaning
+
+                // PatientMockDB.MedicalRooms.ForEach(c => c.Location = null);
+                PatientMockDB.AllPatients.ForEach(c => c.MedicalPackage = null);
+                PatientMockDB.AllPatients.ForEach(c => c.NFZUnit = null);
+                PatientMockDB.AllPatients.ForEach(c => c.Person = null);
+                PatientMockDB.AllPatients.ForEach(c => c.User = null);
+                PatientMockDB.AllPatients.ForEach(c => c.AllVisits = null);
+
+                PatientMockDB.AllVisits.ForEach(c => c.Location = null);
+                PatientMockDB.AllVisits.ForEach(c => c.MinorMedicalServices = null);
+                PatientMockDB.AllVisits.ForEach(c => c.ExaminationReferrals = null);
+                PatientMockDB.AllVisits.ForEach(c => c.Recommendations = null);
+                PatientMockDB.AllVisits.ForEach(c => c.MedicalRoom = null);
+                PatientMockDB.AllVisits.ForEach(c => c.MedicalWorker = null);
+                PatientMockDB.AllVisits.ForEach(c => c.PrimaryService = null);
+                PatientMockDB.AllVisits.ForEach(c => c.VisitCategory = null);
+                PatientMockDB.AllVisits.ForEach(c => c.Patient = null);
+
+                PatientMockDB.Locations.ForEach(c => c.MedicalRooms = null);
+                PatientMockDB.Locations.ForEach(c => c.Services = null);
+
+                PatientMockDB.MedicalPackages.ForEach(c => c.ServiceDiscounts = null);
+
+                PatientMockDB.MedicalReferrals.ForEach(c => c.IssuedBy = null);
+                PatientMockDB.MedicalReferrals.ForEach(c => c.MinorMedicalService = null);
+                PatientMockDB.MedicalReferrals.ForEach(c => c.PrimaryMedicalService = null);
+                PatientMockDB.MedicalReferrals.ForEach(c => c.VisitWhenIssued = null);
+
+                PatientMockDB.MedicalRooms.ForEach(c => c.Location = null);
+
+                PatientMockDB.MedicalServices.ForEach(c => c.SubServices = null);
+
+                PatientMockDB.MedicalTestResults.ForEach(c => c.MedicalService = null);
+                PatientMockDB.MedicalTestResults.ForEach(c => c.MedicalWorker = null);
+
+                PatientMockDB.MedicalServiceDiscounts.ForEach(c => c.MedicalPackage = null);
+                PatientMockDB.MedicalServiceDiscounts.ForEach(c => c.MedicalService = null);
+
+                PatientMockDB.MedicalWorkers.ForEach(c => c.User = null);
+                PatientMockDB.MedicalWorkers.ForEach(c => c.MedicalServices = null);
+
+                PatientMockDB.Prescriptions.ForEach(c => c.IssuedMedicines = null);
+
+                PatientMockDB.Recommendations.ForEach(c => c.Visit = null);
+                PatientMockDB.Recommendations.ForEach(c => c.Visit = null);
+                PatientMockDB.Recommendations.ForEach(c => c.Visit = null);
+
+                PatientMockDB.VisitCategories.ForEach(c => c.MedicalServices = null);
+
+                PatientMockDB.MinorServicesToVisits.ForEach(c => c.MedicalService = null);
+                PatientMockDB.MinorServicesToVisits.ForEach(c => c.Visit = null);
+
+                modelBuilder.Entity<MedicalService>().HasData(PatientMockDB.MedicalServices);
+                modelBuilder.Entity<VisitCategory>().HasData(PatientMockDB.VisitCategories);
+
+                modelBuilder.Entity<MedicalRoom>().HasData(PatientMockDB.MedicalRooms);
+                modelBuilder.Entity<MedicalPackage>().HasData(PatientMockDB.MedicalPackages);
+                //modelBuilder.Entity<VisitCategory>().HasData(PatientMockDB.VisitCategories);
+                modelBuilder.Entity<NFZUnit>().HasData(PatientMockDB.NfzUnits);
+
+                modelBuilder.Entity<Location>().HasData(PatientMockDB.Locations);
+                modelBuilder.Entity<Patient>().HasData(PatientMockDB.AllPatients);
+
+                modelBuilder.Entity<Person>().HasData(PatientMockDB.Persons);
+                modelBuilder.Entity<Prescription>().HasData(PatientMockDB.Prescriptions);
+
+                modelBuilder.Entity<MedicalReferral>().HasData(PatientMockDB.MedicalReferrals);
+
+                modelBuilder.Entity<MedicalTestResult>().HasData(PatientMockDB.MedicalTestResults);
+                modelBuilder.Entity<IssuedMedicine>().HasData(PatientMockDB.IssuedMedicines);
+
+                modelBuilder.Entity<Doctor>().HasData(PatientMockDB.MedicalWorkers.OfType<Doctor>());
+                modelBuilder.Entity<Nurse>().HasData(PatientMockDB.MedicalWorkers.OfType<Nurse>());
+                modelBuilder.Entity<ElectroradiologyTechnician>().HasData(PatientMockDB.MedicalWorkers.OfType<ElectroradiologyTechnician>());
+                modelBuilder.Entity<DentalHygienist>().HasData(PatientMockDB.MedicalWorkers.OfType<DentalHygienist>());
+                modelBuilder.Entity<Physiotherapist>().HasData(PatientMockDB.MedicalWorkers.OfType<Physiotherapist>());
+
+                modelBuilder.Entity<User>().HasData(PatientMockDB.Users);
+                modelBuilder.Entity<VisitReview>().HasData(PatientMockDB.VisitReviews);
+                modelBuilder.Entity<Visit>().HasData(PatientMockDB.AllVisits);
+
+                modelBuilder.Entity<MedicalServiceDiscount>().HasData(PatientMockDB.MedicalServiceDiscounts);
+                modelBuilder.Entity<Notification>().HasData(PatientMockDB.Notifications);
+                modelBuilder.Entity<Recommendation>().HasData(PatientMockDB.Recommendations);
+
+                modelBuilder.Entity("LocationMedicalService").HasData(location2MedicalServiceData);
+                modelBuilder.Entity("MedicalServiceMedicalWorker").HasData(medicalService2MedicalWorker);
+                modelBuilder.Entity<MinorServiceToVisit>().HasData(PatientMockDB.MinorServicesToVisits.Take(107));
+                // modelBuilder.Entity<Recommendation>().HasData(PatientMockDB.Recommendations);
             }
-
-            //Data cleaning
-
-            // PatientMockDB.MedicalRooms.ForEach(c => c.Location = null);
-            PatientMockDB.AllPatients.ForEach(c => c.MedicalPackage = null);
-            PatientMockDB.AllPatients.ForEach(c => c.NFZUnit = null);
-            PatientMockDB.AllPatients.ForEach(c => c.Person = null);
-            PatientMockDB.AllPatients.ForEach(c => c.User = null);
-            PatientMockDB.AllPatients.ForEach(c => c.AllVisits = null);
-
-            PatientMockDB.AllVisits.ForEach(c => c.Location = null);
-            PatientMockDB.AllVisits.ForEach(c => c.MinorMedicalServices = null);
-            PatientMockDB.AllVisits.ForEach(c => c.ExaminationReferrals = null);
-            PatientMockDB.AllVisits.ForEach(c => c.Recommendations = null);
-            PatientMockDB.AllVisits.ForEach(c => c.MedicalRoom = null);
-            PatientMockDB.AllVisits.ForEach(c => c.MedicalWorker = null);
-            PatientMockDB.AllVisits.ForEach(c => c.PrimaryService = null);
-            PatientMockDB.AllVisits.ForEach(c => c.VisitCategory = null);
-            PatientMockDB.AllVisits.ForEach(c => c.Patient = null);
-
-            PatientMockDB.Locations.ForEach(c => c.MedicalRooms = null);
-            PatientMockDB.Locations.ForEach(c => c.Services = null);
-
-            PatientMockDB.MedicalPackages.ForEach(c => c.ServiceDiscounts = null);
-
-            PatientMockDB.MedicalReferrals.ForEach(c => c.IssuedBy = null);
-            PatientMockDB.MedicalReferrals.ForEach(c => c.MinorMedicalService = null);
-            PatientMockDB.MedicalReferrals.ForEach(c => c.PrimaryMedicalService = null);
-            PatientMockDB.MedicalReferrals.ForEach(c => c.VisitWhenIssued = null);
-
-            PatientMockDB.MedicalRooms.ForEach(c => c.Location = null);
-
-            PatientMockDB.MedicalServices.ForEach(c => c.SubServices = null);
-
-            PatientMockDB.MedicalTestResults.ForEach(c => c.MedicalService = null);
-            PatientMockDB.MedicalTestResults.ForEach(c => c.MedicalWorker = null);
-
-            PatientMockDB.MedicalServiceDiscounts.ForEach(c => c.MedicalPackage = null);
-            PatientMockDB.MedicalServiceDiscounts.ForEach(c => c.MedicalService = null);
-
-            PatientMockDB.MedicalWorkers.ForEach(c => c.User = null);
-            PatientMockDB.MedicalWorkers.ForEach(c => c.MedicalServices = null);
-
-            PatientMockDB.Prescriptions.ForEach(c => c.IssuedMedicines = null);
-
-            PatientMockDB.Recommendations.ForEach(c => c.Visit = null);
-            PatientMockDB.Recommendations.ForEach(c => c.Visit = null);
-            PatientMockDB.Recommendations.ForEach(c => c.Visit = null);
-
-            PatientMockDB.VisitCategories.ForEach(c => c.MedicalServices = null);
-
-            PatientMockDB.MinorServicesToVisits.ForEach(c => c.MedicalService = null);
-            PatientMockDB.MinorServicesToVisits.ForEach(c => c.Visit = null);
-
-            modelBuilder.Entity<MedicalService>().HasData(PatientMockDB.MedicalServices);
-            modelBuilder.Entity<VisitCategory>().HasData(PatientMockDB.VisitCategories);
-
-            modelBuilder.Entity<MedicalRoom>().HasData(PatientMockDB.MedicalRooms);
-            modelBuilder.Entity<MedicalPackage>().HasData(PatientMockDB.MedicalPackages);
-            //modelBuilder.Entity<VisitCategory>().HasData(PatientMockDB.VisitCategories);
-            modelBuilder.Entity<NFZUnit>().HasData(PatientMockDB.NfzUnits);
-
-            modelBuilder.Entity<Location>().HasData(PatientMockDB.Locations);
-            modelBuilder.Entity<Patient>().HasData(PatientMockDB.AllPatients);
-
-            modelBuilder.Entity<Person>().HasData(PatientMockDB.Persons);
-            modelBuilder.Entity<Prescription>().HasData(PatientMockDB.Prescriptions);
-
-            modelBuilder.Entity<MedicalReferral>().HasData(PatientMockDB.MedicalReferrals);
-
-            modelBuilder.Entity<MedicalTestResult>().HasData(PatientMockDB.MedicalTestResults);
-            modelBuilder.Entity<IssuedMedicine>().HasData(PatientMockDB.IssuedMedicines);
-
-            modelBuilder.Entity<Doctor>().HasData(PatientMockDB.MedicalWorkers.OfType<Doctor>());
-            modelBuilder.Entity<Nurse>().HasData(PatientMockDB.MedicalWorkers.OfType<Nurse>());
-            modelBuilder.Entity<ElectroradiologyTechnician>().HasData(PatientMockDB.MedicalWorkers.OfType<ElectroradiologyTechnician>());
-            modelBuilder.Entity<DentalHygienist>().HasData(PatientMockDB.MedicalWorkers.OfType<DentalHygienist>());
-            modelBuilder.Entity<Physiotherapist>().HasData(PatientMockDB.MedicalWorkers.OfType<Physiotherapist>());
-
-            modelBuilder.Entity<User>().HasData(PatientMockDB.Users);
-            modelBuilder.Entity<VisitReview>().HasData(PatientMockDB.VisitReviews);
-            modelBuilder.Entity<Visit>().HasData(PatientMockDB.AllVisits);
-
-            modelBuilder.Entity<MedicalServiceDiscount>().HasData(PatientMockDB.MedicalServiceDiscounts);
-            modelBuilder.Entity<Notification>().HasData(PatientMockDB.Notifications);
-            modelBuilder.Entity<Recommendation>().HasData(PatientMockDB.Recommendations);
-
-            modelBuilder.Entity("LocationMedicalService").HasData(location2MedicalServiceData);
-            modelBuilder.Entity("MedicalServiceMedicalWorker").HasData(medicalService2MedicalWorker);
-            modelBuilder.Entity<MinorServiceToVisit>().HasData(PatientMockDB.MinorServicesToVisits.Take(107));
-            // modelBuilder.Entity<Recommendation>().HasData(PatientMockDB.Recommendations);
         }
 
         public bool HasMedicalWorkerVisits(long id)
@@ -1267,8 +1337,71 @@ namespace Asklepios.Data.DBContexts
 
         public IQueryable<Visit> GetFutureVisitsQuery()
         {
-            return Visits.Where(k=>k.DateTimeSince>DateTimeOffset.Now).AsQueryable<Visit>().Include(a=>a.MedicalWorker).ThenInclude(b=>b.Person).Include(c=>c.Patient).ThenInclude(d=>d.Person);
+            return Visits
+                .Where(k => k.DateTimeSince > DateTimeOffset.Now)
+                .Include(a => a.MedicalWorker).ThenInclude(b => b.Person)
+                .Include(c => c.Patient).ThenInclude(d => d.Person)
+                .AsQueryable<Visit>();
         }
 
+        public IQueryable<Visit> GetAllVisitsByPatientIdQuery(long id)
+        {
+            return Visits
+                .Where(c => c.PatientId == id)
+                .Include(d => d.MedicalWorker)
+                .ThenInclude(h => h.Person)
+                .Include(e => e.Patient)
+                .ThenInclude(i => i.Person)
+                .Include(f => f.VisitCategory)
+                .Include(g => g.PrimaryService)
+                .Include(m=>m.ExaminationReferrals)
+                .Include(j=>j.Location)
+                .AsNoTracking()
+                .AsQueryable();
+        }
+
+        public IQueryable<MedicalReferral> GetMedicalReferralsByPatientIdQuery(long id)
+        {
+            return MedicalReferrals
+                .Where(a => a.IssuedToId == id)
+                .Include(b => b.IssuedTo).ThenInclude(c => c.Person)
+                .Include(d => d.IssuedBy).ThenInclude(e => e.Person)
+                .Include(m=>m.MinorMedicalService)
+                .Include(p=>p.PrimaryMedicalService)
+                .AsQueryable();
+        }
+        public IQueryable<Prescription> GetPrescriptionsByPatientIdQuery(long id)
+        {
+            return Prescriptions
+                .Where(a => a.IssuedToId == id)
+                .Include(b => b.IssuedTo).ThenInclude(c => c.Person)
+                .Include(d => d.IssuedBy).ThenInclude(e => e.Person)
+                .Include(m=>m.IssuedMedicines)
+                .AsQueryable();
+        }
+        public IQueryable<MedicalTestResult> GetMedicalTestResultsByPatientIdQuery(long id)
+        {
+            return MedicalTestResults
+                .Where(a => a.PatientId == id)
+                .Include(b => b.Patient).ThenInclude(c => c.Person)
+                .Include(d => d.MedicalWorker).ThenInclude(e => e.Person)
+                .Include(m=>m.MedicalService)
+                .AsQueryable();
+        }
+
+        public MedicalTestResult GetMedicalTestResultById(long id)
+        {
+            return MedicalTestResults
+                .Find(id);
+                //.Include(b => b.Patient).ThenInclude(c => c.Person)
+                //.Include(d => d.MedicalWorker).ThenInclude(e => e.Person)
+                //.Include(m => m.MedicalService);               
+        }
+
+        public void UpdateNotification(Notification notification)
+        {
+            Notifications.Update(notification);
+            SaveChanges();
+        }
     }
 }

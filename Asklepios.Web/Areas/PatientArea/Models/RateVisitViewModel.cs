@@ -47,7 +47,7 @@ namespace Asklepios.Web.Areas.PatientArea.Models
             visitReview.AtmosphereRate = GetDigitValueFromTextValue(AtmosphereRate);
             visitReview.CompetenceRate = GetDigitValueFromTextValue(CompetenceRate);
             visitReview.GeneralRate = GetDigitValueFromTextValue(OverallRate);
-
+            visitReview.VisitId = VisitId;
             return visitReview;
         }
 

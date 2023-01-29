@@ -134,7 +134,6 @@ namespace Asklepios.Core.Models
                     List<Prescription> prescs = HistoricalVisits.Where(c => c.Prescription != null).Select(c => c.Prescription).ToList();
                     //List<Prescription> prescs = HistoricalVisits.Where(c => c.VisitSummary?.Prescription != null).Select(c => c.VisitSummary.Prescription).ToList();
                     return prescs;
-
                 }
                 else
                 {
@@ -170,8 +169,7 @@ namespace Asklepios.Core.Models
                 else
                 {
                     return null;
-                }
-                
+                }               
             }
         }
         public List<Visit> AllVisits { get; set; } = new List<Visit>();

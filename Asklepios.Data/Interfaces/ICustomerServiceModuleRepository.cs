@@ -34,8 +34,8 @@ namespace Asklepios.Data.Interfaces
         void UpdateVisit(Visit visit);
         User GetUserById(long parsedId);
         Person GetPersonById(long personId);
-        void ResignFromVisit(Visit plannedVisit, Patient selectedPatient);
-        void BookVisit(Patient selectedPatient, Visit newVisit);
+        void ResignFromVisit(long visitId);
+        void BookVisit(long patientId, long visitId);
         List<Visit> GetHistoricalVisitsByPatientId(long id);
         List<Visit> GetBookedVisitsByPatientId(long id);
         List<MedicalReferral> GetMedicalReferralsByPatientId(long id);
