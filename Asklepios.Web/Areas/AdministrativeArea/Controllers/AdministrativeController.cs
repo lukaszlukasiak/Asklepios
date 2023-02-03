@@ -231,9 +231,9 @@ namespace Asklepios.Web.Areas.AdministrativeArea.Controllers
         {
             if (_loggedUser != null)
             {
-                List<Visit> visits = _context.GetAvailableVisits();
+                IQueryable<Visit> visits = _context.GetAvailableVisitsQuery();
                 ScheduleItemsAddViewModel model = new ScheduleItemsAddViewModel();
-                model.Schedule = visits;
+                //model.Schedule = visits;
                 model.Locations = _context.GetAllLocations();
                 //model.MedicalRooms=_context
                 model.MedicalWorkers = _context.GetMedicalWorkers();

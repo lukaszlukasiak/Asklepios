@@ -10,10 +10,10 @@ namespace Asklepios.Core.Models
 {
     public  class MinorServiceToVisit
     {
-        [Key]
-        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
-        [Required]
-        public long Id { get; set; }
+        //[Key]
+        //[DatabaseGenerated(DatabaseGeneratedOption.Identity)]
+        //[Required]
+        //public long Id { get; set; }
         public long? MedicalServiceId { get; set; }
         public MedicalService MedicalService { get; set; }
 

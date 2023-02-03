@@ -26,7 +26,6 @@ namespace Asklepios.Core.Models
         public virtual Patient Patient 
         {
             get;set;
-
         }
         public long? MedicalWorkerId { get; set; }
         [ForeignKey("MedicalWorkerId")]
@@ -200,7 +199,7 @@ namespace Asklepios.Core.Models
                 {
                     return false;
                 }
-                if (VisitCategory.Type == VisitCategoryType.MedicalImaging || VisitCategory.Type == VisitCategoryType.MedicalImaging)
+                if (VisitCategory.Type == VisitCategoryType.MedicalImaging && VisitStatus==VisitStatus.Started)
                 {
                     if (this.MedicalTestResult == null)
                     {

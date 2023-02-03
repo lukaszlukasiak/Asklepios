@@ -40,7 +40,7 @@ namespace Asklepios.Data.InMemoryContexts
             //medicalRooms = GetMedicalRooms().ToList();
             locations = GetAllLocations();
             medicalWorkers = GetMedicalWorkers();
-            availableVisits = GetAvailableVisits().Where(c => c.Patient == null).ToList(); ;
+            availableVisits = GetAvailableVisitsQuery().Where(c => c.Patient == null).ToList(); ;
             //CurrentPatient = GetPatientData();
 
         }
@@ -56,19 +56,19 @@ namespace Asklepios.Data.InMemoryContexts
             return PatientMockDB.Locations;
         }
 
-        public List<Patient> GetAllPatients()
+        public IQueryable<Patient> GetAllPatients()
         {
-            return PatientMockDB.AllPatients;
+            return PatientMockDB.AllPatients.AsQueryable();
         }
 
-        public Visit GetAvailableVisitById(long id)
+        public Visit GetFutureVisitById(long id)
         {
             return PatientMockDB.AvailableVisits.Where(c => c.Id == id).FirstOrDefault();
         }
 
-        public List<Visit> GetAvailableVisits()
+        public IQueryable<Visit> GetAvailableVisitsQuery()
         {
-            return PatientMockDB.AvailableVisits.ToList();
+            return PatientMockDB.AvailableVisits.AsQueryable();
         }
 
         //public Patient GetCurrentPatientData()
@@ -208,7 +208,7 @@ namespace Asklepios.Data.InMemoryContexts
 
         }
 
-        public List<MedicalReferral> GetMedicalReferralsByPatientId(long id)
+        public List<MedicalReferral> GetMedicalReferralsByPatientIdQuery(long id)
         {
             throw new NotImplementedException();
         }
@@ -224,6 +224,46 @@ namespace Asklepios.Data.InMemoryContexts
         }
 
         public User GetUserById(long parsedId)
+        {
+            throw new NotImplementedException();
+        }
+
+        public MedicalWorker GetMedicalWorkerDetailsById(long id)
+        {
+            throw new NotImplementedException();
+        }
+
+        public IQueryable<Visit> GetHistoricalVisitsQuery()
+        {
+            throw new NotImplementedException();
+        }
+
+        public IQueryable<Visit> GetHistoricalVisitsByPatientIdQuery(long id)
+        {
+            throw new NotImplementedException();
+        }
+
+        public List<Prescription> GetPrescriptionsByPatientId(long id)
+        {
+            throw new NotImplementedException();
+        }
+
+        public List<MedicalTestResult> GetTestResultsByPatientId(long id)
+        {
+            throw new NotImplementedException();
+        }
+
+        IQueryable<MedicalReferral> ICustomerServiceModuleRepository.GetMedicalReferralsByPatientIdQuery(long id)
+        {
+            throw new NotImplementedException();
+        }
+
+        public MedicalTestResult GetMedicalTestResultById(long idL)
+        {
+            throw new NotImplementedException();
+        }
+
+        public byte[] GetDocument(string documentPath, string webRootPath)
         {
             throw new NotImplementedException();
         }

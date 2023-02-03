@@ -13,17 +13,17 @@ namespace Asklepios.Data.Interfaces
 
         List<Location> GetAllLocations();
 
-        List<Patient> GetAllPatients();
+        IQueryable<Patient> GetAllPatients();
 
-        Visit GetAvailableVisitById(long id);
+        Visit GetFutureVisitById(long id);
 
         //Patient GetPatientData();
-        List<Visit> GetAvailableVisits();
+        IQueryable<Visit> GetAvailableVisitsQuery();
+        IQueryable<Visit> GetHistoricalVisitsByPatientIdQuery(long id);
+
         List<Visit> GetBookedVisitsByPatientId(long id);
 
         Visit GetHistoricalVisitById(long id);
-
-        List<Visit> GetHistoricalVisitsByPatientId(long id);
 
         Location GetLocationById(long locationId);
 
@@ -59,9 +59,8 @@ namespace Asklepios.Data.Interfaces
 
         void UpdateReferral(MedicalReferral referral);
         void UpdateVisit(Visit visit);
-        IQueryable<Visit> GetAvailableVisitsQuery();
+        //IQueryable<Visit> GetAvailableVisitsQuery();
         IQueryable<Visit> GetAllVisitsByPatientIdQuery(long id);
-        IQueryable<Visit> GetHistoricalVisitsByPatientIdQuery(long id);
         IQueryable<MedicalReferral> GetMedicalReferralsByPatientIdQuery(long id);
         IQueryable<MedicalTestResult> GetMedicalTestResultsByPatientIdQuery(long id);
         IQueryable<Prescription> GetPrescriptionsByPatientIdQuery(long id);

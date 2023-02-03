@@ -8,7 +8,7 @@ namespace Asklepios.Web.Areas.AdministrativeArea.Models
 {
     public class ScheduleItemsAddViewModel : IBaseViewModel
     {
-        public List<Visit> Schedule { get; set; }
+        //public List<Visit> Schedule { get; set; }
         public List<MedicalRoom> MedicalRooms { get; set; }
         public List<MedicalWorker> MedicalWorkers { get; set; }
         public List<MedicalService> PrimaryMedicalServices { get; set; }

@@ -25,7 +25,7 @@ namespace Asklepios.Data.Interfaces
         void DeleteRecommendation(long id);
         List<Visit> GetVisitsByMedicalWorkerId(long id);
 
-        Visit GetAvailableVisitById(long currentVisitId);
+        Visit GetFutureVisitById(long currentVisitId);
 
         Visit GetBookedVisitById(long currentVisitId);
 

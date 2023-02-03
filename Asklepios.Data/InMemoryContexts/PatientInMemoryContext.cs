@@ -32,7 +32,7 @@ namespace Asklepios.Data.InMemoryContexts
             //medicalRooms = GetMedicalRooms().ToList();
             locations = GetAllLocations();
             medicalWorkers = GetMedicalWorkers();
-            availableVisits = GetAvailableVisits().Where(c => c.Patient == null).ToList(); ;
+            availableVisits = GetAvailableVisitsQuery().Where(c => c.Patient == null).ToList(); ;
             //CurrentPatient = GetPatientData();
         }
 
@@ -66,9 +66,9 @@ namespace Asklepios.Data.InMemoryContexts
             return PatientMockDB.Locations;
         }
 
-        public List<Patient> GetAllPatients()
+        public IQueryable<Patient> GetAllPatients()
         {
-            return PatientMockDB.AllPatients;
+            return PatientMockDB.AllPatients.AsQueryable();
         }
 
         public IQueryable<Visit> GetAllVisitsByPatientId(long id)
@@ -81,20 +81,20 @@ namespace Asklepios.Data.InMemoryContexts
             throw new NotImplementedException();
         }
 
-        public Visit GetAvailableVisitById(long id)
+        public Visit GetFutureVisitById(long id)
         {
-            return GetAvailableVisits().Where(c => c.Id == id).FirstOrDefault();
-        }
-
-        public List<Visit> GetAvailableVisits()
-        {
-            return PatientMockDB.AvailableVisits.ToList();
+            return GetAvailableVisitsQuery().Where(c => c.Id == id).FirstOrDefault();
         }
 
         public IQueryable<Visit> GetAvailableVisitsQuery()
         {
-            throw new NotImplementedException();
+            return PatientMockDB.AvailableVisits.AsQueryable();
         }
+
+        //public IQueryable<Visit> GetAvailableVisitsQuery()
+        //{
+        //    throw new NotImplementedException();
+        //}
 
         public List<Visit> GetBookedVisitsByPatientId(long id)
         {

@@ -15,7 +15,7 @@ namespace Asklepios.Web.Areas.AdministrativeArea.Models
         public Patient Patient { get; set; }
         public List<MedicalPackage> MedicalPackages { get; set; }
         public List<NFZUnit> NFZUnits { get; set; }
-        public List<Patient> AllPatients { get; set; }
+        public IQueryable<Patient> AllPatients { get; set; }
         public List<Patient> FilteredPatients
         {
             get
@@ -117,7 +117,7 @@ namespace Asklepios.Web.Areas.AdministrativeArea.Models
 
         private List<Patient> GetFilteredPatientsList()
         {
-            List<Patient> filteredPatients = AllPatients;
+            IQueryable<Patient> filteredPatients = AllPatients;
             if (AllPatients== null)
             {
                 return null;
@@ -126,7 +126,7 @@ namespace Asklepios.Web.Areas.AdministrativeArea.Models
             {
                 if (!string.IsNullOrWhiteSpace(SelectedName))
                 {
-                    filteredPatients = filteredPatients.Where(c => c.Person.Name.Contains(SelectedName)).ToList();
+                    filteredPatients = filteredPatients.Where(c => c.Person.Name.Contains(SelectedName)).AsQueryable();
                     if (filteredPatients == null)
                     {
                         return null;
@@ -135,7 +135,7 @@ namespace Asklepios.Web.Areas.AdministrativeArea.Models
             }
             if (!string.IsNullOrWhiteSpace(SelectedSurname))
             {
-                filteredPatients = filteredPatients.Where(c => c.Person.Surname.Contains(SelectedSurname)).ToList();
+                filteredPatients = filteredPatients.Where(c => c.Person.Surname.Contains(SelectedSurname)).AsQueryable();
                 if (filteredPatients == null)
                 {
                     return null;
@@ -143,7 +143,7 @@ namespace Asklepios.Web.Areas.AdministrativeArea.Models
             }
             if (!string.IsNullOrWhiteSpace(SelectedPESEL))
             {
-                filteredPatients = filteredPatients.Where(c => c.Person.PESEL.Contains(SelectedPESEL)).ToList();
+                filteredPatients = filteredPatients.Where(c => c.Person.PESEL.Contains(SelectedPESEL)).AsQueryable();
                 if (filteredPatients == null)
                 {
                     return null;
@@ -151,7 +151,7 @@ namespace Asklepios.Web.Areas.AdministrativeArea.Models
             }
             if (!string.IsNullOrWhiteSpace(SelectedPassportNumber))
             {
-                filteredPatients = filteredPatients.Where(c => c.Person.Surname.Contains(SelectedPassportNumber)).ToList();
+                filteredPatients = filteredPatients.Where(c => c.Person.Surname.Contains(SelectedPassportNumber)).AsQueryable();
                 if (filteredPatients == null)
                 {
                     return null;
@@ -163,7 +163,7 @@ namespace Asklepios.Web.Areas.AdministrativeArea.Models
                 //{
                 //    if (lid > 0)
                 //    {
-                filteredPatients = filteredPatients.Where(c => c.MedicalPackage.Id == SelectedMedicalPackageId).ToList();
+                filteredPatients = filteredPatients.Where(c => c.MedicalPackage.Id == SelectedMedicalPackageId).AsQueryable();
                 if (filteredPatients == null)
                         {
                             return null;
@@ -177,7 +177,7 @@ namespace Asklepios.Web.Areas.AdministrativeArea.Models
                 //{
                 //    if (lid > 0)
                 //    {
-                filteredPatients = filteredPatients.Where(c => c.NFZUnit.Id == SelectedNFZUnitId).ToList();
+                filteredPatients = filteredPatients.Where(c => c.NFZUnit.Id == SelectedNFZUnitId).AsQueryable();
                 if (filteredPatients == null)
                 {
                     return null;
@@ -187,7 +187,7 @@ namespace Asklepios.Web.Areas.AdministrativeArea.Models
             }
             if (SelectedId> 0)
             {
-                filteredPatients = filteredPatients.Where(c => c.Id == SelectedId).ToList();
+                filteredPatients = filteredPatients.Where(c => c.Id == SelectedId).AsQueryable();
                 if (filteredPatients == null)
                 {
                     return null;
@@ -195,7 +195,7 @@ namespace Asklepios.Web.Areas.AdministrativeArea.Models
             }
             if (SelectedGender.HasValue)
             {
-                filteredPatients = filteredPatients.Where(c => c.Person.Gender== SelectedGender).ToList();
+                filteredPatients = filteredPatients.Where(c => c.Person.Gender== SelectedGender).AsQueryable();
                 if (filteredPatients == null)
                 {
                     return null;
@@ -222,14 +222,14 @@ namespace Asklepios.Web.Areas.AdministrativeArea.Models
 
 
 
-            filteredPatients = filteredPatients.OrderBy(c => c.Person.FullName).ToList();
-            if (filteredPatients.Count < ItemsPerPage)
+            filteredPatients = filteredPatients.OrderBy(c => c.Person.FullName).AsQueryable();
+            if (filteredPatients.Count() < ItemsPerPage)
             {
-                return filteredPatients;
+                return filteredPatients.ToList();
             }
             else
             {
-                return filteredPatients.GetRange((CurrentPageNum - 1) * ItemsPerPage, ItemsPerPage);
+                return filteredPatients.Skip((CurrentPageNum - 1) * ItemsPerPage).Take( ItemsPerPage).ToList();
             }
         }
     }

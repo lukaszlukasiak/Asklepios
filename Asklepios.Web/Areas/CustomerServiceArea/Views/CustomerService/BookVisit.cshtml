@@ -1,6 +1,8 @@
 ﻿@model Asklepios.Web.Areas.CustomerServiceArea.Models.BookVisitViewModel
 @{
     ViewData["Title"] = "View";
+        List<Visit> visits = Model.FilteredVisits;
+
 }
 
 <h1 style="text-align:center">
@@ -9,37 +11,110 @@
 
 <form asp-action="BookVisit" method="post">
     @{
-        SelectList workersItems = new SelectList(Model.GetMedicalWorkers, "Id", "FullProffesionalName");
-        SelectList locationItems = new SelectList(Model.GetLocations, "Id", "Name");
-        SelectList categoriesList = new SelectList(Model.GetVisitCategories, "Id", "CategoryName");
-        SelectList servicesList = new SelectList(Model.GetMedicalServices, "Id", "Name");
+        SelectList workersItems = null;
+        SelectList locationItems = null;
+        SelectList categoriesList = null;
+        SelectList servicesList = null;
+
+        if(visits.Count()>0)
+        {
+        //if (Model.GetMedicalWorkers?.Count()>0)
+        //{
+            workersItems = new SelectList(Model.GetMedicalWorkers, "Id", "FullProffesionalName");
+        //}
+        //if (Model.GetLocations?.Count() > 0)
+        //{
+            locationItems = new SelectList(Model.GetLocations, "Id", "Name");    
+        //}
+        //if  (Model.GetVisitCategories?.Count()>0)
+        //{
+            categoriesList = new SelectList(Model.GetVisitCategories, "Id", "CategoryName");    
+@*        }
+        if (Model.GetMedicalServices?.Count()>0)
+        {
+            *@
+            servicesList = new SelectList(Model.GetMedicalServices, "Id", "Name");
+        }
+        else
+        {
+            workersItems = new SelectList(Model.AllMedicalWorkers, "Id", "FullProffesionalName");
+            locationItems = new SelectList(Model.AllLocations, "Id", "Name");    
+            categoriesList = new SelectList(Model.AllCategories, "Id", "CategoryName");    
+            servicesList = new SelectList(Model.AllMedicalServices, "Id", "Name");
+
+        }
     }
-    <select class="form-control  mb-1" asp-for="SelectedLocationId" asp-items="locationItems">
-        <option value="0">Wybierz oddział</option>
-    </select>
+    @if (locationItems==null)
+    {
+        <select class="form-control  mb-1" asp-for="SelectedLocationId" >
+            <option value="0">Wybierz oddział</option>
+        </select>
 
-    <select class="form-control  mb-1" asp-for="SelectedCategoryId" asp-items="categoriesList">
-        <option value="0">Wybierz kategorię wizyty</option>
-    </select>
-    <select class="form-control  mb-1" asp-for="SelectedServiceId" asp-items="servicesList">
-        <option value="0">Wybierz specjalność</option>
-    </select>
+    }
+    else
+    {
+        <select class="form-control  mb-1" asp-for="SelectedLocationId" asp-items="locationItems">
+            <option value="0">Wybierz oddział</option>
+        </select>
 
-    <select class="form-control mb-1" asp-for="SelectedMedicalWorkerId" asp-items="workersItems" onchange="">
-        <option value="0">Wybierz lekarza</option>
-    </select>
+    }
+    @if (categoriesList==null)
+    {
+        <select class="form-control  mb-1" asp-for="SelectedCategoryId" >
+            <option value="0">Wybierz kategorię wizyty</option>
+        </select>
+    }
+    else
+    {
+        <select class="form-control  mb-1" asp-for="SelectedCategoryId" asp-items="categoriesList">
+            <option value="0">Wybierz kategorię wizyty</option>
+        </select>
+
+    }
+    @if (servicesList==null)
+    {
+        <select class="form-control  mb-1" asp-for="SelectedServiceId" >
+            <option value="0">Wybierz specjalność</option>
+        </select>
+
+    }
+    else
+    {
+        <select class="form-control  mb-1" asp-for="SelectedServiceId" asp-items="servicesList">
+            <option value="0">Wybierz specjalność</option>
+        </select>
+
+    }
+    @if (workersItems==null)
+    {
+        <select class="form-control mb-1" asp-for="SelectedMedicalWorkerId" >
+            <option value="0">Wybierz lekarza</option>
+        </select>
+    }
+    else
+    {
+        <select class="form-control mb-1" asp-for="SelectedMedicalWorkerId" asp-items="workersItems">
+            <option value="0">Wybierz lekarza</option>
+        </select>
+    }
+
     <div class="d-flex flex-column">
-        <button class=" btn btn-secondary   mb-1">Filtruj!</button>
+        <button class=" btn btn-primary   mb-1">Filtruj!</button>
     </div>
     @*<select asp-for="@Model.SearchOptions.SelectedDoctor" asp-items="@Model.GetMedicalWorkers.ToList()" class="form-control">
             <option>Select Role</option>
         </select>
         @Html.DropDownList("Title", Model.Select(m => new SelectListItem() { Text = m., Value = m.Title }).ToList(), "Select")*@
 </form>
+<form  method="get" asp-action="BookVisit"  >
+    <div class="d-flex flex-column">
+        <button class=" btn btn-secondary   mb-1">Wyczyść filtr!</button>
+    </div>
 
+</form>
 
+    
 @{
-    List<Visit> visits = Model.FilteredVisits;
     if (visits.Count > 0)
     {
         @for (int i = 0; i < visits.Count; i++)

@@ -15,60 +15,80 @@ namespace Asklepios.Web.Areas.CustomerServiceArea.Models
 
         public Patient SelectedPatient { get; set; }
         public string UserName { get; set; }
-
+        public IQueryable<Visit> AllVisits { get; set; }
         //public Patient Patient { get; set; }
 
-        public List<Visit> GetCommingVisits(int numberOfVisits=3)
+        public List<Visit> GetCommingVisits(int numberOfVisits=0)
         {
-            List<Visit> commingVisits = new List<Visit>();
-            List<Visit> visits = SelectedPatient.BookedVisits?.OrderBy(c=>c.DateTimeSince).ToList();
 
-            if (visits.Count>0)
+            if (AllVisits.Count()>0)
             {
-                if (numberOfVisits> visits.Count)
+                if (numberOfVisits==0)
                 {
-                    numberOfVisits = visits.Count;
+                    return AllVisits.OrderBy(c => c.DateTimeSince).ToList();
                 }
+                else
+                {
+                    return AllVisits.OrderBy(c => c.DateTimeSince).Take(numberOfVisits).ToList();
 
-                for (int i = 0; i < numberOfVisits; i++)
-                {
-                    commingVisits.Add(visits.ElementAt(i));
                 }
-                return commingVisits;
             }
             else
             {
-                return commingVisits;
+                return null;
             }
         }
-        public List<Visit> GetHistoricalVisits(int numberOfVisits = 3)
+        public List<Visit> GetHistoricalVisits(int numberOfVisits = 0)
         {
-            List<Visit> pastVisits = new List<Visit>();
-
-            List<Visit> visits = SelectedPatient.HistoricalVisits;
-            if (visits.Count > 0)
+            if (AllVisits.Count() > 0)
             {
-                if (numberOfVisits > visits.Count)
+                if (numberOfVisits == 0)
                 {
-                    numberOfVisits = visits.Count;
+                    return AllVisits.OrderByDescending(c => c.DateTimeSince).ToList();
                 }
+                else
+                {
+                    return AllVisits.OrderByDescending(c => c.DateTimeSince).Take(numberOfVisits).ToList();
 
-                for (int i = 0; i < numberOfVisits; i++)
-                {
-                    pastVisits.Add(SelectedPatient.HistoricalVisits.ElementAt(i));
                 }
-                return pastVisits;
             }
             else
             {
-                return pastVisits;
+                return null;
             }
         }
-        public List<MedicalReferral> GetValidReferrals()
-        {
-            List<MedicalReferral> referrals = null;// new List<MedicalReferral>();
-            referrals = SelectedPatient.MedicalReferrals.Where(c => c.IsActive == true).ToList();
-            return referrals;
-        }
+        public List<MedicalReferral> MedicalReferrals { get; set; }
+        public List<Prescription> Prescriptions { get; set; }
+        public List<MedicalTestResult> TestResults { get; set; }
+        //public List<MedicalReferral> GetValidReferrals()
+        //{
+        //    List<MedicalReferral> referrals = null;// new List<MedicalReferral>();
+        //    referrals = AllVisits
+        //        .Where(c => c.ExaminationReferrals != null)
+        //        .SelectMany(d => d.ExaminationReferrals)
+        //        .ToList()
+        //        .Where(e => e.IsActive)
+        //        .ToList();//SelectedPatient.MedicalReferrals.Where(c => c.IsActive == true).ToList();
+        //    return referrals;
+        //}
+        //public List<Prescription> GetPrescriptions()
+        //{
+        //    List<Prescription> prescriptions = null;// new List<MedicalReferral>();
+        //    prescriptions = AllVisits
+        //        .Where(c => c.Prescription!= null)
+        //        .Select(d => d.Prescription)
+        //        .ToList();
+        //    return prescriptions;
+        //}
+        //public List<MedicalTestResult> GetTestResults()
+        //{
+        //    List<MedicalTestResult> results = null;// new List<MedicalReferral>();
+        //    results = AllVisits
+        //        .Where(c => c.MedicalTestResult != null)
+        //        .Select(d => d.MedicalTestResult)
+        //        .ToList();//
+        //    return results;
+        //}
+
     }
 }

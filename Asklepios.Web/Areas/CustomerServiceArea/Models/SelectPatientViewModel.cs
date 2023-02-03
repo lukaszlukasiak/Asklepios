@@ -8,11 +8,12 @@ namespace Asklepios.Web.Areas.CustomerServiceArea.Models
 {
     public class SelectPatientViewModel:IBaseViewModel
     {
-        public List<Patient> AllPatients { get; set; }
+        public IQueryable<Patient> AllPatients { get; set; }
         public string SelectedPESEL { get; set; }
         public string SelectedPassportNumber { get; set; }
         public string SelectedName { get; set; }
         public string SelectedSurname { get; set; }
+        public string SelectedId { get; set; }
         private List<Patient> _filteredPatients;
         public List<Patient> FilteredPatients
         {
@@ -33,15 +34,31 @@ namespace Asklepios.Web.Areas.CustomerServiceArea.Models
 
         private List<Patient> FilterPatients()
         {
-            List<Patient> filteredPatients = AllPatients;
-            if (AllPatients==null)
-            {
+            IQueryable <Patient> filteredPatients = AllPatients;
+             if (AllPatients==null)
+           {
                 return null;
+            }
+            if (!String.IsNullOrWhiteSpace(SelectedId))
+            {
+                if (long.TryParse(SelectedId,out long lId))
+                {
+                    filteredPatients = filteredPatients
+                        .Where(c => c.Id == lId)
+                        .AsQueryable();
+                    if (filteredPatients == null)
+                    {
+                        return null;
+                    }
+
+                }
             }
 
             if (!String.IsNullOrWhiteSpace(SelectedName))
             {
-                filteredPatients = filteredPatients.Where(c => c.Person.Name.Contains(SelectedName)).ToList();
+                filteredPatients = filteredPatients
+                    .Where(c => c.Person.Name.Contains(SelectedName))
+                    .AsQueryable();
                 if (filteredPatients == null)
                 {
                     return null;
@@ -49,7 +66,9 @@ namespace Asklepios.Web.Areas.CustomerServiceArea.Models
             }
             if (!String.IsNullOrWhiteSpace(SelectedSurname))
             {
-                filteredPatients = filteredPatients.Where(c => c.Person.Surname.Contains(SelectedSurname)).ToList();
+                filteredPatients = filteredPatients
+                    .Where(c => c.Person.Surname.Contains(SelectedSurname))
+                    .AsQueryable();
                 if (filteredPatients == null)
                 {
                     return null;
@@ -57,7 +76,9 @@ namespace Asklepios.Web.Areas.CustomerServiceArea.Models
             }
             if (!String.IsNullOrWhiteSpace(SelectedPESEL))
             {
-                filteredPatients = filteredPatients.Where(c => c.Person.PESEL.Contains(SelectedPESEL)).ToList();
+                filteredPatients = filteredPatients
+                    .Where(c => c.Person.PESEL.Contains(SelectedPESEL))
+                    .AsQueryable();
                 if (filteredPatients == null)
                 {
                     return null;
@@ -65,11 +86,13 @@ namespace Asklepios.Web.Areas.CustomerServiceArea.Models
             }
             if (!String.IsNullOrWhiteSpace(SelectedPassportNumber))
             {
-                filteredPatients = filteredPatients.Where(c => c.Person.PassportNumber.Contains(SelectedPassportNumber)).ToList();
+                filteredPatients = filteredPatients
+                    .Where(c => c.Person.PassportNumber.Contains(SelectedPassportNumber))
+                    .AsQueryable();
             }
-            return filteredPatients;
+            return filteredPatients.ToList();
         }
-        public SelectPatientViewModel(Patient selectedPatient, List<Patient> patients)
+        public SelectPatientViewModel(Patient selectedPatient, IQueryable<Patient> patients)
         {
             SelectedPatient = selectedPatient;
             AllPatients = patients;

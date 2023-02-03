@@ -9,7 +9,7 @@ namespace Asklepios.Web.Areas.CustomerServiceArea.Models
 {
     public class BookVisitViewModel: SearchViewModel,IBaseViewModel
     {
-        public List<Visit> AllVisitsList { get; set; }
+        public IQueryable<Visit> AllVisitsList { get; set; }
         public List<Visit> _filteredVisits;
         public List<Visit> FilteredVisits
         {
@@ -44,7 +44,7 @@ namespace Asklepios.Web.Areas.CustomerServiceArea.Models
         //public string SelectedVisitCategoryId
         //{ get; set; }
 
-        public int CurrentPageNum { get; set; } = 0;
+        public int CurrentPageNum { get; set; } = 1;
         public int NumberOfPages
         {
             get
@@ -85,14 +85,29 @@ namespace Asklepios.Web.Areas.CustomerServiceArea.Models
         {
             get
             {
-                if (AllVisitsList?.Count > 0)
+                if (FilteredVisits == null)
                 {
-                    List<Location> locations = AllVisitsList.Select(c => c.Location).Distinct().ToList();
-                    return locations;
+                    return null;
+                }
+                if (IsFilterActive)
+                {
+                    if (FilteredVisits.Count() > 0)
+                    {
+                        List<Location> locations = FilteredVisits
+                            .Select(c => c.Location)
+                            .Distinct()
+                            .OrderBy(d => d.Name)
+                            .ToList();
+                        return locations;
+                    }
+                    else
+                    {
+                        return null;
+                    }
                 }
                 else
                 {
-                    return null;
+                    return AllLocations;
                 }
             }
         }
@@ -100,14 +115,30 @@ namespace Asklepios.Web.Areas.CustomerServiceArea.Models
         {
             get
             {
-                if (AllVisitsList?.Count > 0)
+                if (IsFilterActive)
                 {
-                    List<MedicalWorker> workers = AllVisitsList.Select(c => c.MedicalWorker).Distinct().ToList();
-                    return workers;
+                    if (FilteredVisits == null)
+                    {
+                        return null;
+                    }
+                    if (FilteredVisits.Count() > 0)
+                    {
+                        List<MedicalWorker> workers = FilteredVisits
+                            .Select(c => c.MedicalWorker)
+                            .Distinct()
+                            .OrderBy(d => d.FullProffesionalName)
+                            .ToList();
+                        return workers;
+                    }
+                    else
+                    {
+                        return null;
+                    }
+
                 }
                 else
                 {
-                    return null;
+                    return AllMedicalWorkers;
                 }
             }
         }
@@ -115,14 +146,30 @@ namespace Asklepios.Web.Areas.CustomerServiceArea.Models
         {
             get
             {
-                if (AllVisitsList?.Count > 0)
+                if (IsFilterActive)
                 {
-                    List<MedicalService> services = AllVisitsList.Select(c => c.PrimaryService).Distinct().ToList();
-                    return services;
+                    if (FilteredVisits == null)
+                    {
+                        return null;
+                    }
+                    if (FilteredVisits.Count() > 0)
+                    {
+                        List<MedicalService> services = FilteredVisits
+                            .Select(c => c.PrimaryService)
+                            .Distinct()
+                            .OrderBy(d=>d.Name)
+                            .ToList();
+                        return services;
+                    }
+                    else
+                    {
+                        return null;
+                    }
+
                 }
                 else
                 {
-                    return null;
+                    return AllMedicalServices;
                 }
             }
         }
@@ -130,14 +177,29 @@ namespace Asklepios.Web.Areas.CustomerServiceArea.Models
         {
             get
             {
-                if (AllVisitsList?.Count > 0)
+                if (IsFilterActive)
                 {
-                    List<VisitCategory> categories = AllVisitsList.Select(c => c.VisitCategory).Distinct().ToList();
-                    return categories;
+                    if (FilteredVisits == null)
+                    {
+                        return null;
+                    }
+                    if (FilteredVisits.Count() > 0)
+                    {
+                        List<VisitCategory> categories = FilteredVisits
+                            .Select(c => c.VisitCategory)
+                            .Distinct()
+                            .OrderBy(d => d.CategoryName)
+                            .ToList();
+                        return categories;
+                    }
+                    else
+                    {
+                        return null;
+                    }
                 }
                 else
                 {
-                    return null;
+                    return AllCategories;
                 }
             }
         }
@@ -167,7 +229,7 @@ namespace Asklepios.Web.Areas.CustomerServiceArea.Models
             //{
             //    return AllVisitsList;
             //}
-            List<Visit> filteredVisits = AllVisitsList;
+            IQueryable<Visit> filteredVisits = AllVisitsList;
             if (AllVisitsList == null)
             {
                 return null;
@@ -180,7 +242,7 @@ namespace Asklepios.Web.Areas.CustomerServiceArea.Models
                     {
                         if (lid>0)
                         {
-                            filteredVisits = filteredVisits.Where(c => c.MedicalWorker.Id == lid).ToList();
+                            filteredVisits = filteredVisits.Where(c => c.MedicalWorker.Id == lid);
                             if (filteredVisits == null)
                             {
                                 return null;
@@ -195,7 +257,7 @@ namespace Asklepios.Web.Areas.CustomerServiceArea.Models
                 {
                     if (lid>0)
                     {
-                        filteredVisits = filteredVisits.Where(c => c.Location.Id == lid).ToList();
+                        filteredVisits = filteredVisits.Where(c => c.Location.Id == lid);
                         if (filteredVisits == null)
                         {
                             return null;
@@ -210,7 +272,7 @@ namespace Asklepios.Web.Areas.CustomerServiceArea.Models
                 {
                     if (lid>0)
                     {
-                        filteredVisits = filteredVisits.Where(c => c.PrimaryService.Id == lid).ToList();
+                        filteredVisits = filteredVisits.Where(c => c.PrimaryService.Id == lid);
                         if (filteredVisits == null)
                         {
                             return null;
@@ -225,7 +287,7 @@ namespace Asklepios.Web.Areas.CustomerServiceArea.Models
                 {
                     if (lid>0)
                     {
-                        filteredVisits = filteredVisits.Where(c => c.VisitCategory.Id == int.Parse(SelectedCategoryId)).ToList();
+                        filteredVisits = filteredVisits.Where(c => c.VisitCategory.Id == int.Parse(SelectedCategoryId));
                         if (filteredVisits == null)
                         {
                             return null;
@@ -241,14 +303,14 @@ namespace Asklepios.Web.Areas.CustomerServiceArea.Models
             //        return null;
             //    }
             //}
-            filteredVisits = filteredVisits.OrderBy(c => c.DateTimeSince).ToList();
-            if (filteredVisits.Count<ItemsPerPage)
+            filteredVisits = filteredVisits.OrderBy(c => c.DateTimeSince);
+            if (filteredVisits.Count()<ItemsPerPage)
             {
-                return filteredVisits;
+                return filteredVisits.ToList();
             }
             else
             {
-                return filteredVisits.GetRange(CurrentPageNum, ItemsPerPage);
+                return filteredVisits.Skip((CurrentPageNum-1)*ItemsPerPage).Take(ItemsPerPage).ToList();
             }           
         }
     }
