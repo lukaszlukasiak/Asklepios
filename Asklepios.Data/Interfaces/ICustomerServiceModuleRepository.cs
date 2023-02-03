@@ -10,20 +10,22 @@ namespace Asklepios.Data.Interfaces
     public interface ICustomerServiceModuleRepository
     {
         //Patient GetCurrentPatientData();
-        List<Visit> GetAvailableVisits();
+        IQueryable<Visit> GetAvailableVisitsQuery();
         List<Location> GetLocations();
         List<MedicalWorker> GetMedicalWorkers();
-        List<Visit> GetHistoricalVisits();
+        IQueryable<Visit> GetHistoricalVisitsQuery();
         List<MedicalService> GetMedicalServices();
         List<MedicalPackage> GetMedicalPackages();
         List<NFZUnit> GetNFZUnits();
         List<VisitCategory> GetVisitCategories();
         List<Location> GetAllLocations();
-        List<Patient> GetAllPatients();
+        IQueryable<Patient> GetAllPatients();
         Patient GetPatientById(long id);
         Location GetLocationById(long locationId);
-        Visit GetAvailableVisitById(long id);
+        Visit GetFutureVisitById(long id);
         MedicalWorker GetMedicalWorkerById(long id);
+        MedicalWorker GetMedicalWorkerDetailsById(long id);
+
         Visit GetHistoricalVisitById(long id);
         MedicalService GetMedicalServiceById(long id);
         MedicalPackage GetMedicalPackageById(long id);
@@ -36,8 +38,12 @@ namespace Asklepios.Data.Interfaces
         Person GetPersonById(long personId);
         void ResignFromVisit(long visitId);
         void BookVisit(long patientId, long visitId);
-        List<Visit> GetHistoricalVisitsByPatientId(long id);
+        IQueryable<Visit> GetHistoricalVisitsByPatientIdQuery(long id);
         List<Visit> GetBookedVisitsByPatientId(long id);
-        List<MedicalReferral> GetMedicalReferralsByPatientId(long id);
+        IQueryable<MedicalReferral> GetMedicalReferralsByPatientIdQuery(long id);
+        List<Prescription> GetPrescriptionsByPatientId(long id);
+        List<MedicalTestResult> GetTestResultsByPatientId(long id);
+        MedicalTestResult GetMedicalTestResultById(long idL);
+        byte[] GetDocument(string documentPath, string webRootPath);
     }
 }

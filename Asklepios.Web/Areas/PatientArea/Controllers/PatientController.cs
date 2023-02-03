@@ -153,7 +153,7 @@ namespace Asklepios.Web.Areas.PatientArea.Controllers
                 if (long.TryParse(id, out long lid))
                 {
                     VisitViewModel model = new VisitViewModel();
-                    Visit visit = _context.GetAvailableVisitById(lid);
+                    Visit visit = _context.GetFutureVisitById(lid);
                     model.Visit = visit;
                     model.UserName = _loggedUser.Person.FullName;
                     model.Notifications = _context.GetNotificationsByPatientId(_selectedPatient.Id);
@@ -180,7 +180,7 @@ namespace Asklepios.Web.Areas.PatientArea.Controllers
                 {
                     //Patient patient = _context.CurrentPatient;
 
-                    Visit visit = _context.GetAvailableVisitById(lid);
+                    Visit visit = _context.GetFutureVisitById(lid);
 
                     if (visit.PrimaryService.RequireRefferal)
                     {
@@ -737,7 +737,7 @@ namespace Asklepios.Web.Areas.PatientArea.Controllers
 
                 if (visitToReschedule != null)
                 {
-                    Visit newVisit = _context.GetAvailableVisitById(model.SelectedNewVisitId);
+                    Visit newVisit = _context.GetFutureVisitById(model.SelectedNewVisitId);
                     if (newVisit != null)
                     {
 
@@ -867,10 +867,11 @@ namespace Asklepios.Web.Areas.PatientArea.Controllers
                 //Build the File Path.
                 if (long.TryParse(id, out long idL))
                 {
-                    //PdfSharpCore.Pdf.PdfDocument pdf = _context.CurrentPatient.TestsResults.Where(c => c.Id == idL).FirstOrDefault().PdfDocument;
-
-                    //Read the File data into Byte Array.
                     MedicalTestResult medicalTestResult = _context.GetMedicalTestResultById(idL);
+                    if (medicalTestResult.PatientId != _selectedPatient.Id)
+                    {
+                        return NotFound();
+                    }
 
                     byte[] bytes = _context.GetDocument(medicalTestResult.DocumentPath, _hostEnvironment.WebRootPath);// _context.//_selectedPatient.TestsResults.Where(c => c.Id == idL).FirstOrDefault()?.Document;//pdf.  System.IO.File.ReadAllBytes(pdf);
 

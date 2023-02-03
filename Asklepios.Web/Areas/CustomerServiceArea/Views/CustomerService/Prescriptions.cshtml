@@ -1,14 +1,15 @@
 ﻿@model Asklepios.Web.Areas.CustomerServiceArea.Models.PatientViewModel
 @{
     ViewData["Title"] = "View";
+    List<Prescription> prescriptions = Model.Prescriptions;
 }
 
 
-@if (Model.SelectedPatient.MedicalReferrals != null)
+@if (prescriptions != null)
 {
     <h1 style="text-align:center">Recepty</h1>
 
-    @foreach (var prescription in Model.SelectedPatient.Prescriptions)
+    @foreach (var prescription in prescriptions)
     {
 
         <partial name="_Prescription" model="prescription" />

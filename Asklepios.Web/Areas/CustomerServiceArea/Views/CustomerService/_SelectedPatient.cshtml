@@ -4,7 +4,9 @@
         <div class="p-2  pt-3 align-content-center align-items-center align-self-center mx-auto flex-grow-1" style="width:400px; text-align:center">
             <div class="d-flex flex-fill  justify-content-center" style="text-align:center">
                 @*<img alt="@Model.Person.FullName" src="@Model.ImagePath" class="img-fluid" style="display: block; max-height:300px;*@
-                <div class="fas fa-portrait .bg-gradient-dark" style="font-size: 15em; color: #4e73df" ></div>
+@*                <div class="fas fa-portrait .bg-gradient-dark" style="font-size: 15em; color: #4e73df" ></div>
+*@                                <img alt="@Model.Person.FullName" src="@Model.Person.ImageSource" class="img-fluid" style="display: block; max-height:300px;
+        border-radius: 6px; ">
 
                 @*border-radius: 6px; ">*@
             </div>
@@ -14,6 +16,10 @@
                 @Model.Person.FullName
             </h3>
             <br>
+            <h3 style="font-weight:900;">
+                Id: @Model.Id   
+            </h3>
+
             <h3 style="font-weight:900;">
                 Pakiet: @Model.MedicalPackage.Name
             </h3>

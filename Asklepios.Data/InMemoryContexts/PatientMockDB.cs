@@ -165,6 +165,7 @@ namespace Asklepios.Data.InMemoryContexts
             //FillManyToManyRelationsForVisit();
 
             BookRandomVisits();
+            AddMinorServicesToVisitsRelations(HistoricalVisits);
         }
 
         //private static void FillManyToManyRelationsForVisit()
@@ -221,30 +222,38 @@ namespace Asklepios.Data.InMemoryContexts
 
         private static void BookRandomVisits()
         {
+            Random rnd = new Random();
+            int range = AvailableVisits.Count / 8;
+            List<Visit> visits = AvailableVisits.ToList();
+
             foreach (Patient patient in AllPatients)
             {
-                for (int i = 1; i < 4; i++)
+                for (int i = 1; i < 9; i++)
                 {
-                    int number = (333 * i % AvailableVisits.Count);
-                    AvailableVisits.ElementAt(number).Patient = patient;
-                    AvailableVisits.ElementAt(number).PatientId = patient.Id;
+                    //int number = (400 * i % AvailableVisits.Count);
+                    int number = rnd.Next(range*(i-1), range*i);
 
+                    visits.ElementAt(number).Patient = patient;
+                    visits.ElementAt(number).PatientId = patient.Id;
+                    visits.ElementAt(number).VisitStatus = Core.Enums.VisitStatus.Booked;
                 }
             }
 
-            foreach (MedicalWorker medicalWorker in MedicalWorkers)
-            {
-                List<Visit> visits = AvailableVisits.Where(c => c.MedicalWorker.Id == medicalWorker.Id).ToList();
-                int pNumber = 0;
-                for (int i = 1; i < 4; i++)
-                {
-                    pNumber++;
+            //foreach (MedicalWorker medicalWorker in MedicalWorkers)
+            //{
+            //    List<Visit> visits = AvailableVisits.Where(c => c.MedicalWorker.Id == medicalWorker.Id).ToList();
+            //    int pNumber = 0;
+            //    for (int i = 1; i < 4; i++)
+            //    {
+            //        pNumber++;
 
-                    int number = (333 * i % BookedVisits.Count);
-                    BookedVisits.ElementAt(number).Patient = AllPatients.ElementAt(pNumber % AllPatients.Count);
-                    BookedVisits.ElementAt(number).PatientId = AllPatients.ElementAt(pNumber % AllPatients.Count).Id;
-                }
-            }
+            //        int number = (500 * i % BookedVisits.Count);
+            //        BookedVisits.ElementAt(number).Patient = AllPatients.ElementAt(pNumber % AllPatients.Count);
+            //        BookedVisits.ElementAt(number).PatientId = AllPatients.ElementAt(pNumber % AllPatients.Count).Id;
+            //        BookedVisits.ElementAt(number).VisitStatus = Core.Enums.VisitStatus.Booked;
+
+            //    }
+            //}
         }
 
         internal static List<MedicalServiceDiscount> GetMedicalServiceDiscounts()
@@ -512,7 +521,7 @@ namespace Asklepios.Data.InMemoryContexts
 
             List<Visit> availableVisits = new List<Visit>();
             int dayOffset = -1;
-            DateTimeOffset start = new DateTimeOffset(dateTimeOffset.Year, dateTimeOffset.Month, dateTimeOffset.Day, 8, 0, 0, new TimeSpan(0, 0, 0)).AddDays(0);
+            DateTimeOffset start = new DateTimeOffset(dateTimeOffset.Year, dateTimeOffset.Month, dateTimeOffset.Day, 8, 0, 0, new TimeSpan(0, 0, 0)).AddDays(5);
             long startId = 100;
             int locationsNumber = Locations.Count;
 
@@ -539,14 +548,18 @@ namespace Asklepios.Data.InMemoryContexts
                 //VisitCategory visitCategory = VisitCategories.Where(c => c.PrimaryMedicalServices.Any(d => d.Id == service.Id)).FirstOrDefault();
 
                 //List<VisitCategory> categories = VisitCategories.Where(c => c.PrimaryMedicalServices.Any(d => d.Id == medicalService.Id)).ToList();
+
                 for (int j = 0; j < MedicalWorkers.Count; j++)
                 {
-                    minutsOffset = -1;
                     MedicalWorker medicalWorker = MedicalWorkers.ElementAt(j);
 
-                    int servicesCounter = medicalWorker.MedicalServices.Where(c => c.IsPrimaryService).Count();
+                    List<MedicalService> primaryServices = medicalWorker.MedicalServices.Where(c => c.IsPrimaryService).ToList();
+                    int servicesCounter = primaryServices.Count();
+
+                    minutsOffset = -1;
+
                     int serviceIndex = (i + 1)% (servicesCounter ) ;
-                    MedicalService service = medicalWorker.MedicalServices.Where(c => c.IsPrimaryService).ToList().ElementAt(serviceIndex);
+                    MedicalService service = primaryServices.ElementAt(serviceIndex);
                     List<VisitCategory> categories = VisitCategories.Where(c => c.MedicalServices.Any(d => d.Id == service.Id)).ToList();
                     VisitCategory visitCategory = categories[(i + 1)%(categories.Count ) ];
                     Location location = Locations.ElementAt( (j + 1)% (locationsNumber ));
@@ -585,12 +598,12 @@ namespace Asklepios.Data.InMemoryContexts
             {
                 AllPatients[i].BookVisit(availableVisits[visitCounter * (1) + 0 + i * 2]);
                 AllPatients[i].BookVisit(availableVisits[visitCounter * (i + 1) + 100 + i]);
-                AllPatients[i].BookVisit(availableVisits[visitCounter * (i + 1) + 200 + i]);
-                AllPatients[i].BookVisit(availableVisits[visitCounter * (i + 1) + 300 + i]);
+                AllPatients[i].BookVisit(availableVisits[visitCounter * (i + 1) + 250 + i]);
                 AllPatients[i].BookVisit(availableVisits[visitCounter * (i + 1) + 400 + i]);
-                AllPatients[i].BookVisit(availableVisits[visitCounter * (i + 1) + 500 + i]);
+                AllPatients[i].BookVisit(availableVisits[visitCounter * (i + 1) + 550 + i]);
+                AllPatients[i].BookVisit(availableVisits[visitCounter * (i + 1) + 700 + i]);
             }
-            AddMinorServicesToVisitsRelations(availableVisits);
+            //AddMinorServicesToVisitsRelations(availableVisits);
 
             return availableVisits;
         }
@@ -867,7 +880,7 @@ namespace Asklepios.Data.InMemoryContexts
             historicalVisits.Where(c => c.VisitCategoryId == -1).ToList().ForEach(d => d.VisitCategoryId = null);
             historicalVisits.Where(c => c.VisitReviewId == -1).ToList().ForEach(d => d.VisitReviewId = null);
 
-            AddMinorServicesToVisitsRelations(historicalVisits);
+            //AddMinorServicesToVisitsRelations(historicalVisits);
 
             return historicalVisits;
         }
@@ -888,8 +901,8 @@ namespace Asklepios.Data.InMemoryContexts
                             {
                                 MinorServicesToVisits = new List<MinorServiceToVisit>();
                             }
-                            MinorServicesToVisits.Add(new MinorServiceToVisit() { Id = ++msvId, MedicalService = ser, MedicalServiceId = ser.Id, Visit = item, VisitId = item.Id });
-                            //MinorServicesToVisits.Add(new MinorServiceToVisit() { MedicalService = ser, MedicalServiceId = ser.Id, Visit = item, VisitId = item.Id });
+                            //   MinorServicesToVisits.Add(new MinorServiceToVisit() { Id = ++msvId, MedicalService = ser, MedicalServiceId = ser.Id, Visit = item, VisitId = item.Id });
+                            MinorServicesToVisits.Add(new MinorServiceToVisit() {   MedicalServiceId = ser.Id,  VisitId = item.Id });
 
                         }
                     }
@@ -3917,25 +3930,25 @@ namespace Asklepios.Data.InMemoryContexts
                 new MedicalService(){Id=98, Name="Kolanoskopia", Description="Kolanoskopia", StandardPrice=200, IsPrimaryService=false,RequireRefferal=true},
 
 
-                new MedicalService(){Id=100,Name="e-Konsultacja gastrologiczna",            Description="e-Konsultacja gastrologiczna", StandardPrice=250, IsPrimaryService=true},
-                new MedicalService(){Id=101,Name="e-Konsultacja proktologiczna",            Description="e-Konsultacja proktologiczna", StandardPrice=200, IsPrimaryService=true},
+                //new MedicalService(){Id=100,Name="e-Konsultacja gastrologiczna",            Description="e-Konsultacja gastrologiczna", StandardPrice=250, IsPrimaryService=true},
+                //new MedicalService(){Id=101,Name="e-Konsultacja proktologiczna",            Description="e-Konsultacja proktologiczna", StandardPrice=200, IsPrimaryService=true},
                 new MedicalService(){Id=102,Name="e-Konsultacja internistyczna",            Description="e-Konsultacja internistyczna", StandardPrice=200, IsPrimaryService=true},
                 new MedicalService(){Id=103,Name="e-Konsultacja pediatryczna",              Description="e-Konsultacja pediatryczna", StandardPrice=200, IsPrimaryService=true},
                 new MedicalService(){Id=104,Name="e-Konsultacja geriatryczna",              Description="e-Konsultacja geriatryczna", StandardPrice=200, IsPrimaryService=true},
                 new MedicalService(){Id=105,Name="e-Konsultacja ginekologiczna",            Description="e-Konsultacja ginekologiczna", StandardPrice=200, IsPrimaryService=true},
-                new MedicalService(){Id=106,Name="e-Konsultacja ortopedyczna",              Description="e-Konsultacja ortopedyczna", StandardPrice=200, IsPrimaryService=true},
+                //new MedicalService(){Id=106,Name="e-Konsultacja ortopedyczna",              Description="e-Konsultacja ortopedyczna", StandardPrice=200, IsPrimaryService=true},
                 new MedicalService(){Id=107,Name="e-Konsultacja kardiologiczna",            Description="e-Konsultacja kardiologiczna", StandardPrice=200, IsPrimaryService=true},
-                new MedicalService(){Id=108,Name="e-Konsultacja okulistyczna",              Description="e-Konsultacja okulistyczna", StandardPrice=200, IsPrimaryService=true},
+                //new MedicalService(){Id=108,Name="e-Konsultacja okulistyczna",              Description="e-Konsultacja okulistyczna", StandardPrice=200, IsPrimaryService=true},
                 new MedicalService(){Id=109,Name="e-Konsultacja dermatologiczna",           Description="e-Konsultacja dermatologiczna", StandardPrice=200, IsPrimaryService=true},
                 new MedicalService(){Id=110,Name="e-Konsultacja endokrynologiczna",         Description="e-Konsultacja endokrynologiczna", StandardPrice=200, IsPrimaryService=true},
-                new MedicalService(){Id=111,Name="e-Konsultacja chirurgii ogólnej",         Description="e-Konsultacja chirurgii ogólnej", StandardPrice=200, IsPrimaryService=true},
-                new MedicalService(){Id=112,Name="e-Konsultacja neurochirurgiczna",         Description="e-Konsultacja neurochirurgiczna", StandardPrice=250, IsPrimaryService=true},
-                new MedicalService(){Id=113,Name="e-Konsultacja chirurgii naczyniowej",     Description="e-Konsultacja chirurgii naczyniowej", StandardPrice=250, IsPrimaryService=true},
-                new MedicalService(){Id=114,Name="e-Konsultacja chirurgii plastycznej",     Description="e-Konsultacja chirurgii plastycznej", StandardPrice=300, IsPrimaryService=true},
-                new MedicalService(){Id=115,Name="e-Konsultacja chirurgii onkologicznej",   Description="e-Konsultacja chirurgii onkologicznej", StandardPrice=300, IsPrimaryService=true},
-                new MedicalService(){Id=116,Name="e-Konsultacja laryngologiczna",           Description="e-Konsultacja laryngologiczna", StandardPrice=200, IsPrimaryService=true},
-                new MedicalService(){Id=117,Name="e-Konsultacja neurologiczna",             Description="e-Konsultacja neurologiczna", StandardPrice=200, IsPrimaryService=true},
-                new MedicalService(){Id=118,Name="e-Konsultacja urologiczna",               Description="e-Konsultacja urologiczna", StandardPrice=200, IsPrimaryService=true},
+                //new MedicalService(){Id=111,Name="e-Konsultacja chirurgii ogólnej",         Description="e-Konsultacja chirurgii ogólnej", StandardPrice=200, IsPrimaryService=true},
+                //new MedicalService(){Id=112,Name="e-Konsultacja neurochirurgiczna",         Description="e-Konsultacja neurochirurgiczna", StandardPrice=250, IsPrimaryService=true},
+                //new MedicalService(){Id=113,Name="e-Konsultacja chirurgii naczyniowej",     Description="e-Konsultacja chirurgii naczyniowej", StandardPrice=250, IsPrimaryService=true},
+                //new MedicalService(){Id=114,Name="e-Konsultacja chirurgii plastycznej",     Description="e-Konsultacja chirurgii plastycznej", StandardPrice=300, IsPrimaryService=true},
+                //new MedicalService(){Id=115,Name="e-Konsultacja chirurgii onkologicznej",   Description="e-Konsultacja chirurgii onkologicznej", StandardPrice=300, IsPrimaryService=true},
+                //new MedicalService(){Id=116,Name="e-Konsultacja laryngologiczna",           Description="e-Konsultacja laryngologiczna", StandardPrice=200, IsPrimaryService=true},
+                //new MedicalService(){Id=117,Name="e-Konsultacja neurologiczna",             Description="e-Konsultacja neurologiczna", StandardPrice=200, IsPrimaryService=true},
+                //new MedicalService(){Id=118,Name="e-Konsultacja urologiczna",               Description="e-Konsultacja urologiczna", StandardPrice=200, IsPrimaryService=true},
                 new MedicalService(){Id=119,Name="e-Konsultacja psychologiczna",            Description="e-Konsultacja psychologiczna", StandardPrice=200, IsPrimaryService=true},
 
             };

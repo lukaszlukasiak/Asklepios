@@ -7,7 +7,7 @@
     Przełóż wizytę
 </h1>
 
-<form asp-action="BookVisit" method="post">
+<form asp-action="RescheduleVisit" method="post">
     @{
         SelectList workersItems = new SelectList(Model.GetMedicalWorkers, "Id", "FullProffesionalName");
         SelectList locationItems = new SelectList(Model.GetLocations, "Id", "Name");

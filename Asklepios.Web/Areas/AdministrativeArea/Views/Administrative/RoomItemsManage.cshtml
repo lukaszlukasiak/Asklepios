@@ -41,8 +41,8 @@
         <label asp-for="SelectedLocationId" class="control-label"></label>
         <select class="form-control  mb-2" asp-for="SelectedLocationId" asp-items="locations" onchange="Refresh();">
             <option value="-1">Wybierz placówkę medyczną</option>
-            <option value="-2">Nieprzydzielony</option>
-
+@*            <option value="-2">Nieprzydzielony</option>
+*@
         </select>
         <span asp-validation-for="SelectedLocationId" class="text-danger"></span>
 

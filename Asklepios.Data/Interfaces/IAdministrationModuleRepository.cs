@@ -26,13 +26,14 @@ namespace Asklepios.Data.Interfaces
         //medicalRooms = GetMedicalRooms().ToList();
         List<Location> GetAllLocations();
 
-        List<Patient> GetAllPatients();
+        IQueryable<Patient> GetAllPatients();
 
         List<MedicalRoom> GetAllRooms();
 
-        Visit GetAvailableVisitById(long id);
+        Visit GetFutureVisitById(long id);
 
-        List<Visit> GetAvailableVisits();
+        IQueryable<Visit> GetAvailableVisitsQuery();
+
 
         Patient GetCurrentPatient();
 

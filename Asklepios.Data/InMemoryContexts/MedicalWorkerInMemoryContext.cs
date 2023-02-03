@@ -59,7 +59,7 @@ namespace Asklepios.Data.InMemoryContexts
             }
         }
 
-        public Visit GetAvailableVisitById(long currentVisitId)
+        public Visit GetFutureVisitById(long currentVisitId)
         {           
             Visit visit = PatientMockDB.GetAvailableVisitById(currentVisitId);
             return visit;

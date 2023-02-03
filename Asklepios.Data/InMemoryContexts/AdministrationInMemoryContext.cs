@@ -140,9 +140,9 @@ namespace Asklepios.Data.InMemoryContexts
             return PatientMockDB.Locations.ToList();
         }
 
-        public List<Patient> GetAllPatients()
+        public IQueryable<Patient> GetAllPatients()
         {
-            return PatientMockDB.AllPatients;
+            return PatientMockDB.AllPatients.AsQueryable();
         }
 
         public List<MedicalRoom> GetAllRooms()
@@ -150,7 +150,7 @@ namespace Asklepios.Data.InMemoryContexts
             return PatientMockDB.MedicalRooms;
         }
 
-        public Visit GetAvailableVisitById(long id)
+        public Visit GetFutureVisitById(long id)
         {
             return PatientMockDB.AvailableVisits.Where(c => c.Id == id).FirstOrDefault();
         }
@@ -433,6 +433,11 @@ namespace Asklepios.Data.InMemoryContexts
             {
                 PatientMockDB.UpdateRoom(newRoom, oldRoom);
             }
+        }
+
+        IQueryable<Visit> IAdministrationModuleRepository.GetAvailableVisitsQuery()
+        {
+            throw new NotImplementedException();
         }
 
         private List<MedicalRoom> GetMedicalRooms()

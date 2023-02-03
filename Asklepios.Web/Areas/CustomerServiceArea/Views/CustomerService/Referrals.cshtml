@@ -1,17 +1,19 @@
 ﻿@model Asklepios.Web.Areas.CustomerServiceArea.Models.PatientViewModel
 @{
     ViewData["Title"] = "View";
+    List<MedicalReferral> referrals = Model.MedicalReferrals;
 }
 
 
-@if (Model.SelectedPatient.MedicalReferrals?.Count>0)
+@if (referrals?.Count>0)
 {
+    
     <h1 style="text-align:center">Skierowania</h1>
 
-    @foreach (var referrals in Model.SelectedPatient.MedicalReferrals)
+    @foreach (var referral in referrals)
     {
 
-        <partial name="_MedicalReferral" model="referrals" />
+        <partial name="_MedicalReferral" model="referral" />
     }
 }
 else
