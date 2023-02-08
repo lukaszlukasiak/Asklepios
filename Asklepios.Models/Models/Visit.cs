@@ -219,7 +219,7 @@ namespace Asklepios.Core.Models
             {
                 MedicalPackage package =  Patient.MedicalPackage;
                 //price = decimal.MinusOne;
-                discount = package.ServiceDiscounts.First(c => c.MedicalService == service);
+                discount = package.ServiceDiscounts.First(c => c.MedicalService.Id == service.Id);
                 price = service.StandardPrice * (1 - discount.Discount);//package.ServicesDiscounts[service];
                 return price;
 

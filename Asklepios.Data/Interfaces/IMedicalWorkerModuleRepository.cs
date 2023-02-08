@@ -23,7 +23,7 @@ namespace Asklepios.Data.Interfaces
 
         void AddRecommendation(Recommendation recommendationToAdd);
         void DeleteRecommendation(long id);
-        List<Visit> GetVisitsByMedicalWorkerId(long id);
+        IQueryable<Visit> GetVisitsByMedicalWorkerId(long id);
 
         Visit GetFutureVisitById(long currentVisitId);
 
@@ -31,11 +31,11 @@ namespace Asklepios.Data.Interfaces
 
         byte[] GetDocument(string documentPath, string webRootPath);
 
-        List<Visit> GetFutureVisitsByMedicalWorkerId(long id);
+        IQueryable<Visit> GetFutureVisitsByMedicalWorkerId(long id);
 
         Visit GetHistoricalVisitById(long currentVisitId);
 
-        List<Visit> GetHistoricalVisitsByMedicalWorkerId(long id);
+        IQueryable<Visit> GetHistoricalVisitsByMedicalWorkerId(long id);
 
         Location GetLocationById(long locationId);
 
@@ -83,5 +83,6 @@ namespace Asklepios.Data.Interfaces
         void UpdatePrescription(Prescription prescription);
         void UpdateTestResultFile(IFormFile medicalTestFile, Visit visit, string webRootPath);
         void UpdateVisit(Visit visit);
+        Visit GetBookedVisitByIdANT(long currentVisitId);
     }
 }

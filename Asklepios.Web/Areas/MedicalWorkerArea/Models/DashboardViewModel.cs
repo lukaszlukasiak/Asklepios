@@ -9,7 +9,7 @@ namespace Asklepios.Web.Areas.MedicalWorkerArea.Models
     public class DashboardViewModel: IBaseViewModel
     {
         public MedicalWorker MedicalWorker { get; set; }
-        public List<Visit> TodayVisits { get; set; }
+        public IQueryable<Visit> TodayVisits { get; set; }
         public long CurrentVisitId { get; set; }
         public Visit CurrentVisit
         {
@@ -73,7 +73,7 @@ namespace Asklepios.Web.Areas.MedicalWorkerArea.Models
         public DashboardViewModel(MedicalWorker medicalWorker)
         {
             MedicalWorker = medicalWorker;
-            TodayVisits = medicalWorker.FutureVisits?.Where(c => c.DateTimeSince.Date == DateTimeOffset.Now.Date).ToList();
+           // TodayVisits = medicalWorker.FutureVisits?.Where(c => c.DateTimeSince.Date == DateTimeOffset.Now.Date).ToList();
         }
     }
 }

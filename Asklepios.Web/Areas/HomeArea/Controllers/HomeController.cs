@@ -27,7 +27,7 @@ namespace Asklepios.Web.Areas.HomeArea.Controllers
         public IActionResult LogOut()
         {
             PatientArea.Controllers.PatientController.LogOut();
-            MedicalWorkerArea.Controllers.MedicalWorkerController.LogOut();
+          //  MedicalWorkerArea.Controllers.MedicalWorkerController.LogOut();
             CustomerServiceArea.Controllers.CustomerServiceController.LogOut();
             AdministrativeArea.Controllers.AdministrativeController.LogOut();
 

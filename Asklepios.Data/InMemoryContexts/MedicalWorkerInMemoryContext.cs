@@ -11,15 +11,15 @@ namespace Asklepios.Data.InMemoryContexts
 {
     public class MedicalWorkerInMemoryContext : IMedicalWorkerModuleRepository
     {
-        public List<Visit> GetFutureVisitsByMedicalWorkerId(long id)
+        public IQueryable<Visit> GetFutureVisitsByMedicalWorkerId(long id)
         {
-            List<Visit> visits = PatientMockDB.FutureVisits.Where(c => c.MedicalWorker.Id == id).ToList();
+            IQueryable<Visit> visits = PatientMockDB.FutureVisits.Where(c => c.MedicalWorker.Id == id).AsQueryable();
             return visits;
         }
 
-        public List<Visit> GetHistoricalVisitsByMedicalWorkerId(long id)
+        public IQueryable<Visit> GetHistoricalVisitsByMedicalWorkerId(long id)
         {
-            List<Visit> visits = PatientMockDB.HistoricalVisits.Where(c => c.MedicalWorker.Id == id).ToList();
+            IQueryable<Visit> visits = PatientMockDB.HistoricalVisits.Where(c => c.MedicalWorker.Id == id).AsQueryable();
             return visits;
         }
 
@@ -48,7 +48,7 @@ namespace Asklepios.Data.InMemoryContexts
 
         public List<VisitReview> GetReviewsByMedicalWorkerId(long id)
         {
-            List<Visit> visits = GetHistoricalVisitsByMedicalWorkerId(id);
+            IQueryable<Visit> visits = GetHistoricalVisitsByMedicalWorkerId(id);
             if (visits != null)
             {
                 return visits.Where(c => c.VisitReview != null).Select(c => c.VisitReview).ToList();
@@ -310,9 +310,9 @@ namespace Asklepios.Data.InMemoryContexts
             PatientMockDB.Notifications.Add(notification);
         }
 
-        public List<Visit> GetVisitsByMedicalWorkerId(long id)
+        public IQueryable<Visit> GetVisitsByMedicalWorkerId(long id)
         {
-            return PatientMockDB.AllVisits.Where(c=>c.MedicalWorkerId==id).ToList();
+            return PatientMockDB.AllVisits.Where(c=>c.MedicalWorkerId==id).AsQueryable();
         }
 
         public Visit GetVisitById(long id)
@@ -369,6 +369,11 @@ namespace Asklepios.Data.InMemoryContexts
             //{
             //    return null;
             //}
+        }
+
+        public Visit GetBookedVisitByIdANT(long currentVisitId)
+        {
+            throw new NotImplementedException();
         }
 
 

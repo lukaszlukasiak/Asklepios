@@ -22,7 +22,7 @@
     </div>
 </form>
 @{
-    IEnumerable<IGrouping<DateTime, Visit>> historicalVisits = Model.HistoricalVisits;
+    IEnumerable<IGrouping<DateTime, Visit>> historicalVisits = Model.HistoricalVisitsGrouped;
 
     if (historicalVisits.Count() > 0)
     {

@@ -239,21 +239,23 @@ namespace Asklepios.Data.InMemoryContexts
                 }
             }
 
-            //foreach (MedicalWorker medicalWorker in MedicalWorkers)
-            //{
-            //    List<Visit> visits = AvailableVisits.Where(c => c.MedicalWorker.Id == medicalWorker.Id).ToList();
-            //    int pNumber = 0;
-            //    for (int i = 1; i < 4; i++)
-            //    {
-            //        pNumber++;
+            foreach (MedicalWorker medicalWorker in MedicalWorkers)
+            {
+                visits = AvailableVisits.Where(c => c.MedicalWorker.Id == medicalWorker.Id).ToList();
+                range = visits.Count / 3;
 
-            //        int number = (500 * i % BookedVisits.Count);
-            //        BookedVisits.ElementAt(number).Patient = AllPatients.ElementAt(pNumber % AllPatients.Count);
-            //        BookedVisits.ElementAt(number).PatientId = AllPatients.ElementAt(pNumber % AllPatients.Count).Id;
-            //        BookedVisits.ElementAt(number).VisitStatus = Core.Enums.VisitStatus.Booked;
+                int pNumber = 0;
+                for (int i = 1; i < 3; i++)
+                {
+                    pNumber++;
 
-            //    }
-            //}
+                    int number = rnd.Next(range * (i - 1), range * i);
+                    visits.ElementAt(number).Patient = AllPatients.ElementAt(pNumber % AllPatients.Count);
+                    visits.ElementAt(number).PatientId = AllPatients.ElementAt(pNumber % AllPatients.Count).Id;
+                    visits.ElementAt(number).VisitStatus = Core.Enums.VisitStatus.Booked;
+
+                }
+            }
         }
 
         internal static List<MedicalServiceDiscount> GetMedicalServiceDiscounts()
@@ -404,6 +406,36 @@ namespace Asklepios.Data.InMemoryContexts
                 new User() { Id = ++id, Password = "PasswordPatient" + (++pid).ToString(), EmailAddress = "patient" + pid.ToString() + "@asklepios.com", UserType = Core.Enums.UserType.Patient, WorkerModuleType = null, PersonId = id },
                 new User() { Id = ++id, Password = "PasswordPatient" + (++pid).ToString(), EmailAddress = "patient" + pid.ToString() + "@asklepios.com", UserType = Core.Enums.UserType.Patient, WorkerModuleType = null, PersonId = id },
                 new User() { Id = ++id, Password = "PasswordPatient" + (++pid).ToString(), EmailAddress = "patient" + pid.ToString() + "@asklepios.com", UserType = Core.Enums.UserType.Patient, WorkerModuleType = null, PersonId = id },
+                new User() { Id = ++id, Password = "PasswordPatient" + (++pid).ToString(), EmailAddress = "patient" + pid.ToString() + "@asklepios.com", UserType = Core.Enums.UserType.Patient, WorkerModuleType = null, PersonId = id },
+                new User() { Id = ++id, Password = "PasswordPatient" + (++pid).ToString(), EmailAddress = "patient" + pid.ToString() + "@asklepios.com", UserType = Core.Enums.UserType.Patient, WorkerModuleType = null, PersonId = id },
+                new User() { Id = ++id, Password = "PasswordPatient" + (++pid).ToString(), EmailAddress = "patient" + pid.ToString() + "@asklepios.com", UserType = Core.Enums.UserType.Patient, WorkerModuleType = null, PersonId = id },
+                new User() { Id = ++id, Password = "PasswordPatient" + (++pid).ToString(), EmailAddress = "patient" + pid.ToString() + "@asklepios.com", UserType = Core.Enums.UserType.Patient, WorkerModuleType = null, PersonId = id },
+                new User() { Id = ++id, Password = "PasswordPatient" + (++pid).ToString(), EmailAddress = "patient" + pid.ToString() + "@asklepios.com", UserType = Core.Enums.UserType.Patient, WorkerModuleType = null, PersonId = id },
+                new User() { Id = ++id, Password = "PasswordPatient" + (++pid).ToString(), EmailAddress = "patient" + pid.ToString() + "@asklepios.com", UserType = Core.Enums.UserType.Patient, WorkerModuleType = null, PersonId = id },
+                new User() { Id = ++id, Password = "PasswordPatient" + (++pid).ToString(), EmailAddress = "patient" + pid.ToString() + "@asklepios.com", UserType = Core.Enums.UserType.Patient, WorkerModuleType = null, PersonId = id },
+                new User() { Id = ++id, Password = "PasswordPatient" + (++pid).ToString(), EmailAddress = "patient" + pid.ToString() + "@asklepios.com", UserType = Core.Enums.UserType.Patient, WorkerModuleType = null, PersonId = id },
+                new User() { Id = ++id, Password = "PasswordPatient" + (++pid).ToString(), EmailAddress = "patient" + pid.ToString() + "@asklepios.com", UserType = Core.Enums.UserType.Patient, WorkerModuleType = null, PersonId = id },
+                new User() { Id = ++id, Password = "PasswordPatient" + (++pid).ToString(), EmailAddress = "patient" + pid.ToString() + "@asklepios.com", UserType = Core.Enums.UserType.Patient, WorkerModuleType = null, PersonId = id },
+                new User() { Id = ++id, Password = "PasswordPatient" + (++pid).ToString(), EmailAddress = "patient" + pid.ToString() + "@asklepios.com", UserType = Core.Enums.UserType.Patient, WorkerModuleType = null, PersonId = id },
+                new User() { Id = ++id, Password = "PasswordPatient" + (++pid).ToString(), EmailAddress = "patient" + pid.ToString() + "@asklepios.com", UserType = Core.Enums.UserType.Patient, WorkerModuleType = null, PersonId = id },
+                new User() { Id = ++id, Password = "PasswordPatient" + (++pid).ToString(), EmailAddress = "patient" + pid.ToString() + "@asklepios.com", UserType = Core.Enums.UserType.Patient, WorkerModuleType = null, PersonId = id },
+                new User() { Id = ++id, Password = "PasswordPatient" + (++pid).ToString(), EmailAddress = "patient" + pid.ToString() + "@asklepios.com", UserType = Core.Enums.UserType.Patient, WorkerModuleType = null, PersonId = id },
+                new User() { Id = ++id, Password = "PasswordPatient" + (++pid).ToString(), EmailAddress = "patient" + pid.ToString() + "@asklepios.com", UserType = Core.Enums.UserType.Patient, WorkerModuleType = null, PersonId = id },
+                new User() { Id = ++id, Password = "PasswordPatient" + (++pid).ToString(), EmailAddress = "patient" + pid.ToString() + "@asklepios.com", UserType = Core.Enums.UserType.Patient, WorkerModuleType = null, PersonId = id },
+                new User() { Id = ++id, Password = "PasswordPatient" + (++pid).ToString(), EmailAddress = "patient" + pid.ToString() + "@asklepios.com", UserType = Core.Enums.UserType.Patient, WorkerModuleType = null, PersonId = id },
+                new User() { Id = ++id, Password = "PasswordPatient" + (++pid).ToString(), EmailAddress = "patient" + pid.ToString() + "@asklepios.com", UserType = Core.Enums.UserType.Patient, WorkerModuleType = null, PersonId = id },
+                new User() { Id = ++id, Password = "PasswordPatient" + (++pid).ToString(), EmailAddress = "patient" + pid.ToString() + "@asklepios.com", UserType = Core.Enums.UserType.Patient, WorkerModuleType = null, PersonId = id },
+                new User() { Id = ++id, Password = "PasswordPatient" + (++pid).ToString(), EmailAddress = "patient" + pid.ToString() + "@asklepios.com", UserType = Core.Enums.UserType.Patient, WorkerModuleType = null, PersonId = id },
+                new User() { Id = ++id, Password = "PasswordPatient" + (++pid).ToString(), EmailAddress = "patient" + pid.ToString() + "@asklepios.com", UserType = Core.Enums.UserType.Patient, WorkerModuleType = null, PersonId = id },
+                new User() { Id = ++id, Password = "PasswordPatient" + (++pid).ToString(), EmailAddress = "patient" + pid.ToString() + "@asklepios.com", UserType = Core.Enums.UserType.Patient, WorkerModuleType = null, PersonId = id },
+                new User() { Id = ++id, Password = "PasswordPatient" + (++pid).ToString(), EmailAddress = "patient" + pid.ToString() + "@asklepios.com", UserType = Core.Enums.UserType.Patient, WorkerModuleType = null, PersonId = id },
+                new User() { Id = ++id, Password = "PasswordPatient" + (++pid).ToString(), EmailAddress = "patient" + pid.ToString() + "@asklepios.com", UserType = Core.Enums.UserType.Patient, WorkerModuleType = null, PersonId = id },
+                new User() { Id = ++id, Password = "PasswordPatient" + (++pid).ToString(), EmailAddress = "patient" + pid.ToString() + "@asklepios.com", UserType = Core.Enums.UserType.Patient, WorkerModuleType = null, PersonId = id },
+                new User() { Id = ++id, Password = "PasswordPatient" + (++pid).ToString(), EmailAddress = "patient" + pid.ToString() + "@asklepios.com", UserType = Core.Enums.UserType.Patient, WorkerModuleType = null, PersonId = id },
+                new User() { Id = ++id, Password = "PasswordPatient" + (++pid).ToString(), EmailAddress = "patient" + pid.ToString() + "@asklepios.com", UserType = Core.Enums.UserType.Patient, WorkerModuleType = null, PersonId = id },
+                new User() { Id = ++id, Password = "PasswordPatient" + (++pid).ToString(), EmailAddress = "patient" + pid.ToString() + "@asklepios.com", UserType = Core.Enums.UserType.Patient, WorkerModuleType = null, PersonId = id },
+                new User() { Id = ++id, Password = "PasswordPatient" + (++pid).ToString(), EmailAddress = "patient" + pid.ToString() + "@asklepios.com", UserType = Core.Enums.UserType.Patient, WorkerModuleType = null, PersonId = id },
+                new User() { Id = ++id, Password = "PasswordPatient" + (++pid).ToString(), EmailAddress = "patient" + pid.ToString() + "@asklepios.com", UserType = Core.Enums.UserType.Patient, WorkerModuleType = null, PersonId = id },
 
             };
 
@@ -521,8 +553,8 @@ namespace Asklepios.Data.InMemoryContexts
 
             List<Visit> availableVisits = new List<Visit>();
             int dayOffset = -1;
-            DateTimeOffset start = new DateTimeOffset(dateTimeOffset.Year, dateTimeOffset.Month, dateTimeOffset.Day, 8, 0, 0, new TimeSpan(0, 0, 0)).AddDays(5);
-            long startId = 100;
+            DateTimeOffset start = new DateTimeOffset(dateTimeOffset.Year, dateTimeOffset.Month, dateTimeOffset.Day, 8, 0, 0, new TimeSpan(0, 0, 0)).AddDays(0);
+            long startId = 1;
             int locationsNumber = Locations.Count;
 
             for (int i = 0; i <= 7; i++)
@@ -558,10 +590,10 @@ namespace Asklepios.Data.InMemoryContexts
 
                     minutsOffset = -1;
 
-                    int serviceIndex = (i + 1)% (servicesCounter ) ;
+                    int serviceIndex = (j + 1)% (servicesCounter ) ;
                     MedicalService service = primaryServices.ElementAt(serviceIndex);
                     List<VisitCategory> categories = VisitCategories.Where(c => c.MedicalServices.Any(d => d.Id == service.Id)).ToList();
-                    VisitCategory visitCategory = categories[(i + 1)%(categories.Count ) ];
+                    VisitCategory visitCategory = categories[(j + 1)%(categories.Count ) ];
                     Location location = Locations.ElementAt( (j + 1)% (locationsNumber ));
                     int roomsCounter = location.MedicalRooms.Count;
                     MedicalRoom room = location.MedicalRooms.ElementAt((j + 1) %(roomsCounter )  );
@@ -579,7 +611,7 @@ namespace Asklepios.Data.InMemoryContexts
                             DateTimeTill = start.AddDays(dayOffset).AddMinutes(minutsOffset * 15 + 15),
                             Location = location,
                             LocationId = location.Id,
-
+                            VisitStatus=Core.Enums.VisitStatus.AvailableNotBooked,
                             MedicalRoom = room,
                             MedicalRoomId=room.Id,
                             MedicalWorker = medicalWorker,//MedicalWorkers.ElementAt(36),
@@ -636,7 +668,7 @@ namespace Asklepios.Data.InMemoryContexts
 
             foreach (Patient patient in AllPatients)
             {
-                int numberOfVisits = rnd.Next(3, 15);
+                int numberOfVisits = rnd.Next(4, 15);
 
                 for (int i = 0; i < numberOfVisits; i++)
                 {
@@ -644,7 +676,7 @@ namespace Asklepios.Data.InMemoryContexts
                     MedicalWorker medicalWorker = MedicalWorkers[medicalWorkerIndex];
                     int primaryServicesCounter = medicalWorker.MedicalServices.Where(c => c.IsPrimaryService).Count();
                     int testResultIndex = rnd.Next(-MedicalTestResults.Count, MedicalTestResults.Count - 1);
-                    int daysAgo = rnd.Next(0, 100);
+                    int daysAgo = rnd.Next(0, 20);
                     int hour = rnd.Next(0, 12);
                     int quarter = rnd.Next(0, 3);
                     int medicalLocationIndex = rnd.Next(0, Locations.Count - 1);
@@ -887,7 +919,7 @@ namespace Asklepios.Data.InMemoryContexts
 
         private static void AddMinorServicesToVisitsRelations(List<Visit> historicalVisits)
         {
-            long msvId = 0;
+            //long msvId = 0;
 
             foreach (Visit item in historicalVisits)
             {
@@ -1712,7 +1744,37 @@ namespace Asklepios.Data.InMemoryContexts
             people.Add(new Person(imagePath: "/img/persons/um15.jpg", phoneNumber: "795161304", name: "Rafał", surName: "Fabisiak", id: 102, gender: Core.Enums.Gender.Male, birthDate: new DateTimeOffset(new DateTime(1988, 01, 15)), pesel: "88011525627", hasPolishCitizenship: true, passportCode: null, passportNumber: null, email: "person102@gmail.com", aglomeration: Core.Enums.Aglomeration.Warsaw));//,
             people.Add(new Person(imagePath: "/img/persons/um16.jpg", phoneNumber: "354612314", name: "Radosław", surName: "Panga", id: 103, gender: Core.Enums.Gender.Male, birthDate: new DateTimeOffset(new DateTime(1997, 01, 15)), pesel: "97011215631", hasPolishCitizenship: true, passportCode: null, passportNumber: null, email: "person103@gmail.com", aglomeration: Core.Enums.Aglomeration.Poznan));//,
             people.Add(new Person(imagePath: "/img/persons/um17.jpg", phoneNumber: "495161304", name: "Janusz", surName: "Buc", id: 104, gender: Core.Enums.Gender.Male, birthDate: new DateTimeOffset(new DateTime(1988, 01, 15)), pesel: "88011525627", hasPolishCitizenship: true, passportCode: null, passportNumber: null, email: "person104@gmail.com", aglomeration: Core.Enums.Aglomeration.Warsaw));//,
-                                                                                                                                                                                                                                                                                                                                                                                                                 //administrative workers
+                                                                                                                                                                                                                                                                                                                                                                                                             //administrative workers
+            people.Add(new Person(imagePath: "/img/persons/male.svg",   phoneNumber: "615475577", gender: Core.Enums.Gender.Male,           id: 105, birthDate: new DateTimeOffset(new DateTime(1987, 7, 8)), name: "Łukasz", surName: "Łucznik",   pesel: "87201010105", hasPolishCitizenship: true, passportNumber: "484654asd4a5sd4", passportCode: "PL", email: "person178@gmail.com", aglomeration: Core.Enums.Aglomeration.Warsaw));//,//główny pacjent
+            people.Add(new Person(imagePath: "/img/persons/female.svg", phoneNumber: "615746772", name: "Magdalena", surName: "Bombka",      id: 106, gender: Core.Enums.Gender.Female, birthDate: new DateTimeOffset(new DateTime(1974, 5, 12)),   pesel: "74051296121", hasPolishCitizenship: true, passportCode: null, passportNumber: null, email: "person179@gmail.com", aglomeration: Core.Enums.Aglomeration.Cracow));//,
+            people.Add(new Person(imagePath: "/img/persons/female.svg", phoneNumber: "615741778", name: "Katarzyna", surName: "Jelito",    id: 107, gender: Core.Enums.Gender.Female, birthDate: new DateTimeOffset(new DateTime(1966, 4, 8)),      pesel: "66040865456", hasPolishCitizenship: true, passportCode: null, passportNumber: null, email: "person180@gmail.com", aglomeration: Core.Enums.Aglomeration.Kielce));//,
+            people.Add(new Person(imagePath: "/img/persons/male.svg",   phoneNumber: "615741237", name: "Krzysztof", surName: "Kita",      id: 108, gender: Core.Enums.Gender.Male, birthDate: new DateTimeOffset(new DateTime(1979, 8, 5)),        pesel: "79080946213", hasPolishCitizenship: true, passportCode: null, passportNumber: null, email: "person181@gmail.com", aglomeration: Core.Enums.Aglomeration.Kuyavia));//,
+            people.Add(new Person(imagePath: "/img/persons/male.svg",   phoneNumber: "445747787", name: "Dariusz", surName: "Czapka",        id: 109, gender: Core.Enums.Gender.Male, birthDate: new DateTimeOffset(new DateTime(1982, 1, 24)),     pesel: "82022464695", hasPolishCitizenship: true, passportCode: null, passportNumber: null, email: "person182@gmail.com", aglomeration: Core.Enums.Aglomeration.Poznan));//,
+            people.Add(new Person(imagePath: "/img/persons/male.svg",   phoneNumber: "335747745", name: "Tomasz", surName: "Mucha",         id: 110, gender: Core.Enums.Gender.Male, birthDate: new DateTimeOffset(new DateTime(1981, 6, 7)),       pesel: "82060794612", hasPolishCitizenship: true, passportCode: null, passportNumber: null, email: "person183@gmail.com", aglomeration: Core.Enums.Aglomeration.Rzeszów));//,
+            people.Add(new Person(imagePath: "/img/persons/male.svg",   phoneNumber: "775747737", name: "Arkadiusz", surName: "Patka",      id: 111, gender: Core.Enums.Gender.Male, birthDate: new DateTimeOffset(new DateTime(1979, 10, 20)),     pesel: "79202013465", hasPolishCitizenship: true, passportCode: null, passportNumber: null, email: "person184@gmail.com", aglomeration: Core.Enums.Aglomeration.Silesia));//,
+            people.Add(new Person(imagePath: "/img/persons/female.svg", phoneNumber: "665747121", name: "Marta", surName: "Rakieta",        id: 112, gender: Core.Enums.Gender.Female, birthDate: new DateTimeOffset(new DateTime(1991, 2, 12)),    pesel: "92021245646", hasPolishCitizenship: true, passportCode: null, passportNumber: null, email: "person185@gmail.com", aglomeration: Core.Enums.Aglomeration.Tricity));//,
+            people.Add(new Person(imagePath: "/img/persons/female.svg", phoneNumber: "505741179", name: "Ada", surName: "Rudzka",           id: 113, gender: Core.Enums.Gender.Female, birthDate: new DateTimeOffset(new DateTime(1994, 12, 13)),   pesel: "94221321654", hasPolishCitizenship: true, passportCode: null, passportNumber: null, email: "person186@gmail.com", aglomeration: Core.Enums.Aglomeration.Warsaw));//,
+            people.Add(new Person(imagePath: "/img/persons/female.svg", phoneNumber: "505747771", name: "Genowefa", surName: "Piwna",       id: 114, gender: Core.Enums.Gender.Female, birthDate: new DateTimeOffset(new DateTime(1954, 6, 13)),    pesel: "54061324651", hasPolishCitizenship: true, passportCode: null, passportNumber: null, email: "person187@gmail.com", aglomeration: Core.Enums.Aglomeration.Wroclaw));//,
+            people.Add(new Person(imagePath: "/img/persons/male.svg",   phoneNumber: "885742775", name: "Wacław", surName: "Kopyto",        id: 115, gender: Core.Enums.Gender.Male, birthDate: new DateTimeOffset(new DateTime(1955, 3, 13)),      pesel: "55031365494", hasPolishCitizenship: true, passportCode: null, passportNumber: null, email: "person188@gmail.com", aglomeration: Core.Enums.Aglomeration.Warsaw));//,
+            people.Add(new Person(imagePath: "/img/persons/female.svg", phoneNumber: "440365555", name: "Agnieszka", surName: "Pielna",     id: 116, gender: Core.Enums.Gender.Female, birthDate: new DateTimeOffset(new DateTime(1990, 01, 15)),   pesel: "90021915686", hasPolishCitizenship: true, passportCode: null, passportNumber: null, email: "person189@gmail.com", aglomeration: Core.Enums.Aglomeration.Rzeszów));
+            people.Add(new Person(imagePath: "/img/persons/female.svg", phoneNumber: "670385094", name: "Monika", surName: "Krasińska",     id: 117, gender: Core.Enums.Gender.Female, birthDate: new DateTimeOffset(new DateTime(1970, 01, 15)),   pesel: "70021915788", hasPolishCitizenship: true, passportCode: null, passportNumber: null, email: "person190@gmail.com", aglomeration: Core.Enums.Aglomeration.Silesia));//,
+            people.Add(new Person(imagePath: "/img/persons/female.svg", phoneNumber: "810365915", name: "Maria", surName: "Kostrzewa",      id: 118, gender: Core.Enums.Gender.Female, birthDate: new DateTimeOffset(new DateTime(1988, 01, 15)),   pesel: "88021915800", hasPolishCitizenship: true, passportCode: null, passportNumber: null, email: "person191@gmail.com", aglomeration: Core.Enums.Aglomeration.Tricity));//,
+            people.Add(new Person(imagePath: "/img/persons/female.svg", phoneNumber: "820315526", name: "Wanda", surName: "Nowacka",        id: 119, gender: Core.Enums.Gender.Female, birthDate: new DateTimeOffset(new DateTime(2000, 01, 15)),   pesel: "00321915944", hasPolishCitizenship: true, passportCode: null, passportNumber: null, email: "person192@gmail.com", aglomeration: Core.Enums.Aglomeration.Warsaw));//,
+            people.Add(new Person(imagePath: "/img/persons/female.svg", phoneNumber: "600364595", name: "Żaneta", surName: "Zielna",        id: 120, gender: Core.Enums.Gender.Female, birthDate: new DateTimeOffset(new DateTime(1995, 01, 15)),   pesel: "95221916024", hasPolishCitizenship: true, passportCode: null, passportNumber: null, email: "person193@gmail.com", aglomeration: Core.Enums.Aglomeration.Wroclaw));//,
+            people.Add(new Person(imagePath: "/img/persons/female.svg", phoneNumber: "710325595", name: "Renata", surName: "Mol",           id: 121, gender: Core.Enums.Gender.Female, birthDate: new DateTimeOffset(new DateTime(1966, 01, 15)),   pesel: "66221916168", hasPolishCitizenship: true, passportCode: null, passportNumber: null, email: "person194@gmail.com", aglomeration: Core.Enums.Aglomeration.Bialystok));//,
+            people.Add(new Person(imagePath: "/img/persons/male.svg",   phoneNumber: "701325593", name: "Radosław", surName: "Grzęda",      id: 122, gender: Core.Enums.Gender.Male, birthDate: new DateTimeOffset(new DateTime(1977, 01, 15)),     pesel: "77023016255", hasPolishCitizenship: true, passportCode: null, passportNumber: null, email: "person195@gmail.com", aglomeration: Core.Enums.Aglomeration.Kielce));//,
+            people.Add(new Person(imagePath: "/img/persons/male.svg",   phoneNumber: "405364573", name: "Robert", surName: "Saper",         id: 123, gender: Core.Enums.Gender.Male, birthDate: new DateTimeOffset(new DateTime(1982, 01, 15)),     pesel: "82024916333", hasPolishCitizenship: true, passportCode: null, passportNumber: null, email: "person196@gmail.com", aglomeration: Core.Enums.Aglomeration.Kuyavia));//,
+            people.Add(new Person(imagePath: "/img/persons/male.svg",   phoneNumber: "555361553", name: "Paweł", surName: "Trefny",         id: 124, gender: Core.Enums.Gender.Male, birthDate: new DateTimeOffset(new DateTime(1980, 01, 15)),     pesel: "80021913681", hasPolishCitizenship: true, passportCode: null, passportNumber: null, email: "person197@gmail.com", aglomeration: Core.Enums.Aglomeration.Rzeszów));//,
+            people.Add(new Person(imagePath: "/img/persons/male.svg",   phoneNumber: "511365563", name: "Tomasz", surName: "Oniszk",        id: 125, gender: Core.Enums.Gender.Male, birthDate: new DateTimeOffset(new DateTime(1991, 01, 15)),     pesel: "92021416789", hasPolishCitizenship: true, passportCode: null, passportNumber: null, email: "person198@gmail.com", aglomeration: Core.Enums.Aglomeration.Poznan));//,
+            people.Add(new Person(imagePath: "/img/persons/male.svg",   phoneNumber: "771362551", name: "Mateusz", surName: "Skorupski",    id: 126, gender: Core.Enums.Gender.Male, birthDate: new DateTimeOffset(new DateTime(1996, 01, 15)),     pesel: "96021216831", hasPolishCitizenship: true, passportCode: null, passportNumber: null, email: "person199@gmail.com", aglomeration: Core.Enums.Aglomeration.Poznan));//,
+            people.Add(new Person(imagePath: "/img/persons/male.svg",   phoneNumber: "421361353", name: "Robert", surName: "Krzyk",         id: 127, gender: Core.Enums.Gender.Male, birthDate: new DateTimeOffset(new DateTime(1972, 01, 15)),     pesel: "72021926928", hasPolishCitizenship: true, passportCode: null, passportNumber: null, email: "person1100@gmail.com", aglomeration: Core.Enums.Aglomeration.Tricity));//,
+            people.Add(new Person(imagePath: "/img/persons/male.svg",   phoneNumber: "854612314", name: "Tomasz", surName: "Jańczak",       id: 128, gender: Core.Enums.Gender.Male, birthDate: new DateTimeOffset(new DateTime(1997, 01, 15)),     pesel: "97021217031", hasPolishCitizenship: true, passportCode: null, passportNumber: null, email: "person1101@gmail.com", aglomeration: Core.Enums.Aglomeration.Poznan));//,
+            people.Add(new Person(imagePath: "/img/persons/male.svg",   phoneNumber: "795161304", name: "Rafał", surName: "Fabisiuk",       id: 129, gender: Core.Enums.Gender.Male, birthDate: new DateTimeOffset(new DateTime(1988, 01, 15)),     pesel: "88021927128", hasPolishCitizenship: true, passportCode: null, passportNumber: null, email: "person1102@gmail.com", aglomeration: Core.Enums.Aglomeration.Warsaw));//,
+            people.Add(new Person(imagePath: "/img/persons/male.svg",   phoneNumber: "354612312", name: "Radosław", surName: "Para",        id: 130, gender: Core.Enums.Gender.Male, birthDate: new DateTimeOffset(new DateTime(1997, 01, 15)),     pesel: "97021217231", hasPolishCitizenship: true, passportCode: null, passportNumber: null, email: "person1103@gmail.com", aglomeration: Core.Enums.Aglomeration.Poznan));//,
+            people.Add(new Person(imagePath: "/img/persons/male.svg",   phoneNumber: "495161303", name: "Janusz", surName: "Boczek",        id: 131, gender: Core.Enums.Gender.Male, birthDate: new DateTimeOffset(new DateTime(1988, 01, 15)),     pesel: "88021927328", hasPolishCitizenship: true, passportCode: null, passportNumber: null, email: "person1104@gmail.com", aglomeration: Core.Enums.Aglomeration.Warsaw));//,
+            people.Add(new Person(imagePath: "/img/persons/female.svg", phoneNumber: "777161305", name: "Jagna", surName: "Buc",            id: 132, gender: Core.Enums.Gender.Female, birthDate: new DateTimeOffset(new DateTime(1988, 01, 15)),   pesel: "88021927428", hasPolishCitizenship: true, passportCode: null, passportNumber: null, email: "person1104@gmail.com", aglomeration: Core.Enums.Aglomeration.Warsaw));//,
+            people.Add(new Person(imagePath: "/img/persons/female.svg", phoneNumber: "500161304", name: "Janina", surName: "Bociek",        id: 133, gender: Core.Enums.Gender.Female, birthDate: new DateTimeOffset(new DateTime(1988, 01, 15)),   pesel: "88021927528", hasPolishCitizenship: true, passportCode: null, passportNumber: null, email: "person1104@gmail.com", aglomeration: Core.Enums.Aglomeration.Warsaw));//,
+            people.Add(new Person(imagePath: "/img/persons/female.svg", phoneNumber: "444161304", name: "Julija", surName: "Korczuk",          id: 134, gender: Core.Enums.Gender.Female, birthDate: new DateTimeOffset(new DateTime(1988, 01, 15)),   pesel: null, hasPolishCitizenship: false, passportCode: "UKR", passportNumber: "ASDD4894121", email: "person1104@gmail.com", aglomeration: Core.Enums.Aglomeration.Warsaw));//,
 
             //customer service workers
             //};
@@ -4309,76 +4371,322 @@ namespace Asklepios.Data.InMemoryContexts
                     UserId=Persons[id].Id
 
                 },
-                //new Patient (Persons[++id]                    )
-                //{
-                //    Id=++patientId,
-                //    EmployerNIP="67655634534",
-                //    EmployerName="Compensa z o.o.",
-                //    MedicalPackage=MedicalPackages[2],
-                //    NFZUnit=NfzUnits[16],
-                //    UserId=id
+                new Patient (Persons[++id]                    )
+                {
+                    Id=++patientId,
+                    EmployerNIP="67655634534",
+                    EmployerName="Compensa z o.o.",
+                    MedicalPackage=MedicalPackages[2],
+                    NFZUnit=NfzUnits[15],
+                    UserId=Persons[id].Id
 
-                //},
-                //new Patient (Persons[++id]                    )
-                //{
-                //    Id=++patientId,
-                //    EmployerNIP="4657964654654",
-                //    EmployerName="Coca Cola",
-                //    MedicalPackage=MedicalPackages[3],
-                //    NFZUnit=NfzUnits[5],
-                //    UserId=id
+                },
+                new Patient (Persons[++id]                    )
+                {
+                    Id=++patientId,
+                    EmployerNIP="4657964654654",
+                    EmployerName="Coca Cola",
+                    MedicalPackage=MedicalPackages[3],
+                    NFZUnit=NfzUnits[5],
+                    UserId=Persons[id].Id
 
-                //},
-                //new Patient (Persons[++id]                    )
-                //{
-                //    Id=++patientId,
-                //    EmployerNIP="4657964654654",
-                //    EmployerName="Coca Cola",
-                //    MedicalPackage=MedicalPackages[3],
-                //    NFZUnit=NfzUnits[5],
-                //    UserId=id
+                },
+                new Patient (Persons[++id]                    )
+                {
+                    Id=++patientId,
+                    EmployerNIP="4657964654654",
+                    EmployerName="Coca Cola",
+                    MedicalPackage=MedicalPackages[3],
+                    NFZUnit=NfzUnits[5],
+                    UserId=Persons[id].Id
 
-                //},
-                //new Patient (Persons[++id]                    )
-                //{
-                //    Id=++patientId,
-                //    EmployerNIP="4657964654654",
-                //    EmployerName="Coca Cola",
-                //    MedicalPackage=MedicalPackages[3],
-                //    NFZUnit=NfzUnits[5],
-                //    UserId=id
+                },
+                new Patient (Persons[++id]                    )
+                {
+                    Id=++patientId,
+                    EmployerNIP="4657964654654",
+                    EmployerName="Coca Cola",
+                    MedicalPackage=MedicalPackages[3],
+                    NFZUnit=NfzUnits[5],
+                    UserId=Persons[id].Id
 
-                //},
-                //new Patient (Persons[++id]                    )
-                //{
-                //    Id=++patientId,
-                //    EmployerNIP="4657964654654",
-                //    EmployerName="Coca Cola",
-                //    MedicalPackage=MedicalPackages[3],
-                //    NFZUnit=NfzUnits[5],
-                //    UserId=id
+                },
+                new Patient (Persons[++id]                    )
+                {
+                    Id=++patientId,
+                    EmployerNIP="4657964654654",
+                    EmployerName="Coca Cola",
+                    MedicalPackage=MedicalPackages[3],
+                    NFZUnit=NfzUnits[5],
+                    UserId=Persons[id].Id
 
-                //},
-                //new Patient (Persons[++id]                    )
-                //{
-                //    Id=++patientId,
-                //    EmployerNIP="4657964654654",
-                //    EmployerName="Coca Cola",
-                //    MedicalPackage=MedicalPackages[3],
-                //    NFZUnit=NfzUnits[5],
-                //    UserId=id
+                },
+                new Patient(Persons[++id])
+                {
+                    Id=++patientId,
+                    EmployerNIP="845465154654",
+                    MedicalPackage=MedicalPackages[0],
+                    NFZUnit=NfzUnits[0],
+                    EmployerName="Alfa Bum Sp. z o.o.",
+                    UserId=Persons[id].Id
+                },
+                new Patient (Persons[++id]                    )
+                {
+                    Id=++patientId,
+                    EmployerNIP="7777742132152",
+                    MedicalPackage=MedicalPackages[3],
+                    NFZUnit=NfzUnits[15],
+                    EmployerName="Agfa sp. jawna",
+                    UserId=Persons[id].Id
+                },
 
-                //},
-                //new Patient (Persons[++id]                    )
-                //{
-                //    Id=++patientId,
-                //    EmployerNIP="4657964654654",
-                //    EmployerName="Coca Cola",
-                //    MedicalPackage=MedicalPackages[3],
-                //    NFZUnit=NfzUnits[5],
-                //    UserId=id
+                new Patient (Persons[++id]                    )
+                {
+                    Id=++patientId,
+                    EmployerNIP="549642132152",
+                    MedicalPackage=MedicalPackages[0],
+                    NFZUnit=NfzUnits[0],
+                    EmployerName="Biedronka sp. z o.o.",
+                    UserId=Persons[id].Id
 
-                //},
+                },
+                new Patient (Persons[++id]                    )
+                {
+                    Id=++patientId,
+                    EmployerNIP="549642132152",
+                    MedicalPackage=MedicalPackages[1],
+                    NFZUnit=NfzUnits[1],
+                    UserId=Persons[id].Id,
+                    EmployerName="Api Market sp. z o.o."
+                },
+                new Patient (Persons[++id]                    )
+                {
+                    Id=++patientId,
+                    EmployerNIP="7963742132152",
+                    MedicalPackage=MedicalPackages[2],
+                    NFZUnit=NfzUnits[2],
+                    EmployerName=   "Kowalski i spółka",
+                    UserId=Persons[id].Id
+
+                },
+                new Patient (Persons[++id]                    )
+                {
+                    Id=++patientId,
+                    EmployerNIP="3377742132152",
+                    MedicalPackage=MedicalPackages[3],
+                    NFZUnit=NfzUnits[3],
+                    EmployerName= "Six Sigma Poland",
+                    UserId=Persons[id].Id
+
+                },
+                new Patient (Persons[++id])
+                {
+                    Id=++patientId,
+                    EmployerNIP="7157742132152",
+                    MedicalPackage=MedicalPackages[1],
+                    NFZUnit=NfzUnits[4],
+                    UserId=Persons[id].Id,
+                    EmployerName ="Microsoft Polska",
+
+                },
+                new Patient (Persons[++id]                    )
+                {
+                    Id=++patientId,
+                    EmployerNIP="7777742132152",
+                    MedicalPackage=MedicalPackages[0],
+                    NFZUnit=NfzUnits[5],
+                    UserId=Persons[id].Id,
+                    EmployerName="Lubaszka wypieki",
+                },
+                new Patient (Persons[++id]                    )
+                {
+                    Id=++patientId,
+                    EmployerNIP="1577742132152",
+                    MedicalPackage=MedicalPackages[2],
+                    NFZUnit=NfzUnits[2],
+                    UserId=Persons[id].Id,
+                    EmployerName="Lasy Pańśtwowe",
+
+                },
+                new Patient (Persons[++id]                    )
+                {
+                    Id=++patientId,
+                    EmployerNIP="7876242132152",
+                    MedicalPackage=MedicalPackages[3],
+                    NFZUnit=NfzUnits[7],
+                    UserId=Persons[id].Id,
+                    EmployerName="Wirtualna Polska"
+                },
+                new Patient (Persons[++id]                    )
+                {
+                    Id=++patientId,
+                    EmployerNIP="984891621654",
+                    MedicalPackage=MedicalPackages[2],
+                    NFZUnit=NfzUnits[8],
+                    EmployerName="Styropmin",
+                    UserId=Persons[id].Id
+
+                },
+                new Patient (Persons[++id]                    )
+                {
+                    Id=++patientId,
+                    EmployerNIP="54646516465",
+                    MedicalPackage=MedicalPackages[2],
+                    NFZUnit=NfzUnits[8],
+                    EmployerName="UM Ząbki",
+                    UserId=Persons[id].Id
+
+                },
+                new Patient (Persons[++id])
+                {
+                    Id=++patientId,
+                    EmployerNIP="7777742132152",
+                    MedicalPackage=MedicalPackages[1],
+                    NFZUnit=NfzUnits[7],
+                    UserId=Persons[id].Id,
+                    EmployerName="PKP Intercity"
+                },
+                new Patient (Persons[++id]                    )
+                {
+                    Id=++patientId,
+                    EmployerNIP="54646516465",
+                    MedicalPackage=MedicalPackages[1],
+                    NFZUnit=NfzUnits[2],
+                    EmployerName="Biedronka",
+                    UserId=Persons[id].Id
+
+                },
+                new Patient (Persons[++id]                    )
+                {
+                    Id=++patientId,
+                    EmployerName="McKinsey Polska Sp. z o.o.",
+                    EmployerNIP="7777742132152",
+                    MedicalPackage=MedicalPackages[0],
+                    NFZUnit=NfzUnits[10],
+                    UserId=Persons[id].Id
+
+                },
+                new Patient (Persons[++id]                    )
+                {
+                    Id=++patientId,
+                    EmployerNIP="4657964654654",
+                    EmployerName="Coca Cola",
+                    MedicalPackage=MedicalPackages[2],
+                    NFZUnit=NfzUnits[5],
+                    UserId=Persons[id].Id
+
+                },
+                new Patient (Persons[++id]                    )
+                {
+                    Id=++patientId,
+                    EmployerNIP="63123154654",
+                    EmployerName="Apple Sp. z o.o.",
+                    MedicalPackage=MedicalPackages[2],
+                    NFZUnit=NfzUnits[4],
+                    UserId=Persons[id].Id
+
+                },
+                new Patient (Persons[++id]                    )
+                {
+                    Id=++patientId,
+                    EmployerNIP="1324564895413",
+                    EmployerName="Samsung Polska",
+                    MedicalPackage=MedicalPackages[3],
+                    NFZUnit=NfzUnits[3],
+                    UserId=Persons[id].Id
+
+                },
+                new Patient (Persons[++id]                    )
+                {
+                    Id=++patientId,
+                    EmployerNIP="13648946542",
+                    EmployerName="Dell Polska S.A.",
+                    MedicalPackage=MedicalPackages[0],
+                    NFZUnit=NfzUnits[2],
+                    UserId=Persons[id].Id
+
+                },
+                new Patient (Persons[++id]                    )
+                {
+                    Id=++patientId,
+                    EmployerNIP="161315648635",
+                    EmployerName="CCC Sp. z o.o.",
+                    MedicalPackage=MedicalPackages[1],
+                    NFZUnit=NfzUnits[15],
+                    UserId=Persons[id].Id
+
+                },
+                new Patient (Persons[++id]                    )
+                {
+                    Id=++patientId,
+                    EmployerNIP="87841213654",
+                    EmployerName="Henkel S.A.",
+                    MedicalPackage=MedicalPackages[2],
+                    NFZUnit=NfzUnits[11],
+                    UserId=Persons[id].Id
+
+                },
+                new Patient (Persons[++id]                    )
+                {
+                    Id=++patientId,
+                    EmployerNIP="123165498463",
+                    EmployerName="LOT S.A.",
+                    MedicalPackage=MedicalPackages[3],
+                    NFZUnit=NfzUnits[10],
+                    UserId=Persons[id].Id
+
+                },
+                new Patient (Persons[++id]                    )
+                {
+                    Id=++patientId,
+                    EmployerNIP="94215748989",
+                    EmployerName="Alior Bank S.A.",
+                    MedicalPackage=MedicalPackages[0],
+                    NFZUnit=NfzUnits[12],
+                    UserId=Persons[id].Id
+
+                },
+                new Patient (Persons[++id]                    )
+                {
+                    Id=++patientId,
+                    EmployerNIP="89461231651",
+                    EmployerName="Nestle Polska",
+                    MedicalPackage=MedicalPackages[1],
+                    NFZUnit=NfzUnits[13],
+                    UserId=Persons[id].Id
+
+                },
+                new Patient (Persons[++id]                    )
+                {
+                    Id=++patientId,
+                    EmployerNIP="465465461231",
+                    EmployerName="Wedel sp. z o.o.",
+                    MedicalPackage=MedicalPackages[2],
+                    NFZUnit=NfzUnits[14],
+                    UserId=Persons[id].Id
+
+                },
+                new Patient (Persons[++id]                    )
+                {
+                    Id=++patientId,
+                    EmployerNIP="67655634534",
+                    EmployerName="Compensa z o.o.",
+                    MedicalPackage=MedicalPackages[2],
+                    NFZUnit=NfzUnits[15],
+                    UserId=Persons[id].Id
+
+                },
+                new Patient (Persons[++id]                    )
+                {
+                    Id=++patientId,
+                    EmployerNIP="4657964654654",
+                    EmployerName="Coca Cola",
+                    MedicalPackage=MedicalPackages[3],
+                    NFZUnit=NfzUnits[5],
+                    UserId=Persons[id].Id
+
+                },
+
 
             };
             patients.ForEach(c => Users.ToList().Where(d => d.Id == c.UserId).FirstOrDefault().PatientId=c.Id);

@@ -39,17 +39,20 @@ namespace Asklepios.Web.Areas.MedicalWorkerArea.Models
             }
         }
         public Visit Visit { get; set; }
-
+        //public Visit TempVisit { get; set; }
         public MedicalWorker MedicalWorker { get; }
         public long MedicalWorkerId { get; set; }
         public long PatientId { get; set; }
         public Patient Patient { get; set; }
         public long ServiceToAdd { get; set; }
         public long ServiceToRemove { get; set; }
+        public List<Recommendation> Recommendations { get; set; }
         public Recommendation RecommendationToAdd { get; set; }
         public Recommendation RecommendationToRemove { get; set; }
         public Prescription PrescriptionToAdd { get; set; }
         public IssuedMedicine IssuedMedicineToAdd { get; set; }
+        //public hist
+        //public List<IssuedMedicine>  
         [Required(ErrorMessage = "Proszę wybrać typ badań")]
         [Range(1, long.MaxValue, ErrorMessage ="Proszę wybrać usługę")]
         [Display(Name = "Typ badań")]
@@ -73,7 +76,7 @@ namespace Asklepios.Web.Areas.MedicalWorkerArea.Models
         [Range(7, 365)]
         public int PrescriptionDaysToExpire { get; set; }
 
-        public long MedicineIdToRemove { get; set; }
+        public long MedicineIndexToRemove { get; set; }
         public SubmitMode SubmitMode { get; set; }
 
         [Display(Name = "Typ skierowania")]
@@ -137,7 +140,10 @@ namespace Asklepios.Web.Areas.MedicalWorkerArea.Models
                 {
                     if (Visit.MinorMedicalServices!=null)
                     {
-                        List<MedicalService> availableServices = Visit.PrimaryService.SubServices.Except(Visit.MinorMedicalServices).ToList();
+                        var excludedIDs = new List<long>(Visit.MinorMedicalServices.Select(p => p.Id));
+                        List<MedicalService> availableServices = Visit.PrimaryService.SubServices.Where(p => !excludedIDs.Contains(p.Id)).ToList();
+
+                      //  List<MedicalService> availableServices = Visit.PrimaryService.SubServices.Except(Visit.MinorMedicalServices).ToList();
                         return availableServices;
                     }
                     else

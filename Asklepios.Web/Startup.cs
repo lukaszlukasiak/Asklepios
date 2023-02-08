@@ -27,11 +27,11 @@ namespace Asklepios.Web
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddDbContext<AsklepiosDbContext>(options =>
-            options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")), ServiceLifetime.Scoped);
+            options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection"), options => options.EnableRetryOnFailure()), ServiceLifetime.Scoped);
 
             //options.UseSqlServer(Configuration.GetConnectionString("AzureAsklepios")),ServiceLifetime.Scoped);
 
-
+            
             //app.UseHttpsRedirection();
             // services.
             //services.

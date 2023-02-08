@@ -10,7 +10,7 @@ namespace Asklepios.Web.Areas.MedicalWorkerArea.Models
     public class ScheduleViewModel: IBaseViewModel
     {
         public MedicalWorker MedicalWorker { get; set; }
-        //public List<Visit> AllForthcomingVisits { get; set; }
+        public IQueryable<Visit> AllForthcomingVisits { get; set; }
         [DataType(DataType.Date)]
         [Display(Name = "Wybrany dzień")]
 
@@ -30,16 +30,21 @@ namespace Asklepios.Web.Areas.MedicalWorkerArea.Models
         {
             get
             {
-                if (MedicalWorker == null)
+                if (AllForthcomingVisits==null)
+                {
+                    return null;
+                }
+                if (AllForthcomingVisits.Count()==0)
                 {
                     return null;
                 }
 
-                IEnumerable<IGrouping<DateTime, Visit>> grouping = MedicalWorker.FutureVisits.GroupBy(c => c.DateTimeSince.Date);
-                grouping = grouping.OrderBy(c => c.Key);
-
                 if (SelectedDate == null)
                 {
+                    List<Visit> visits = AllForthcomingVisits.ToList();
+                    List<IGrouping<DateTime, Visit>> grouping = visits.GroupBy(c => c.DateTimeSince.Date).ToList();
+                    grouping = grouping.OrderBy(c => c.Key).ToList();
+
                     int max = grouping.Count();//MedicalWorker.PastVisits.Count();
                     if (max > 5)
                     {
@@ -51,6 +56,9 @@ namespace Asklepios.Web.Areas.MedicalWorkerArea.Models
                 }
                 else
                 {
+                    List<Visit> visits = AllForthcomingVisits.Where(d=>d.DateTimeSince.Date==SelectedDate.Value.Date).ToList();
+                    List<IGrouping<DateTime, Visit>> grouping = visits.GroupBy(c => c.DateTimeSince.Date).ToList();
+                    grouping = grouping.OrderBy(c => c.Key).ToList();
 
                     return grouping;
                     //return MedicalWorker.PastVisits.Where(c => c.DateTimeSince.Date == SelectedDate.Value.Date).ToList();
