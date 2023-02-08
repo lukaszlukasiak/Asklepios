@@ -303,7 +303,6 @@ C:\Users\lukas\source\repos\Asklepios8\Asklepios.Web\bin\Debug\net6.0\Microsoft.
 C:\Users\lukas\source\repos\Asklepios8\Asklepios.Web\bin\Debug\net6.0\Microsoft.AspNetCore.Mvc.Razor.RuntimeCompilation.dll
 C:\Users\lukas\source\repos\Asklepios8\Asklepios.Web\bin\Debug\net6.0\Microsoft.AspNetCore.Razor.Language.dll
 C:\Users\lukas\source\repos\Asklepios8\Asklepios.Web\bin\Debug\net6.0\Microsoft.Bcl.AsyncInterfaces.dll
-C:\Users\lukas\source\repos\Asklepios8\Asklepios.Web\bin\Debug\net6.0\Microsoft.Build.Locator.dll
 C:\Users\lukas\source\repos\Asklepios8\Asklepios.Web\bin\Debug\net6.0\Microsoft.CodeAnalysis.AnalyzerUtilities.dll
 C:\Users\lukas\source\repos\Asklepios8\Asklepios.Web\bin\Debug\net6.0\Microsoft.CodeAnalysis.dll
 C:\Users\lukas\source\repos\Asklepios8\Asklepios.Web\bin\Debug\net6.0\Microsoft.CodeAnalysis.CSharp.dll
@@ -563,3 +562,12 @@ C:\Users\lukas\source\repos\Asklepios8\Asklepios.Web\obj\Debug\net6.0\Asklepios.
 C:\Users\lukas\source\repos\Asklepios8\Asklepios.Web\obj\Debug\net6.0\ref\Asklepios.Web.dll
 C:\Users\lukas\source\repos\Asklepios8\Asklepios.Web\obj\Debug\net6.0\Asklepios.Web.pdb
 C:\Users\lukas\source\repos\Asklepios8\Asklepios.Web\obj\Debug\net6.0\Asklepios.Web.genruntimeconfig.cache
+C:\Users\lukas\source\repos\Asklepios8\Asklepios.Web\bin\Debug\net6.0\Microsoft.Build.dll
+C:\Users\lukas\source\repos\Asklepios8\Asklepios.Web\bin\Debug\net6.0\Microsoft.Build.Framework.dll
+C:\Users\lukas\source\repos\Asklepios8\Asklepios.Web\bin\Debug\net6.0\Microsoft.NET.StringTools.dll
+C:\Users\lukas\source\repos\Asklepios8\Asklepios.Web\bin\Debug\net6.0\System.Reflection.MetadataLoadContext.dll
+C:\Users\lukas\source\repos\Asklepios8\Asklepios.Web\bin\Debug\net6.0\Microsoft.Extensions.DependencyInjection.dll
+C:\Users\lukas\source\repos\Asklepios8\Asklepios.Web\bin\Debug\net6.0\Microsoft.OpenApi.dll
+C:\Users\lukas\source\repos\Asklepios8\Asklepios.Web\bin\Debug\net6.0\Swashbuckle.AspNetCore.Swagger.dll
+C:\Users\lukas\source\repos\Asklepios8\Asklepios.Web\bin\Debug\net6.0\Swashbuckle.AspNetCore.SwaggerGen.dll
+C:\Users\lukas\source\repos\Asklepios8\Asklepios.Web\bin\Debug\net6.0\Swashbuckle.AspNetCore.SwaggerUI.dll
