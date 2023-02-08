@@ -12,6 +12,7 @@ using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.IO;
 using System.Linq;
 
 namespace Asklepios.Web.Areas.MedicalWorkerArea.Controllers
@@ -34,19 +35,54 @@ namespace Asklepios.Web.Areas.MedicalWorkerArea.Controllers
 
             _context = context;
         }
+        private  static User _loggedUser { get; set; }
+        private  static Person _person { get; set; }
+        private  static MedicalWorker _medicalWorker { get; set; }
+        private  static long _currentVisitId;
+        private  static long CurrentVisitId
+        {
+            get
+            {
+                return _currentVisitId;
+            }
+            set
+            {
+                _currentVisitId = value;
+                if (_currentVisitId == -1)
+                {
+                    TempVisit = null;
+                }
+            }
+        }
+        private static Visit TempVisit { get; set; }
 
-        private static User _loggedUser { get; set; }
-        private static Person _person { get; set; }
-        private static MedicalWorker _medicalWorker { get; set; }
-        private static long CurrentVisitId { get; set; }
-
-        internal static void LogOut()
+        internal void LogOut()
         {
             _loggedUser = null;
             _person = null;
             _medicalWorker = null;
 
         }
+
+        //private static User _loggedUser { get; set; }
+        //private static Person _person { get; set; }
+        //private static MedicalWorker _medicalWorker { get; set; }
+        //private static long _currentVisitId;
+        //private static long CurrentVisitId 
+        //{
+        //    get
+        //    {
+        //        return _currentVisitId;
+        //    }
+        //    set
+        //    {
+        //        _currentVisitId = value;
+        //        if (_currentVisitId==-1)
+        //        {
+        //            TempVisit = null;
+        //        }
+        //    }
+        //}
         //public IActionResult LogOut()
         //{
         //    return RedirectToAction("Index", "Home", new { area = "HomeArea" });
@@ -95,12 +131,13 @@ namespace Asklepios.Web.Areas.MedicalWorkerArea.Controllers
             {
 
                 //_medicalWorker.AllVisits.AddRange( _context.GetFutureVisitsByMedicalWorkerId(_medicalWorker.Id));
-                List<Visit> visits= _context.GetVisitsByMedicalWorkerId(_loggedUser.Id);
-                _medicalWorker.AllVisits=(visits);
+                //List<Visit> visits= _context.GetVisitsByMedicalWorkerId(_loggedUser.Id);
+                //_medicalWorker.AllVisits=(visits);
 
                 DashboardViewModel model = new DashboardViewModel(_medicalWorker)
                 {
-                    UserName = _loggedUser.Person.FullName
+                    UserName = _loggedUser.Person.FullName,
+                    TodayVisits = _context.GetVisitsByMedicalWorkerId(_medicalWorker.Id).Where(c => c.DateTimeSince.Date == DateTime.Now.Date).AsQueryable(),
                 };
                 return View(model);
             }
@@ -119,25 +156,33 @@ namespace Asklepios.Web.Areas.MedicalWorkerArea.Controllers
                 }
                 if (CurrentVisitId > 0)
                 {
-                    Visit visit = _context.GetBookedVisitById(CurrentVisitId);
-                    visit.Patient=_context.GetPatientById(visit.PatientId.Value);
-                    visit.Patient.MedicalPackage = _context.GetMedicalPackageById(visit.Patient.MedicalPackageId.Value);
-
-                    visit.MedicalWorker = _medicalWorker;
-                    visit.Location = _context.GetLocationById(visit.LocationId.Value);
-                    visit.MedicalRoom=_context.GetMedicalRoomById(visit.MedicalRoomId.Value);
-                    visit.VisitCategory = _context.GetVisitCategoryById(visit.VisitCategoryId.Value);
-                    if (visit == null)
+                    if (TempVisit==null)
                     {
-                        return NotFound();
+                        Visit visit = _context.GetBookedVisitById(CurrentVisitId);
+                        
+                        if (visit == null)
+                        {
+                            return NotFound();
+                        }
+
+                        visit.Patient = _context.GetPatientById(visit.PatientId.Value);
+                        visit.Patient.MedicalPackage = _context.GetMedicalPackageById(visit.Patient.MedicalPackageId.Value);
+
+                        visit.MedicalWorker = _medicalWorker;
+                        visit.Location = _context.GetLocationById(visit.LocationId.Value);
+                        visit.MedicalRoom = _context.GetMedicalRoomById(visit.MedicalRoomId.Value);
+                        visit.VisitCategory = _context.GetVisitCategoryById(visit.VisitCategoryId.Value);
+                        TempVisit = visit;
+
                     }
+
                     //if (visit.VisitStatus != Core.Enums.VisitStatus.AvailableNotBooked)
                     //{
-                    CurrentVisitViewModel model = new CurrentVisitViewModel(visit);
+                    CurrentVisitViewModel model = new CurrentVisitViewModel(TempVisit);
                     List<MedicalService> servicesForReferrals = _context.GetMedicalServices().Where(c => c.RequireRefferal == true).ToList();
                     model.MedicalServicesForReferrals = servicesForReferrals;
                     model.UserName = _loggedUser.Person.FullName;
-
+                    //model.TempVisit = TempVisit;
                     return View(model);
                     //}
                     //else
@@ -321,22 +366,35 @@ namespace Asklepios.Web.Areas.MedicalWorkerArea.Controllers
 
         }
 
-        private void AddMedicineToPrescription(CurrentVisitViewModel model)
+        public IActionResult AddMedicineToPrescription(CurrentVisitViewModel model)
         {
-            List<Visit> todayVisits = _medicalWorker.FutureVisits?.Where(c => c.DateTimeSince.Date == DateTimeOffset.Now.Date).ToList();
-            Visit visit = todayVisits.Where(c => c.Id == model.VisitId).FirstOrDefault();
-            if (visit != null)
-            {
-                _context.AddMedicine(model.IssuedMedicineToAdd);
-                visit.Prescription.IssuedMedicines.Add(model.IssuedMedicineToAdd);
+            //List<Visit> todayVisits = _medicalWorker.FutureVisits?.Where(c => c.DateTimeSince.Date == DateTimeOffset.Now.Date).ToList();
+            //Visit visit = todayVisits.Where(c => c.Id == model.VisitId).FirstOrDefault();
+            //Visit visit = _context.GetBookedVisitById(model.VisitId);
 
-                List<Prescription> prescriptions = _context.GetPrescriptions();
+            if (TempVisit != null)
+            {
+                //_context.AddMedicine(model.IssuedMedicineToAdd);
+                if (TempVisit.Prescription==null)
+                {
+                    TempVisit.Prescription = new Prescription();
+                    TempVisit.Prescription.IssuedById = model.MedicalWorkerId;
+                    TempVisit.Prescription.IssuedToId = model.PatientId;
+                    TempVisit.Prescription.IssueDate = DateTime.Now;
+                    TempVisit.Prescription.ExpirationDate = DateTime.Now.AddDays(model.PrescriptionDaysToExpire);
+                }
+                TempVisit.Prescription.IssuedMedicines.Add(model.IssuedMedicineToAdd);
+
+                //List<Prescription> prescriptions = _context.GetPrescriptions();
                 //visit.Prescription = model.PrescriptionToAdd;
                 //_context.UpdatePrescription(visit.Prescription);
                 //model.IssuedMedicineToAdd = null;
-                model.IssuedMedicineToAdd = new IssuedMedicine();
-                ModelState.Clear();
+               // model.IssuedMedicineToAdd = new IssuedMedicine();
+                //ModelState.Clear();
+                return RedirectToAction("CurrentVisit");
+
             }
+            return NotFound();
 
         }
         [HttpPost]
@@ -344,10 +402,11 @@ namespace Asklepios.Web.Areas.MedicalWorkerArea.Controllers
         {
             if (_loggedUser != null)
             {
-                List<Visit> todayVisits = _medicalWorker.FutureVisits?.Where(c => c.DateTimeSince.Date == DateTimeOffset.Now.Date).ToList();
-                Visit visit = todayVisits.Where(c => c.Id == model.VisitId).FirstOrDefault();
+                //List<Visit> todayVisits = _medicalWorker.FutureVisits?.Where(c => c.DateTimeSince.Date == DateTimeOffset.Now.Date).ToList();
+                //Visit visit = todayVisits.Where(c => c.Id == model.VisitId).FirstOrDefault();
+                //Visit visit = _context.GetBookedVisitById(model.VisitId);
 
-                if (visit != null)
+                if (TempVisit != null)
                 {
                     MedicalService medicalService = _context.GetMedicalServiceById(model.MedicalTestServiceId);
                     if (model.MedicalTestFile != null)
@@ -356,18 +415,23 @@ namespace Asklepios.Web.Areas.MedicalWorkerArea.Controllers
 
                         MedicalTestResult medicalTestResult = new MedicalTestResult
                         {
-                            Visit = visit,
-                            ExamDate = DateTimeOffset.Now,
-                            MedicalWorker = visit.MedicalWorker,
-                            Patient = visit.Patient,
+                            VisitId = TempVisit.Id,
+                            ExamDate = TempVisit.DateTimeSince,
+                            MedicalWorkerId = TempVisit.MedicalWorkerId,
+                            PatientId = TempVisit.PatientId,
                             MedicalService = medicalService,
-
+                            UploadDate=DateTime.Now,
                             //PdfDocument=model.MedicalTestFile.,
 
                         };
-                        medicalTestResult.Document = _context.GetDocument(medicalTestResult.DocumentPath, _hostEnvironment.WebRootPath);
-                        _context.AddMedicalTestResult(medicalTestResult, model.MedicalTestFile, _hostEnvironment.WebRootPath);
-                        visit.MedicalTestResult = medicalTestResult;
+                        MemoryStream stream = new MemoryStream();
+
+                        model.MedicalTestFile.CopyTo(stream);
+                        medicalTestResult.Document= stream.ToArray();
+
+                        // medicalTestResult.Document = _context.GetDocument(medicalTestResult.DocumentPath, _hostEnvironment.WebRootPath);
+                        //_context.AddMedicalTestResult(medicalTestResult, model.MedicalTestFile, _hostEnvironment.WebRootPath);
+                        TempVisit.MedicalTestResult = medicalTestResult;
 
                         //_context.UpdatePersonImage(model.Person.ImageFile, model.Person, _hostEnvironment.WebRootPath);
                     }
@@ -381,39 +445,47 @@ namespace Asklepios.Web.Areas.MedicalWorkerArea.Controllers
             return NotFound();
         }
 
-        private void AddPrescription(CurrentVisitViewModel model)
+        public IActionResult AddPrescription(CurrentVisitViewModel model)
         {
             if (_loggedUser != null)
             {
-                List<Visit> todayVisits = _medicalWorker.FutureVisits?.Where(c => c.DateTimeSince.Date == DateTimeOffset.Now.Date).ToList();
-                Visit visit = todayVisits.Where(c => c.Id == model.VisitId).FirstOrDefault();
-                if (visit != null)
+                //List<Visit> todayVisits = _medicalWorker.FutureVisits?.Where(c => c.DateTimeSince.Date == DateTimeOffset.Now.Date).ToList();
+                //Visit visit = todayVisits.Where(c => c.Id == model.VisitId).FirstOrDefault();
+                //Visit visit = _context.GetBookedVisitById(model.VisitId);
+
+                if (TempVisit != null)
                 {
                     Prescription prescription = new Prescription
                     {
                         AccessCode = model.PrescriptionToAdd.AccessCode,
                         ExpirationDate = DateTimeOffset.Now.AddDays(model.PrescriptionDaysToExpire),// model.PrescriptionToAdd.ExpirationDate;
                         IdentificationCode = model.PrescriptionToAdd.IdentificationCode,
-                        IssueDate = model.PrescriptionToAdd.IssueDate,
-                        Visit = visit,
-                        IssuedBy = visit.MedicalWorker,
-                        IssuedTo = visit.Patient
+                        IssueDate = DateTime.Now,
+                        Visit = TempVisit,
+                        IssuedBy = TempVisit.MedicalWorker,
+                        IssuedTo = TempVisit.Patient
                     };
                     prescription.IssuedMedicines.Add(model.IssuedMedicineToAdd);
-                    _context.AddMedicine(model.IssuedMedicineToAdd);
+                   // _context.AddMedicine(model.IssuedMedicineToAdd);
                     //prescription.IssuedMedicines.Add(model.IssuedMedicineToAdd);
 
-                    _context.AddPrescription(prescription);
+                    //_context.AddPrescription(prescription);
 
-                    visit.Prescription = prescription;// model.PrescriptionToAdd;
+                    TempVisit.Prescription = prescription;// model.PrescriptionToAdd;
                     model.IssuedMedicineToAdd = new IssuedMedicine();
                     ModelState.Clear();
+                    return RedirectToAction("CurrentVisit");
+
                 }
-
-
-
-
             }
+            return NotFound();
+        }
+        public IActionResult DownloadTempTestResults()
+        {
+            byte[] bytes = TempVisit.MedicalTestResult.Document;
+
+            return File(bytes, "application/octet-stream", System.IO.Path.GetFileName("wynik"));
+
         }
 
         [HttpPost]
@@ -421,17 +493,15 @@ namespace Asklepios.Web.Areas.MedicalWorkerArea.Controllers
         {
             if (_loggedUser != null)
             {
-                List<Visit> visits = _context.GetFutureVisitsByMedicalWorkerId(_medicalWorker.Id);
                 model.MedicalWorker = _medicalWorker;
 
                 //ScheduleViewModel model = new ScheduleViewModel(_medicalWorker);
                 if (model.SelectedDate != null)
                 {
-                    model.MedicalWorker.AllVisits.AddRange(visits);//.Where(c => c.DateTimeSince.Date == model.SelectedDate.Value.Date).ToList();
+                    //model.MedicalWorker.AllVisits.AddRange(visits);//.Where(c => c.DateTimeSince.Date == model.SelectedDate.Value.Date).ToList();
                 }
                 model.UserName = _loggedUser.Person.FullName;
-
-                //model.SelectedDate=
+                model.AllForthcomingVisits = _context.GetFutureVisitsByMedicalWorkerId(_medicalWorker.Id);
                 return View(model);
             }
             else
@@ -445,8 +515,9 @@ namespace Asklepios.Web.Areas.MedicalWorkerArea.Controllers
         {
             if (_loggedUser != null)
             {
-                _medicalWorker.AllVisits.AddRange(_context.GetFutureVisitsByMedicalWorkerId(_medicalWorker.Id));
+                //_medicalWorker.AllVisits.AddRange(_context.GetFutureVisitsByMedicalWorkerId(_medicalWorker.Id));
                 ScheduleViewModel model = new ScheduleViewModel(_medicalWorker);
+                model.AllForthcomingVisits = _context.GetFutureVisitsByMedicalWorkerId(_medicalWorker.Id);
                 model.UserName = _loggedUser.Person.FullName;
 
                 return View(model);
@@ -466,7 +537,7 @@ namespace Asklepios.Web.Areas.MedicalWorkerArea.Controllers
                 {
 
                     Visit visit = _context.GetBookedVisitById(CurrentVisitId);
-                    _medicalWorker.AllVisits = _context.GetHistoricalVisitsByMedicalWorkerId(_medicalWorker.Id);
+                    //_medicalWorker.AllVisits = _context.GetHistoricalVisitsByMedicalWorkerId(_medicalWorker.Id);
                     MedicalTestResult testResult = _medicalWorker.AllVisits.Where(c => c.MedicalTestResult != null && c.MedicalTestResult.Id == idL).FirstOrDefault().MedicalTestResult;
 
                     if (testResult != null)
@@ -505,7 +576,7 @@ namespace Asklepios.Web.Areas.MedicalWorkerArea.Controllers
                 //Build the File Path.
 
                 Visit visit = _context.GetBookedVisitById(CurrentVisitId);
-                _medicalWorker.AllVisits.AddRange( _context.GetHistoricalVisitsByMedicalWorkerId(_medicalWorker.Id));
+                _medicalWorker.AllVisits.AddRange(_context.GetHistoricalVisitsByMedicalWorkerId(_medicalWorker.Id));
                 MedicalTestResult testResult = _medicalWorker.AllVisits.Where(c => c.MedicalTestResult != null && c.MedicalTestResult.Id == id).FirstOrDefault().MedicalTestResult;
 
                 if (testResult != null)
@@ -534,20 +605,14 @@ namespace Asklepios.Web.Areas.MedicalWorkerArea.Controllers
         {
             if (_loggedUser != null)
             {
-                List<Visit> historicalVisits = _context.GetHistoricalVisitsByMedicalWorkerId(_medicalWorker.Id);
-                if (model.SelectedDate != null)
-                {
-                    historicalVisits = historicalVisits.Where(c => c.DateTimeSince.Date == model.SelectedDate.Value.Date).ToList();
-                }
-                _medicalWorker.AllVisits.AddRange( historicalVisits);
-                //HistoricalVisitsViewModel model = new HistoricalVisitsViewModel(_medicalWorker);
+                model.HistoricalVisits = _context.GetHistoricalVisitsByMedicalWorkerId(_medicalWorker.Id);
                 model.MedicalWorker = _medicalWorker;
                 model.UserName = _loggedUser.Person.FullName;
 
                 return View(model);
             }
             else
-            { 
+            {
                 return NotFound();
             }
         }
@@ -557,13 +622,11 @@ namespace Asklepios.Web.Areas.MedicalWorkerArea.Controllers
         {
             if (_loggedUser != null)
             {
-                List<Visit> historicalVisits = _context.GetHistoricalVisitsByMedicalWorkerId(_medicalWorker.Id);
-                _medicalWorker.AllVisits.AddRange( historicalVisits);
                 HistoricalVisitsViewModel model = new HistoricalVisitsViewModel(_medicalWorker)
                 {
                     UserName = _loggedUser.Person.FullName
                 };
-
+                model.HistoricalVisits = _context.GetHistoricalVisitsByMedicalWorkerId(_medicalWorker.Id);
                 return View(model);
             }
             else
@@ -577,7 +640,7 @@ namespace Asklepios.Web.Areas.MedicalWorkerArea.Controllers
         {
             if (_loggedUser != null)
             {
-                _medicalWorker.User=_context.GetUserById(_medicalWorker.Id);
+                _medicalWorker.User = _context.GetUserById(_medicalWorker.Id);
                 ContactMessageViewModel model = new ContactMessageViewModel(_medicalWorker);
                 model.UserName = _loggedUser.Person.FullName;
 
@@ -632,15 +695,15 @@ namespace Asklepios.Web.Areas.MedicalWorkerArea.Controllers
                 if (visit != null)
                 {
                     visit.VisitStatus = Core.Enums.VisitStatus.Finished;
-                    if (visit.MedicalTestResult!=null)
+                    if (visit.MedicalTestResult != null)
                     {
-                        _context.AddNotification(visit.MedicalTestResult.Id,NotificationType.TestResult,visit.Patient.Id, DateTimeOffset.Now, visit.Id);
+                        _context.AddNotification(visit.MedicalTestResult.Id, NotificationType.TestResult, visit.Patient.Id, DateTimeOffset.Now, visit.Id);
                     }
-                    if (visit.Prescription!=null)
+                    if (visit.Prescription != null)
                     {
                         _context.AddNotification(visit.Prescription.Id, NotificationType.Prescription, visit.Patient.Id, DateTimeOffset.Now, visit.Id);
                     }
-                    if (visit.ExaminationReferrals!=null)
+                    if (visit.ExaminationReferrals != null)
                     {
                         foreach (MedicalReferral item in visit.ExaminationReferrals)
                         {
@@ -662,8 +725,10 @@ namespace Asklepios.Web.Areas.MedicalWorkerArea.Controllers
         {
             if (_loggedUser != null)
             {
-                List<Visit> todayVisits = _medicalWorker.FutureVisits?.Where(c => c.DateTimeSince.Date == DateTimeOffset.Now.Date).ToList();
-                Visit visit = todayVisits.Where(c => c.Id == model.VisitId).FirstOrDefault();
+                //List<Visit> todayVisits = _medicalWorker.FutureVisits?.Where(c => c.DateTimeSince.Date == DateTimeOffset.Now.Date).ToList();
+                //Visit visit = todayVisits.Where(c => c.Id == model.VisitId).FirstOrDefault();
+                Visit visit = _context.GetBookedVisitById(model.VisitId);
+
                 if (visit != null)
                 {
                     visit.VisitStatus = Core.Enums.VisitStatus.NotHeldAbsentPatient;
@@ -683,8 +748,10 @@ namespace Asklepios.Web.Areas.MedicalWorkerArea.Controllers
         {
             if (_loggedUser != null)
             {
-                List<Visit> todayVisits = _medicalWorker.FutureVisits?.Where(c => c.DateTimeSince.Date == DateTimeOffset.Now.Date).ToList();
-                Visit visit = todayVisits.Where(c => c.Id == model.VisitId).FirstOrDefault();
+                //List<Visit> todayVisits = _medicalWorker.FutureVisits?.Where(c => c.DateTimeSince.Date == DateTimeOffset.Now.Date).ToList();
+                //Visit visit = todayVisits.Where(c => c.Id == model.VisitId).FirstOrDefault();
+                Visit visit = _context.GetBookedVisitById(model.VisitId);
+
                 if (visit != null)
                 {
                     visit.VisitStatus = Core.Enums.VisitStatus.NotHeldOther;
@@ -701,15 +768,18 @@ namespace Asklepios.Web.Areas.MedicalWorkerArea.Controllers
         }
 
         [HttpPost]
-        public IActionResult SaveMedicalHistory(CurrentVisitViewModel model)
+        public IActionResult AddMedicalHistory(CurrentVisitViewModel model)
         {
+
             if (_loggedUser != null)
             {
-                List<Visit> todayVisits = _medicalWorker.FutureVisits?.Where(c => c.DateTimeSince.Date == DateTimeOffset.Now.Date).ToList();
-                Visit visit = todayVisits.Where(c => c.Id == model.VisitId).FirstOrDefault();
-                if (visit != null)
+                //List<Visit> todayVisits = _medicalWorker.FutureVisits?.Where(c => c.DateTimeSince.Date == DateTimeOffset.Now.Date).ToList();
+                //Visit visit = todayVisits.Where(c => c.Id == model.VisitId).FirstOrDefault();
+                //Visit visit = _context.GetBookedVisitById(model.VisitId);
+
+                if (TempVisit != null)
                 {
-                    visit.MedicalHistory = model.Visit.MedicalHistory;
+                    TempVisit.MedicalHistory = model.Visit.MedicalHistory;
                     return RedirectToAction("CurrentVisit");
                 }
                 return NotFound();
@@ -725,12 +795,15 @@ namespace Asklepios.Web.Areas.MedicalWorkerArea.Controllers
         {
             if (_loggedUser != null)
             {
-                List<Visit> todayVisits = _medicalWorker.FutureVisits?.Where(c => c.DateTimeSince.Date == DateTimeOffset.Now.Date).ToList();
-                Visit visit = todayVisits.Where(c => c.Id == model.VisitId).FirstOrDefault();
-                if (visit != null)
+                //List<Visit> todayVisits = _medicalWorker.FutureVisits?.Where(c => c.DateTimeSince.Date == DateTimeOffset.Now.Date).ToList();
+                //Visit visit = todayVisits.Where(c => c.Id == model.VisitId).FirstOrDefault();
+                //Visit visit = _context.GetBookedVisitById(model.VisitId);
+
+                if (TempVisit != null)
                 {
-                    visit.Recommendations.Add(model.RecommendationToAdd);
-                    _context.AddRecommendation(model.RecommendationToAdd);
+                    model.RecommendationToAdd.VisitId = TempVisit.Id;
+                    TempVisit.Recommendations.Add(model.RecommendationToAdd);
+                    //_context.AddRecommendation(model.RecommendationToAdd);
                     return RedirectToAction("CurrentVisit");
                 }
                 return NotFound();
@@ -742,21 +815,23 @@ namespace Asklepios.Web.Areas.MedicalWorkerArea.Controllers
             }
         }
         [HttpPost]
-        public IActionResult DeleteRecommendation(CurrentVisitViewModel model)
+        public IActionResult RemoveRecommendation(CurrentVisitViewModel model)
         {
             if (_loggedUser != null)
             {
-                List<Visit> todayVisits = _medicalWorker.FutureVisits?.Where(c => c.DateTimeSince.Date == DateTimeOffset.Now.Date).ToList();
-                Visit visit = todayVisits.Where(c => c.Id == model.VisitId).FirstOrDefault();
-                if (visit != null)
+                //List<Visit> todayVisits = _medicalWorker.FutureVisits?.Where(c => c.DateTimeSince.Date == DateTimeOffset.Now.Date).ToList();
+                //Visit visit = todayVisits.Where(c => c.Id == model.VisitId).FirstOrDefault();
+                //Visit visit = _context.GetBookedVisitById(model.VisitId);
+
+                if (TempVisit != null)
                 {
-                    _context.DeleteRecommendation(model.RecommendationToRemove.Id);
+                    //_context.DeleteRecommendation(model.RecommendationToRemove.Id);
                     //Recommendation recommendation = visit.Recommendations.Where(c => c.Id == model.RecommendationToRemove.Id).FirstOrDefault();
-                    int index = visit.Recommendations.FindIndex(c => c.Id == model.RecommendationToRemove.Id);
+                    long index = model.RecommendationToRemove.Id;//visit.Recommendations.FindIndex(c => c.Id == model.RecommendationToRemove.Id);
 
                     if (index > -1)
                     {
-                        visit.Recommendations.RemoveAt(index);
+                        TempVisit.Recommendations.RemoveAt((int)index);
                         return RedirectToAction("CurrentVisit");
                     }
 
@@ -771,9 +846,9 @@ namespace Asklepios.Web.Areas.MedicalWorkerArea.Controllers
         }
 
 
-        //[HttpPost]
+        [HttpPost]
         //public IActionResult AddExaminationReferral(CurrentVisitViewModel model)
-        private void AddExaminationReferral(CurrentVisitViewModel model)
+        public IActionResult AddExaminationReferral(CurrentVisitViewModel model)
         {
             //if (_loggedUser != null)
             //{
@@ -783,9 +858,12 @@ namespace Asklepios.Web.Areas.MedicalWorkerArea.Controllers
             //    }
             if (model.MedicalServiceToAddId > 0)
             {
-                List<Visit> todayVisits = _medicalWorker.FutureVisits?.Where(c => c.DateTimeSince.Date == DateTimeOffset.Now.Date).ToList();
-                Visit visit = todayVisits.Where(c => c.Id == model.VisitId).FirstOrDefault();
-                if (visit != null)
+                //List<Visit> todayVisits = _medicalWorker.FutureVisits?.Where(c => c.DateTimeSince.Date == DateTimeOffset.Now.Date).ToList();
+                //Visit visit = todayVisits.Where(c => c.Id == model.VisitId).FirstOrDefault();
+                //Visit visit = _context.GetBookedVisitById(model.VisitId);
+                
+
+                if (TempVisit != null)
                 {
                     if (model.IsMedicalReferralAddingOK)
                     {
@@ -806,35 +884,41 @@ namespace Asklepios.Web.Areas.MedicalWorkerArea.Controllers
                         medicalReferral.ExpireDate = DateTimeOffset.Now.AddDays(model.MedicalReferralDaysToExpire);
                         medicalReferral.IssueDate = DateTimeOffset.Now;
                         medicalReferral.IssuedBy = _medicalWorker;
-                        medicalReferral.IssuedTo = model.Visit.Patient;
-                        _context.AddMedicalReferral(medicalReferral);
-                        visit.ExaminationReferrals.Add(medicalReferral);
-                        model.Visit = visit;
+                        medicalReferral.IssuedTo = TempVisit.Patient;
+                        //_context.AddMedicalReferral(medicalReferral);
+                        TempVisit.ExaminationReferrals.Add(medicalReferral);
+                        model.Visit = TempVisit;
                         //model.Visit.ExaminationReferrals.Add(medicalReferral);
+                        return RedirectToAction("CurrentVisit");
+
                     }
                     else
                     {
                     }
                     //RedirectToAction();
                 }
-
             }
+            return NotFound();
+
         }
         [HttpPost]
         public IActionResult RemoveExaminationReferral(CurrentVisitViewModel model)
         {
             if (_loggedUser != null)
             {
-                if (model.MedicalReferralIdToRemove > 0)
+                if (model.MedicalReferralIdToRemove >= 0)
                 {
-                    List<Visit> todayVisits = _medicalWorker.FutureVisits?.Where(c => c.DateTimeSince.Date == DateTimeOffset.Now.Date).ToList();
-                    Visit visit = todayVisits.Where(c => c.Id == model.VisitId).FirstOrDefault();
-                    if (visit != null)
+                    //List<Visit> todayVisits = _medicalWorker.FutureVisits?.Where(c => c.DateTimeSince.Date == DateTimeOffset.Now.Date).ToList();
+                    //Visit visit = todayVisits.Where(c => c.Id == model.VisitId).FirstOrDefault();
+                   // Visit visit = _context.GetBookedVisitById(model.VisitId);
+
+                    if (TempVisit != null)
                     {
-                        _context.RemoveMedicalReferralById(model.MedicalReferralIdToRemove);
-                        int index = visit.ExaminationReferrals.FindIndex(c => c.Id == model.MedicalReferralIdToRemove);
-                        visit.ExaminationReferrals.RemoveAt(index);
-                        model.Visit = visit;
+                        //_context.RemoveMedicalReferralById(model.MedicalReferralIdToRemove);
+                        
+                        //int index = TempVisit.ExaminationReferrals   .FindIndex(c => c.Id == model.MedicalReferralIdToRemove);
+                        TempVisit.ExaminationReferrals.RemoveAt((int)(model.MedicalReferralIdToRemove));
+                        model.Visit = TempVisit;
                         return RedirectToAction("CurrentVisit");
                     }
                 }
@@ -851,21 +935,22 @@ namespace Asklepios.Web.Areas.MedicalWorkerArea.Controllers
         {
             if (_loggedUser != null)
             {
-                List<Visit> todayVisits = _medicalWorker.FutureVisits?.Where(c => c.DateTimeSince.Date == DateTimeOffset.Now.Date).ToList();
-                Visit visit = todayVisits.Where(c => c.Id == model.VisitId).FirstOrDefault();
-                if (visit != null)
+                //List<Visit> todayVisits = _medicalWorker.FutureVisits?.Where(c => c.DateTimeSince.Date == DateTimeOffset.Now.Date).ToList();
+                //Visit visit = _context.GetVisitById(model.VisitId);//  todayVisits.Where(c => c.Id == model.VisitId).FirstOrDefault();
+                if (TempVisit != null)
                 {
                     if (model.ServiceToAdd > 0)
                     {
                         MedicalService medicalService = _context.GetMedicalServiceById(model.ServiceToAdd);
                         if (medicalService != null)
                         {
-                            if (visit.MinorMedicalServices==null)
+                            if (TempVisit.MinorMedicalServices == null)
                             {
-                                visit.MinorMedicalServices = new List<MedicalService>();
+                                TempVisit.MinorMedicalServices = new List<MedicalService>();
                             }
-                            visit.MinorMedicalServices.Add(medicalService);
-                            _context.UpdateVisit(visit);
+                            TempVisit.MinorMedicalServices.Add(medicalService);
+                            //model.AvailableMinorServices.Remove(medicalService);
+                           // _context.UpdateVisit(visit);
                             return RedirectToAction("CurrentVisit");
                         }
                     }
@@ -877,22 +962,52 @@ namespace Asklepios.Web.Areas.MedicalWorkerArea.Controllers
                 return NotFound();
             }
         }
+        [HttpGet]
+        public IActionResult ClearVisitData(long visitId)
+        {
+            if (_loggedUser != null)
+            {
+                Visit visit = _context.GetVisitById(visitId);//  todayVisits.Where(c => c.Id == model.VisitId).FirstOrDefault();
+                if (visit != null)
+                {
+                    visit.ExaminatinoReferralsIds = null;
+                    visit.ExaminationReferrals = null;
+                    visit.MedicalHistory = null;
+                    visit.MedicalTestResult = null;
+                    visit.MedicalTestResultId = null;
+                    visit.MinorMedicalServices = null;
+                    visit.MinorMedicalServicesIds = null;
+                    visit.MinorServicesToVisits = null;
+                    visit.Prescription=null;
+                    visit.PrescriptionId = null;
+                    visit.RecommendationIds = null;
+                    visit.Recommendations = null;
+                    CurrentVisitViewModel model = new CurrentVisitViewModel(visit);
+                    return RedirectToAction("CurrentVisit");
+
+                }
+            }
+            return NotFound();
+        }
         [HttpPost]
         public IActionResult RemoveMedicineFromPrescription(CurrentVisitViewModel model)
         {
             if (_loggedUser != null)
             {
-                List<Visit> todayVisits = _medicalWorker.FutureVisits?.Where(c => c.DateTimeSince.Date == DateTimeOffset.Now.Date).ToList();
-                Visit visit = todayVisits.Where(c => c.Id == model.VisitId).FirstOrDefault();
-                if (visit != null)
+                //List<Visit> todayVisits = _medicalWorker.FutureVisits?.Where(c => c.DateTimeSince.Date == DateTimeOffset.Now.Date).ToList();
+                //Visit visit = todayVisits.Where(c => c.Id == model.VisitId).FirstOrDefault();
+                //Visit visit = _context.GetBookedVisitById(model.VisitId);
+
+
+                if (TempVisit != null)
                 {
-                    if (model.MedicineIdToRemove > 0)
+                    if (model.MedicineIndexToRemove >= 0)
                     {
-                        IssuedMedicine medicine = visit.Prescription.IssuedMedicines.First(c => c.Id == model.MedicineIdToRemove);
+                        //IssuedMedicine medicine = visit.Prescription.IssuedMedicines.First(c => c.Id == model.MedicineIndexToRemove);
 
-                        visit.Prescription.IssuedMedicines.Remove(medicine);
+                        TempVisit.Prescription.IssuedMedicines.RemoveAt((int)model.MedicineIndexToRemove);
 
-                        _context.RemoveIssuedMedicineById(model.MedicineIdToRemove);
+                        //_context.RemoveIssuedMedicineById(model.MedicineIndexToRemove);
                         return RedirectToAction("CurrentVisit");
 
                     }
@@ -911,16 +1026,19 @@ namespace Asklepios.Web.Areas.MedicalWorkerArea.Controllers
         {
             if (_loggedUser != null)
             {
-                List<Visit> todayVisits = _medicalWorker.FutureVisits?.Where(c => c.DateTimeSince.Date == DateTimeOffset.Now.Date).ToList();
-                Visit visit = todayVisits.Where(c => c.Id == model.VisitId).FirstOrDefault();
-                if (visit != null)
+                //List<Visit> todayVisits = _medicalWorker.FutureVisits?.Where(c => c.DateTimeSince.Date == DateTimeOffset.Now.Date).ToList();
+                //Visit visit = todayVisits.Where(c => c.Id == model.VisitId).FirstOrDefault();
+                //Visit visit = _context.GetBookedVisitById(model.VisitId);
+
+                if (TempVisit != null)
                 {
-                    if (model.ServiceToAdd > 0)
+                    if (model.ServiceToRemove > 0)
                     {
-                        MedicalService medicalService = _context.GetMedicalServiceById(model.ServiceToAdd);
+                        MedicalService medicalService = TempVisit.MinorMedicalServices.Where(c => c.Id == model.ServiceToRemove).FirstOrDefault();                                    
+                            //MedicalService medicalService = _context.GetMedicalServiceById(model.ServiceToAdd);
                         if (medicalService != null)
                         {
-                            visit.MinorMedicalServices.Remove(medicalService);
+                            TempVisit.MinorMedicalServices.Remove(medicalService);
                             return RedirectToAction("CurrentVisit");
                         }
                     }
@@ -938,18 +1056,20 @@ namespace Asklepios.Web.Areas.MedicalWorkerArea.Controllers
         {
             if (_loggedUser != null)
             {
-                List<Visit> todayVisits = _medicalWorker.FutureVisits?.Where(c => c.DateTimeSince.Date == DateTimeOffset.Now.Date).ToList();
-                Visit visit = todayVisits.Where(c => c.Id == model.VisitId).FirstOrDefault();
-                if (visit != null)
+                //List<Visit> todayVisits = _medicalWorker.FutureVisits?.Where(c => c.DateTimeSince.Date == DateTimeOffset.Now.Date).ToList();
+                //Visit visit = todayVisits.Where(c => c.Id == model.VisitId).FirstOrDefault();
+                //Visit visit = _context.GetBookedVisitById(model.VisitId);
+
+                if (TempVisit != null)
                 {
                     //if (model.PrescriptionIdToRemove > 0)
                     //{
                     //    Prescription prescription = _context.GetPrescriptionById(model.PrescriptionIdToRemove);
                     //    if (prescription != null)
                     //    {
-                    long id = visit.Prescription.Id;
-                    visit.Prescription = null;
-                    _context.RemovePrescriptionById(model.PrescriptionIdToRemove);
+                    //long id = visit.Prescription.Id;
+                    TempVisit.Prescription = null;
+                    //_context.RemovePrescriptionById(model.PrescriptionIdToRemove);
                     return RedirectToAction("CurrentVisit");
                     //    }
                     //}
@@ -1004,7 +1124,7 @@ namespace Asklepios.Web.Areas.MedicalWorkerArea.Controllers
                 //Visit visit = _context.GetHistoricalVisitById(id);
                 //if (visit == null)
                 //{
-                   Visit visit = _context.GetVisitById(id); // GetFutureVisitsByMedicalWorkerId(_medicalWorker.Id).Where(c => c.Id == id).FirstOrDefault();
+                Visit visit = _context.GetVisitById(id); // GetFutureVisitsByMedicalWorkerId(_medicalWorker.Id).Where(c => c.Id == id).FirstOrDefault();
                 if (visit.MedicalWorkerId == _medicalWorker.Id)
                 {
                     //}
@@ -1015,9 +1135,9 @@ namespace Asklepios.Web.Areas.MedicalWorkerArea.Controllers
                     CurrentVisitViewModel model = new CurrentVisitViewModel();
                     model.Visit = visit;
                     model.UserName = _loggedUser.Person.FullName;
-                    model.Visit.MedicalRoom = _context.GetMedicalRoomById(model.Visit.MedicalRoomId.Value);
-                    model.Visit.VisitCategory = _context.GetVisitCategoryById(model.Visit.VisitCategoryId.Value);
-                    model.Visit.PrimaryService = _context.GetMedicalServiceById(model.Visit.PrimaryServiceId.Value);
+                    //model.Visit.MedicalRoom = _context.GetMedicalRoomById(model.Visit.MedicalRoomId.Value);
+                    //model.Visit.VisitCategory = _context.GetVisitCategoryById(model.Visit.VisitCategoryId.Value);
+                    //model.Visit.PrimaryService = _context.GetMedicalServiceById(model.Visit.PrimaryServiceId.Value);
                     // model.Visit.Patient.MedicalPackage = _context.GetMedicalPackageById(model.Visit.Patient.MedicalPackageId);
                     //Models.LocationsViewModel model = new Models.LocationsViewModel(locations);
                     return View(model);
@@ -1038,8 +1158,8 @@ namespace Asklepios.Web.Areas.MedicalWorkerArea.Controllers
             if (_loggedUser != null)
             {
                 Patient patient = _context.GetPatientById(id);
-                patient.NFZUnit = _context.GetNFZUnitById(patient.NFZUnitId.Value);
-                patient.MedicalPackage = _context.GetMedicalPackageById(patient.MedicalPackageId.Value);
+                //patient.NFZUnit = _context.GetNFZUnitById(patient.NFZUnitId.Value);
+                //patient.MedicalPackage = _context.GetMedicalPackageById(patient.MedicalPackageId.Value);
 
                 MedicalWorkerArea.Models.PatientViewModel model = new MedicalWorkerArea.Models.PatientViewModel(patient)
                 {
@@ -1064,7 +1184,7 @@ namespace Asklepios.Web.Areas.MedicalWorkerArea.Controllers
                 //Models.LocationsViewModel model = new Models.LocationsViewModel(locations);
                 Models.MedicalWorkerViewModel model = new Models.MedicalWorkerViewModel();
                 model.MedicalWorker = medicalWorker;
-                model.MedicalWorker.Person=_context.GetPersonById(medicalWorker.PersonId.Value);
+                model.MedicalWorker.Person = _context.GetPersonById(medicalWorker.PersonId.Value);
                 model.MedicalWorker.VisitReviews = _context.GetReviewsByMedicalWorkerId(model.MedicalWorker.Id);
                 //model.MedicalWorker.MedicalServices = model.MedicalWorker.MedicalServiceIds.Select(c => _context.GetMedicalServiceById(c)).ToList();
                 model.UserName = _loggedUser.Person.FullName;

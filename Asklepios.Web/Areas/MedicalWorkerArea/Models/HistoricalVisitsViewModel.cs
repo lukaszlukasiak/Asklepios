@@ -19,8 +19,8 @@ namespace Asklepios.Web.Areas.MedicalWorkerArea.Models
         public HistoricalVisitsViewModel()
         {
         }
-
-        public IEnumerable<IGrouping<DateTime, Visit>> HistoricalVisits 
+        public IQueryable<Visit> HistoricalVisits { get; set; }
+        public List<IGrouping<DateTime, Visit>> HistoricalVisitsGrouped 
         {
             get
             {
@@ -29,28 +29,45 @@ namespace Asklepios.Web.Areas.MedicalWorkerArea.Models
                     return null;
                 }
 
-                IEnumerable<IGrouping<DateTime, Visit>> grouping = MedicalWorker.PastVisits.GroupBy(c => c.DateTimeSince.Date);
-                grouping=grouping.OrderBy(c => c.Key);
-
                 if (SelectedDate==null)
                 {
+                    if (HistoricalVisits.Count() == 0 || HistoricalVisits == null)
+                    {
+                        return null;
+                    }
+                    List<Visit> visits = HistoricalVisits.ToList();
+
+                    List<IGrouping<DateTime, Visit>> grouping = visits
+                        .GroupBy(c => c.DateTimeSince.Date)
+                        .OrderBy(e=>e.Key)
+                        .ToList();
+
                     int max = grouping.Count();//MedicalWorker.PastVisits.Count();
                     if (max>10)
                     {
                         max = 10;
                     }
 
-
-                    return grouping.Take(max);//MedicalWorker.PastVisits.GetRange(0, max);
+                    return grouping.Take(max).ToList();//MedicalWorker.PastVisits.GetRange(0, max);
                 }
                 else
                 {
+                    List<Visit> visits = HistoricalVisits
+                        .Where(b => b.DateTimeSince.Date == SelectedDate.Value.Date)
+                        .ToList();
 
+                    if (visits==null)
+                    {
+                        return null;
+                    }
+
+                    List<IGrouping<DateTime, Visit>> grouping = visits
+                        .GroupBy(c => c.DateTimeSince.Date)
+                        .OrderBy(e=>e.Key)
+                        .ToList();
                     return grouping;
-                    //return MedicalWorker.PastVisits.Where(c => c.DateTimeSince.Date == SelectedDate.Value.Date).ToList();
                 }               
-            }
-            
+            }           
         }
         [DataType(DataType.Date)]
         [Display(Name = "Wybrany dzień")]

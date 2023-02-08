@@ -1,7 +1,3 @@
-C:\Users\lukas\source\repos\Asklepios8\TestConsole\obj\Debug\net6.0\TestConsole.GeneratedMSBuildEditorConfig.editorconfig
-C:\Users\lukas\source\repos\Asklepios8\TestConsole\obj\Debug\net6.0\TestConsole.AssemblyInfoInputs.cache
-C:\Users\lukas\source\repos\Asklepios8\TestConsole\obj\Debug\net6.0\TestConsole.AssemblyInfo.cs
-C:\Users\lukas\source\repos\Asklepios8\TestConsole\obj\Debug\net6.0\TestConsole.csproj.CoreCompileInputs.cache
 C:\Users\lukas\source\repos\Asklepios8\TestConsole\bin\Debug\net6.0\TestConsole.exe
 C:\Users\lukas\source\repos\Asklepios8\TestConsole\bin\Debug\net6.0\TestConsole.deps.json
 C:\Users\lukas\source\repos\Asklepios8\TestConsole\bin\Debug\net6.0\TestConsole.runtimeconfig.json
@@ -372,6 +368,10 @@ C:\Users\lukas\source\repos\Asklepios8\TestConsole\bin\Debug\net6.0\Asklepios.Da
 C:\Users\lukas\source\repos\Asklepios8\TestConsole\bin\Debug\net6.0\Asklepios.Data.pdb
 C:\Users\lukas\source\repos\Asklepios8\TestConsole\bin\Debug\net6.0\Asklepios.Core.pdb
 C:\Users\lukas\source\repos\Asklepios8\TestConsole\obj\Debug\net6.0\TestConsole.csproj.AssemblyReference.cache
+C:\Users\lukas\source\repos\Asklepios8\TestConsole\obj\Debug\net6.0\TestConsole.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\lukas\source\repos\Asklepios8\TestConsole\obj\Debug\net6.0\TestConsole.AssemblyInfoInputs.cache
+C:\Users\lukas\source\repos\Asklepios8\TestConsole\obj\Debug\net6.0\TestConsole.AssemblyInfo.cs
+C:\Users\lukas\source\repos\Asklepios8\TestConsole\obj\Debug\net6.0\TestConsole.csproj.CoreCompileInputs.cache
 C:\Users\lukas\source\repos\Asklepios8\TestConsole\obj\Debug\net6.0\TestConsole.csproj.CopyComplete
 C:\Users\lukas\source\repos\Asklepios8\TestConsole\obj\Debug\net6.0\TestConsole.dll
 C:\Users\lukas\source\repos\Asklepios8\TestConsole\obj\Debug\net6.0\ref\TestConsole.dll

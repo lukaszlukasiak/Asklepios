@@ -14,6 +14,6 @@ namespace Asklepios.Data.Interfaces
         Location GetLocationById(long locationId);
         User LogIn(User user);
         //Patient GetUserById(long userId);
-        List<MedicalService> GetLocationServices(long id);
+        //List<MedicalService> GetLocationServices(long id);
     }
 }

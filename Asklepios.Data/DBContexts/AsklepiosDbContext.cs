@@ -368,8 +368,18 @@ namespace Asklepios.Data.DBContexts
 
         public Visit GetBookedVisitById(long currentVisitId)
         {
-            Visit visit = Visits.Where(c => c.Id == currentVisitId).Include(d => d.MinorMedicalServices).Include(e => e.MinorServicesToVisits).FirstOrDefault();
+            Visit visit = Visits
+                .Where(c => c.Id == currentVisitId)
+                .Include(d => d.MinorMedicalServices)
+                .Include(e => e.MinorServicesToVisits)
+                .FirstOrDefault();
             return visit;
+        }
+
+
+        public Visit GetBookedVisitByIdANT(long currentVisitId)
+        {
+            throw new NotImplementedException();
         }
 
         public List<Visit> GetBookedVisitsByPatientId(long id)
@@ -406,10 +416,18 @@ namespace Asklepios.Data.DBContexts
             throw new NotImplementedException();
         }
 
-        public List<Visit> GetFutureVisitsByMedicalWorkerId(long id)
+        public IQueryable<Visit> GetFutureVisitsByMedicalWorkerId(long id)
         {
             //List<Visit> visits=    Visits.Where(c => c.PatientId == id).Where(d => d.DateTimeSince > DateTimeOffset.Now).ToList();
-            List<Visit> visits = Visits.Where(c => c.MedicalWorkerId == id).Where(d => d.DateTimeSince.Day >= DateTimeOffset.Now.Day && d.VisitStatus == VisitStatus.Booked && d.VisitStatus == VisitStatus.AvailableNotBooked).Include(a => a.VisitCategory).Include(b => b.Location).Include(c => c.PrimaryService).Include(d => d.Patient).ThenInclude(e => e.Person).ToList();
+            IQueryable<Visit> visits = Visits
+                .Where(c => c.MedicalWorkerId == id)
+                .Where(d => d.DateTimeSince.Date >= DateTimeOffset.Now.Date)// && (d.VisitStatus == VisitStatus.Booked || d.VisitStatus == VisitStatus.AvailableNotBooked))
+                .Include(a => a.VisitCategory)
+                .Include(b => b.Location)
+                .Include(c => c.PrimaryService)
+                .Include(d => d.Patient)
+                    .ThenInclude(e => e.Person)
+                .AsQueryable();
             return visits;
         }
 
@@ -480,22 +498,22 @@ namespace Asklepios.Data.DBContexts
                 .Include(b => b.Location)
                 .Include(c => c.PrimaryService)
                 .Include(d => d.Patient)
-                .ThenInclude(e => e.Person)
+                    .ThenInclude(e => e.Person)
                 .AsQueryable();
             return visits;
         }
 
-        public List<Visit> GetHistoricalVisitsByMedicalWorkerId(long id)
+        public IQueryable<Visit> GetHistoricalVisitsByMedicalWorkerId(long id)
         {
-            List<Visit> visits = Visits
+            IQueryable<Visit> visits = Visits
                 .Where(c => c.MedicalWorkerId == id)
                 .Where(d => d.VisitStatus == VisitStatus.Finished)
                 .Include(a => a.VisitCategory)
                 .Include(b => b.Location)
                 .Include(c => c.PrimaryService)
                 .Include(d => d.Patient)
-                .ThenInclude(e => e.Person)
-                .ToList();
+                    .ThenInclude(e => e.Person)
+                .AsQueryable();
             return visits;
         }
 
@@ -535,13 +553,20 @@ namespace Asklepios.Data.DBContexts
 
         public Location GetLocationById(long id)
         {
-            Location location = Locations.Where(c => c.Id == id).Include(d=>d.Services).Include(e=>e.MedicalRooms).FirstOrDefault();
+            Location location = Locations
+                .Where(c => c.Id == id)
+                .Include(d=>d.Services)
+                .Include(e=>e.MedicalRooms)
+                .FirstOrDefault();
             return location;
         }
 
         public List<Location> GetLocations()
         {
-            return Locations.Include(a => a.Services).Include(b => b.MedicalRooms).ToList();
+            return Locations
+                .Include(a => a.Services)
+                .Include(b => b.MedicalRooms)
+                .ToList();
         }
 
         //List<Location> IMedicalWorkerModuleRepository.GetLocations()
@@ -554,25 +579,25 @@ namespace Asklepios.Data.DBContexts
             throw new NotImplementedException();
         }
 
-        public List<MedicalService> GetLocationServices(long id)
-        {
-            //Location location = Locations.Where(c => c.Id == id).FirstOrDefault();
-            List<MedicalService> services = new List<MedicalService>();
-            //  List<location> list = MedicalServicesToLocations.Where(c => c.LocationId == id).ToList();
+        //public List<MedicalService> GetLocationServices(long id)
+        //{
+        //    //Location location = Locations.Where(c => c.Id == id).FirstOrDefault();
+        //    List<MedicalService> services = new List<MedicalService>();
+        //    //  List<location> list = MedicalServicesToLocations.Where(c => c.LocationId == id).ToList();
 
-            //if (list!=null)
-            //{
-            //    foreach (MedicalServiceToLocation item in list)
-            //    {
-            //        MedicalService service = GetMedicalServiceById(item.MedicalServiceId);
-            //        if (service!=null)
-            //        {
-            //            services.Add(service);
-            //        }
-            //    }
-            //}
-            return services;
-        }
+        //    //if (list!=null)
+        //    //{
+        //    //    foreach (MedicalServiceToLocation item in list)
+        //    //    {
+        //    //        MedicalService service = GetMedicalServiceById(item.MedicalServiceId);
+        //    //        if (service!=null)
+        //    //        {
+        //    //            services.Add(service);
+        //    //        }
+        //    //    }
+        //    //}
+        //    return services;
+        //}
 
         //public MedicalPackage GetMedicalPackageById(long id)
         //{
@@ -723,12 +748,19 @@ namespace Asklepios.Data.DBContexts
                 .Include(d=>d.NFZUnit)
                 .Include(a => a.Person)
                 .Include(b => b.User)
+                .Include(e=>e.MedicalReferrals)
+                .Include(p=>p.Prescriptions)
+                .Include(g=>g.TestsResults)
+                //.Include(h=>h.)
                 .FirstOrDefault();
         }
 
         public Patient GetPatientByUserId(long userId)
         {
-            Patient patient = Patients.Where(c => c.UserId == userId).Include(d => d.Person).FirstOrDefault();
+            Patient patient = Patients
+                .Where(c => c.UserId == userId)
+                .Include(d => d.Person)
+                .FirstOrDefault();
             return patient;
         }
 
@@ -790,7 +822,50 @@ namespace Asklepios.Data.DBContexts
 
         public Visit GetVisitById(long id)
         {
-            Visit visit = Visits.Where(c => c.Id == id).Include(d => d.MedicalWorker).ThenInclude(f => f.Person).Include(e => e.Patient).ThenInclude(g => g.Person).Include(k => k.Location).Include(e => e.MinorMedicalServices).Include(f => f.MinorServicesToVisits).FirstOrDefault();
+            Visit visit = Visits
+                        .Where(c => c.Id == id)
+                        .Include(d => d.MedicalWorker)
+                            .ThenInclude(f => f.Person)
+                        .Include(e => e.Patient)
+                            .ThenInclude(g => g.Person)
+                        .Include(k => k.Location)
+                        .Include(mr=>mr.MedicalRoom)
+                        .Include(e => e.MinorMedicalServices)
+                        .Include(f => f.MinorServicesToVisits)
+                        .Include(p=>p.PrimaryService)
+                        .Include(r=>r.Recommendations)
+                        .Include(p=>p.Prescription)
+                            .ThenInclude(m=>m.IssuedMedicines)
+                        .Include(er=>er.ExaminationReferrals)
+                            .ThenInclude(ps=>ps.PrimaryMedicalService)
+                        .Include(t=>t.MedicalTestResult)
+                        .Include(vc=>vc.VisitCategory)
+                        .FirstOrDefault();
+            return visit;
+        }
+        public Visit GetVisitByIdANT(long id)
+        {
+            Visit visit = Visits
+                        .Where(c => c.Id == id)
+                        .Include(d => d.MedicalWorker)
+                            .ThenInclude(f => f.Person)
+                        .Include(e => e.Patient)
+                            .ThenInclude(g => g.Person)
+                        .Include(k => k.Location)
+                        .Include(mr => mr.MedicalRoom)
+                        .Include(e => e.MinorMedicalServices)
+                        .Include(f => f.MinorServicesToVisits)
+                        .Include(p => p.PrimaryService)
+                        .Include(r => r.Recommendations)
+                        .Include(p => p.Prescription)
+                            .ThenInclude(m => m.IssuedMedicines)
+                        .Include(er => er.ExaminationReferrals)
+                            .ThenInclude(ps => ps.PrimaryMedicalService)
+                        .Include(t => t.MedicalTestResult)
+                        .Include(vc => vc.VisitCategory)
+                        .AsNoTrackingWithIdentityResolution()
+                        .FirstOrDefault()
+                        ;
             return visit;
         }
 
@@ -824,9 +899,17 @@ namespace Asklepios.Data.DBContexts
             return visitCategory;
         }
 
-        public List<Visit> GetVisitsByMedicalWorkerId(long id)
+        public IQueryable<Visit> GetVisitsByMedicalWorkerId(long id)
         {
-            List<Visit> visits = Visits.Where(c => c.MedicalWorkerId == id).Include(a => a.VisitCategory).Include(b => b.Location).Include(c => c.PrimaryService).Include(d => d.Patient).ThenInclude(e => e.Person).Include(k => k.Location).ToList();
+            IQueryable<Visit> visits = Visits
+                .Where(c => c.MedicalWorkerId == id)
+                .Include(a => a.VisitCategory)
+                .Include(b => b.Location)
+                .Include(c => c.PrimaryService)
+                .Include(d => d.Patient)
+                    .ThenInclude(e => e.Person)
+                .Include(k => k.Location)
+                .AsQueryable();
             return visits;
         }
 
@@ -1392,6 +1475,8 @@ namespace Asklepios.Data.DBContexts
 
                 modelBuilder.Entity<User>().HasData(PatientMockDB.Users);
                 modelBuilder.Entity<VisitReview>().HasData(PatientMockDB.VisitReviews);
+                Console.WriteLine("Max visit id from visits: " + PatientMockDB.AllVisits.Max(c => c.Id));
+
                 modelBuilder.Entity<Visit>().HasData(PatientMockDB.AllVisits);
 
                 modelBuilder.Entity<MedicalServiceDiscount>().HasData(PatientMockDB.MedicalServiceDiscounts);

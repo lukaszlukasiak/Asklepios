@@ -9,7 +9,7 @@
                         @Model.Visit.MedicalWorker.FullProffesionalName
                     </a>
                 </h3>
-                <div class="d-flex align-content-center mr-auto pt-2" style="text-align: center; height: 200px">
+                <div class="d-flex flex-fill  justify-content-center mt-2" style="text-align: center; height: 200px">
                     <img alt="@Model.Visit.MedicalWorker.FullProffesionalName" src="@Model.Visit.MedicalWorker.Person.ImageSource" class="mx-auto d-block" style="max-width: 400px; display: block; border-radius: 6px; object-fit: contain">
                 </div>
 
@@ -25,7 +25,7 @@
                             @Model.Visit.Patient.Person.FullName
                         </a>
                     </h3>
-                    <div class="d-flex  mx-auto pt-2" style="text-align:center;height:200px">
+                    <div class="d-flex flex-fill  justify-content-center mt-2" style="text-align:center;height:200px">
                         <img alt="@Model.Visit.Patient.Person.FullName" src="@Model.Visit.Patient.Person.ImageSource" class="mx-auto align-self-top align-items-top;" style="max-width: 400px; display: block; border-radius: 6px; object-fit: contain">
                     </div>
 
@@ -81,7 +81,7 @@
 
                 }
             }
-            <p>Koszt całkowity: @Model.Visit.GetTotalPrice() PLN</p>
+            <p>Koszt całkowity: @Model.Visit.GetTotalPrice().ToString("c"); PLN</p>
         </div>
     </div>
     @if (Model.Visit.VisitReview != null)
