@@ -571,3 +571,8 @@ C:\Users\lukas\source\repos\Asklepios8\Asklepios.Web\bin\Debug\net6.0\Microsoft.
 C:\Users\lukas\source\repos\Asklepios8\Asklepios.Web\bin\Debug\net6.0\Swashbuckle.AspNetCore.Swagger.dll
 C:\Users\lukas\source\repos\Asklepios8\Asklepios.Web\bin\Debug\net6.0\Swashbuckle.AspNetCore.SwaggerGen.dll
 C:\Users\lukas\source\repos\Asklepios8\Asklepios.Web\bin\Debug\net6.0\Swashbuckle.AspNetCore.SwaggerUI.dll
+C:\Users\lukas\source\repos\Asklepios8\Asklepios.Web\bin\Debug\net6.0\Microsoft.AspNetCore.Cryptography.Internal.dll
+C:\Users\lukas\source\repos\Asklepios8\Asklepios.Web\bin\Debug\net6.0\Microsoft.AspNetCore.Cryptography.KeyDerivation.dll
+C:\Users\lukas\source\repos\Asklepios8\Asklepios.Web\bin\Debug\net6.0\Microsoft.AspNetCore.Identity.EntityFrameworkCore.dll
+C:\Users\lukas\source\repos\Asklepios8\Asklepios.Web\bin\Debug\net6.0\Microsoft.Extensions.Identity.Core.dll
+C:\Users\lukas\source\repos\Asklepios8\Asklepios.Web\bin\Debug\net6.0\Microsoft.Extensions.Identity.Stores.dll
