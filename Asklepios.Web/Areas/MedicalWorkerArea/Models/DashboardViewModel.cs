@@ -56,13 +56,17 @@ namespace Asklepios.Web.Areas.MedicalWorkerArea.Models
             get
             {
                 List<Visit> rest = new List<Visit>(TodayVisits);
-                foreach (Visit item in FinishedVisits)
+                for (int i = rest.Count-1; i >= 0; i--)
                 {
-                    if (!(item.VisitStatus == Core.Enums.VisitStatus.AvailableNotBooked || item.VisitStatus==Core.Enums.VisitStatus.Booked))
+                    Visit item = rest[i];
+                    if (!(item.VisitStatus == Core.Enums.VisitStatus.AvailableNotBooked || item.VisitStatus == Core.Enums.VisitStatus.Booked))
                     {
-                        rest.Remove(item);
+                        rest.RemoveAt(i);
                     }
+
                 }
+                rest.Remove(CurrentVisit);
+                rest=rest.Where(c=>c.VisitStatus==Core.Enums.VisitStatus.Booked || c.VisitStatus==Core.Enums.VisitStatus.AvailableNotBooked).ToList();
                 rest.Remove(CurrentVisit);
                 return rest;
             }

@@ -29,6 +29,10 @@ namespace Asklepios.Core.Models
         }
 
         public override string ProfessionalTitle => "Pielęgniarka";
+        public override bool CanAddMedicalTestResults => true;
+        public override bool CanIssueExamReferral => false    ;
+        public override bool CanIssuePrescription => true;
+
         //public string   PWZNumber { get;}
     }
 

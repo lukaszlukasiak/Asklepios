@@ -64,7 +64,7 @@ namespace Asklepios.Web.Areas.AdministrativeArea.Models
         {
             UserType = Core.Enums.UserType.Employee;
             ContactName = worker.Person.FullName;
-            ContactEMailAddress = worker.User.EmailAddress;
+            ContactEMailAddress = worker.User.Email;
             UserId = worker.Id;
         }
         public ContactMessageViewModel(User user)

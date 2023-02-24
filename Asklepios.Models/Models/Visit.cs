@@ -1,4 +1,5 @@
 ﻿using Asklepios.Core.Enums;
+using Asklepios.Core.MockModels;
 using Microsoft.AspNetCore.Http;
 using System;
 using System.Collections.Generic;
@@ -7,6 +8,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 using System.IO;
 using System.Linq;
 using System.Text;
+using System.Text.Json.Serialization;
 
 namespace Asklepios.Core.Models
 {
@@ -153,7 +155,7 @@ namespace Asklepios.Core.Models
             string dateDescription = DateTimeSince.ToString("dd-MM-yyyy") + " " + DateTimeSince.ToString("HH:mm") + "-" + DateTimeTill.ToString("HH:mm");
             return dateDescription;
         }
-
+        [JsonIgnore]
         public string VisitDescription
         {
             get
@@ -190,7 +192,7 @@ namespace Asklepios.Core.Models
             }
         }
 
-
+        [JsonIgnore]
         public bool IsNotCompletedMedicalTest
         {
             get
@@ -229,11 +231,30 @@ namespace Asklepios.Core.Models
                 return service.StandardPrice;
             }
         }
+        public decimal GetPrice(ServiceMock service)
+        {
+            MedicalServiceDiscount discount = null;
+            decimal price = decimal.Zero;// service.StandardPrice;
+
+            if (VisitStatus == VisitStatus.Booked)
+            {
+                MedicalPackage package = Patient.MedicalPackage;
+                //price = decimal.MinusOne;
+                discount = package.ServiceDiscounts.First(c => c.MedicalService.Id == service.Id);
+                price = service.StandardPrice * (1 - discount.Discount);//package.ServicesDiscounts[service];
+                return price;
+
+            }
+            else
+            {
+                return service.StandardPrice;
+            }
+        }
         public decimal GetTotalPrice()
         {
             decimal totalPrice = decimal.Zero;
 
-            if (VisitStatus==VisitStatus.Booked)
+            if (VisitStatus == VisitStatus.Booked)
             {
                 MedicalPackage package = Patient.MedicalPackage;
                 MedicalServiceDiscount discount = package.ServiceDiscounts.First(c => c.MedicalServiceId == PrimaryService.Id);
@@ -250,7 +271,7 @@ namespace Asklepios.Core.Models
                 for (int i = 0; i < MinorMedicalServices?.Count; i++)
                 {
                     MedicalService service = MinorMedicalServices[i];
-                    if (service==null)
+                    if (service == null)
                     {
                         continue;
                     }
@@ -275,6 +296,59 @@ namespace Asklepios.Core.Models
                 for (int i = 0; i < MinorMedicalServices?.Count; i++)
                 {
                     MedicalService service = MinorMedicalServices[i];
+                    totalPrice += service.StandardPrice;
+                }
+
+            }
+
+            return totalPrice;
+        }
+        public decimal GetTotalPrice(List<ServiceMock> minorServices)
+        {
+            decimal totalPrice = decimal.Zero;
+
+            if (VisitStatus==VisitStatus.Booked)
+            {
+                MedicalPackage package = Patient.MedicalPackage;
+                MedicalServiceDiscount discount = package.ServiceDiscounts.First(c => c.MedicalServiceId == PrimaryService.Id);
+                if (discount != null)
+                {
+                    decimal priceP = PrimaryService.StandardPrice * (1 - discount.Discount); //package.ServicesDiscounts[PrimaryService];
+                    totalPrice += priceP;
+                }
+                else
+                {
+                    decimal priceP = PrimaryService.StandardPrice; //package.ServicesDiscounts[PrimaryService];
+                    totalPrice += priceP;
+                }
+                for (int i = 0; i < minorServices?.Count; i++)
+                {
+                    ServiceMock service = minorServices[i];
+                    if (service==null)
+                    {
+                        continue;
+                    }
+                    MedicalServiceDiscount discount2 = package.ServiceDiscounts.First(c => c.MedicalService.Id == service.Id);
+
+                    //if (package.ServicesDiscounts.ContainsKey(PrimaryService))
+                    if (discount2 != null)
+                    {
+                        decimal price = service.StandardPrice * (1 - discount.Discount);//package.ServicesDiscounts[service];
+                        totalPrice += price;
+                    }
+                    else
+                    {
+                        totalPrice += service.StandardPrice;
+                    }
+                }
+            }
+            else
+            {
+                totalPrice += PrimaryService.StandardPrice;
+
+                for (int i = 0; i < minorServices?.Count; i++)
+                {
+                    ServiceMock service = minorServices[i];
                     totalPrice += service.StandardPrice;
                 }
 

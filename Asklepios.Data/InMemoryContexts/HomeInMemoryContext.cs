@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Asklepios.Core.Enums;
 
 namespace Asklepios.Data.InMemoryContexts
 {
@@ -48,17 +49,17 @@ namespace Asklepios.Data.InMemoryContexts
         //    throw new NotImplementedException();
         //}
 
-        public User LogIn(User user)
+        public User CheckEmailAndRole(User user)
         {
             List<User> users = PatientMockDB.Users;
             users = users.Where(c => c.UserType == user.UserType)?.Where(d=>d.WorkerModuleType==user.WorkerModuleType).ToList();
-            string emailAddressUpper = user.EmailAddress.ToUpper();
-            User user1 = users.Where(c => c.EmailAddress.ToUpper() == emailAddressUpper).FirstOrDefault();
+            string emailAddressUpper = user.Email.ToUpper();
+            User user1 = users.Where(c => c.Email.ToUpper() == emailAddressUpper).FirstOrDefault();
             if (user1==null)
             {
                 return null;
             }
-            if (user.Password==user1.Password)
+            if (user.PasswordHash == user1.PasswordHash)
             {
                 return user1;
             }
@@ -67,6 +68,16 @@ namespace Asklepios.Data.InMemoryContexts
                 return null;
             }
             //return PatientMockDB.Users.Where(c => c.UserType == user.UserType && c.UserName == user.UserName && c.Password == user.Password).FirstOrDefault();
+        }
+
+        public void Save()
+        {
+            throw new NotImplementedException();
+        }
+
+        public User CheckUserNameAndRole(string userName, WorkerModuleType workerModuleType, UserType userType)
+        {
+            throw new NotImplementedException();
         }
     }
 }

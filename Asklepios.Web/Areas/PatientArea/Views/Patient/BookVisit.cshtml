@@ -22,14 +22,14 @@
         <option value="0">Wybierz kategorię wizyty</option>
     </select>
     <select class="form-control  mb-1" asp-for="SelectedServiceId" asp-items="servicesList">
-        <option value="0">Wybierz specjalność</option>
+        <option value="0">Wybierz typ wizyty</option>
     </select>
 
-    <select class="form-control mb-1" asp-for="SelectedMedicalWorkerId" asp-items="workersItems" onchange="">
+    <select class="form-control mb-1" asp-for="SelectedMedicalWorkerId" asp-items="workersItems">
         <option value="0">Wybierz lekarza</option>
     </select>
     <div class="d-flex flex-column mt-2 mb-2" >
-        <button type="submit" class="btn btn-secondary btn-icon-split ">
+        <button type="submit" class="btn btn-primary btn-icon-split ">
             <span class="icon text-white-50 left" style="text-align:left;float:left">
                 <i class="fas fa-filter"></i>
             </span>
@@ -41,6 +41,14 @@
             <option>Select Role</option>
         </select>
         @Html.DropDownList("Title", Model.Select(m => new SelectListItem() { Text = m., Value = m.Title }).ToList(), "Select")*@
+</form>
+<form class="form d-flex flex-column mb-2" asp-action="BookVisit" method="post">
+    <button type="submit" class="btn btn-secondary btn-icon-split d-flex">
+        <span class="icon text-white-50 left" style="text-align:left;float:left">
+            <i class="fas fa-book"></i>
+        </span>
+        <span class="text" style="float: left">Wyczyść filtr!</span>
+    </button>   
 </form>
 
 

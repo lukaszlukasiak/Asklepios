@@ -7,6 +7,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.IO;
 using Asklepios.Core.Enums;
+using System.Threading.Tasks;
+using Microsoft.AspNetCore.Identity;
 
 namespace Asklepios.Data.InMemoryContexts
 {
@@ -482,13 +484,32 @@ namespace Asklepios.Data.InMemoryContexts
             //}
             using (var fileStream = new FileStream(fullFileName, FileMode.Create))
             {
-
                 formFile.CopyTo(fileStream);
             }
             string serverFileName = Path.Combine("\\", path, myUniqueFileName);
 
             return serverFileName;
 
+        }
+
+        public void RemovePersonById(long personId)
+        {
+            throw new NotImplementedException();
+        }
+
+        public void RemoveUserById(long userId)
+        {
+            throw new NotImplementedException();
+        }
+
+        public void AddPerson(Person person, string webRootPath)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Task<bool> AddIdenitytUserWithRole(User user, UserManager<User> userManager, RoleManager<IdentityRole<long>> roleManager)
+        {
+            throw new NotImplementedException();
         }
     }
 }

@@ -163,6 +163,10 @@ build_metadata.AdditionalFiles.CssScope =
 build_metadata.AdditionalFiles.TargetPath = QXJlYXNcQWRtaW5pc3RyYXRpdmVBcmVhXFZpZXdzXEFkbWluaXN0cmF0aXZlXF9NZWRpY2FsV29ya2VyTWFuYWdlLmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
+[C:/Users/lukas/source/repos/Asklepios8/Asklepios.Web/Areas/AdministrativeArea/Views/Administrative/_Message.cshtml]
+build_metadata.AdditionalFiles.TargetPath = QXJlYXNcQWRtaW5pc3RyYXRpdmVBcmVhXFZpZXdzXEFkbWluaXN0cmF0aXZlXF9NZXNzYWdlLmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
 [C:/Users/lukas/source/repos/Asklepios8/Asklepios.Web/Areas/AdministrativeArea/Views/Administrative/_Patient.cshtml]
 build_metadata.AdditionalFiles.TargetPath = QXJlYXNcQWRtaW5pc3RyYXRpdmVBcmVhXFZpZXdzXEFkbWluaXN0cmF0aXZlXF9QYXRpZW50LmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
@@ -375,6 +379,10 @@ build_metadata.AdditionalFiles.CssScope =
 build_metadata.AdditionalFiles.TargetPath = QXJlYXNcSG9tZUFyZWFcVmlld3NcU2hhcmVkXF9MYXlvdXQxLmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
+[C:/Users/lukas/source/repos/Asklepios8/Asklepios.Web/Areas/HomeArea/Views/Shared/_LoginPartial.cshtml]
+build_metadata.AdditionalFiles.TargetPath = QXJlYXNcSG9tZUFyZWFcVmlld3NcU2hhcmVkXF9Mb2dpblBhcnRpYWwuY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
 [C:/Users/lukas/source/repos/Asklepios8/Asklepios.Web/Areas/HomeArea/Views/Shared/_ValidationScriptsPartial.cshtml]
 build_metadata.AdditionalFiles.TargetPath = QXJlYXNcSG9tZUFyZWFcVmlld3NcU2hhcmVkXF9WYWxpZGF0aW9uU2NyaXB0c1BhcnRpYWwuY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
@@ -473,6 +481,10 @@ build_metadata.AdditionalFiles.CssScope =
 
 [C:/Users/lukas/source/repos/Asklepios8/Asklepios.Web/Areas/MedicalWorkerArea/Views/MedicalWorker/_Medicine.cshtml]
 build_metadata.AdditionalFiles.TargetPath = QXJlYXNcTWVkaWNhbFdvcmtlckFyZWFcVmlld3NcTWVkaWNhbFdvcmtlclxfTWVkaWNpbmUuY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/lukas/source/repos/Asklepios8/Asklepios.Web/Areas/MedicalWorkerArea/Views/MedicalWorker/_MedicineMock.cshtml]
+build_metadata.AdditionalFiles.TargetPath = QXJlYXNcTWVkaWNhbFdvcmtlckFyZWFcVmlld3NcTWVkaWNhbFdvcmtlclxfTWVkaWNpbmVNb2NrLmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
 [C:/Users/lukas/source/repos/Asklepios8/Asklepios.Web/Areas/MedicalWorkerArea/Views/MedicalWorker/_ModifyPrescription.cshtml]
@@ -661,4 +673,8 @@ build_metadata.AdditionalFiles.CssScope =
 
 [C:/Users/lukas/source/repos/Asklepios8/Asklepios.Web/Areas/PatientArea/Views/_ViewStart.cshtml]
 build_metadata.AdditionalFiles.TargetPath = QXJlYXNcUGF0aWVudEFyZWFcVmlld3NcX1ZpZXdTdGFydC5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/lukas/source/repos/Asklepios8/Asklepios.Web/Views/Shared/_MessageTemp.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcU2hhcmVkXF9NZXNzYWdlVGVtcC5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 

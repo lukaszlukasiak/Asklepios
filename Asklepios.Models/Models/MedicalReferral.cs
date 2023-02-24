@@ -56,12 +56,16 @@ namespace Asklepios.Core.Models
         public bool HasBeenUsed { get; set; }
 
         public long? IssuedById { get; set; }
-        //[ForeignKey("IssuedById")]
+        [ForeignKey("IssuedById")]
         public  MedicalWorker IssuedBy { get; set; }
-        //[ForeignKey("IssuedToId")]
+        [ForeignKey("IssuedToId")]
 
         public Patient IssuedTo { get; set; }
-        public long? IssuedToId { get; set; }
+        public long? IssuedToId 
+        { 
+            get; 
+            set; 
+        }
 
         [Display(Name = "Komentarz")]
         [DataType(DataType.Text)]

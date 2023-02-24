@@ -2,11 +2,21 @@
 @{
     ViewData["Title"] = "View";
 }
-
-<h1 style="text-align:center">
-    Dzisiejsze konsultacje/badania
-</h1>
-
+@{
+}
+@if (Model.TodayVisits.Count() > 0)
+{
+    <h1 style="text-align:center">
+        Dzisiejsze konsultacje/badania
+    </h1>
+    
+}
+else
+        {
+        <h1 style="text-align:center">
+            Masz dzisiaj wolne ;-)
+        </h1>
+        }
 @{
 
     if (Model.CurrentVisit != null)
@@ -16,28 +26,28 @@
         </h3>
         <partial name="_TodaysVisit" model="Model.CurrentVisit" />
     }
-
-    if (Model.RestOfTodaysVisits != null)
+    List<Visit> rest = Model.RestOfTodaysVisits;
+    if (rest.Count() >0)
     {
         <h3 style="text-align:center">
             Wizyty do przeprowadzenia
         </h3>
 
-        foreach (Visit item in Model.RestOfTodaysVisits)
+        foreach (Visit item in rest)
         {
             <partial name="_TodaysVisit" model="item" />
         }
     }
-    if (Model.FinishedVisits.Count() > 0)
+    List<Visit> finished = Model.FinishedVisits;
+    if (finished.Count() > 0)
     {
         <h3 style="text-align:center">
             Przeprowadzone wizyty
         </h3>
 
-        foreach (Visit item in Model.FinishedVisits)
+        foreach (Visit item in finished)
         {
             <partial name="_TodaysVisit" model="item" />
-
         }
 
     }

@@ -58,7 +58,7 @@ namespace Asklepios.Web.Areas.HomeArea.Models
         {
             UserType = Core.Enums.UserType.Patient;
             ContactName = patient.Person.FullName;
-            ContactEMailAddress = patient.User.EmailAddress;
+            ContactEMailAddress = patient.User.Email;
             UserId = patient.Id;
             UserName = fullName;
             
@@ -67,7 +67,7 @@ namespace Asklepios.Web.Areas.HomeArea.Models
         {
             UserType = Core.Enums.UserType.Employee;
             ContactName = worker.Person.FullName;
-            ContactEMailAddress = worker.User.EmailAddress;
+            ContactEMailAddress = worker.User.Email;
 
             UserId = worker.Id;
         }

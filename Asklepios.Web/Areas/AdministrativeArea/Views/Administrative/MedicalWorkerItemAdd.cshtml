@@ -1,51 +1,60 @@
 ﻿@model Asklepios.Web.Areas.AdministrativeArea.Models.MedicalWorkerAddViewModel
-    
+
 
 <div class="d-flex flex-column">
     @{
         SelectList services = new SelectList(Model.PrimaryServices, "Id", "Name");
 
 
-        if (!string.IsNullOrWhiteSpace(Model.SuccessMessage))
-        {
-            <div class="messages" id="MessageSpan" style="margin-top: 10px; text-align: center ">
-                <p class="alert alert-success">
-                    @Model.SuccessMessage
-                </p>
-            </div>
-            <a asp-controller="Administrative" asp-action="MedicalWorkerItemsAdd" class="btn btn-outline-secondary btn-icon-split ">
-                <span class="text" style="float: left">Resetuj dane</span>
-            </a>
+        //if (!string.IsNullOrWhiteSpace(Model.Message))
+        //{
+        //    if (Model.AlertMessageType == Asklepios.Web.Enums.AlertMessageType.SuccessMessage)
+        //    {
+        //        <div class="messages" id="MessageSpan" style="margin-top: 10px; text-align: center ">
+        //            <p class="alert alert-success">
+        //                @Model.Message
+        //            </p>
+        //        </div>
+        //        <a asp-controller="Administrative" asp-action="MedicalWorkerItemsAdd" class="btn btn-outline-secondary btn-icon-split ">
+        //            <span class="text" style="float: left">Resetuj dane</span>
+        //        </a>
+        //    }
+        //    else if (Model.AlertMessageType == Asklepios.Web.Enums.AlertMessageType.ErrorMessage)
+        //    //}
+        //    //if (!string.IsNullOrWhiteSpace(Model.ErrorMessage))
+        //    {
+        //        <div class="messages" id="MessageSpan" style="margin-top: 10px; text-align: center ">
+        //            <p class="alert alertalert-danger">
+        //                @Model.Message
+        //            </p>
+        //        </div>
+        //        <a asp-controller="Administrative" asp-action="MedicalWorkerItemsAdd" class="btn btn-outline-secondary btn-icon-split ">
+        //            <span class="text" style="float: left">Resetuj dane</span>
+        //        </a>
+        //    }
 
-        }
-        if (!string.IsNullOrWhiteSpace(Model.ErrorMessage))
-        {
-            <div class="messages" id="MessageSpan" style="margin-top: 10px; text-align: center ">
-                <p class="alert alert-success">
-                    @Model.ErrorMessage
-                </p>
-            </div>
-            <a asp-controller="Administrative" asp-action="MedicalWorkerItemsAdd" class="btn btn-outline-secondary btn-icon-split ">
-                <span class="text" style="float: left">Resetuj dane</span>
-            </a>
-
-        }
+        //}
         //Model.MedicalWorker = new Doctor();
         //Model.MedicalWorker.Education = new List<string>();
 
     }
+        <partial name="_Message" model="Model" />
 
     <form class="form mt-2" asp-action="MedicalWorkerItemAdd" method="post" enctype="multipart/form-data">
         <div class="form-group d-flex flex-column">
             @*<span id="MessageSpan" asp-validation-for="User.UserName" class="text-danger"></span>*@
 
-            <label asp-for="User.EmailAddress" class="control-label"></label>
-            <input asp-for="User.EmailAddress" class="form-control mb-2">
-            <span asp-validation-for="User.EmailAddress" class="text-danger"></span>
+            <label asp-for="User.Email" class="control-label"></label>
+            <input asp-for="User.Email" class="form-control mb-2">
+            <span asp-validation-for="User.Email" class="text-danger"></span>
 
-            <label asp-for="User.Password" class="control-label"></label>
-            <input asp-for="User.Password" class="form-control mb-2">
-            <span asp-validation-for="User.Password" class="text-danger"></span>
+            <label  class="control-label">Nazwa użytkownika</label>
+            <input asp-for="User.UserName" class="form-control mb-2">
+            <span  class="text-danger"></span>
+
+            <label asp-for="User.PasswordHash" class="control-label"></label>
+            <input asp-for="User.PasswordHash" class="form-control mb-2">
+            <span asp-validation-for="User.PasswordHash" class="text-danger"></span>
 
             <label asp-for="Person.Name" class="control-label"></label>
             <input asp-for="Person.Name" class="form-control mb-2">

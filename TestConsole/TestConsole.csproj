@@ -9,6 +9,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\Asklepios.Data\Asklepios.Data.csproj" />
+    <ProjectReference Include="..\Asklepios.Web\Asklepios.Web.csproj" />
   </ItemGroup>
 
 </Project>

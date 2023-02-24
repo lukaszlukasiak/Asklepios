@@ -14,8 +14,8 @@ namespace Asklepios.Web.Areas.CustomerServiceArea.Models
 
         public LocationsViewModel(Patient patient, List<Asklepios.Core.Models.Location> locations)
         {
-            SelectedPatient = patient;
             Locations = locations;
+            SelectedPatient = patient;
         }
     }
 }

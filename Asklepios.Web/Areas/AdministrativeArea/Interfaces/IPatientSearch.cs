@@ -41,8 +41,8 @@ namespace Asklepios.Web.Areas.AdministrativeArea.Interfaces
         public bool? HasPolishCitizenship { get; set; }
         [Display(Name = "Płeć")]
         public Gender? SelectedGender { get; set; }
-        public string SuccessMessage { get; set; }
-        public string ErrorMessage { get; set; }
+        //public string SuccessMessage { get; set; }
+        //public string ErrorMessage { get; set; }
 
         public void SetSearchOptions(IPatientSearch iSearch)
         {
@@ -57,8 +57,8 @@ namespace Asklepios.Web.Areas.AdministrativeArea.Interfaces
             thisSearch.SelectedSurname= iSearch.SelectedSurname;
             thisSearch.SelectedGender = iSearch.SelectedGender;
             thisSearch.HasPolishCitizenship = iSearch.HasPolishCitizenship;
-            thisSearch.ErrorMessage = iSearch.ErrorMessage;
-            thisSearch.SuccessMessage = iSearch.SuccessMessage;
+            //thisSearch.ErrorMessage = iSearch.ErrorMessage;
+            //thisSearch.SuccessMessage = iSearch.SuccessMessage;
         }
 
     }

@@ -1,4 +1,5 @@
 ﻿using Asklepios.Core.Models;
+using Asklepios.Web.Enums;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
@@ -56,7 +57,6 @@ namespace Asklepios.Web.Areas.AdministrativeArea.Models
         private const string ERROR_MESSAGE_DATE = "Dodawane wizyty muszą zostać dodane przynajmniej z jednodniowym wyprzedzeniem!";
         private const string ERROR_MESSAGE_NUMBER_OF_VISITS = "Możesz dodać jednorazowo do 1 do 48 kolejnych wizyt!";
         private const string ERROR_MESSAGE_DURATION = "Wizyty mogą trwać od 10 do 60 minut!";
-        public string ErrorMessage { get; set; }
         public string Guard { get; set; }
 
 
@@ -83,9 +83,9 @@ namespace Asklepios.Web.Areas.AdministrativeArea.Models
                 _firstVisitInitialDateTime = value;
             }
         }
-
-        public string SuccessMessage { get; internal set; }
         public string UserName { get; set; }
+        public string Message { get; set; }
+        public AlertMessageType AlertMessageType { get; set; }
 
         public bool IsValid()
         {
@@ -109,18 +109,20 @@ namespace Asklepios.Web.Areas.AdministrativeArea.Models
                                         }
                                         else
                                         {
-                                            ErrorMessage = ERROR_MESSAGE_DURATION;
+                                            Message = ERROR_MESSAGE_DURATION;
+
                                         }
                                     }
                                     else
                                     {
-                                        ErrorMessage = ERROR_MESSAGE_NUMBER_OF_VISITS;
+                                        Message = ERROR_MESSAGE_NUMBER_OF_VISITS;
                                     }
                                 }
                                 else
                                 {
-                                    ErrorMessage = ERROR_MESSAGE_DATE;
+                                    Message = ERROR_MESSAGE_DATE;
                                 }
+                                AlertMessageType = AlertMessageType.ErrorMessage;
                             }
                             else
                             {
@@ -155,7 +157,8 @@ namespace Asklepios.Web.Areas.AdministrativeArea.Models
                       //  fvisits= filteredVisits.Where(c => (c.DateTimeSince.TimeOfDay > start && c.DateTimeSince.TimeOfDay < end) || (c.DateTimeTill.TimeOfDay > start && c.DateTimeTill.TimeOfDay < end)).ToList();
                         if (duplicates != null && duplicates.Count() > 0)
                         {
-                            ErrorMessage = ERROR_MESSAGE_ROOM;
+                            Message = ERROR_MESSAGE_ROOM;
+                            AlertMessageType = AlertMessageType.ErrorMessage;
                             return true;
                         }
 
@@ -164,7 +167,9 @@ namespace Asklepios.Web.Areas.AdministrativeArea.Models
                         duplicates = filteredVisits.Where(c => (c.DateTimeSince.TimeOfDay >= start && c.DateTimeSince.TimeOfDay < end) || (c.DateTimeTill.TimeOfDay > start && c.DateTimeTill.TimeOfDay <= end)).AsQueryable(); //.ToList();
                         if (duplicates != null && duplicates.Count() > 0)
                         {
-                            ErrorMessage = ERROR_MESSAGE_WORKER;
+                            Message = ERROR_MESSAGE_WORKER;
+                            AlertMessageType = AlertMessageType.ErrorMessage;
+
                             return true;
                         }
 

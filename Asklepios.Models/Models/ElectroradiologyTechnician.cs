@@ -17,6 +17,10 @@ namespace Asklepios.Core.Models
         //    MedicalWorkerType = Enums.MedicalWorkerType.ElectroriadologyTechnician;
         //    PersonId = person.Id;
         //}
+        public override bool CanAddMedicalTestResults => true;
+        public override bool CanIssueExamReferral => false;
+        public override bool CanIssuePrescription => false;
+
         public ElectroradiologyTechnician()
         {
 

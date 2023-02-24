@@ -12,8 +12,11 @@
     <div class="form-group d-flex flex-column">
         @*<span id="MessageSpan" asp-validation-for="User.UserName" class="text-danger"></span>*@
 
-        <label asp-for="CurrentPatient.User.EmailAddress" class="control-label"></label>
-        <input asp-for="CurrentPatient.User.EmailAddress" class="form-control mb-2" readonly />
+        <label asp-for="CurrentPatient.User.Email" class="control-label"></label>
+        <input asp-for="CurrentPatient.User.Email" class="form-control mb-2" readonly />
+
+        <label asp-for="CurrentPatient.User.UserName" class="control-label"></label>
+        <input asp-for="CurrentPatient.User.UserName" class="form-control mb-2" readonly />
 
         @*<label asp-for="CurrentPatient.User.Password" class="control-label"></label>
             <input asp-for="CurrentPatient.User.Password" class="form-control mb-2" readonly />*@

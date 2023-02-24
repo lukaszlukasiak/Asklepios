@@ -1,5 +1,6 @@
 ﻿using Asklepios.Core.Models;
 using Asklepios.Data.Interfaces;
+using Asklepios.Web.Enums;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
@@ -83,6 +84,8 @@ namespace Asklepios.Web.Areas.AdministrativeArea.Models
 
         public List<int> Vals { get; set; } //= new List<long>() { 1, 2, 3, 4, 5, 6, 7 };
         public string UserName { get; set; }
+        public string Message { get; set; }
+        public AlertMessageType AlertMessageType { get; set; }
 
         internal List<MedicalServiceDiscount> UpdateDiscountsWithInputValues()
         {

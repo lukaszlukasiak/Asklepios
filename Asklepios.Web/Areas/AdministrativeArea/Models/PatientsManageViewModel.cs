@@ -1,6 +1,7 @@
 ﻿using Asklepios.Core.Enums;
 using Asklepios.Core.Models;
 using Asklepios.Web.Areas.AdministrativeArea.Interfaces;
+using Asklepios.Web.Enums;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
@@ -26,7 +27,7 @@ namespace Asklepios.Web.Areas.AdministrativeArea.Models
                 }
                 else
                 {
-                    return AllPatients?.OrderBy(c => c.Person.FullName).ToList(); ;
+                    return AllPatients?.OrderBy(c => c.Person.Surname).ThenBy(d=>d.Person.Name).ToList(); ;
                 }
             }
         }
@@ -111,9 +112,11 @@ namespace Asklepios.Web.Areas.AdministrativeArea.Models
         }
         public int ItemsPerPage { get; private set; } = 100;
         public int CurrentPageNum { get; private set; } = 1;
-        public string SuccessMessage { get; set; }
-        public string ErrorMessage { get; set; }
+        //public string SuccessMessage { get; set; }
+        //public string ErrorMessage { get; set; }
         public string UserName { get; set; }
+        public string Message { get; set; }
+        public AlertMessageType AlertMessageType { get; set; }
 
         private List<Patient> GetFilteredPatientsList()
         {
@@ -222,7 +225,7 @@ namespace Asklepios.Web.Areas.AdministrativeArea.Models
 
 
 
-            filteredPatients = filteredPatients.OrderBy(c => c.Person.FullName).AsQueryable();
+            filteredPatients = filteredPatients.OrderBy(c => c.Person.Surname).ThenBy(d=>d.Person.Name).AsQueryable();
             if (filteredPatients.Count() < ItemsPerPage)
             {
                 return filteredPatients.ToList();

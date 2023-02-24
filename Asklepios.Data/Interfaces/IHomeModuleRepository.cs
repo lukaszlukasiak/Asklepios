@@ -1,4 +1,5 @@
-﻿using Asklepios.Core.Models;
+﻿using Asklepios.Core.Enums;
+using Asklepios.Core.Models;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -12,7 +13,9 @@ namespace Asklepios.Data.Interfaces
     {
         List<Location> GetAllLocations();
         Location GetLocationById(long locationId);
-        User LogIn(User user);
+        User CheckUserNameAndRole(string userName, WorkerModuleType workerModuleType, UserType userType);
+        void Save();
+        //User CheckEmailAndRole(string userName, UserType userType, WorkerModuleType workerModuleType);
         //Patient GetUserById(long userId);
         //List<MedicalService> GetLocationServices(long id);
     }

@@ -7,12 +7,19 @@
     Zarezerwuj wizytę
 </h1>
 
-<form asp-action="BookVisit" method="post">
+<form asp-action="BookVisitConditions" method="post">
     @{
         SelectList workersItems = null;
         if (long.TryParse(Model.SelectedMedicalWorkerId,out long swid))
         {
-            workersItems=new SelectList(Model.AllMedicalWorkers.Where(c=>c.Id== swid), "Id", "FullProffesionalName");
+            if (swid > 0)
+            {
+                workersItems=new SelectList(Model.AllMedicalWorkers.Where(c=>c.Id== swid), "Id", "FullProffesionalName");
+            }
+            else
+            {
+                workersItems = new SelectList(Model.GetMedicalWorkers, "Id", "FullProffesionalName");
+            }
         }
         else
         {
@@ -21,7 +28,10 @@
         SelectList locationItems = null;
         if (long.TryParse(Model.SelectedLocationId, out long slid))
         {
-            locationItems = new SelectList(Model.AllLocations.Where(c => c.Id == slid), "Id", "Name");
+            if (slid > 0)
+            {
+                locationItems = new SelectList(Model.AllLocations.Where(c => c.Id == slid), "Id", "Name");
+            }
         }
         else
         {
@@ -59,7 +69,7 @@
         <option value="0">Wybierz kategorię wizyty</option>
     </select>
     <select class="form-control  mb-1" asp-for="SelectedServiceId" asp-items="servicesList">
-        <option value="0">Wybierz specjalność</option>
+        <option value="0">Wybierz typ wizyty</option>
     </select>
 
     <select class="form-control mb-1" asp-for="SelectedMedicalWorkerId" asp-items="workersItems" onchange="">
@@ -67,12 +77,8 @@
     </select>
     <div class="d-flex flex-column">
         <button class=" btn btn-secondary   mb-1">Filtruj!</button>
-
     </div>
-    @*<select asp-for="@Model.SearchOptions.SelectedDoctor" asp-items="@Model.GetMedicalWorkers.ToList()" class="form-control">
-            <option>Select Role</option>
-        </select>
-        @Html.DropDownList("Title", Model.Select(m => new SelectListItem() { Text = m., Value = m.Title }).ToList(), "Select")*@
+
 </form>
 
 
@@ -89,11 +95,5 @@
     else
     {
         <h3 style="text-align:center">Brak dostępnych wizyt przy założonych kryteriach...</h3>
-        @*<a asp-area="PatientArea" asp-controller="Patient" asp-action="BookVisit" class="btn btn-primary btn-icon-split mt-3">
-                <span class="icon text-white-50">
-                    <i class="fas fa-book"></i>
-                </span>
-                <span class="text">Zarezerwuj wizytę</span>
-            </a>*@
     }
 }

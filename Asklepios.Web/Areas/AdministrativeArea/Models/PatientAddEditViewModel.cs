@@ -1,5 +1,6 @@
 ﻿using Asklepios.Core.Enums;
 using Asklepios.Core.Models;
+using Asklepios.Web.Enums;
 using Microsoft.AspNetCore.Http;
 using System;
 using System.Collections.Generic;
@@ -17,8 +18,8 @@ namespace Asklepios.Web.Areas.AdministrativeArea.Models
         public List<MedicalPackage> MedicalPackages { get; set; }
         public List<NFZUnit> NFZUnits { get; set; }
         public IFormFile ImageFile { get; set; }
-        public string ErrorMessage { get; set; }
-        public string SuccessMessage { get; set; }
+        //public string ErrorMessage { get; set; }
+        //public string SuccessMessage { get; set; }
 
         public bool IsValid
         {
@@ -29,5 +30,7 @@ namespace Asklepios.Web.Areas.AdministrativeArea.Models
         }
 
         public string UserName { get; set; }
+        public string Message { get; set; }
+        public AlertMessageType AlertMessageType { get; set; }
     }
 }

@@ -24,26 +24,6 @@ namespace Asklepios.Web.Areas.CustomerServiceArea.Models
             }
 
         }
-        //public VisitSearchOptions SearchOptions { get; set; } = new VisitSearchOptions();
-        //private string _selectedWorkerId;
-        //public string SelectedWorkerId
-        //{
-        //    get
-        //    {
-        //        return _selectedWorkerId;
-        //    }
-        //    set
-        //    {
-        //        _selectedWorkerId = value;
-        //    }
-        //}
-        //public string SelectedLocationId
-        //{ get; set; }
-        //public string SelectedPrimaryServiceId
-        //{ get; set; }
-        //public string SelectedVisitCategoryId
-        //{ get; set; }
-
         public int CurrentPageNum { get; set; } = 1;
         public int NumberOfPages
         {
@@ -67,19 +47,10 @@ namespace Asklepios.Web.Areas.CustomerServiceArea.Models
         public BookVisitViewModel(Patient patient)
         {
             SelectedPatient = patient;
-            //SearchOptions = new VisitSearchOptions();
-
         }
         public BookVisitViewModel()
         {
         }
-
-        //public BookVisitViewModel (List<Visit> visits, VisitSearchOptions searchOptions)
-        //{
-        //    AllVisitsList = visits;
-        //    SearchOptions = searchOptions;
-        //    //FilteredVisits = FilterVisits();
-        //}
 
         public List<Location> GetLocations
         {
@@ -102,7 +73,7 @@ namespace Asklepios.Web.Areas.CustomerServiceArea.Models
                     }
                     else
                     {
-                        return null;
+                        return new List<Location>();
                     }
                 }
                 else
@@ -203,15 +174,6 @@ namespace Asklepios.Web.Areas.CustomerServiceArea.Models
                 }
             }
         }
-        //public string SelectedPrimaryServiceId
-        //{ get; set; }
-        //public string SelectedVisitCategoryId
-        //{ get; set; }
-
-        //public string SelectedLocationId { get; set; }
-        //public string SelectedCategoryId { get; internal set; }
-        //public string SelectedMedicalWorkerId { get; internal set; }
-        //public string SelectedServiceId { get; internal set; }
         public List<VisitCategory> AllCategories { get; internal set; }
         public List<MedicalWorker> AllMedicalWorkers { get; internal set; }
         public List<MedicalService> AllMedicalServices { get; internal set; }
@@ -225,10 +187,6 @@ namespace Asklepios.Web.Areas.CustomerServiceArea.Models
 
         private List<Visit> FilterVisits()
         {
-            //if (SearchOptions!=null)
-            //{
-            //    return AllVisitsList;
-            //}
             IQueryable<Visit> filteredVisits = AllVisitsList;
             if (AllVisitsList == null)
             {
@@ -295,14 +253,6 @@ namespace Asklepios.Web.Areas.CustomerServiceArea.Models
                     }                    
                 }
             }
-            //if (SelectedVoivodeship!=null)
-            //{
-            //    filteredVisits = AllVisitsList.Where(c => c.Location.VoivodeshipType == SearchOptions.SelectedVoivodeship).ToList();
-            //    if (filteredVisits == null)
-            //    {
-            //        return null;
-            //    }
-            //}
             filteredVisits = filteredVisits.OrderBy(c => c.DateTimeSince);
             if (filteredVisits.Count()<ItemsPerPage)
             {

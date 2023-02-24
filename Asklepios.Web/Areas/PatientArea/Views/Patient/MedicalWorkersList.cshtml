@@ -10,6 +10,7 @@
         MedicalWorker med = Model.MedicalWorkers[i];
         Asklepios.Web.Areas.PatientArea.Models.MedicalWorkerViewModel model = new Asklepios.Web.Areas.PatientArea.Models.MedicalWorkerViewModel();
         model.MedicalWorker = med;
-        <partial name="_MedicalWorker" model="model" />
+    model.HasPredefinedMedicalWorker = true;
+    <partial name="_MedicalWorker" model="model" />
 
     }

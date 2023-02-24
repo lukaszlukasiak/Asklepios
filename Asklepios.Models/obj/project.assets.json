@@ -377,7 +377,7 @@
           "lib/netstandard1.0/_._": {}
         }
       },
-      "PdfSharpCore/1.3.32": {
+      "PdfSharpCore/1.3.45": {
         "type": "package",
         "dependencies": {
           "SharpZipLib": "1.3.3",
@@ -1147,14 +1147,14 @@
         "version.txt"
       ]
     },
-    "PdfSharpCore/1.3.32": {
-      "sha512": "vO6VJiP9fUfn2adacySjkwTVr4zysoTrzQuXS1Zpmi1IAXkISsb4QL2y9PMv30zV3zdQjWhzt2rMmt23cEZEuA==",
+    "PdfSharpCore/1.3.45": {
+      "sha512": "jcSRrYbRdpPyHTSlYc+dQtfjdh9B6tdilvOK6tfCtDG8AbCCFEArGPmBU2RGHVWh1v3hfgNqNAhfY+ajpJoQ+w==",
       "type": "package",
-      "path": "pdfsharpcore/1.3.32",
+      "path": "pdfsharpcore/1.3.45",
       "files": [
         ".nupkg.metadata",
         ".signature.p7s",
-        "LICENCE.md",
+        "LICENSE.md",
         "lib/net5.0/PdfSharpCore.dll",
         "lib/net5.0/de/PdfSharpCore.resources.dll",
         "lib/net6.0/PdfSharpCore.dll",
@@ -1163,7 +1163,7 @@
         "lib/netcoreapp3.1/de/PdfSharpCore.resources.dll",
         "lib/netstandard2.0/PdfSharpCore.dll",
         "lib/netstandard2.0/de/PdfSharpCore.resources.dll",
-        "pdfsharpcore.1.3.32.nupkg.sha512",
+        "pdfsharpcore.1.3.45.nupkg.sha512",
         "pdfsharpcore.nuspec"
       ]
     },
@@ -1566,7 +1566,7 @@
       "Microsoft.AspNetCore.Http.Features >= 5.0.17",
       "Microsoft.AspNetCore.Mvc.Razor.RuntimeCompilation >= 6.0.8",
       "Microsoft.EntityFrameworkCore.InMemory >= 6.0.8",
-      "PdfSharpCore >= 1.3.32"
+      "PdfSharpCore >= 1.3.45"
     ]
   },
   "packageFolders": {
@@ -1632,7 +1632,7 @@
           },
           "PdfSharpCore": {
             "target": "Package",
-            "version": "[1.3.32, )"
+            "version": "[1.3.45, )"
           }
         },
         "imports": [
@@ -1650,7 +1650,7 @@
             "privateAssets": "all"
           }
         },
-        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\6.0.308\\RuntimeIdentifierGraph.json"
+        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\6.0.309\\RuntimeIdentifierGraph.json"
       }
     }
   }

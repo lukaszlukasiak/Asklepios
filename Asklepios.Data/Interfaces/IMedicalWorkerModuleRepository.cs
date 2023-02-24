@@ -84,5 +84,13 @@ namespace Asklepios.Data.Interfaces
         void UpdateTestResultFile(IFormFile medicalTestFile, Visit visit, string webRootPath);
         void UpdateVisit(Visit visit);
         Visit GetBookedVisitByIdANT(long currentVisitId);
+        MedicalWorker GetMedicalWorkerByUserId(long id);
+        MedicalTestResult GetMedicalTestResultById(long idL);
+        List<MedicalReferral> GetMedicalReferralsByPatientId(long id);
+        List<MedicalTestResult> GetMedicalTestResultsByPatientId(long id);
+        List<Prescription> GetPrescriptionsByPatientId(long id);
+        List<Visit> GetHistoricalVisitsByPatientId(long id);
+        string SaveFile(IFormFile formFile, StorageFolderType type, string basePath);
+        void RemoveFile(string v, string webRootPath);
     }
 }

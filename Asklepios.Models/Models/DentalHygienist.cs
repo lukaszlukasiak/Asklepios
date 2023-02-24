@@ -4,6 +4,7 @@ namespace Asklepios.Core.Models
 {
     public class DentalHygienist : MedicalWorker
     {
+
         public DentalHygienist()
         {
 
@@ -15,5 +16,9 @@ namespace Asklepios.Core.Models
             //PersonId = personId;
         }
         public override string ProfessionalTitle => "Higienistka Dentystyczna";
+        public override bool CanAddMedicalTestResults => false;
+        public override bool CanIssueExamReferral => false;
+        public override bool CanIssuePrescription => false;
+
     }
 }

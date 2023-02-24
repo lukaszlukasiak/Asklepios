@@ -17,6 +17,9 @@
         <label asp-for="@user.Person.Surname" class="control-label"></label>
         <input asp-for="@user.Person.Surname" class="form-control mb-2" readonly />
 
+        <label asp-for="@user.UserName" class="control-label"></label>
+        <input asp-for="@user.UserName" class="form-control mb-2" readonly />
+
         <label asp-for="@user.Person.Gender" class="control-label"></label>
         <input class="form-control  mb-2" value="@user.Person.Gender.GetDescription()" readonly />
 
@@ -26,8 +29,8 @@
 
         <label asp-for="@user.Person.DefaultAglomeration" class="control-label"></label>
         <input class="form-control  mb-2" value="@user.Person.DefaultAglomeration.Value.GetDescription()" readonly />
-        <label asp-for="@user.EmailAddress" class="control-label"></label>
-        <input asp-for="@user.EmailAddress" class="form-control mb-2" readonly />
+        <label asp-for="@user.Email" class="control-label"></label>
+        <input asp-for="@user.Email" class="form-control mb-2" readonly />
 
 
         <label asp-for="@user.Person.BirthDate" class="control-label"></label>
