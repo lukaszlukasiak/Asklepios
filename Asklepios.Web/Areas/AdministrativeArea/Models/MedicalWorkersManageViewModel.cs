@@ -1,4 +1,5 @@
 ﻿using Asklepios.Core.Models;
+using Asklepios.Web.Enums;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -37,10 +38,12 @@ namespace Asklepios.Web.Areas.AdministrativeArea.Models
         public List<MedicalService> PrimaryServices { get; set; }
         public int ItemsPerPage { get; private set; } = 100;
         public int CurrentPageNum { get; private set; } = 1;
-        public string SuccessMessage { get; set; }
-        public string ErrorMessage { get; set; }
+        //public string SuccessMessage { get; set; }
+        //public string ErrorMessage { get; set; }
         public ViewMode ViewMode { get; set; }
         public string UserName { get; set; }
+        public string Message { get; set; }
+        public AlertMessageType AlertMessageType { get; set; }
 
         private List<MedicalWorker> GetFilteredWorkersList()
         {

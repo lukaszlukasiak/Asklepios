@@ -20,12 +20,14 @@
 }
 
 <div class="d-flex flex-column">
-        @{
-        if (!string.IsNullOrWhiteSpace(Model.SuccessMessage))
+        <partial name="_Message" model="Model" />
+
+@*        @{
+        if (Model.HasMessage)
         {
             <div class="messages" style="margin-top:10px;text-align:center">
                 <p class="alert alert-success">
-                    @Model.SuccessMessage
+                    @Model.Message
                 </p>
             </div>
         }
@@ -33,12 +35,12 @@
         {
             <div class="messages" style="margin-top: 10px; text-align: center ">
                 <p class="alert alert-danger">
-                    @Model.ErrorMessage
+                    @Model.Message
                 </p>
             </div>
-        }
-    }
-
+        }*@
+@*    }
+*@
     <form class="form mt-2" asp-action="ScheduleItemsAdd" method="post">
         <div class="form-group d-flex flex-column">
             <label asp-for="SelectedLocationId" class="control-label"></label>

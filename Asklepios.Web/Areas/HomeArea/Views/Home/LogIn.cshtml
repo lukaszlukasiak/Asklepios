@@ -10,9 +10,9 @@
                     <label>Zaloguj się do modułu pacjenta</label>
                 </h2>
                 <form class="form" asp-action="LogInPatient" method="post">
-                    <input class="email" type="email" required placeholder="Twój adres e-mail" asp-for="User.EmailAddress">
-                    <input class="person-detail" required type="password" minlength="8" placeholder="Hasło" asp-for="User.Password">
-                    @if (Model?.User?.UserType == Asklepios.Core.Enums.UserType.Patient && Model.LogInFailed)
+                    <input class="person-detail" required type="text"  placeholder="Twoja nazwa użytownika" asp-for="UserName">
+                    <input class="person-detail" required type="password" minlength="8" placeholder="Hasło" asp-for="Password">
+                    @if (Model?.UserType == Asklepios.Core.Enums.UserType.Patient && Model.LogInFailed)
                     {
                         <div class="messages  flex-column" style="margin-top: 10px; text-align: center ">
                             <p class="alert alert-danger">
@@ -34,13 +34,13 @@
                     <label>Zaloguj się do modułu pracownika</label>
                 </h2>
                 <form class="form  d-flex flex-column" asp-action="LogInEmployee" method="post">
-                    <input class="email" type="email" placeholder="Twój adres e-mail" asp-for="User.EmailAddress">
-                    <input class="person-detail" type="password" minlength="8" placeholder="Hasło" asp-for="User.Password">
+                    <input class="person-detail" required type="text"  placeholder="Twoja nazwa użytownika" asp-for="UserName">
+                    <input class="person-detail" type="password" minlength="8" placeholder="Hasło" asp-for="Password">
                     <p>
                         Wybierz moduł:
-                        <select asp-for="User.WorkerModuleType" asp-items="Html.GetEnumSelectList<Asklepios.Core.Enums.WorkerModuleType>()"></select>
+                        <select asp-for="WorkerModuleType" asp-items="Html.GetEnumSelectList<Asklepios.Core.Enums.WorkerModuleType>()"></select>
                     </p>
-                    @if (Model?.User?.UserType == Asklepios.Core.Enums.UserType.Employee && Model.LogInFailed)
+                    @if (Model?.UserType == Asklepios.Core.Enums.UserType.Employee && Model.LogInFailed)
                     {
                         <div class="messages flex-column" style="margin-top: 10px; text-align: center ">
                             <p class="alert alert-danger">

@@ -53,7 +53,7 @@ namespace Asklepios.Web.Areas.MedicalWorkerArea.Models
             SelectedPatient = patient;
             UserType = Core.Enums.UserType.Patient;
             ContactName = patient.Person.FullName;
-            ContactEMailAddress = patient.User.EmailAddress;
+            ContactEMailAddress = patient.User.Email;
             UserId = patient.Id;
         }
         //public ContactMessageViewModel(Core.Models.MedicalWorker worker, Core.Models.Patient patient)
@@ -69,14 +69,14 @@ namespace Asklepios.Web.Areas.MedicalWorkerArea.Models
             UserType = Core.Enums.UserType.Employee;
             ContactName = worker.Person.FullName;
             //worker.User=_conte
-            ContactEMailAddress = worker.User.EmailAddress;
+            ContactEMailAddress = worker.User.Email;
             UserId = worker.Id;
         }
         public ContactMessageViewModel(User user)
         {
             UserType = user.UserType.Value;
             ContactName = user.Person.FullName;
-            ContactEMailAddress = user.EmailAddress;
+            ContactEMailAddress = user.Email;
             UserId = user.Person.Id;
         }
     }

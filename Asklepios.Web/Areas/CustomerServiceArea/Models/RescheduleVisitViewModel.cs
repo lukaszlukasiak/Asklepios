@@ -22,6 +22,20 @@ namespace Asklepios.Web.Areas.CustomerServiceArea.Models
                 return _filteredVisits;
             }
         }
+        public IQueryable<Visit> _serviceFilteredVisits;
+        public IQueryable<Visit> ServiceFilteredVisits
+        {
+            get
+            {
+                if (_serviceFilteredVisits == null)
+                {
+                    _serviceFilteredVisits = FilterVisitsByService();
+                }
+
+                return _serviceFilteredVisits;
+            }
+        }
+
         //public VisitSearchOptions SearchOptions { get; set; } = new VisitSearchOptions();
         private string _selectedWorkerId;
         public string SelectedWorkerId
@@ -90,13 +104,13 @@ namespace Asklepios.Web.Areas.CustomerServiceArea.Models
         {
             get
             {
-                if (FilteredVisits == null)
+                if (AllVisitsList == null)
                 {
                     return null;
                 }
-                if (FilteredVisits.Count() > 0)
+                if (AllVisitsList.Count() > 0)
                 {
-                    List<Location> locations = FilteredVisits
+                    List<Location> locations = ServiceFilteredVisits
                         .Select(c => c.Location)
                         .Distinct()
                         .OrderBy(d => d.Name)
@@ -113,24 +127,29 @@ namespace Asklepios.Web.Areas.CustomerServiceArea.Models
         {
             get
             {
-                if (FilteredVisits == null)
+                if (AllVisitsList == null)
                 {
                     return null;
                 }
 
-                if (FilteredVisits.Count() > 0)
+                if (AllVisitsList.Count() > 0)
                 {
-                    List<MedicalWorker> workers = FilteredVisits
+                    List<MedicalWorker> workers = ServiceFilteredVisits
                         .Where(c => c.PrimaryServiceId == RescheduledVisit.PrimaryServiceId)
                         .Select(e => e.MedicalWorker)
                         .Distinct()
+                        .ToList();
+                        
+                    workers=workers
                         .OrderBy(f => f.FullProffesionalName)
+                            //.ThenBy(g=>g.Person.Surname)
+                              //  .ThenBy(h=>h.Person.Name)
                         .ToList();
                     return workers;
                 }
                 else
                 {
-                    return null;
+                    return new List<MedicalWorker>();
                 }
             }
         }
@@ -145,7 +164,7 @@ namespace Asklepios.Web.Areas.CustomerServiceArea.Models
 
                 if (AllVisitsList.Count() > 0)
                 {
-                    List<MedicalService> services = AllVisitsList
+                    List<MedicalService> services = ServiceFilteredVisits
                         .Select(c => c.PrimaryService)
                         .Distinct()
                         .OrderBy(d => d.Name)
@@ -185,7 +204,7 @@ namespace Asklepios.Web.Areas.CustomerServiceArea.Models
 
                 if (AllVisitsList.Count() > 0)
                 {
-                    List<VisitCategory> categories = AllVisitsList
+                    List<VisitCategory> categories = ServiceFilteredVisits
                         .Where(d => d.VisitCategoryId == RescheduledVisit.VisitCategoryId)
                         .Select(c => c.VisitCategory)
                         .Distinct()
@@ -204,6 +223,30 @@ namespace Asklepios.Web.Areas.CustomerServiceArea.Models
         public Patient SelectedPatient { get; set; }
         public string UserName { get;set; }
 
+        private IQueryable<Visit> FilterVisitsByService()
+        {
+            IQueryable<Visit> filteredVisits = AllVisitsList;
+            if (AllVisitsList == null)
+            {
+                return null;
+            }
+            if (SelectedPrimaryServiceId != null)
+            {
+                if (long.TryParse(SelectedPrimaryServiceId, out long lid))
+                {
+                    if (lid > 0)
+                    {
+                        filteredVisits = filteredVisits.Where(c => c.PrimaryService.Id == lid);
+                        if (filteredVisits == null)
+                        {
+                            return null;
+                        }
+                    }
+
+                }
+            }
+            return filteredVisits;
+        }
         private List<Visit> FilterVisits()
         {
             //if (SearchOptions!=null)

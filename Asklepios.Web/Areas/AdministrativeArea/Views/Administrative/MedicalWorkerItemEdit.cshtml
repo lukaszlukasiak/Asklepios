@@ -3,7 +3,7 @@
 
 <div class="d-flex flex-column">
     @{
-        SelectList services = new SelectList(Model.PrimaryServices.OrderBy(c=>c.Name), "Id", "Name");
+        SelectList services = new SelectList(Model.PrimaryServices.OrderBy(c => c.Name), "Id", "Name");
 
         foreach (SelectListItem item in services)
         {
@@ -15,35 +15,41 @@
         IEnumerable<SelectListItem>
         removeMode = Html.GetEnumSelectListWithOneValue(Asklepios.Web.Areas.AdministrativeArea.Models.ViewMode.Remove).ToList();
         IEnumerable<SelectListItem>
-            readMode = Html.GetEnumSelectListWithOneValue(Asklepios.Web.Areas.AdministrativeArea.Models.ViewMode.Read).ToList();
+        readMode = Html.GetEnumSelectListWithOneValue(Asklepios.Web.Areas.AdministrativeArea.Models.ViewMode.Read).ToList();
         IEnumerable<SelectListItem>
-    editMode = Html.GetEnumSelectListWithOneValue(Asklepios.Web.Areas.AdministrativeArea.Models.ViewMode.Edit).ToList();
+        editMode = Html.GetEnumSelectListWithOneValue(Asklepios.Web.Areas.AdministrativeArea.Models.ViewMode.Edit).ToList();
 
+            <partial name="_Message" model="Model" />
 
-        if (!string.IsNullOrWhiteSpace(Model.SuccessMessage))
-        {
-            <div class="messages" id="MessageSpan" style="margin-top: 10px; text-align: center ">
-                <p class="alert alert-success">
-                    @Model.SuccessMessage
-                </p>
-            </div>
-            <a asp-controller="Administrative" asp-action="MedicalWorkerItemsAdd" class="btn btn-outline-secondary btn-icon-split ">
-                <span class="text" style="float: left">Resetuj dane</span>
-            </a>
+        //if (!string.IsNullOrWhiteSpace(Model.Message))
+        //{
+        //    if (Model.AlertMessageType == Asklepios.Web.Enums.AlertMessageType.SuccessMessage)
+        //    {
+        //        <div class="messages" id="MessageSpan" style="margin-top: 10px; text-align: center ">
+        //            <p class="alert alert-success">
+        //                @Model.Message
+        //            </p>
+        //        </div>
+        //        <a asp-controller="Administrative" asp-action="MedicalWorkerItemsAdd" class="btn btn-outline-secondary btn-icon-split ">
+        //            <span class="text" style="float: left">Resetuj dane</span>
+        //        </a>
 
-        }
-        if (!string.IsNullOrWhiteSpace(Model.ErrorMessage))
-        {
-            <div class="messages" id="MessageSpan" style="margin-top: 10px; text-align: center ">
-                <p class="alert alert-danger">
-                    @Model.ErrorMessage
-                </p>
-            </div>
-            <a asp-controller="Administrative" asp-action="MedicalWorkerItemsAdd" class="btn btn-outline-secondary btn-icon-split ">
-                <span class="text" style="float: left">Resetuj dane</span>
-            </a>
+        //    }
+        //    else if (Model.AlertMessageType == Asklepios.Web.Enums.AlertMessageType.ErrorMessage)
+        //    {
+        //        //if (!string.IsNullOrWhiteSpace(Model.ErrorMessage))
+        //            //{
+        //        <div class="messages" id="MessageSpan" style="margin-top: 10px; text-align: center ">
+        //            <p class="alert alert-danger">
+        //                @Model.Message
+        //            </p>
+        //        </div>
+        //        <a asp-controller="Administrative" asp-action="MedicalWorkerItemsAdd" class="btn btn-outline-secondary btn-icon-split ">
+        //            <span class="text" style="float: left">Resetuj dane</span>
+        //        </a>
 
-        }
+        //    }
+        //}
         //Model.MedicalWorker = new Doctor();
         //Model.MedicalWorker.Education = new List<string>();
 
@@ -53,13 +59,16 @@
         <div class="form-group d-flex flex-column">
             @*<span id="MessageSpan" asp-validation-for="User.UserName" class="text-danger"></span>*@
 
-            <label asp-for="User.EmailAddress" class="control-label"></label>
-            <input asp-for="User.EmailAddress" class="form-control mb-2">
-            <span asp-validation-for="User.EmailAddress" class="text-danger"></span>
+            <label asp-for="User.Email" class="control-label"></label>
+            <input asp-for="User.Email" class="form-control mb-2">
+            <span asp-validation-for="User.Email" class="text-danger"></span>
 
-            <label asp-for="User.Password" class="control-label"></label>
-            <input asp-for="User.Password" class="form-control mb-2">
-            <span asp-validation-for="User.Password" class="text-danger"></span>
+            <label  class="control-label">Nazwa użytkownika</label>
+            <input asp-for="User.UserName" class="form-control mb-2" readonly>
+
+            <label asp-for="User.PasswordHash" class="control-label"></label>
+            <input asp-for="User.PasswordHash" class="form-control mb-2">
+            <span asp-validation-for="User.PasswordHash" class="text-danger"></span>
 
             <label asp-for="Person.Name" class="control-label"></label>
             <input asp-for="Person.Name" class="form-control mb-2">
@@ -136,10 +145,10 @@
             <span asp-validation-for="MedicalWorkertData.MedicalServiceIds" class="text-danger"></span>
 
             @*<label asp-for="MedicalWorkerType" class="control-label"></label>
-        <select class="form-control  mb-2" asp-for="MedicalWorkerType" asp-items="Html.GetEnumSelectList<Asklepios.Core.Enums.MedicalWorkerType>()">
-            <option value="">Wybierz typ pracownika medycznego</option>
-        </select>
-        <span asp-validation-for="MedicalWorkerType" class="text-danger"></span>*@
+                <select class="form-control  mb-2" asp-for="MedicalWorkerType" asp-items="Html.GetEnumSelectList<Asklepios.Core.Enums.MedicalWorkerType>()">
+                <option value="">Wybierz typ pracownika medycznego</option>
+                </select>
+                <span asp-validation-for="MedicalWorkerType" class="text-danger"></span>*@
 
             <label asp-for="MedicalWorkertData.ProfessionalNumber" class="control-label"></label>
             <input asp-for="MedicalWorkertData.ProfessionalNumber" class="form-control mb-2">
@@ -152,7 +161,7 @@
             </div>
 
             <select asp-for="ViewMode" asp-items="editMode" hidden></select>
-            <input asp-for="SelectedWorkerId" hidden >
+            <input asp-for="SelectedWorkerId" hidden>
 
 
             @*@Html.EditorFor(model => model.MedicalWorker.Education, new { @class = "form-control mb-2" })*@

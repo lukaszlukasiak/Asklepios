@@ -10,6 +10,7 @@ using Asklepios.Web.Extensions;
 
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.AspNetCore.Mvc.ViewFeatures;
+using Asklepios.Web.Enums;
 
 namespace Asklepios.Web.Areas.AdministrativeArea.Models
 {
@@ -90,8 +91,8 @@ namespace Asklepios.Web.Areas.AdministrativeArea.Models
         public List<MedicalPackage> MedicalPackages { get; set; }
         public List<NFZUnit> NFZUnits { get; set; }
         public IFormFile ImageFile { get; set; }
-        public string SuccessMessage { get; set; }
-        public string ErrorMessage { get; set; }
+        //public string SuccessMessage { get; set; }
+        //public string ErrorMessage { get; set; }
 
         public bool IsValid
         {
@@ -113,6 +114,8 @@ namespace Asklepios.Web.Areas.AdministrativeArea.Models
         }
 
         public string UserName { get; set; }
+        public string Message { get; set; }
+        public AlertMessageType AlertMessageType { get; set; }
 
         public void UpdateWithSearch(IPatientSearch search)
         {
@@ -125,8 +128,8 @@ namespace Asklepios.Web.Areas.AdministrativeArea.Models
             SelectedPassportNumber = search.SelectedPassportNumber;
             SelectedPESEL = search.SelectedPESEL;
             SelectedSurname = search.SelectedSurname;
-            SuccessMessage = search.SuccessMessage;
-            ErrorMessage = search.ErrorMessage;
+            //SuccessMessage = search.SuccessMessage;
+            //ErrorMessage = search.ErrorMessage;
         }
 
         //public SelectList GetEnumSelectListWithDefaultValue<TEnum>(TEnum defaultValue)

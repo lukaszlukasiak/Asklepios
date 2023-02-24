@@ -1,4 +1,5 @@
-﻿@model Asklepios.Web.Areas.AdministrativeArea.Models.RoomItemsManageViewModel
+﻿@using Asklepios.Web.Enums
+@model Asklepios.Web.Areas.AdministrativeArea.Models.RoomItemsManageViewModel
 @{
     SelectList locations = new SelectList(Model.SortedLocations, "Id", "Name");
     IEnumerable<SelectListItem>
@@ -12,31 +13,29 @@
 <h2 style="text-align:center">Pokój</h2>
 @{
 
-    if (TempData.ContainsKey("successMessage"))
+    if (TempData.ContainsKey(AlertMessageType.SuccessMessage.GetDescription()))
 
     {
         <div class="messages" id="MessageSpan" style="margin-top: 10px; text-align: center ">
             <p class="alert alert-success">
                 @*@Model.SuccessMessage*@
-                @TempData["successMessage"].ToString()
+                @TempData[AlertMessageType.SuccessMessage.GetDescription()].ToString()
             </p>
         </div>
 
     }
     //if (!string.IsNullOrWhiteSpace(Model.ErrorMessage))
-    if (TempData.ContainsKey("errorMessage"))
+    if (TempData.ContainsKey(AlertMessageType.ErrorMessage.GetDescription()))
     {
         <div class="messages" id="MessageSpan" style="margin-top: 10px; text-align: center ">
             <p class="alert alert-success">
                 @*@Model.ErrorMessage*@
-                @TempData["errorMessage"].ToString()
+                @TempData[AlertMessageType.ErrorMessage.GetDescription()].ToString()
 
             </p>
         </div>
 
     }
-    @*<partial name="_RoomItemAdd" model="Model" />*@
-
 }
 
 <form class="form my-2" asp-action="RoomItemEdit" method="post" enctype="multipart/form-data">

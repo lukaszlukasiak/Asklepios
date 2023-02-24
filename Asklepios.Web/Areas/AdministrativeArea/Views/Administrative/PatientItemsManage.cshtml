@@ -7,7 +7,9 @@
 }
 
 <div class="d-flex flex-column">
-    @{
+        <partial name="_Message" model="Model" />
+
+@*    @{
         if (!string.IsNullOrWhiteSpace(Model.SuccessMessage))
         {
             <div class="messages" style="margin-top:10px;text-align:center">
@@ -26,7 +28,7 @@
 
         }
     }
-    <form class="form my-2" asp-action="PatientItemsManage" method="post">
+*@    <form class="form my-2" asp-action="PatientItemsManage" method="post">
         <div class="form-group d-flex flex-column">
 
             <label asp-for="SelectedId" class="control-label"></label>

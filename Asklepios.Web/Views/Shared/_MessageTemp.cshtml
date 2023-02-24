@@ -1,0 +1,46 @@
+﻿@model ITempDataDictionary
+@using Asklepios.Web.Models;
+@using Asklepios.Web.Extensions;
+
+@if(Model.ContainsKey(ViewMessage.MESSAGE_KEY))
+{
+    ViewMessage message = Model.Get<ViewMessage>(ViewMessage.MESSAGE_KEY);
+
+    switch (message.MessageType)
+    {
+        case Asklepios.Web.Enums.AlertMessageType.ErrorMessage:
+
+            <div class="messages" id="MessageSpan" style="margin-top: 10px; text-align: center;">
+                <p class="alert alert-danger">
+                    @message.Message
+                </p>
+            </div>
+
+            break;
+        case    Asklepios.Web.Enums.AlertMessageType.InfoMessage:
+            <div class="messages" id="MessageSpan" style="margin-top: 10px; text-align: center;">
+                <p class="alert alert-info">
+                    @message.Message
+                </p>
+            </div>
+            break;
+        case Asklepios.Web.Enums.AlertMessageType.SuccessMessage:
+            <div class="messages" id="MessageSpan" style="margin-top: 10px; text-align: center;">
+                <p class="alert alert-success">
+                    @message.Message
+                </p>
+            </div>
+            break;
+        case Asklepios.Web.Enums.AlertMessageType.WarningMessage:
+            <div class="messages" id="MessageSpan" style="margin-top: 10px; text-align: center;">
+                <p class="alert alert-warning">
+                    @message.Message
+                </p>
+            </div>
+
+            break;
+        default:
+            break;
+
+    }
+}

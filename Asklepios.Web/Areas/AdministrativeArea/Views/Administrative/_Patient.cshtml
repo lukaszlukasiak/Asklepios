@@ -26,7 +26,7 @@
             <h5>Id: @Model.CurrentPatient.Id</h5>
             <h5>Imię: @Model.CurrentPatient.Person.Name</h5>
             <h5>Nazwisko: @Model.CurrentPatient.Person.Surname</h5>
-            <h5>Adres e-mail: @Model.CurrentPatient.User.EmailAddress</h5>
+            <h5>Adres e-mail: @Model.CurrentPatient.User.Email</h5>
             @if (Model.CurrentPatient.Person.HasPolishCitizenship)
             {
                 <h5>PESEL: @Model.CurrentPatient.Person.PESEL</h5>

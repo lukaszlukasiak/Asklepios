@@ -12,10 +12,12 @@ namespace Asklepios.Web.Areas.PatientArea.Models
         public Visit Visit { get; set; }
         public string UserName { get; set; }
         public List<Notification> Notifications { get; set; }
-
+        
         public VisitViewModel()
         {
-
+            HasPredefinedMedicalWorker = true;
+            HasPredefinedService = true;
+            HasPredefinedCategory = true;
         }
     }
 }

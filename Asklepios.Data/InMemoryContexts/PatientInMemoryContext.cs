@@ -101,6 +101,11 @@ namespace Asklepios.Data.InMemoryContexts
             List<Visit> visits = PatientMockDB.BookedVisits.Where(c => c.Patient.Id == id).ToList();
             return visits;
         }
+        public IQueryable<Visit> GetBookedVisitsByPatientIdQuery(long id)
+        {
+            IQueryable<Visit> visits = PatientMockDB.BookedVisits.Where(c => c.Patient.Id == id).AsQueryable();
+            return visits;
+        }
 
         public byte[] GetDocument(string documentPath, string webRootPath)
         {
@@ -262,5 +267,6 @@ namespace Asklepios.Data.InMemoryContexts
             //PatientMockDB.AvailableVisits.
             //throw new NotImplementedException();
         }
+
     }
 }

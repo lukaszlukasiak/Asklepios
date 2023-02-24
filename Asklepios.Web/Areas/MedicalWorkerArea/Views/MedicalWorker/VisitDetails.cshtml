@@ -1,7 +1,20 @@
 ﻿@model Asklepios.Web.Areas.MedicalWorkerArea.Models.CurrentVisitViewModel
 
 <div class="d-flex jumbotron flex-column" style=" padding:20px;display:flex;align-content:center;position:relative">
+    @if (Model.Visit.VisitStatus == Asklepios.Core.Enums.VisitStatus.NotHeldAbsentPatient)
+    {
+        <h3 class="mx-auto" style="font-weight:900;">
+            Pacjent nie przybył na wizytę
+        </h3>
+    }
+    else if (Model.Visit.VisitStatus == Asklepios.Core.Enums.VisitStatus.NotHeldOther)
+    {
+        <h3 style="font-weight:900;">
+            Wizyta została odwołana
+        </h3>
+    }
     <div class="d-flex mb-3 flex-wrap align-self-top align-items-top;">
+
         <div class="p-2   align-content-center align-items-center align-self-top  mx-auto " style="min-width: 400px;  text-align: center">
             <div class="d-flex flex-fill flex-column justify-content-center" style="text-align:center">
                 <h3 style="font-weight:900;">
@@ -12,12 +25,11 @@
                 <div class="d-flex flex-fill  justify-content-center mt-2" style="text-align: center; height: 200px">
                     <img alt="@Model.Visit.MedicalWorker.FullProffesionalName" src="@Model.Visit.MedicalWorker.Person.ImageSource" class="mx-auto d-block" style="max-width: 400px; display: block; border-radius: 6px; object-fit: contain">
                 </div>
-
             </div>
         </div>
         <div class="p-2   align-content-center align-items-center align-self-top mx-auto " style="text-align: center; min-width: 400px;">
             <div class="d-flex flex-fill flex-column justify-content-center" style="text-align:center">
-                @if (Model.Visit.VisitStatus == Asklepios.Core.Enums.VisitStatus.Booked || Model.Visit.VisitStatus == Asklepios.Core.Enums.VisitStatus.Finished || Model.Visit.VisitStatus == Asklepios.Core.Enums.VisitStatus.NotHeldAbsentPatient)
+                @if (Model.Visit.VisitStatus == Asklepios.Core.Enums.VisitStatus.Booked || Model.Visit.VisitStatus == Asklepios.Core.Enums.VisitStatus.Finished || Model.Visit.VisitStatus == Asklepios.Core.Enums.VisitStatus.NotHeldAbsentPatient || Model.Visit.VisitStatus == Asklepios.Core.Enums.VisitStatus.NotHeldOther)
                 {
                     <h3 style="font-weight:900;text-align:center;">
                         <a asp-action="PatientDetails" asp-controller="MedicalWorker" asp-route-id="@Model.Visit.Patient.Id">
@@ -62,12 +74,11 @@
         <h5>Usługa</h5>
         <div class="border border-secondary rounded w-100 flex-grow-0 mb-3  p-3">
             <div>
-                Kategoria: @Model.Visit.VisitCategory.CategoryName
+                <b>  @Model.Visit.VisitCategory.CategoryName </b>
             </div>
             <br />
-            <p>Koszty</p>
             <div>
-                @Model.Visit.PrimaryService.Name : @Model.Visit.GetPrice(Model.Visit.PrimaryService).ToString("c") PLN
+                <b>@Model.Visit.PrimaryService.Name </b>  : @Model.Visit.GetPrice(Model.Visit.PrimaryService).ToString("c") PLN
             </div>
 
             @for (int i = 0; i < Model.Visit.MinorMedicalServices?.Count; i++)
@@ -76,98 +87,106 @@
                 if (service != null)
                 {
                     <div>
-                        @service.Name : @Model.Visit.GetPrice(service).ToString("c"); PLN
+                        <b>@service.Name</b>  : @Model.Visit.GetPrice(service).ToString("c"); PLN
                     </div>
 
                 }
             }
-            <p>Koszt całkowity: @Model.Visit.GetTotalPrice().ToString("c"); PLN</p>
+            <br />
+
+            <div>Koszt całkowity: <b> @Model.Visit.GetTotalPrice().ToString("c"); PLN</b></div>
         </div>
     </div>
-    @if (Model.Visit.VisitReview != null)
+    @if (Model.Visit.MedicalHistory != null)
     {
         <div class="d-flex flex-column mx-2">
-            <h5>Recenzja wizyty</h5>
+            <h5>Wywiad medyczny</h5>
             <div class="border border-secondary rounded w-100 flex-grow-0 mb-3  p-3">
 
-                <div class="d-flex flex-column flex-fill flex-grow-1 m-auto">
-                    <div class="d-flex flex-column">
-                        <div class="d-flex flex-row">
-                            <div style="width:150px">Atmosfera:</div>
-                            <div>
-                                <partial name="_Stars" model="@Model.Visit.VisitReview.AtmosphereRate" />
-                            </div>
-                        </div>
-                        <div class="d-flex flex-row">
-                            <div style="width:150px">Kompetencje:</div>
-                            <div>
-                                <partial name="_Stars" model="@Model.Visit.VisitReview.CompetenceRate" />
-                            </div>
-                        </div>
-                        <div class="d-flex flex-row">
-                            <div style="width:150px">Ocena ogólna:</div>
-                            <div>
-                                <partial name="_Stars" model="@Model.Visit.VisitReview.GeneralRate" />
-                            </div>
-                        </div>
-
-                        @*<p>
-                                Kompetencje:
-                                <partial name="_Stars" model="@Model.VisitReview.CompetenceRate" />
-                            </p>
-                            <p>
-                                Ocena ogólna: <partial name="_Stars" model="@Model.VisitReview.GeneralRate" />
-                            </p>
-                            <p>
-                                Opis:
-                                @Model.VisitReview.ShortDescription
-                            </p>*@
+                <div class="d-flex flex-fill pt-2 flex-column">
+                    <div>
+                        @Model.Visit.MedicalHistory
                     </div>
+
                 </div>
             </div>
         </div>
     }
+    @if (Model.Visit.Recommendations?.Count > 0)
+    {
+        <div class="d-flex flex-column mx-2">
+            <h5>Zalecenia</h5>
+            <div class="border border-secondary rounded w-100 flex-grow-0 mb-3  p-3">
+                @{
+                    int i = 0;
+                    foreach (Recommendation rec in Model.Visit.Recommendations)
+                    {
+                        i++;
+                        <div class="d-flex flex-fill pt-2 flex-column">
+                            <div>
+                                @rec.Title
+                            </div>
+                            <div>
+                                @rec.Description
+                            </div>
+
+                        </div>
+                        if (i < Model.Visit.Recommendations.Count)
+                        {
+                            <hr class="mx-0 my-1" style="height:2px; border-width:0;color:gray;background-color:gray;text-align:right; ">
+                        }
+                    }
+
+                }
+            </div>
+        </div>
+    }
+
     @if (Model.Visit.ExaminationReferrals != null && Model.Visit.ExaminationReferrals.Count > 0)
     {
         <div class="d-flex flex-column mx-2">
             <h5>Wystawione skierowania</h5>
-            @for (int i = 0; i < Model.Visit.ExaminationReferrals.Count; i++)
-            {
-                <div class="border border-secondary rounded w-100 flex-grow-0 mb-3  p-3">
-                    @{
-                        MedicalReferral referral = Model.Visit.ExaminationReferrals[i];
+            <div class="border border-secondary rounded w-100 flex-grow-0 mb-3  p-3">
+                @for (int i = 0; i < Model.Visit.ExaminationReferrals.Count; i++)
+                {
+                    MedicalReferral referral = Model.Visit.ExaminationReferrals[i];
 
-                        <div>
-                            Usługa: @referral.PrimaryMedicalService.Name
-                        </div>
-                        @if (referral.MinorMedicalService != null)
-                        {
-                            <span>
-                                Podusługa: @referral.MinorMedicalService.Name
-                            </span>
+                    <div>
+                        Usługa: @referral.PrimaryMedicalService.Name
+                    </div>
+                    @if (referral.MinorMedicalService != null)
+                    {
+                        <span>
+                            Podusługa: @referral.MinorMedicalService.Name
+                        </span>
 
-                        }
-
-                        <div>
-                            Wystawione: @referral.IssueDate.ToString("dd-MM-yyyy")
-                        </div>
-                        <div>
-                            Ważne do: @referral.ExpireDate.ToString("dd-MM-yyyy")
-                        </div>
-                        if (referral.HasBeenUsed)
-                        {<p>
-                                Skierowanie zostało wykorzystane
-                            </p>
-                        }
-                        else if (referral.HasExpired)
-                        {
-                            <p>Ważność skierowania upłynęła</p>
-                        }
                     }
 
-                </div>
+                    <div>
+                        Wystawione: @referral.IssueDate.ToString("dd-MM-yyyy")
+                    </div>
+                    <div>
+                        Ważne do: @referral.ExpireDate.ToString("dd-MM-yyyy")
+                    </div>
+                    if (referral.HasBeenUsed)
+                    {
+                        <p>
+                            Skierowanie zostało wykorzystane
+                        </p>
+                    }
+                    else if (referral.HasExpired)
+                    {
+                        <p>Ważność skierowania upłynęła</p>
+                    }
 
-            }
+                    if (i < Model.Visit.ExaminationReferrals.Count - 1)
+                    {
+                        <hr class="mx-0 my-2" style="height:2px; border-width:0;color:gray;background-color:gray;text-align:right; ">
+                    }
+                }
+            </div>
+
+
         </div>
     }
     @if (Model.Visit.Prescription != null)
@@ -201,11 +220,10 @@
                                 <partial name="_Medicine" model="item" />
                                 if (i == Model.Visit.Prescription.IssuedMedicines.Count - 1)
                                 {
-
                                 }
                                 else
                                 {
-                                    <br />
+                                    <hr class="mx-0 my-2" style="height:2px; border-width:0;color:gray;background-color:gray;text-align:right; ">
                                 }
                             }
                         }
@@ -214,4 +232,29 @@
             </div>
         </div>
     }
+    @if (Model.Visit.MedicalTestResult != null)
+    {
+        <div class="d-flex flex-column mx-2">
+            <h5>Wyniki badań</h5>
+            <div class="border border-secondary rounded w-100 flex-grow-0 mb-3  p-3">
+
+                <div class="d-flex flex-fill pt-2 flex-column">
+                    <div>
+                        Badanie: @Model.Visit.MedicalTestResult.MedicalService.Name
+                    </div>
+
+                    <div>
+                        Wykonane: @Model.Visit.MedicalTestResult.ExamDate.ToString("dd-MM-yyyy")
+                    </div>
+                    <a class="btn btn-primary btn-icon-split mt-3" asp-controller="MedicalWorker" asp-action="DownloadTestResults" asp-route-id="@Model.Visit.MedicalTestResult.Id">
+                        <span class="icon text-white-50">
+                            <i class="fas fa-download"></i>
+                        </span>
+                        <span class="text">Wyniki</span>
+                    </a>
+                </div>
+            </div>
+        </div>
+    }
+
 </div>

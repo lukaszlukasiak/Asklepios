@@ -8,7 +8,7 @@
 </h1>
 
 @{
-    List<Visit> plannedVisits = Model.GetCommingVisits(10);
+    List<Visit> plannedVisits = Model.GetCommingVisits();
     if (plannedVisits.Count > 0)
     {
         @for (int i = 0; i < plannedVisits.Count; i++)

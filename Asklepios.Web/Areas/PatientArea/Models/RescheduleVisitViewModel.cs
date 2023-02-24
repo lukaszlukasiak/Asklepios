@@ -108,7 +108,7 @@ namespace Asklepios.Web.Areas.PatientArea.Models
                 }
                 else
                 {
-                    return null;
+                    return new List<Location>();
                 }
             }
         }
@@ -133,7 +133,7 @@ namespace Asklepios.Web.Areas.PatientArea.Models
                 }
                 else
                 {
-                    return null;
+                    return new List<MedicalWorker>();
                 }
             }
         }
@@ -157,7 +157,7 @@ namespace Asklepios.Web.Areas.PatientArea.Models
                 }
                 else
                 {
-                    return null;
+                    return new List<MedicalService>();
                 }
             }
         }
@@ -198,7 +198,7 @@ namespace Asklepios.Web.Areas.PatientArea.Models
                 }
                 else
                 {
-                    return null;
+                    return new List<VisitCategory>();
                 }
             }
         }

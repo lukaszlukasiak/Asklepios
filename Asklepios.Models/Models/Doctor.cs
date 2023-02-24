@@ -5,8 +5,11 @@ namespace Asklepios.Core.Models
     public class Doctor : MedicalWorker
     {
         public override string ProfessionalTitle => "Lekarz";
+        public override bool CanAddMedicalTestResults => true;
+        public override bool CanIssueExamReferral => true;
+        public override bool CanIssuePrescription => true;
 
-        
+
         //public Doctor(Person person, string doctorNumber) :base(person)
         //{
         //    ProfessionalNumber = doctorNumber;

@@ -8,45 +8,25 @@
     Asklepios.Web.Areas.AdministrativeArea.Models.ViewMode removeViewMode = Asklepios.Web.Areas.AdministrativeArea.Models.ViewMode.Remove;
 }
 <div class="d-flex flex-column">
-    @{
 
-        if (!string.IsNullOrWhiteSpace(Model.SuccessMessage))
-        {
-            <div class="messages" id="MessageSpan" style="margin-top: 10px; text-align: center ">
-                <p class="alert alert-success">
-                    @Model.SuccessMessage
-                </p>
-            </div>
-            @*@*<a asp-controller="Administrative" asp-action="PatientItemsAdd"  class="btn btn-outline-secondary btn-icon-split ">
-                <span class="text" style="float: left">Resetuj dane</span>
-            </a>*@
-            }
-
-        if (!string.IsNullOrWhiteSpace(Model.ErrorMessage))
-        {
-            <div class="messages" id="MessageSpan" style="margin-top: 10px; text-align: center ">
-                <p class="alert error">
-                    @Model.ErrorMessage
-                </p>
-            </div>
-            @*@*<a asp-controller="Administrative" asp-action="PatientItemsAdd"  class="btn btn-outline-secondary btn-icon-split ">
-                <span class="text" style="float: left">Resetuj dane</span>
-            </a>*@
-            }
-
-    }
+    <partial name="_Message" model="Model" />
 
     <form class="form my-2" asp-action="PatientItemEdit" method="post" enctype="multipart/form-data">
         <div class="form-group d-flex flex-column">
             @*<span id="MessageSpan" asp-validation-for="User.UserName" class="text-danger"></span>*@
 
-            <label asp-for="CurrentPatient.User.EmailAddress" class="control-label"></label>
-            <input asp-for="CurrentPatient.User.EmailAddress" class="form-control mb-2">
-            <span asp-validation-for="CurrentPatient.User.EmailAddress" class="text-danger"></span>
+            <label asp-for="CurrentPatient.User.Email" class="control-label"></label>
+            <input asp-for="CurrentPatient.User.Email" class="form-control mb-2">
+            <span asp-validation-for="CurrentPatient.User.Email" class="text-danger"></span>
 
-            <label asp-for="CurrentPatient.User.Password" class="control-label"></label>
-            <input asp-for="CurrentPatient.User.Password" class="form-control mb-2">
-            <span asp-validation-for="CurrentPatient.User.Password" class="text-danger"></span>
+            <label  class="control-label">Nazwa użytkownika</label>
+            <input asp-for="CurrentPatient.User.UserName" class="form-control mb-2" readonly>
+            <span class="text-danger"></span>
+
+
+            <label asp-for="CurrentPatient.User.PasswordHash" class="control-label"></label>
+            <input asp-for="CurrentPatient.User.PasswordHash" class="form-control mb-2">
+            <span asp-validation-for="CurrentPatient.User.PasswordHash" class="text-danger"></span>
 
             <label asp-for="CurrentPatient.Person.Name" class="control-label"></label>
             <input asp-for="CurrentPatient.Person.Name" class="form-control mb-2">

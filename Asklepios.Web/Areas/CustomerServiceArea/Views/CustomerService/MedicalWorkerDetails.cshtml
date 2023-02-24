@@ -74,23 +74,19 @@
                 @for (int i = 0; i < Model.MedicalWorker.VisitReviews.Count; i++)
                 {
                     VisitReview review = Model.MedicalWorker.VisitReviews[i];
-                    if (i % 2 == 0)
+@*                    if (i % 2 == 0)
                     {
-                        <div class="d-flex mt-2">
+*@                        <div class="d-flex mt-2">
                             <partial name="_MedicalReview" model="@review" />
                         </div>
-
-                    }
+@*                    }
                     else
                     {
                         <div class="d-flex mt-4">
                             <partial name="_MedicalReview" model="@review" />
                         </div>
-
                     }
-
-
-                }
+*@                }
             </div>
         }
     </div>

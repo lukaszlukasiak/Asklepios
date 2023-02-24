@@ -1,7 +1,10 @@
 ﻿using Asklepios.Core.Models;
+using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Identity;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 
 namespace Asklepios.Data.Interfaces
 {
@@ -16,6 +19,7 @@ namespace Asklepios.Data.Interfaces
         void AddMedicalWorkerObjects(MedicalWorker medicalWorker, string webRootPath);
 
         void AddPatientObjects(Patient patient, string webRootPath);
+        void AddPerson(Person person, string webRootPath);
 
         //List<MedicalServiceDiscount> GetMedicalServiceDiscounts();
         void AddVisitsToSchedule(List<Visit> visitsToAdd);
@@ -95,5 +99,8 @@ namespace Asklepios.Data.Interfaces
         List<Visit> GetFutureVisitsChunk(int currentPageNumId, int itemsPerPage);
         MedicalWorker GetMedicalWorkerDetailsById(long id    );
         IQueryable<Visit> GetFutureVisitsQuery();
+        void RemovePersonById(long personId);
+        void RemoveUserById(long userId);
+        Task<bool> AddIdenitytUserWithRole(User user, UserManager<User> userManager, RoleManager<IdentityRole<long>> roleManager);
     }
 }

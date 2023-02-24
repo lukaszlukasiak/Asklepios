@@ -10,12 +10,14 @@ namespace Asklepios.Web.Areas.HomeArea.Models
 {
     public class LogInViewModel
     {
-        public User User { get; set; }
+        //public User User { get; set; }
+        public string UserName { get; set; }
+        public string Password { get; set; }
         public bool LogInFailed { get; set; }
         public  string LogInFailedAlert = "Nazwa, hasło użytkownika bądź wybrany moduł jest błędny! Spróbuj jeszcze raz!";
         //public string UserName { get; set; }
         //public string Password { get; set; }
-        //public UserType UserType { get; set; }
-        //public WorkerModuleType WorkerModuleType { get; set; }
+        public UserType UserType { get; set; }
+        public WorkerModuleType WorkerModuleType { get; set; }
     }
 }

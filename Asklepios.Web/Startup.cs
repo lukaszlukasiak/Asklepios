@@ -10,7 +10,12 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.AspNetCore.Diagnostics;
 using Microsoft.AspNetCore.Diagnostics.HealthChecks;
+using Microsoft.AspNetCore.Authentication.Cookies;
+
 using System;
+using Asklepios.Core.Models;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Authorization;
 
 namespace Asklepios.Web
 {
@@ -30,14 +35,51 @@ namespace Asklepios.Web
             options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection"), options => options.EnableRetryOnFailure()), ServiceLifetime.Scoped);
 
             //options.UseSqlServer(Configuration.GetConnectionString("AzureAsklepios")),ServiceLifetime.Scoped);
-
             
+            services.AddIdentity<User,IdentityRole>(options => options.SignIn.RequireConfirmedAccount = false)
+                    .AddRoles<IdentityRole<long>>()
+                    .AddSignInManager()
+
+                    .AddEntityFrameworkStores<AsklepiosDbContext>();
+
+            services.AddAuthorization(options =>
+            {
+                options.FallbackPolicy = new AuthorizationPolicyBuilder()
+                    .RequireAuthenticatedUser()
+                    .Build();
+            });
+            services.ConfigureApplicationCookie(options =>
+            {
+                options.AccessDeniedPath = "/HomeArea/Home/Login";
+                options.Cookie.Name = "CiasteczkoAsklepios";
+                options.Cookie.HttpOnly = true;
+                options.ExpireTimeSpan = TimeSpan.FromMinutes(20);
+                options.LoginPath = "/HomeArea/Home/Login";
+                // ReturnUrlParameter requires 
+                //using Microsoft.AspNetCore.Authentication.Cookies;
+                options.ReturnUrlParameter = CookieAuthenticationDefaults.ReturnUrlParameter;
+                options.SlidingExpiration = true;
+            });
+
+            services.Configure<IdentityOptions>(options =>
+            {
+                // Password settings.
+                options.Password.RequireDigit = true;
+                options.Password.RequireLowercase = false;
+                options.Password.RequireNonAlphanumeric = false;
+                options.Password.RequireUppercase = true;
+                options.Password.RequiredLength = 6;
+                options.Password.RequiredUniqueChars = 1;
+            });
+            services.AddDistributedMemoryCache();
+            services.AddSession(options=>options.IdleTimeout=TimeSpan.FromMinutes(20));
             //app.UseHttpsRedirection();
             // services.
             //services.
             //services.AddDatabaseDeveloperPageExceptionFilter();
 
             //services.
+            //services.addm
             services.AddControllersWithViews(options =>
             {
                 options.CacheProfiles.Add("Caching", new CacheProfile()
@@ -51,7 +93,6 @@ namespace Asklepios.Web
                     NoStore = true,
                     Location = ResponseCacheLocation.None
                 });
-
             });
             //services.AddScoped<IHomeModuleRepository, HomeInMemoryContext>();
             //services.AddScoped<IPatientModuleRepository, PatientInMemoryContext>();
@@ -64,7 +105,8 @@ namespace Asklepios.Web
             services.AddScoped<IMedicalWorkerModuleRepository, AsklepiosDbContext>();
             services.AddScoped<ICustomerServiceModuleRepository, AsklepiosDbContext>();
             services.AddScoped<IAdministrationModuleRepository, AsklepiosDbContext>();
-
+           // services.AddScoped(SignInManager<User, long>());
+            //services.AddScoped(<SignInManager<User>>());
             //services.AddDbContext<AsklepiosDbContext>(options =>
             //{
             //    options.UseSqlServer(Configuration["DefaultConnection"],
@@ -102,8 +144,9 @@ namespace Asklepios.Web
             
             app.UseRouting();
 
+            app.UseAuthentication();
             app.UseAuthorization();
-
+            app.UseSession();
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapControllerRoute("areas", "{area:exists}/{controller:exists}/{action=Index}/{id?}");

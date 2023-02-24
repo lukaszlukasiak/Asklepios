@@ -25,7 +25,7 @@
     <select class="form-control  mb-1" asp-for="SelectedVisitCategoryId" asp-items="categoriesList">
 @*        <option value="0">Wybierz kategorię wizyty</option>
 *@    </select>
-    @*<label for="SelectedPassportNumber">Wybierz specjalność</label>*@
+    @*<label for="SelectedPassportNumber">Wybierz typ wizyty</label>*@
     @*@Html.TextBoxFor(m => m.SelectedPrimaryServiceId, new { @class = "form-control mb-2", @readonly = "readonly" })*@
     <select class="form-control mb-1" asp-for="SelectedPrimaryServiceId" asp-items="servicesList">
     </select>
@@ -36,12 +36,25 @@
     <textarea asp-for="RescheduledVisitId" style="visibility:collapse; height:0px">@Model.RescheduledVisitId</textarea>
 
     <div class="d-flex flex-column">
-        <button class=" btn btn-secondary   mb-1">Filtruj!</button>
+        <button class=" btn btn-primary   mb-1">Filtruj!</button>
     </div>
     @*<select asp-for="@Model.SearchOptions.SelectedDoctor" asp-items="@Model.GetMedicalWorkers.ToList()" class="form-control">
             <option>Select Role</option>
         </select>
         @Html.DropDownList("Title", Model.Select(m => new SelectListItem() { Text = m., Value = m.Title }).ToList(), "Select")*@
+</form>
+<form class="form d-flex flex-column mb-2" asp-action="RescheduleVisit" method="post">
+    <textarea asp-for="SelectedPrimaryServiceId" hidden>@Model.SelectedPrimaryServiceId</textarea>
+    <textarea asp-for="SelectedVisitCategoryId" hidden>@Model.SelectedVisitCategoryId</textarea>
+    <textarea asp-for="RescheduledVisitId" style="visibility:collapse; height:0px">@Model.RescheduledVisitId</textarea>
+
+
+    <button type="submit" class="btn btn-secondary btn-icon-split d-flex">
+        <span class="icon text-white-50 left" style="text-align:left;float:left">
+            <i class="fas fa-book"></i>
+        </span>
+        <span class="text" style="float: left">Wyczyść filtr!</span>
+    </button>   
 </form>
 
 

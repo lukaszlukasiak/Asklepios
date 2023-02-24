@@ -376,6 +376,52 @@ namespace Asklepios.Data.InMemoryContexts
             throw new NotImplementedException();
         }
 
+        public MedicalWorker GetMedicalWorkerByUserId(long id)
+        {
+            throw new NotImplementedException();
+        }
+
+        public MedicalTestResult GetMedicalTestResultById(long idL)
+        {
+            throw new NotImplementedException();
+        }
+
+        public List<MedicalReferral> GetMedicalReferralsByPatientId(long id)
+        {
+            throw new NotImplementedException();
+        }
+
+        public List<MedicalTestResult> GetMedicalTestResultsByPatientId(long id)
+        {
+            throw new NotImplementedException();
+        }
+
+        public List<Prescription> GetPrescriptionsByPatientId(long id)
+        {
+            throw new NotImplementedException();
+        }
+
+        public List<Visit> GetHistoricalVisitsByPatientId(long id)
+        {
+            throw new NotImplementedException();
+        }
+
+        public string SaveFile(IFormFile formFile, StorageFolderType type, string basePath)
+        {
+            throw new NotImplementedException();
+        }
+
+        public void RemoveFile(string v)
+        {
+            throw new NotImplementedException();
+        }
+
+        public void RemoveFile(string v, string webRootPath)
+        {
+            throw new NotImplementedException();
+        }
+
+
 
         //public void AddPrescription(Recommendation recommendationToAdd)
         //{

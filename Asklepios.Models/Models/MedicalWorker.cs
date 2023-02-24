@@ -5,6 +5,7 @@ using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Text;
+using System.Text.Json.Serialization;
 
 namespace Asklepios.Core.Models
 {
@@ -56,6 +57,10 @@ namespace Asklepios.Core.Models
         [Display(Name = "Tytuł zawodowy")]
 
         public abstract string ProfessionalTitle { get; }
+        public abstract bool CanIssuePrescription { get; }
+        public abstract bool CanIssueExamReferral{ get; }
+        public abstract bool CanAddMedicalTestResults { get; }
+
         //public abstract string FullProffesionalName { get; }
         public string FullProffesionalName => ProfessionalTitle + " " + Person.Name + " " + Person.Surname;
         [NotMapped]
@@ -168,11 +173,13 @@ namespace Asklepios.Core.Models
             }
         }
         [NotMapped]
+        [JsonIgnore]
         public string RatingDescription
         {
             get
             {
-                if (VisitReviews.Count > 0)
+                
+                if (VisitReviews?.Count > 0)
                 {
                     string ratingV = null;
                     if (VisitReviews.Count==1)
@@ -187,7 +194,7 @@ namespace Asklepios.Core.Models
                     {
                         ratingV = "ocen";
                     }
-                    return AverageRating.ToString() + " (" + VisitReviews.Count + " " + ratingV +")";
+                    return AverageRating.ToString("N2") + " (" + VisitReviews.Count + " " + ratingV +")";
                 }
                 else
                 {
@@ -196,6 +203,7 @@ namespace Asklepios.Core.Models
             }
         }
         [NotMapped]
+        [JsonIgnore]
         public bool IsValid
         {
             get

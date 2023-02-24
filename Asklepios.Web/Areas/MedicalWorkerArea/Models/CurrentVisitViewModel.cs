@@ -1,4 +1,5 @@
-﻿using Asklepios.Core.Models;
+﻿using Asklepios.Core.MockModels;
+using Asklepios.Core.Models;
 using Asklepios.Web.Validators;
 using Microsoft.AspNetCore.Http;
 using System;
@@ -9,17 +10,17 @@ using System.Threading.Tasks;
 
 namespace Asklepios.Web.Areas.MedicalWorkerArea.Models
 {
-    public class CurrentVisitViewModel: IBaseViewModel
+    public class CurrentVisitViewModel : IBaseViewModel
     {
         private long _VisitId;
-        
-        public long VisitId 
-        { 
+
+        public long VisitId
+        {
             get
             {
-                if (_VisitId<=0)
+                if (_VisitId <= 0)
                 {
-                    if (Visit!=null)
+                    if (Visit != null)
                     {
                         return Visit.Id;
                     }
@@ -40,17 +41,27 @@ namespace Asklepios.Web.Areas.MedicalWorkerArea.Models
         }
         public Visit Visit { get; set; }
         //public Visit TempVisit { get; set; }
+        public Patient Patient { get; set; }
         public MedicalWorker MedicalWorker { get; }
+
         public long MedicalWorkerId { get; set; }
         public long PatientId { get; set; }
-        public Patient Patient { get; set; }
-        public long ServiceToAdd { get; set; }
-        public long ServiceToRemove { get; set; }
-        public List<Recommendation> Recommendations { get; set; }
-        public Recommendation RecommendationToAdd { get; set; }
-        public Recommendation RecommendationToRemove { get; set; }
-        public Prescription PrescriptionToAdd { get; set; }
-        public IssuedMedicine IssuedMedicineToAdd { get; set; }
+        public long ServiceToAddId { get; set; }
+        //public long ServiceToRemoveId { get; set; }
+        public int ReferralToRemoveIndex { get; set; }
+
+        public int RecommendationToRemoveIndex { get; set; }
+        public int ServiceToRemoveIndex { get; set; }
+
+        public VisitSummaryModel VisitSummary {get;set;}
+        //public List<Recommendation> Recommendations { get; set; }
+        //public Recommendation RecommendationToAdd { get; set; }
+        //public Recommendation RecommendationToRemove { get; set; }
+        //public Prescription PrescriptionToAdd { get; set; }
+        //public IssuedMedicine IssuedMedicineToAdd { get; set; }
+        //public IssuedMedicine IssuedMedicineToRemove { get; set; }
+        //public List<MedicalService> MinorMedicalServices { get; set; }
+
         //public hist
         //public List<IssuedMedicine>  
         [Required(ErrorMessage = "Proszę wybrać typ badań")]
@@ -67,7 +78,7 @@ namespace Asklepios.Web.Areas.MedicalWorkerArea.Models
         [Required(ErrorMessage = "Proszę wybrać plik z wynikami")]
 
         public IFormFile MedicalTestFile { get; set; }
-        public long MedicalTestFileIdToRemove { get; set; }
+        //public long MedicalTestFileIdToRemove { get; set; }
 
         public long PrescriptionIdToRemove { get; set;  }
         [Display(Name = "Okres ważności recepty (w dniach)")]
@@ -77,44 +88,47 @@ namespace Asklepios.Web.Areas.MedicalWorkerArea.Models
         public int PrescriptionDaysToExpire { get; set; }
 
         public long MedicineIndexToRemove { get; set; }
-        public SubmitMode SubmitMode { get; set; }
-
-        [Display(Name = "Typ skierowania")]
-        //[Required(ErrorMessage = "Proszę wybrać typ usługi")]
-        [RequiredGreaterThanZero("Proszę wybrać typ usługi")]
-
-        public long MedicalServiceToAddId { get; set; }
-        [Display(Name = "Komentarz")]
-        [DataType(DataType.MultilineText)]
-
-        public string MedicalReferralToAddComment { get; set; }
 
         //[Display(Name = "Typ skierowania")]
-        //[Required(ErrorMessage = "Proszę wybrać typ ")]
+        ////[Required(ErrorMessage = "Proszę wybrać typ usługi")]
+        //[RequiredGreaterThanZero("Proszę wybrać typ usługi")]
+
+        //public long ServiceReferralToAddId { get; set; }
+        //[Display(Name = "Komentarz")]
+        //[DataType(DataType.MultilineText)]
+
+        //public string ServiceReferralToAddComment { get; set; }
+
+        ////[Display(Name = "Typ skierowania")]
+        ////[Required(ErrorMessage = "Proszę wybrać typ ")]
         
-        //public MedicalReferral MedicalReferralToAdd { get; set; }
-        [Display(Name = "Okres ważności skierowania (w dniach)")]
-        [Required(ErrorMessage = "Proszę wprowadzić okres ważności skierowania w dniach")]
-        [DataType(DataType.Text)]
-        [Range(7,365, ErrorMessage ="Ważność skierowania musi wynosić między 7 oraz 365 dni")]
-        public int MedicalReferralDaysToExpire { get; set; }
-        public bool IsMedicalReferralAddingOK
-        {
-            get
-            {
-                if (MedicalServiceToAddId>0)
-                {
-                    if (MedicalReferralDaysToExpire>=7 && MedicalReferralDaysToExpire<=365)
-                    {
-                        return true;
-                    }
-                }
-                return false;
-            }
-        }
+        ////public MedicalReferral MedicalReferralToAdd { get; set; }
+        //[Display(Name = "Okres ważności skierowania (w dniach)")]
+        //[Required(ErrorMessage = "Proszę wprowadzić okres ważności skierowania w dniach")]
+        //[DataType(DataType.Text)]
+        //[Range(7,365, ErrorMessage ="Ważność skierowania musi wynosić między 7 oraz 365 dni")]
+        //public int ServiceReferralDaysToExpire { get; set; }
+        //public bool IsMedicalReferralAddingOK
+        //{
+        //    get
+        //    {
+        //        if (ServiceReferralToAddId>0)
+        //        {
+        //            if (ServiceReferralDaysToExpire>=7 && ServiceReferralDaysToExpire<=365)
+        //            {
+        //                return true;
+        //            }
+        //        }
+        //        return false;
+        //    }
+        //}
         //public string MedicalReferralComment { get; set; }
-        public long MedicalReferralIdToRemove { get; set; }
+        public long ReferralIndexToRemove { get; set; }
         public List<MedicalService> MedicalServicesForReferrals { get; set; }
+        public SubmitMode SubmitMode { get; set; }
+        public string UserName { get; set; }
+
+
         public CurrentVisitViewModel(Visit visit)
         {
             Visit = visit;
@@ -138,9 +152,9 @@ namespace Asklepios.Web.Areas.MedicalWorkerArea.Models
                 }
                 if (Visit.PrimaryService?.SubServices?.Count()>0)
                 {
-                    if (Visit.MinorMedicalServices!=null)
+                    if (VisitSummary.MinorMedicalServices!=null)
                     {
-                        var excludedIDs = new List<long>(Visit.MinorMedicalServices.Select(p => p.Id));
+                        var excludedIDs = new List<long>(VisitSummary.MinorMedicalServices.Select(p => p.Id));
                         List<MedicalService> availableServices = Visit.PrimaryService.SubServices.Where(p => !excludedIDs.Contains(p.Id)).ToList();
 
                       //  List<MedicalService> availableServices = Visit.PrimaryService.SubServices.Except(Visit.MinorMedicalServices).ToList();
@@ -157,7 +171,5 @@ namespace Asklepios.Web.Areas.MedicalWorkerArea.Models
                 }
             }
         }
-
-        public string UserName { get; set; }
     }
 }

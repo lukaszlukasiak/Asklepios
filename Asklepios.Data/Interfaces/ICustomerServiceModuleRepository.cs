@@ -45,5 +45,6 @@ namespace Asklepios.Data.Interfaces
         List<MedicalTestResult> GetTestResultsByPatientId(long id);
         MedicalTestResult GetMedicalTestResultById(long idL);
         byte[] GetDocument(string documentPath, string webRootPath);
+        IQueryable<Visit> GetBookedVisitsByPatientIdQuery(long id);
     }
 }

@@ -24,7 +24,7 @@
     <Compile Remove="Areas\PatientArea\Models\PrescriptionsViewModel.cs" />
     <Compile Remove="Areas\PatientArea\Views\Patient\_RateVisit.cshtml.cs" />
     <Compile Remove="Program1.cs" />
-    <Compile Remove="Program6.cs" />
+    <Compile Remove="Program2.cs" />
   </ItemGroup>
 
   <ItemGroup>
@@ -96,17 +96,15 @@
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="Microsoft.AspNetCore.Http.Features" Version="5.0.17" />
-    <PackageReference Include="Microsoft.AspNetCore.Identity" Version="2.2.0" />
+    <PackageReference Include="Microsoft.AspNetCore.Authentication.Cookies" Version="2.2.0" />
     <PackageReference Include="Microsoft.AspNetCore.Identity.EntityFrameworkCore" Version="6.0.13" />
-    <PackageReference Include="Microsoft.AspNetCore.Mvc.Razor.RuntimeCompilation" Version="6.0.8" />
-    <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="6.0.8">
+    <PackageReference Include="Microsoft.AspNetCore.Identity.UI" Version="6.0.13" />
+    <PackageReference Include="Microsoft.AspNetCore.Session" Version="2.2.0" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="6.0.13" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="6.0.13">
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
-    <PackageReference Include="Microsoft.EntityFrameworkCore.InMemory" Version="6.0.8" />
-    <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="6.0.13" />
-    <PackageReference Include="Microsoft.Extensions.Identity.Stores" Version="6.0.13" />
     <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="6.0.11" />
     <PackageReference Include="NETCore.MailKit" Version="2.1.0" />
     <PackageReference Include="Newtonsoft.Json" Version="13.0.1" />
@@ -125,7 +123,7 @@
     <Folder Include="Areas\MedicalWorkerArea\Data\" />
     <Folder Include="Areas\PatientArea\Data\" />
     <Folder Include="Properties\ServiceDependencies\" />
-    <Folder Include="wwwroot\MedicalTestResults\" />
+    <Folder Include="wwwroot\Results\" />
   </ItemGroup>
 
   <ItemGroup>
@@ -159,12 +157,6 @@
     <None Include="wwwroot\fonts\glyphicons-halflings-regular.svg" />
     <None Include="wwwroot\img\Persons\female.svg" />
     <None Include="wwwroot\img\Persons\male.svg" />
-    <None Include="wwwroot\img\unused\undraw_posting_photo.svg" />
-    <None Include="wwwroot\img\unused\undraw_profile.svg" />
-    <None Include="wwwroot\img\unused\undraw_profile_1.svg" />
-    <None Include="wwwroot\img\unused\undraw_profile_2.svg" />
-    <None Include="wwwroot\img\unused\undraw_profile_3.svg" />
-    <None Include="wwwroot\img\unused\undraw_rocket.svg" />
     <None Include="wwwroot\js\bootstrap.bundle.min.js" />
     <None Include="wwwroot\js\bootstrap.min.js" />
     <None Include="wwwroot\js\custom.js" />

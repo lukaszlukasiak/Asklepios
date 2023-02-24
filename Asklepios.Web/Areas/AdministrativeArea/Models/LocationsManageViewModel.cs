@@ -1,5 +1,6 @@
 ﻿using Asklepios.Core.Models;
 using Asklepios.Data.Interfaces;
+using Asklepios.Web.Enums;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
@@ -28,6 +29,9 @@ namespace Asklepios.Web.Areas.AdministrativeArea.Models
         public List<MedicalService> PrimaryServices { get; set; }
         public List<MedicalRoom> UnasignedRooms { get; set; }
         public string UserName { get; set; }
+        public string Message { get; set; }
+        public AlertMessageType AlertMessageType { get; set; }
+
 
         //[Display(Name = "List pokoi możliwych do dodania do listy pokoi danej placówki")]
         ////public List<long> SelectedUnasignedRoomIds { get; set; }

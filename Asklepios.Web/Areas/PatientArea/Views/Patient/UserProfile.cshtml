@@ -11,8 +11,11 @@
 
     <div class="form-group d-flex flex-column">
 
-        <label asp-for="Patient.User.EmailAddress" class="control-label"></label>
-        <input asp-for="Patient.User.EmailAddress" class="form-control mb-2" readonly />
+        <label asp-for="Patient.User.Email" class="control-label"></label>
+        <input asp-for="Patient.User.Email" class="form-control mb-2" readonly />
+
+        <label asp-for="Patient.User.UserName" class="control-label"></label>
+        <input asp-for="Patient.User.UserName" class="form-control mb-2" readonly />
 
         <label asp-for="Patient.Person.Name" class="control-label"></label>
         <input asp-for="Patient.Person.Name" class="form-control mb-2" readonly />

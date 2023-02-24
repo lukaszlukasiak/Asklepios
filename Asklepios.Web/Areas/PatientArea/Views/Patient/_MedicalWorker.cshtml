@@ -45,6 +45,14 @@
                 </a>
                 <form class="form d-flex flex-column mt-2" asp-action="BookVisitConditions" method="post">
                     <!--@Html.TextBoxFor(m => m.SelectedServiceId, new { @class = "form-control " })--> @*, @style = "visibility:hidden;height:0px"*@
+                    <input asp-for="SelectedMedicalWorkerId"  value="@Model.MedicalWorker.Id" hidden/>
+@*                    <input asp-for="SelectedServiceId"  value="@Model.Visit.PrimaryService.Id.ToString()" hidden/>
+                    <input asp-for="SelectedCategoryId"  value="@Model.Visit.VisitCategoryId.ToString()" hidden/>
+*@
+                    <input asp-for="HasPredefinedMedicalWorker"  value="@Model.HasPredefinedMedicalWorker" hidden/>
+@*                    <input asp-for="HasPredefinedService"   value="@Model.HasPredefinedService" hidden/>
+                    <input asp-for="HasPredefinedCategory"   value="@Model.HasPredefinedCategory" hidden/>
+*@
                     <button type="submit" class="btn btn-primary btn-icon-split d-flex">
                         <span class="icon text-white-50 left" style="text-align:left;float:left">
                             <i class="fas fa-book"></i>

@@ -17,6 +17,10 @@ namespace Asklepios.Core.Models
         //    MedicalWorkerType = Enums.MedicalWorkerType.Physiotherapist;
         //    PersonId = person.Id;
         //}
+        public override bool CanAddMedicalTestResults => false;
+        public override bool CanIssueExamReferral => false;
+        public override bool CanIssuePrescription => true;
+
         public Physiotherapist()
         {
 

@@ -1,4 +1,6 @@
-﻿using Asklepios.Core.Models;
+﻿using Asklepios.Core.Enums;
+using Asklepios.Core.Models;
+using Microsoft.AspNetCore.Http;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -20,6 +22,7 @@ namespace Asklepios.Data.Interfaces
         //Patient GetPatientData();
         IQueryable<Visit> GetAvailableVisitsQuery();
         IQueryable<Visit> GetHistoricalVisitsByPatientIdQuery(long id);
+        IQueryable<Visit> GetBookedVisitsByPatientIdQuery(long id);
 
         List<Visit> GetBookedVisitsByPatientId(long id);
 

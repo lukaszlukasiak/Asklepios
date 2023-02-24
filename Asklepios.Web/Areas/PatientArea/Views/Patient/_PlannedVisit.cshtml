@@ -53,31 +53,34 @@
                 </h5>*@
 
         </div>
+        @if (Model.DateTimeSince > DateTimeOffset.Now)
+        {
+       
+            <div class="p-2 pt-3 m-auto flex-grow-1" style="width:400px;">
+                <div class="d-flex flex-column align-content-end justify-content-evenly m-auto">
+                    <a asp-area="PatientArea" asp-controller="Patient" asp-action="RescheduleVisit" asp-route-id="@Model.Id" class="btn btn-primary btn-icon-split">
+                        @*<a class="btn btn-primary btn-icon-split ">*@
+                        <span class="icon text-white-50 left" style="text-align:left;float:left">
+                            @*<i class="fas fa-arrow-circle-right"></i>*@
+                            <i class="fas fa-window-restore"></i>
 
-        <div class="p-2 pt-3 m-auto flex-grow-1" style="width:400px;">
-            <div class="d-flex flex-column align-content-end justify-content-evenly m-auto">
-                <a asp-area="PatientArea" asp-controller="Patient" asp-action="RescheduleVisit" asp-route-id="@Model.Id" class="btn btn-primary btn-icon-split">
-                    @*<a class="btn btn-primary btn-icon-split ">*@
-                    <span class="icon text-white-50 left" style="text-align:left;float:left">
-                        @*<i class="fas fa-arrow-circle-right"></i>*@
-                        <i class="fas fa-window-restore"></i>
+                        </span>
+                        <span class="text" style="float: left">Przełóż wizytę</span>
+                    </a>
+                    @*@Html.TextBoxFor(m => m.medi, new { @class = "form-control mb-2" })*@
+                    @*<form class="form d-flex flex-column" asp-action="BookVisit" method="post">*@
 
-                    </span>
-                    <span class="text" style="float: left">Przełóż wizytę</span>
-                </a>
-                @*@Html.TextBoxFor(m => m.medi, new { @class = "form-control mb-2" })*@
-                @*<form class="form d-flex flex-column" asp-action="BookVisit" method="post">*@
-
-                @*</form>*@
-                <a asp-area="PatientArea" asp-controller="Patient" asp-action="ResignFromVisit" asp-route-id="@Model.Id" class="btn btn-primary btn-icon-split mt-2">
-                    <span class="icon text-white-50 left" style="text-align:left;float:left">
-                        <i class="fas fa-calendar-minus"></i>
-                    </span>
-                    <span class="text" style="float: left">Zrezygnuj z wizyty</span>
-                </a>
-                @*style="align-items: flex-start;display:block; padding-left:50px;"
-                    style="text-align:left; align-content:baseline; align-items:flex-start"*@
+                    @*</form>*@
+                    <a asp-area="PatientArea" asp-controller="Patient" asp-action="ResignFromVisit" asp-route-id="@Model.Id" class="btn btn-primary btn-icon-split mt-2">
+                        <span class="icon text-white-50 left" style="text-align:left;float:left">
+                            <i class="fas fa-calendar-minus"></i>
+                        </span>
+                        <span class="text" style="float: left">Zrezygnuj z wizyty</span>
+                    </a>
+                    @*style="align-items: flex-start;display:block; padding-left:50px;"
+                        style="text-align:left; align-content:baseline; align-items:flex-start"*@
+                </div>
             </div>
-        </div>
+        }
     </div>
 </div>

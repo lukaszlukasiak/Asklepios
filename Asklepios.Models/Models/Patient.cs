@@ -91,56 +91,58 @@ namespace Asklepios.Core.Models
         [Display(Name = "NIP pracodawcy")]
         public string? EmployerNIP { get; set; }
 
+        [NotMapped]
+        public  List<MedicalTestResult> TestsResults { get; set; }
+        //{ 
+        //    //get
+        //    //{
+        //    //    if (HistoricalVisits != null)
+        //    //    {
+        //    //        List<MedicalTestResult> results = HistoricalVisits.Where(c => c.MedicalTestResult != null).Select(c => c.MedicalTestResult).ToList();
+        //    //        return results;
+        //    //    }
+        //    //    else
+        //    //    {
+        //    //        return new List<MedicalTestResult>() ;
+        //    //    }
+        //    //}
+        //}
+        [NotMapped]
+        public List<MedicalReferral> MedicalReferrals { get; set; }
+        //{
+        //    get
+        //    {
+        //        if (HistoricalVisits!=null)
+        //        {
+        //            List<MedicalReferral> referrals = HistoricalVisits.Where(c => c.ExaminationReferrals != null).SelectMany(c => c.ExaminationReferrals).ToList();
+        //            //List<ExaminationReferral> referrals = HistoricalVisits.Where(c => c.VisitSummary?.ExaminationReferrals != null).SelectMany(c => c.VisitSummary.ExaminationReferrals).ToList();
 
-        public virtual List<MedicalTestResult> TestsResults 
-        { 
-            get
-            {
-                if (HistoricalVisits != null)
-                {
-                    List<MedicalTestResult> results = HistoricalVisits.Where(c => c.MedicalTestResult != null).Select(c => c.MedicalTestResult).ToList();
-                    return results;
-                }
-                else
-                {
-                    return new List<MedicalTestResult>() ;
-                }
-            }
-        }
-        public List<MedicalReferral> MedicalReferrals 
-        {
-            get
-            {
-                if (HistoricalVisits!=null)
-                {
-                    List<MedicalReferral> referrals = HistoricalVisits.Where(c => c.ExaminationReferrals != null).SelectMany(c => c.ExaminationReferrals).ToList();
-                    //List<ExaminationReferral> referrals = HistoricalVisits.Where(c => c.VisitSummary?.ExaminationReferrals != null).SelectMany(c => c.VisitSummary.ExaminationReferrals).ToList();
+        //            return referrals;
 
-                    return referrals;
-
-                }
-                else
-                {
-                    return new List<MedicalReferral>();
-                }
-            }
-        }
-        public List<Prescription> Prescriptions 
-        {
-            get
-            {
-                if (HistoricalVisits!=null)
-                {
-                    List<Prescription> prescs = HistoricalVisits.Where(c => c.Prescription != null).Select(c => c.Prescription).ToList();
-                    //List<Prescription> prescs = HistoricalVisits.Where(c => c.VisitSummary?.Prescription != null).Select(c => c.VisitSummary.Prescription).ToList();
-                    return prescs;
-                }
-                else
-                {
-                    return new List<Prescription>();
-                }
-            }          
-        }
+        //        }
+        //        else
+        //        {
+        //            return new List<MedicalReferral>();
+        //        }
+        //    }
+        //}
+        [NotMapped]
+        public List<Prescription> Prescriptions { get; set; }
+        //{
+        //    get
+        //    {
+        //        if (HistoricalVisits!=null)
+        //        {
+        //            List<Prescription> prescs = HistoricalVisits.Where(c => c.Prescription != null).Select(c => c.Prescription).ToList();
+        //            //List<Prescription> prescs = HistoricalVisits.Where(c => c.VisitSummary?.Prescription != null).Select(c => c.VisitSummary.Prescription).ToList();
+        //            return prescs;
+        //        }
+        //        else
+        //        {
+        //            return new List<Prescription>();
+        //        }
+        //    }          
+        //}
         //public List<IssuedMedicine> IssuedMedicines { get; set; }
         [NotMapped]
         public List<Visit>? HistoricalVisits 
@@ -172,6 +174,7 @@ namespace Asklepios.Core.Models
                 }               
             }
         }
+        [NotMapped]
         public List<Visit> AllVisits { get; set; } = new List<Visit>();
         public bool IsValid 
         {
@@ -193,18 +196,17 @@ namespace Asklepios.Core.Models
                 return false;
             }
         }
-        public virtual List<Notification> Notifications 
-        { get; set; }
+        public virtual List<Notification> Notifications         { get; set; }
         public void BookVisit(Visit visit)
         {
-            visit.Patient = this;
+            //visit.Patient = this;
             visit.PatientId = this.Id;
             visit.VisitStatus = VisitStatus.Booked;
             //if (BookedVisits==null)
             //{
             //    BookedVisits = new List<Visit>();
             //}
-            AllVisits.Add(visit);
+            //AllVisits.Add(visit);
         }
 
         //public List<NotificationFilter> Notifications {get;set;}

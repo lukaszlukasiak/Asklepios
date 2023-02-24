@@ -4,9 +4,9 @@
 
         <div class="d-flex p-2   align-content-center align-items-center align-self-center mx-auto" style="width:400px; text-align:center">
             <div class="d-flex flex-fill flex-column justify-content-center" style="text-align:center">
-                <a asp-action="MedicalWorkerDetails" asp-controller="MedicalWorker" asp-route-id="@Model.Visit.MedicalWorker.Id">
+                <a asp-action="MedicalWorkerDetails" asp-controller="MedicalWorker" asp-route-id="@Model.IssuedBy.Id">
                     <h3 style="font-weight:900;">
-                        <a asp-action="MedicalWorkerDetails" asp-controller="MedicalWorker" asp-route-id="@Model.Visit.MedicalWorker.Id">
+                        <a asp-action="MedicalWorkerDetails" asp-controller="MedicalWorker" asp-route-id="@Model.IssuedBy.Id">
 
                             @Model.IssuedBy.FullProffesionalName
                             </a>

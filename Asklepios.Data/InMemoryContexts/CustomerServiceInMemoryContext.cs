@@ -267,5 +267,10 @@ namespace Asklepios.Data.InMemoryContexts
         {
             throw new NotImplementedException();
         }
+
+        public IQueryable<Visit> GetBookedVisitsByPatientIdQuery(long id)
+        {
+            throw new NotImplementedException();
+        }
     }
 }

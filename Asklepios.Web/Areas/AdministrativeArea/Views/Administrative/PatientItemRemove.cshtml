@@ -1,19 +1,21 @@
-﻿@model Asklepios.Web.Areas.AdministrativeArea.Interfaces.IPatientSearch
+﻿@model Asklepios.Web.Areas.AdministrativeArea.Models.PatientDetailsViewModel
 <div style="height:0px">
     <form class="form my-2" asp-action="PatientItemsManage" method="post" >
         <div class="form-group d-flex flex-column">
-            <input asp-for="SelectedAglomeration" type="hidden">
-            <input asp-for="SelectedMedicalPackageId" type="hidden">
-            <input asp-for="SelectedName" type="hidden">
-            <input asp-for="SelectedSurname" type="hidden">
-            <input asp-for="SelectedNFZUnitId" type="hidden">
-            <input asp-for="SelectedPassportNumber" type="hidden">
-            <input asp-for="SelectedPassportCode" type="hidden">
-            <input asp-for="SelectedGender" type="hidden">
-            <input asp-for="HasPolishCitizenship" type="hidden">
-            <input asp-for="ErrorMessage" type="hidden"/>
+            <input asp-for="SelectedAglomeration" type="hidden"/>
+            <input asp-for="SelectedMedicalPackageId" type="hidden"/> 
+            <input asp-for="SelectedName" type="hidden"/> 
+            <input asp-for="SelectedSurname" type="hidden" />
+            <input asp-for="SelectedNFZUnitId" type="hidden" />
+            <input asp-for="SelectedPassportNumber" type="hidden" />
+            <input asp-for="SelectedPassportCode" type="hidden" />
+            <input asp-for="SelectedGender" type="hidden" />
+            <input asp-for="HasPolishCitizenship" type="hidden" />
+            <input asp-for="Message" type="hidden" />
+            <input asp-for="AlertMessageType" type="hidden" />
+@*            <input asp-for="ErrorMessage" type="hidden"/>
             <input asp-for="SuccessMessage" type="hidden"/>
-
+*@
             <button id="btnSubmit" type="submit" class="btn btn-primary w-100 mt-2"></button>
         </div>
     </form>

@@ -74,14 +74,14 @@
     @if (servicesList==null)
     {
         <select class="form-control  mb-1" asp-for="SelectedServiceId" >
-            <option value="0">Wybierz specjalność</option>
+            <option value="0">Wybierz typ wizyty</option>
         </select>
 
     }
     else
     {
         <select class="form-control  mb-1" asp-for="SelectedServiceId" asp-items="servicesList">
-            <option value="0">Wybierz specjalność</option>
+            <option value="0">Wybierz typ wizyty</option>
         </select>
 
     }
