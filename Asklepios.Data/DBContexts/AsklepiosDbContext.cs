@@ -27,14 +27,14 @@ namespace Asklepios.Data.DBContexts
         {
 
             //  UserManager<User> userManager = new UserManager<User>();
-            string lol = Environment.GetEnvironmentVariable("WEBSITE_SITE_NAME");
+           // string lol = Environment.GetEnvironmentVariable("WEBSITE_SITE_NAME");
 
         }
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
             optionsBuilder.UseSqlServer();
 
-            optionsBuilder.EnableSensitiveDataLogging();
+            //optionsBuilder.EnableSensitiveDataLogging();
 
             // optionsBuilder.LogTo(Console.WriteLine);
             //optionsBuilder.UseSqlServer(options=>options.ExecutionStrategy)
