@@ -129,6 +129,12 @@ namespace Asklepios.Web.Areas.HomeArea.Controllers
                 {
                     return RedirectToAction("Index", "Patient", new { area = "PatientArea" });
                 }
+                else
+                {
+                    model.LogInFailed = true;
+                    return View("LogIn", model);
+                }
+
             }
             else
             {
@@ -185,6 +191,11 @@ namespace Asklepios.Web.Areas.HomeArea.Controllers
                         default:
                             break;
                     }
+                }
+                else
+                {
+                    model.LogInFailed = true;
+                    return View("LogIn", model);
                 }
             }               
             else
