@@ -129,7 +129,7 @@ namespace Asklepios.Web.Areas.AdministrativeArea.Models
             {
                 if (!string.IsNullOrWhiteSpace(SelectedName))
                 {
-                    filteredPatients = filteredPatients.Where(c => c.Person.Name.Contains(SelectedName)).AsQueryable();
+                    filteredPatients = filteredPatients.Where(c => c.Person.Name.Contains(SelectedName,StringComparison.OrdinalIgnoreCase)).AsQueryable();
                     if (filteredPatients == null)
                     {
                         return null;
@@ -138,7 +138,7 @@ namespace Asklepios.Web.Areas.AdministrativeArea.Models
             }
             if (!string.IsNullOrWhiteSpace(SelectedSurname))
             {
-                filteredPatients = filteredPatients.Where(c => c.Person.Surname.Contains(SelectedSurname)).AsQueryable();
+                filteredPatients = filteredPatients.Where(c => c.Person.Surname.Contains(SelectedSurname, StringComparison.OrdinalIgnoreCase)).AsQueryable();
                 if (filteredPatients == null)
                 {
                     return null;
@@ -154,7 +154,7 @@ namespace Asklepios.Web.Areas.AdministrativeArea.Models
             }
             if (!string.IsNullOrWhiteSpace(SelectedPassportNumber))
             {
-                filteredPatients = filteredPatients.Where(c => c.Person.Surname.Contains(SelectedPassportNumber)).AsQueryable();
+                filteredPatients = filteredPatients.Where(c => c.Person.Surname.Contains(SelectedPassportNumber, StringComparison.OrdinalIgnoreCase)).AsQueryable();
                 if (filteredPatients == null)
                 {
                     return null;
@@ -204,6 +204,15 @@ namespace Asklepios.Web.Areas.AdministrativeArea.Models
                     return null;
                 }
             }
+            if (SelectedAglomeration.HasValue)
+            {
+                filteredPatients = filteredPatients.Where(c => c.Person.DefaultAglomeration == SelectedAglomeration).AsQueryable();
+                if (filteredPatients == null)
+                {
+                    return null;
+                }
+            }
+
             //if (VisitsDateFrom.HasValue)
             //{
             //    filteredPatients = filteredPatients.Where(c => c.DateTimeSince >= VisitsDateFrom).ToList();
