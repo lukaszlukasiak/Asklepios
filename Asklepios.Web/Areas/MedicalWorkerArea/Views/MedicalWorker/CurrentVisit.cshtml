@@ -10,7 +10,7 @@
 
     <div class="d-flex mb-3 flex-wrap align-self-top align-items-top">
 
-        <div class="p-2   align-content-center align-items-center align-self-top  mx-auto " style="min-width: 400px; text-align: center">
+        <div class="p-2 align-content-center align-items-center align-self-top  mx-auto " style="min-width: 400px; text-align: center">
             <div class="d-flex flex-fill flex-column justify-content-center" style="text-align:center">
                 <h3 style="font-weight:900;">
                     <a asp-action="MedicalWorkerDetails" asp-controller="MedicalWorker" asp-route-id="@Model.Visit.MedicalWorkerId">
@@ -335,20 +335,14 @@
                             <option value="-1">Wybierz usługę</option>
                         </select>
                         <span asp-validation-for="VisitSummary.ReferralMockToAdd.PrimaryMedicalServiceId" class="text-danger"></span>
-                        @*</div>
-                            <div class="form-group">*@
 
                         <label asp-for="VisitSummary.ReferralMockToAdd.ServiceReferralDaysToExpire" class="control-label"></label>
                         <input type="number" class="form-control  mb-2" asp-for="VisitSummary.ReferralMockToAdd.ServiceReferralDaysToExpire" value="14" />
                         <span asp-validation-for="VisitSummary.ReferralMockToAdd.ServiceReferralDaysToExpire" class="text-danger"></span>
-                        @*</div>
-                            <div class="form-group">*@
 
                         <label asp-for="VisitSummary.ReferralMockToAdd.Comment" class="control-label"></label>
                         <input type="text" class="form-control  mb-2" asp-for="VisitSummary.ReferralMockToAdd.Comment" />
                         <span asp-validation-for="VisitSummary.ReferralMockToAdd.Comment" class="text-danger"></span>
-
-                        @*</div>*@
 
                         <button type="submit" class="btn btn-primary btn-icon-split mt-3   form-control" data-toggle="tooltip" data-placement="top" title="Tooltip on top">
                             <span class="icon text-white left" style="text-align:left;float:left">

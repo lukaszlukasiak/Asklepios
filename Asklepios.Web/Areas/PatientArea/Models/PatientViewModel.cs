@@ -66,7 +66,9 @@ namespace Asklepios.Web.Areas.PatientArea.Models
             //{
             //    return null;
             //}
-            List<Visit> visits = Visits.Where(c=>c.DateTimeSince.Date>=DateTime.Now.Date && c.VisitStatus==Core.Enums.VisitStatus.Booked).OrderBy(c=>c.DateTimeSince).ToList();
+            List<Visit> visits = Visits
+                .Where(c=>c.DateTimeSince.Date>=DateTime.Now.Date)
+                .OrderBy(c=>c.DateTimeSince).ToList();
 
             if (visits.Count>0)
             {
@@ -94,7 +96,9 @@ namespace Asklepios.Web.Areas.PatientArea.Models
             {
                 return null;
             }
-            List<MedicalTestResult> medicalTestResults = MedicalTestResults.OrderBy(c => c.ExamDate).ToList();
+            List<MedicalTestResult> medicalTestResults = MedicalTestResults
+                .OrderBy(c => c.ExamDate)
+                .ToList();
             return medicalTestResults;
         }
 
@@ -131,7 +135,9 @@ namespace Asklepios.Web.Areas.PatientArea.Models
                 //}
                 //    }
                 //}
-                validReferrals = MedicalReferrals.OrderBy(c => c.IssueDate).ToList();
+                validReferrals = MedicalReferrals
+                    .OrderBy(c => c.IssueDate)
+                    .ToList();
                 return validReferrals;
 
             }
@@ -149,7 +155,10 @@ namespace Asklepios.Web.Areas.PatientArea.Models
             {
                 return null;
             }
-            List<Visit> visits = Visits.Where(c => c.VisitStatus == Core.Enums.VisitStatus.Finished).OrderByDescending(c => c.DateTimeSince).ToList(); //Patient.HistoricalVisits.OrderByDescending(c => c.DateTimeSince).ToList();
+            List<Visit> visits = Visits
+                //Where(c => c.VisitStatus == Core.Enums.VisitStatus.Finished)
+                .OrderByDescending(c => c.DateTimeSince)
+                .ToList(); //Patient.HistoricalVisits.OrderByDescending(c => c.DateTimeSince).ToList();
             if (visits.Count > 0)
             {
                 if (numberOfVisits > visits.Count)

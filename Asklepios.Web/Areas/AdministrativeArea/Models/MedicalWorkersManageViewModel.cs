@@ -56,7 +56,7 @@ namespace Asklepios.Web.Areas.AdministrativeArea.Models
             {
                 if (!string.IsNullOrWhiteSpace(SearchOptions.SelectedName))
                 {
-                    filteredWorkers = filteredWorkers.Where(c => c.Person.Name.Contains(SearchOptions.SelectedName)).ToList();
+                    filteredWorkers = filteredWorkers.Where(c => c.Person.Name.Contains(SearchOptions.SelectedName, StringComparison.OrdinalIgnoreCase)).ToList();
                     if (filteredWorkers == null)
                     {
                         return null;
@@ -65,12 +65,13 @@ namespace Asklepios.Web.Areas.AdministrativeArea.Models
             }
             if (!string.IsNullOrWhiteSpace(SearchOptions.SelectedSurname))
             {
-                filteredWorkers = filteredWorkers.Where(c => c.Person.Surname.Contains(SearchOptions.SelectedSurname)).ToList();
+                filteredWorkers = filteredWorkers.Where(c => c.Person.Surname.Contains(SearchOptions.SelectedSurname,StringComparison.OrdinalIgnoreCase)).ToList();
                 if (filteredWorkers == null)
                 {
                     return null;
                 }
             }
+
             if (!string.IsNullOrWhiteSpace(SearchOptions.SelectedPESEL))
             {
                 filteredWorkers = filteredWorkers.Where(c => c.Person.PESEL.Contains(SearchOptions.SelectedPESEL)).ToList();
@@ -81,7 +82,7 @@ namespace Asklepios.Web.Areas.AdministrativeArea.Models
             }
             if (!string.IsNullOrWhiteSpace(SearchOptions.SelectedPassportNumber))
             {
-                filteredWorkers = filteredWorkers.Where(c => c.Person.Surname.Contains(SearchOptions.SelectedPassportNumber)).ToList();
+                filteredWorkers = filteredWorkers.Where(c => c.Person.Surname.Contains(SearchOptions.SelectedPassportNumber, StringComparison.OrdinalIgnoreCase)).ToList();
                 if (filteredWorkers == null)
                 {
                     return null;
@@ -120,6 +121,14 @@ namespace Asklepios.Web.Areas.AdministrativeArea.Models
             if (SearchOptions.SelectedWorkerType.HasValue)
             {
                 filteredWorkers = filteredWorkers.Where(c => c.MedicalWorkerType == SearchOptions.SelectedWorkerType).ToList();
+                if (filteredWorkers == null)
+                {
+                    return null;
+                }
+            }
+            if (SearchOptions.SelectedAglomeration.HasValue)
+            {
+                filteredWorkers = filteredWorkers.Where(c => c.Person.DefaultAglomeration == SearchOptions.SelectedAglomeration).ToList();
                 if (filteredWorkers == null)
                 {
                     return null;

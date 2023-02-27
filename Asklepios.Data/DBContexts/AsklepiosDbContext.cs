@@ -880,18 +880,19 @@ namespace Asklepios.Data.DBContexts
             IQueryable<Visit> visits = Visits
                 .Where(c => c.PatientId == id)
                 .Where(d => d.VisitStatus == VisitStatus.Finished)
-                .Include(k => k.ExaminationReferrals)
+                
+                //.Include(k => k.ExaminationReferrals)
                 .Include(b => b.Location)
                 .Include(g => g.MedicalWorker)
                     .ThenInclude(h => h.Person)
-                .Include(s => s.MinorMedicalServices)
+                //.Include(s => s.MinorMedicalServices)
 
                 .Include(d => d.Patient)
                     .ThenInclude(e => e.Person)
-                .Include(p => p.Prescription)
+                //.Include(p => p.Prescription)
                 .Include(c => c.PrimaryService)
-                .Include(w => w.Recommendations)
-                .Include(m => m.VisitReview)
+                //.Include(w => w.Recommendations)
+                //.Include(m => m.VisitReview)
                 .Include(a => a.VisitCategory)
                 .AsQueryable();
             return visits;
