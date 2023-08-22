@@ -18,7 +18,7 @@ using System.Configuration;
 var builder = WebApplication.CreateBuilder(args);
 //DefaultConnection
 //AzureAsklepios
-string connString = builder.Configuration.GetConnectionString("AzureAsklepios");
+string connString = builder.Configuration.GetConnectionString("DefaultConnection");
 
 // Add services to the container.
 

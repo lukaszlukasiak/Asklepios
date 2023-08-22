@@ -54,6 +54,7 @@
         //Model.MedicalWorker.Education = new List<string>();
 
     }
+        <h2 style="text-align:center; margin-bottom:20px">Edytuj dane pracownika medycznego</h2>
 
     <form class="form mt-4" asp-action="MedicalWorkerItemEdit" method="post" enctype="multipart/form-data">
         <div class="form-group d-flex flex-column">
@@ -168,7 +169,7 @@
 
             @*<button id="btnSubmit" type="submit" class="btn btn-primary w-100 mt-2">Zaktualizuj</button>*@
             <div class="form-group d-flex flex-column">
-                <button id="btnSubmit" type="submit" class="btn btn-primary btn-icon-split d-flex">
+                <button id="btnSubmit" type="submit" class="btn btn-primary btn-icon-split d-flex mt-3">
                     <span class="icon text-white-50 left" style="text-align:left;float:left">
                         <i class="fas fa-pen-square"></i>
                     </span>
@@ -192,7 +193,7 @@
             <input asp-for="SearchOptions.SelectedWorkerType" hidden />
         </div>
         <div class="form-group d-flex flex-column">
-            <button type="submit" class="btn btn-primary btn-icon-split d-flex">
+            <button type="submit" class="btn btn-primary btn-icon-split d-flex mt-3">
                 <span class="icon text-white-50 left" style="text-align:left;float:left">
                     <i class="fas fa-backward"></i>
                 </span>

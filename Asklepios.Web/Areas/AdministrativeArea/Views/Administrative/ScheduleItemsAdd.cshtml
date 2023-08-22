@@ -41,6 +41,8 @@
         }*@
 @*    }
 *@
+<h2 style="text-align:center; margin-bottom:20px">Dodaj serię wizyt</h2>
+
     <form class="form mt-2" asp-action="ScheduleItemsAdd" method="post">
         <div class="form-group d-flex flex-column">
             <label asp-for="SelectedLocationId" class="control-label"></label>
@@ -94,7 +96,7 @@
             <input asp-for="Guard" class="form-control mb-2" type="hidden">
             @*<button id="btnSubmitAlt" type="submit" style="width:none;height:0px" ;>Dodaj</button>*@
             <div class="form-group d-flex flex-column mt-2">
-                <button id="btnAdd" type="submit" class="btn btn-primary btn-icon-split d-flex" onmousedown="RemoveGuard()" onkeydown="RemoveGuard()">
+                <button id="btnAdd" type="submit" class="btn btn-primary btn-icon-split d-flex mt-3" onmousedown="RemoveGuard()" onkeydown="RemoveGuard()">
                     <span class="icon text-white-50 left" style="text-align:left;float:left">
                         <i class="fas fa-plus"></i>
                     </span>
@@ -113,7 +115,7 @@
     <form class="form " asp-action="ScheduleItemsAdd" method="get">
 
         <div class="form-group d-flex flex-column">
-            <button id="btnAdd" type="submit" class="btn btn-primary btn-icon-split d-flex" )">
+            <button id="btnAdd" type="submit" class="btn btn-primary btn-icon-split d-flex mt-3" )">
                 <span class="icon text-white-50 left" style="text-align:left;float:left">
                     <i class="fas fa-chalkboard"></i>
                 </span>

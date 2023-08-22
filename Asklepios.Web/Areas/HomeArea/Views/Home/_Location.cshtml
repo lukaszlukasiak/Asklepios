@@ -1,12 +1,12 @@
 ﻿@model Asklepios.Core.Models.Location
 <div class="jumbotron" style="padding:20px">
     @*<div class="container">*@
-    <div class="row " >
+    <div class="row ">
         <h2 style="text-align:center;vertical-align:top;margin-top:0px">@Model.Name</h2>
 
     </div>
     <div class="row equal">
-        <div class="col-lg-6" >
+        <div class="col-lg-6">
             <div class="row-item" style="margin-top:10px">
                 @*<div class="col justify-content-center">*@
                 <img alt="@Model.Name" src="@Model.ImagePath" class="center-block rounded" style="display: block;
@@ -14,7 +14,7 @@
             </div>
         </div>
         @*</div>*@
-        <div class="col-lg-6" >
+        <div class="col-lg-6">
             <h3 style="padding: 0px">
                 @Model.Description
             </h3>
@@ -25,53 +25,78 @@
                 <div class="col-sm-4" style="padding: 0px;margin-top:0px;">
                     <h3>Adres</h3>
                     <p style="margin:0px; padding:0px">
-                        @Model.City, @Model.PostalCode </p>
+                        @Model.City, @Model.PostalCode
+                    </p>
 
-                <p style="margin:0px; padding:0px">
-                    @Model.StreetAndNumber
-                </p>                        
-                <p style="margin:0px; padding:0px">
-                    @Model.Aglomeration
+                    <p style="margin:0px; padding:0px">
+                        @Model.StreetAndNumber
+                    </p>
+                    <p style="margin:0px; padding:0px">
+                        @Model.Aglomeration
                     </p>
                     <h3>Telefon</h3>
                     <p style="margin:0px; padding:0px">
-@Model.PhoneNumber</p>
+                        @Model.PhoneNumber
+                    </p>
 
 
-@*                    </p>
-*@                    </div>
-                    <div class="col-sm-8" style="margin:0px;padding:0px;">
-                        <h3>Usługi</h3>
-                        <p>
-                            @{
+                    @*                    </p>
+                    *@
+                </div>
+                <div class="col-sm-8" style="margin:0px;padding:0px;">
+                    <h3>Usługi</h3>
+                    <p>
+                        @{
 
 
-                                int count = Model.Services.Count();
-                                string val = "";
+                            int count = Model.Services.Count();
+                            string val = "";
 
-                                for (int i = 0; i < count; i++)
+                            for (int i = 0; i < count; i++)
+                            {
+
+                                if (i + 1 < count)
                                 {
 
-                                    if (i + 1 < count)
-                                    {
-
-                                        val = Model.Services.ElementAt(i).Name + ", ";
-                                    }
-                                    else
-                                    {
-                                        val = @Model.Services.ElementAt(i).Name;
-                                    }
-
-                                    @val
+                                    val = Model.Services.ElementAt(i).Name + ", ";
+                                }
+                                else
+                                {
+                                    val = @Model.Services.ElementAt(i).Name;
                                 }
 
+                                @val
                             }
-                        </p>
-                    </div>
 
+                        }
+                    </p>
                 </div>
 
-
             </div>
+
+
         </div>
     </div>
+        <div id="map">
+
+
+        </div>
+
+</div>
+<script>
+    function initMap() {
+  const mapOptions = {
+    zoom: 8,
+    center: { lat: -34.397, lng: 150.644 },
+  };
+
+  map = new google.maps.Map(document.getElementById("map"), mapOptions);
+
+  const marker = new google.maps.Marker({
+    // The below line is equivalent to writing:
+    // position: new google.maps.LatLng(-34.397, 150.644)
+    position: { lat: -34.397, lng: 150.644 },
+    map: map,
+  });
+}
+</script>

@@ -24,6 +24,5 @@ namespace Asklepios.Web.Extensions
                 }                              
             }
         }
-
     }
 }

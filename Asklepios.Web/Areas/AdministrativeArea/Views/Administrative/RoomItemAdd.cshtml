@@ -24,6 +24,7 @@
     }
 }
 
+    <h2 style="text-align:center; margin-bottom:20px">Dodaj gabinet medyczny</h2>
 
 <form class="form my-2" asp-action="RoomItemAdd" method="post" enctype="multipart/form-data">
     <div class="form-group d-flex flex-column">
@@ -50,7 +51,7 @@
         <span asp-validation-for="NewRoom.LocationId" class="text-danger"></span>
 
         <div class="form-group d-flex flex-column mt-2">
-            <button id="btnAdd" type="submit" class="btn btn-primary btn-icon-split d-flex">
+            <button id="btnAdd" type="submit" class="btn btn-primary btn-icon-split d-flex mt-3">
                 <span class="icon text-white-50 left" style="text-align:left;float:left">
                     <i class="fas fa-plus-square"></i>
                 </span>

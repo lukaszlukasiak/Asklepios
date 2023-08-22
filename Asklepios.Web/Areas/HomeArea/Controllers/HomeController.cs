@@ -1,5 +1,6 @@
 ﻿using Asklepios.Core.Models;
 using Asklepios.Data.DBContexts;
+using Asklepios.Data.InMemoryContexts;
 using Asklepios.Data.Interfaces;
 using Asklepios.Web.Areas.HomeArea.Models;
 using Asklepios.Web.Models;
@@ -30,11 +31,12 @@ namespace Asklepios.Web.Areas.HomeArea.Controllers
         IPasswordHasher<User> _passwordHasher { get; set; }
         UserManager<User> _userManager { get; set; }
         RoleManager<IdentityRole<long>> _roleManager { get; set; }
+
         public HomeController(IHomeModuleRepository context, SignInManager<User> signManager, UserManager<User> usrMgr, IPasswordHasher<User> passwordHash, RoleManager<IdentityRole<long>> roleMgr)
         {
 
-                //SeedIdentity();
-
+            //SeedIdentity();
+            //PatientMockDB.SetData();
             _userManager = usrMgr;
             _passwordHasher = passwordHash;
             _signManager = signManager;
@@ -101,6 +103,7 @@ namespace Asklepios.Web.Areas.HomeArea.Controllers
         public async Task<IActionResult> LogInPatient(LogInViewModel model)
         {
             User user = _context.CheckUserNameAndRole(model.UserName, Core.Enums.WorkerModuleType.CustomerServiceModule, Core.Enums.UserType.Patient);
+            model.UserType = Core.Enums.UserType.Patient;
 
             if (user != null)
             {
@@ -220,8 +223,6 @@ namespace Asklepios.Web.Areas.HomeArea.Controllers
             bool isSent = ServiceClasses.MailServices.CreateAndSendMail(model);
             if (isSent)
             {
-                //ViewBag.Message = "Wiadomość została wysłana!";
-                //return RedirectToAction("Index");
                 model = new ContactMessageViewModel();
                 model.AlertMessage = "Wiadomość została wysłana!";
                 model.AlertMessageType = Enums.AlertMessageType.InfoMessage;

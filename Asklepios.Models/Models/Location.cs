@@ -76,6 +76,18 @@ namespace Asklepios.Core.Models
         [NotMapped]
         public List<long> MedicalServiceIds { get; set; }
         public List<MedicalService> Services { get; set; }
+
+        [Required(ErrorMessage = "Proszę szerokość geograficzną placówki!")]
+        [Display(Name = "Szerokość geograficzna")]
+        public string Latitude { get; set; }
+        [Required(ErrorMessage = "Proszę długość geograficzną placówki!")]
+        [Display( Name ="Długość geograficzna")]
+        public string Longtitude { get; set; }
+
+
+
+
+
         [Display(Name = "Lista pokoi")]
         [Required(ErrorMessage = "Wybierz pokoje")]
         [NotMapped]

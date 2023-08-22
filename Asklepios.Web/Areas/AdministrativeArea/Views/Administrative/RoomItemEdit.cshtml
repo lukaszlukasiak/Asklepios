@@ -10,73 +10,77 @@
         editMode = Html.GetEnumSelectListWithOneValue(Asklepios.Web.Areas.AdministrativeArea.Models.ViewMode.Edit).ToList();
 
 }
-<h2 style="text-align:center">Pokój</h2>
-@{
+<div class="d-flex flex-column">
+    <partial name="_Message" model="Model" />
 
-    if (TempData.ContainsKey(AlertMessageType.SuccessMessage.GetDescription()))
+    <h2 style="text-align:center; margin-bottom:20px">Edytuj dane gabinetu</h2>
+    @{
 
-    {
-        <div class="messages" id="MessageSpan" style="margin-top: 10px; text-align: center ">
-            <p class="alert alert-success">
-                @*@Model.SuccessMessage*@
-                @TempData[AlertMessageType.SuccessMessage.GetDescription()].ToString()
-            </p>
-        </div>
+        if (TempData.ContainsKey(AlertMessageType.SuccessMessage.GetDescription()))
 
+        {
+            <div class="messages" id="MessageSpan" style="margin-top: 10px; text-align: center ">
+                <p class="alert alert-success">
+                    @*@Model.SuccessMessage*@
+                    @TempData[AlertMessageType.SuccessMessage.GetDescription()].ToString()
+                </p>
+            </div>
+
+        }
+        //if (!string.IsNullOrWhiteSpace(Model.ErrorMessage))
+        if (TempData.ContainsKey(AlertMessageType.ErrorMessage.GetDescription()))
+        {
+            <div class="messages" id="MessageSpan" style="margin-top: 10px; text-align: center ">
+                <p class="alert alert-success">
+                    @*@Model.ErrorMessage*@
+                    @TempData[AlertMessageType.ErrorMessage.GetDescription()].ToString()
+
+                </p>
+            </div>
+
+        }
     }
-    //if (!string.IsNullOrWhiteSpace(Model.ErrorMessage))
-    if (TempData.ContainsKey(AlertMessageType.ErrorMessage.GetDescription()))
-    {
-        <div class="messages" id="MessageSpan" style="margin-top: 10px; text-align: center ">
-            <p class="alert alert-success">
-                @*@Model.ErrorMessage*@
-                @TempData[AlertMessageType.ErrorMessage.GetDescription()].ToString()
 
-            </p>
+    <form class="form my-2" asp-action="RoomItemEdit" method="post" enctype="multipart/form-data">
+        <div class="form-group d-flex flex-column">
+            @*<span id="MessageSpan" asp-validation-for="User.UserName" class="text-danger"></span>*@
+
+            <label asp-for="SelectedRoom.Name" class="control-label"></label>
+            <input asp-for="SelectedRoom.Name" class="form-control mb-2">
+            <span asp-validation-for="SelectedRoom.Name" class="text-danger"></span>
+
+            <label asp-for="SelectedRoom.FloorNumber" class="control-label"></label>
+            <input asp-for="SelectedRoom.FloorNumber" class="form-control mb-2">
+            <span asp-validation-for="SelectedRoom.FloorNumber" class="text-danger"></span>
+
+
+            <label asp-for="SelectedRoom.MedicalRoomType" class="control-label"></label>
+            <select class="form-control  mb-2" asp-for="SelectedRoom.MedicalRoomType" asp-items="Html.GetEnumSelectList<Asklepios.Core.Enums.MedicalRoomType>()">
+                <option value="">Wybierz domyślną aglomerację</option>
+            </select>
+            <span asp-validation-for="SelectedRoom.MedicalRoomType" class="text-danger"></span>
+
+            <label asp-for="SelectedRoom.LocationId" class="control-label"></label>
+            <select class="form-control  mb-2" asp-for="SelectedRoom.LocationId" asp-items="locations">
+                <option value="-1">Wybierz placówkę</option>
+            </select>
+            <span asp-validation-for="SelectedRoom.LocationId" class="text-danger"></span>
+
+            <select asp-for="ViewMode" asp-items="editMode" hidden></select>
+            <input asp-for="SelectedRoom.Id" hidden></input>
+
+            <div class="form-group d-flex flex-column mt-2">
+                <button id="btnAdd" type="submit" class="btn btn-primary btn-icon-split d-flex mt-3">
+                    <span class="icon text-white-50 left" style="text-align:left;float:left">
+                        <i class="fas fa-pen-square"></i>
+                    </span>
+                    <span class="text" style="float: left">Aktualizuj</span>
+                </button>
+            </div>
+
         </div>
-
-    }
-}
-
-<form class="form my-2" asp-action="RoomItemEdit" method="post" enctype="multipart/form-data">
-    <div class="form-group d-flex flex-column">
-        @*<span id="MessageSpan" asp-validation-for="User.UserName" class="text-danger"></span>*@
-
-        <label asp-for="SelectedRoom.Name" class="control-label"></label>
-        <input asp-for="SelectedRoom.Name" class="form-control mb-2">
-        <span asp-validation-for="SelectedRoom.Name" class="text-danger"></span>
-
-        <label asp-for="SelectedRoom.FloorNumber" class="control-label"></label>
-        <input asp-for="SelectedRoom.FloorNumber" class="form-control mb-2">
-        <span asp-validation-for="SelectedRoom.FloorNumber" class="text-danger"></span>
-
-
-        <label asp-for="SelectedRoom.MedicalRoomType" class="control-label"></label>
-        <select class="form-control  mb-2" asp-for="SelectedRoom.MedicalRoomType" asp-items="Html.GetEnumSelectList<Asklepios.Core.Enums.MedicalRoomType>()">
-            <option value="">Wybierz domyślną aglomerację</option>
-        </select>
-        <span asp-validation-for="SelectedRoom.MedicalRoomType" class="text-danger"></span>
-
-        <label asp-for="SelectedRoom.LocationId" class="control-label"></label>
-        <select class="form-control  mb-2" asp-for="SelectedRoom.LocationId" asp-items="locations">
-            <option value="-1">Wybierz placówkę</option>
-        </select>
-        <span asp-validation-for="SelectedRoom.LocationId" class="text-danger"></span>
-
-        <select asp-for="ViewMode" asp-items="editMode" hidden></select>
-        <input asp-for="SelectedRoom.Id" hidden ></input>
-
-        <div class="form-group d-flex flex-column mt-2">
-            <button id="btnAdd" type="submit" class="btn btn-primary btn-icon-split d-flex">
-                <span class="icon text-white-50 left" style="text-align:left;float:left">
-                    <i class="fas fa-pen-square"></i>
-                </span>
-                <span class="text" style="float: left">Aktualizuj</span>
-            </button>
-        </div>
-
-    </div>
-</form>
+    </form>
+</div>
 <script>
     $('#MessageSpan').delay(5000).fadeOut(300);
 </script>

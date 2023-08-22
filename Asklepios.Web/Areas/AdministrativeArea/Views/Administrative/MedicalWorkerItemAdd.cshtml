@@ -38,7 +38,8 @@
         //Model.MedicalWorker.Education = new List<string>();
 
     }
-        <partial name="_Message" model="Model" />
+    <partial name="_Message" model="Model" />
+    <h2 style="text-align:center; margin-bottom:20px">Dodaj pracownika medycznego</h2>
 
     <form class="form mt-2" asp-action="MedicalWorkerItemAdd" method="post" enctype="multipart/form-data">
         <div class="form-group d-flex flex-column">
@@ -143,7 +144,7 @@
 
             @*@Html.EditorFor(model => model.MedicalWorker.Education, new { @class = "form-control mb-2" })*@
             <div class="form-group d-flex flex-column mt-2">
-                <button id="btnSubmit" type="submit" class="btn btn-primary btn-icon-split d-flex">
+                <button id="btnSubmit" type="submit" class="btn btn-primary btn-icon-split d-flex mt-3">
                     <span class="icon text-white-50 left" style="text-align:left;float:left">
                         <i class="fas fa-plus-square"></i>
                     </span>
@@ -158,7 +159,7 @@
     <form class="form " asp-action="MedicalWorkerItemAdd" method="get">
 
         <div class="form-group d-flex flex-column">
-            <button id="btnAdd" type="submit" class="btn btn-primary btn-icon-split d-flex" onmousedown="RemoveGuard()" onkeydown="RemoveGuard()">
+            <button id="btnAdd" type="submit" class="btn btn-primary btn-icon-split d-flex mt-3" onmousedown="RemoveGuard()" onkeydown="RemoveGuard()">
                 <span class="icon text-white-50 left" style="text-align:left;float:left">
                     <i class="fas fa-chalkboard"></i>
                 </span>
