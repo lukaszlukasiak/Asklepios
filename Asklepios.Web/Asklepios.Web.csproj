@@ -88,6 +88,7 @@
     <Content Remove="C:\Users\lukas\.nuget\packages\bootstrap\5.0.1\contentFiles\any\any\wwwroot\js\bootstrap.min.js.map" />
     <Content Remove="Properties\launchSettingsOLD.json" />
     <Content Remove="Properties\ServiceDependencies\launchSettings.json" />
+    <Content Remove="wwwroot\css\bootstrap.min.css" />
   </ItemGroup>
 
   <ItemGroup>

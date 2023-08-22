@@ -20,6 +20,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Asklepios.Core.Enums;
 using Asklepios.Core.Extensions;
+using Newtonsoft.Json;
 
 namespace Asklepios.Web.Areas.AdministrativeArea.Controllers
 {
@@ -103,6 +104,7 @@ namespace Asklepios.Web.Areas.AdministrativeArea.Controllers
         [HttpGet]
         public IActionResult Contact()
         {
+            
             UserId = HttpContext.User.GetUserId().Value;
             _loggedUser = _context.GetUserById(UserId);
 
@@ -616,13 +618,15 @@ namespace Asklepios.Web.Areas.AdministrativeArea.Controllers
 
                         if (_context.HasMedicalWorkerVisits(medicalWorker.Id))
                         {
-                            TempData[MESSAGE] = new ViewMessage()
+                            ViewMessage message = new ViewMessage()
                             {
                                 Message = "Nie można usunąć pracownika, do którego są przypisane jakiekolwiek wizyty!",
                                 MessageType = AlertMessageType.ErrorMessage
                             };
                             //model.ErrorMessage = "Nie można usunąć pracownika, do którego są przypisane jakiekolwiek wizyty!";
                             model.UserName = _loggedUser.Person.FullName;
+                            TempData[MESSAGE] = JsonConvert.SerializeObject(message);
+
                         }
                         else
                         {
@@ -631,17 +635,19 @@ namespace Asklepios.Web.Areas.AdministrativeArea.Controllers
                             _context.RemoveMedicalWorkerById(model.SelectedWorkerId);
                             _context.RemovePersonById(personId);
                             _context.RemoveUserById(userId);
-
-                            TempData[MESSAGE]  = new ViewMessage()
+                            ViewMessage message= new ViewMessage()
                             {
                                 Message = "Pracownik medyczny został usunięty!",
                                 MessageType = AlertMessageType.InfoMessage
                             };
+                            TempData[MESSAGE] = JsonConvert.SerializeObject(message);
+
                             //TempData[MESSAGE] = viewMessage;//"Pracownik medyczny został usunięty!";
                             //model.SuccessMessage = "Pracownik medyczny został usunięty!";
                             model.UserName = _loggedUser.Person.FullName;
 
                         }
+
                         return RedirectToAction("MedicalWorkerItemsManage");
 
                         //return View(model);
@@ -1189,10 +1195,16 @@ namespace Asklepios.Web.Areas.AdministrativeArea.Controllers
 
             if (_loggedUser != null)
             {
+                if (TempData.ContainsKey(MESSAGE))
+                {
+                    ViewMessage message = JsonConvert.DeserializeObject<ViewMessage>((string)TempData[MESSAGE]); 
+                    model.Message=message.Message;
+                    model.AlertMessageType = message.MessageType;
+                }
                 model.AllMedicalWorkers = _context.GetMedicalWorkers();
                 model.PrimaryServices = _context.GetMedicalServices().Where(c => c.IsPrimaryService == true).ToList();
                 model.UserName = _loggedUser.Person.FullName;
-
+                //model.Message
                 return View(model);
             }
             else
@@ -1282,7 +1294,7 @@ namespace Asklepios.Web.Areas.AdministrativeArea.Controllers
         }
 
         [HttpPost]
-        [ResponseCache(CacheProfileName = "NoCaching")]
+        //[ResponseCache(CacheProfileName = "NoCaching")]
         public IActionResult LocationItemEdit(LocationsManageViewModel model)
         {
             UserId = HttpContext.User.GetUserId().Value;

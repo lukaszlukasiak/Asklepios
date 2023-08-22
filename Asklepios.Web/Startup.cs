@@ -34,12 +34,10 @@ namespace Asklepios.Web
             services.AddDbContext<AsklepiosDbContext>(options =>
             options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection"), options => options.EnableRetryOnFailure()), ServiceLifetime.Scoped);
 
-            //options.UseSqlServer(Configuration.GetConnectionString("AzureAsklepios")),ServiceLifetime.Scoped);
             
             services.AddIdentity<User,IdentityRole>(options => options.SignIn.RequireConfirmedAccount = false)
                     .AddRoles<IdentityRole<long>>()
                     .AddSignInManager()
-
                     .AddEntityFrameworkStores<AsklepiosDbContext>();
 
             services.AddAuthorization(options =>
@@ -55,8 +53,6 @@ namespace Asklepios.Web
                 options.Cookie.HttpOnly = true;
                 options.ExpireTimeSpan = TimeSpan.FromMinutes(20);
                 options.LoginPath = "/HomeArea/Home/Login";
-                // ReturnUrlParameter requires 
-                //using Microsoft.AspNetCore.Authentication.Cookies;
                 options.ReturnUrlParameter = CookieAuthenticationDefaults.ReturnUrlParameter;
                 options.SlidingExpiration = true;
             });
@@ -73,13 +69,7 @@ namespace Asklepios.Web
             });
             services.AddDistributedMemoryCache();
             services.AddSession(options=>options.IdleTimeout=TimeSpan.FromMinutes(20));
-            //app.UseHttpsRedirection();
-            // services.
-            //services.
-            //services.AddDatabaseDeveloperPageExceptionFilter();
 
-            //services.
-            //services.addm
             services.AddControllersWithViews(options =>
             {
                 options.CacheProfiles.Add("Caching", new CacheProfile()
@@ -88,37 +78,12 @@ namespace Asklepios.Web
                     Location = ResponseCacheLocation.Any,
                     VaryByHeader = "cookie"
                 });
-                options.CacheProfiles.Add("NoCaching", new CacheProfile()
-                {
-                    NoStore = true,
-                    Location = ResponseCacheLocation.None
-                });
             });
-            //services.AddScoped<IHomeModuleRepository, HomeInMemoryContext>();
-            //services.AddScoped<IPatientModuleRepository, PatientInMemoryContext>();
-            //services.AddScoped<IMedicalWorkerModuleRepository, MedicalWorkerInMemoryContext>();
-            //services.AddScoped<ICustomerServiceModuleRepository, CustomerServiceInMemoryContext>();
-            //services.AddScoped<IAdministrationModuleRepository, AdministrationInMemoryContext>();
-
             services.AddScoped<IHomeModuleRepository, AsklepiosDbContext>();
             services.AddScoped<IPatientModuleRepository, AsklepiosDbContext>();
             services.AddScoped<IMedicalWorkerModuleRepository, AsklepiosDbContext>();
             services.AddScoped<ICustomerServiceModuleRepository, AsklepiosDbContext>();
             services.AddScoped<IAdministrationModuleRepository, AsklepiosDbContext>();
-           // services.AddScoped(SignInManager<User, long>());
-            //services.AddScoped(<SignInManager<User>>());
-            //services.AddDbContext<AsklepiosDbContext>(options =>
-            //{
-            //    options.UseSqlServer(Configuration["DefaultConnection"],
-            //    sqlServerOptionsAction: sqlOptions =>
-            //    {
-            //        sqlOptions.EnableRetryOnFailure(
-            //        maxRetryCount: 10,
-            //        maxRetryDelay: TimeSpan.FromSeconds(30),
-            //        errorNumbersToAdd: null);
-            //    });
-            //});
-
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

@@ -24,6 +24,9 @@
 
     <partial name="_Message" model="Model" />
 
+    <h2 style="text-align:center; margin-bottom:20px">Lista wizyt</h2>
+
+
     <form class="form my-2" asp-action="ScheduleItemsManage" method="post">
         <div class="form-group d-flex flex-column">
             <label asp-for="SelectedLocationId" class="control-label"></label>
@@ -81,7 +84,7 @@
 
             <div class="d-flex">
                 <div class="form-group d-flex flex-column ">
-                    <button onclick="MovetToPreviousPage()" class="btn btn-primary btn-icon-split d-flex">
+                    <button onclick="MovetToPreviousPage()" class="btn btn-primary btn-icon-split d-flex mt-3">
                         <span class="icon text-white-50 left" style="text-align:left;float:left">
                             <i class="fas fa-arrow-left"></i>
                         </span>
@@ -98,7 +101,7 @@
                 @*onchange=" document.getElementById('btnSubmit').click();*@
 
                 <div class="form-group d-flex flex-column ">
-                    <button onclick="MoveToNextPage()" class="btn btn-primary btn-icon-split d-flex">
+                    <button onclick="MoveToNextPage()" class="btn btn-primary btn-icon-split d-flex mt-3">
                         <span class="icon text-white-50 left" style="text-align:left;float:left">
                             <i class="fas fa-arrow-right"></i>
                         </span>
@@ -107,7 +110,7 @@
 
             </div>
             <div class="form-group d-flex flex-column mt-2">
-                <button id="btnSubmit" type="submit" class="btn btn-primary btn-icon-split d-flex">
+                <button id="btnSubmit" type="submit" class="btn btn-primary btn-icon-split d-flex mt-3">
                     <span class="icon text-white-50 left" style="text-align:left;float:left">
                         <i class="fas fa-search"></i>
                     </span>

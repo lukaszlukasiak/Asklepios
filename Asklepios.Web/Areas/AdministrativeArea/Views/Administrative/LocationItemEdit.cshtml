@@ -52,6 +52,7 @@ editMode = Html.GetEnumSelectListWithOneValue(Asklepios.Web.Areas.Administrative
         </div>
     }
 }
+    <h2 style="text-align:center; margin-bottom:20px">Edytuj dane placówki</h2>
 
 <div>
     <form class="form mt-2" asp-action="LocationItemEdit" method="post" enctype="multipart/form-data">
@@ -132,7 +133,7 @@ editMode = Html.GetEnumSelectListWithOneValue(Asklepios.Web.Areas.Administrative
 
 
             <div class="form-group d-flex flex-column mt-5">
-                <button id="btnSubmit" type="submit" class="btn btn-primary btn-icon-split d-flex">
+                <button id="btnSubmit" type="submit" class="btn btn-primary btn-icon-split d-flex mt-3">
                     <span class="icon text-white-50 left" style="text-align:left;float:left">
                         <i class="fas fa-pen-square"></i>
                     </span>
@@ -151,7 +152,7 @@ editMode = Html.GetEnumSelectListWithOneValue(Asklepios.Web.Areas.Administrative
         <input asp-for="SelectedLocationId" hidden />
 
         <div class="form-group d-flex flex-column mt-1">
-            <button id="btnSubmit" type="submit" class="btn btn-primary btn-icon-split d-flex">
+            <button id="btnSubmit" type="submit" class="btn btn-primary btn-icon-split d-flex mt-3">
                 <span class="icon text-white-50 left" style="text-align:left;float:left">
                     <i class="fas fa-remove"></i>
                 </span>

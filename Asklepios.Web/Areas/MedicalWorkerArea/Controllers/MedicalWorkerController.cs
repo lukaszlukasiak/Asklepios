@@ -113,7 +113,7 @@ namespace Asklepios.Web.Areas.MedicalWorkerArea.Controllers
 
         public IActionResult Index()
         {
-
+            
             if (TempData.ContainsKey("User") == true)
             {
                 User user = JsonConvert.DeserializeObject<User>((string)TempData["User"]);
@@ -130,7 +130,6 @@ namespace Asklepios.Web.Areas.MedicalWorkerArea.Controllers
             }
 
             _loggedUser = _context.GetUserById(HttpContext.User.GetUserId().Value);
-            //_currentVisitId = GetCurrentVisitId();
 
             if (_loggedUser != null)
             {
@@ -753,6 +752,7 @@ namespace Asklepios.Web.Areas.MedicalWorkerArea.Controllers
             }
             else
             {
+                
                 return NotFound();
             }
         }

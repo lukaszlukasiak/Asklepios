@@ -28,7 +28,11 @@
 
         }
     }
-*@    <form class="form my-2" asp-action="PatientItemsManage" method="post">
+
+*@    
+<h2 style="text-align:center; margin-bottom:20px">Lista pacjentów</h2>
+
+<form class="form my-2" asp-action="PatientItemsManage" method="post">
         <div class="form-group d-flex flex-column">
 
             <label asp-for="SelectedId" class="control-label"></label>
@@ -60,10 +64,10 @@
             <span asp-validation-for="SelectedGender" class="text-danger"></span>
 
 
-            <label asp-for="SelectedId" class="control-label"></label>
+@*            <label asp-for="SelectedId" class="control-label"></label>
             <input asp-for="SelectedId" class="form-control mb-2">
             <span asp-validation-for="SelectedId" class="text-danger"></span>
-
+*@
             <label asp-for="SelectedName" class="control-label"></label>
             <input asp-for="SelectedName" class="form-control mb-2">
             <span asp-validation-for="SelectedName" class="text-danger"></span>
@@ -90,7 +94,7 @@
 
 
             <div class="form-group d-flex flex-column mt-2">
-                <button id="btnSubmit" type="submit" class="btn btn-primary btn-icon-split d-flex" hidden>
+                <button id="btnSubmit" type="submit" class="btn btn-primary btn-icon-split d-flex mt-3" hidden>
                     <span class="icon text-white-50 left" style="text-align:left;float:left">
                         <i class="fas fa-search"></i>
                     </span>

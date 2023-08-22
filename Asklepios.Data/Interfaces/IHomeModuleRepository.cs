@@ -15,8 +15,5 @@ namespace Asklepios.Data.Interfaces
         Location GetLocationById(long locationId);
         User CheckUserNameAndRole(string userName, WorkerModuleType workerModuleType, UserType userType);
         void Save();
-        //User CheckEmailAndRole(string userName, UserType userType, WorkerModuleType workerModuleType);
-        //Patient GetUserById(long userId);
-        //List<MedicalService> GetLocationServices(long id);
     }
 }

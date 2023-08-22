@@ -13,7 +13,7 @@
     <span asp-validation-for="SelectedDate" class="text-danger"></span>
 
     <div class="form-group d-flex flex-column mt-2">
-        <button id="btnSubmit" type="submit" class="btn btn-primary btn-icon-split d-flex">
+        <button id="btnSubmit" type="submit" class="btn btn-primary btn-icon-split d-flex mt-3">
             <span class="icon text-white-50 left" style="text-align:left;float:left">
                 <i class="fas fa-search"></i>
             </span>
@@ -25,7 +25,7 @@
 @{
     IEnumerable<IGrouping<DateTime, Visit>> futureVisits = Model.ForthcomingVisits;
 
-    if (futureVisits.Count() > 0)
+    if (futureVisits?.Count() > 0)
     {
 
         for (int i = 0; i < futureVisits.Count(); i++)

@@ -4,7 +4,6 @@
     ViewData["Title"] = "View";
 }
 
-<h2 style="text-align:center">Pakiety medyczne</h2>
 @{
     IEnumerable<SelectListItem>
     removeMode = Html.GetEnumSelectListWithOneValue(Asklepios.Web.Areas.AdministrativeArea.Models.ViewMode.Remove).ToList();
@@ -38,6 +37,7 @@ editMode = Html.GetEnumSelectListWithOneValue(Asklepios.Web.Areas.Administrative
     }
 
 }
+    <h2 style="text-align:center; margin-bottom:20px">Lista pakietów medycznych</h2>
 
 
 @foreach (MedicalPackage pack in Model.MedicalPackages)
