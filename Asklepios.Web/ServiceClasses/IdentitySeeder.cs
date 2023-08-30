@@ -22,13 +22,13 @@ namespace Asklepios.Web.ServiceClasses
             }
             context.Save();
         }
-        internal async static Task Seed1User(SignInManager<User> signManager, UserManager<User> userManager, IHomeModuleRepository context)
-        {
-            //await userManager.CreateAsync(new User() { }, "haslo11111");
+        //internal async static Task Seed1User(SignInManager<User> signManager, UserManager<User> userManager, IHomeModuleRepository context)
+        //{
+        //    //await userManager.CreateAsync(new User() { }, "haslo11111");
 
-            //long id = await EnsureUser(userManager, "uzyszkodnik");
-            //context.Save();
-        }
+        //    //long id = await EnsureUser(userManager, "uzyszkodnik");
+        //    //context.Save();
+        //}
 
         private static async Task<long> EnsureUser(UserManager<User> userManager, User user)
         {

@@ -52,26 +52,29 @@ namespace Asklepios.Web.Areas.HomeArea.Controllers
         //{
         //    return View();
         //}
-        public async Task<IActionResult> Index()
+        //public async Task<IActionResult> Index()
+        //{
+
+        //    //User appUser = new User
+        //    //{
+        //    //    UserName = "uzyszkodnik",
+        //    //    Email = "uzyszkodnik@gmail.com"
+        //    //};
+
+        //    //IdentityResult result = await _userManager.CreateAsync(appUser, "Haselko2020!");
+
+
+        //    //await ServiceClasses.IdentitySeeder.Seed(_signManager, _userManager, _context);
+        //    //await ServiceClasses.IdentitySeeder.SeedRoles(_roleManager, _context);
+        //    //await ServiceClasses.IdentitySeeder.SeedRoles(_roleManager, _context);
+        //    //await ServiceClasses.IdentitySeeder.AddRolesToUsers(_userManager,_roleManager, _context);
+
+        //    return View();
+        //}
+        public IActionResult Index()
         {
-
-            //User appUser = new User
-            //{
-            //    UserName = "uzyszkodnik",
-            //    Email = "uzyszkodnik@gmail.com"
-            //};
-
-            //IdentityResult result = await _userManager.CreateAsync(appUser, "Haselko2020!");
-
-
-            //await ServiceClasses.IdentitySeeder.Seed(_signManager, _userManager, _context);
-            //await ServiceClasses.IdentitySeeder.SeedRoles(_roleManager, _context);
-            //await ServiceClasses.IdentitySeeder.SeedRoles(_roleManager, _context);
-            //await ServiceClasses.IdentitySeeder.AddRolesToUsers(_userManager,_roleManager, _context);
-
             return View();
         }
-
         public IActionResult Privacy()
         {
             return View();

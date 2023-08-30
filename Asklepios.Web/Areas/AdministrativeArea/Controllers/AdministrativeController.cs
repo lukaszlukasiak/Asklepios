@@ -1909,7 +1909,7 @@ namespace Asklepios.Web.Areas.AdministrativeArea.Controllers
 
                         //TempData[SUCCESS_MESSAGE] = "Pakiet medyczny został pomyślnie usunięty!";
                     }
-                    catch (Microsoft.EntityFrameworkCore.DbUpdateException exc)
+                    catch (Microsoft.EntityFrameworkCore.DbUpdateException )
                     {
                         TempData[MESSAGE] = new ViewMessage()
                         {
