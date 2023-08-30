@@ -4,6 +4,7 @@
     <TargetFramework>net6.0</TargetFramework>
     <CopyRefAssembliesToPublishDirectory>false</CopyRefAssembliesToPublishDirectory>
     <StartupObject></StartupObject>
+    <UserSecretsId>872ba4db-d82c-46d5-ac1f-6880fa6b4446</UserSecretsId>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
@@ -13,6 +14,13 @@
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
     <WarningLevel>7</WarningLevel>
   </PropertyGroup>
+
+  <ItemGroup>
+    <Compile Remove="wwwroot\css\fonts\**" />
+    <Content Remove="wwwroot\css\fonts\**" />
+    <EmbeddedResource Remove="wwwroot\css\fonts\**" />
+    <None Remove="wwwroot\css\fonts\**" />
+  </ItemGroup>
 
   <ItemGroup>
     <Compile Remove="Areas\AdministrativeArea\Interfaces\ISearchVisit - Copy %284%29.cs" />
@@ -89,6 +97,9 @@
     <Content Remove="Properties\launchSettingsOLD.json" />
     <Content Remove="Properties\ServiceDependencies\launchSettings.json" />
     <Content Remove="wwwroot\css\bootstrap.min.css" />
+    <Content Remove="wwwroot\favicon.ico" />
+    <Content Remove="wwwroot\index.html" />
+    <Content Remove="wwwroot\navbar-style.css" />
   </ItemGroup>
 
   <ItemGroup>

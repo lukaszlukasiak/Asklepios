@@ -1,0 +1,16 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<!--
+https://go.microsoft.com/fwlink/?LinkID=208121. 
+-->
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <_PublishTargetUrl>C:\Users\lukas\source\repos\Asklepios8\Asklepios.Web\bin\Release\net6.0\publish\</_PublishTargetUrl>
+    <History>True|2023-08-29T18:13:19.2717968Z;False|2023-08-29T20:09:37.4691284+02:00;False|2023-08-29T19:39:21.4431688+02:00;False|2023-08-29T19:29:58.1879486+02:00;True|2023-08-29T19:15:57.3482493+02:00;True|2023-08-29T19:07:01.6852813+02:00;True|2023-08-29T17:20:46.5001458+02:00;</History>
+    <TimeStampOfAssociatedLegacyPublishXmlFile />
+  </PropertyGroup>
+  <ItemGroup>
+    <DestinationConnectionStrings Include="Webio">
+      <Value>Data Source=mssql6.webio.pl,2401%3bDatabase=lukaszlukasiak_Asklepios%3bUid=lukaszlukasiak_AsklepiosU1%3bpassword=Asklep!0sU1%3bTrustServerCertificate=True</Value>
+    </DestinationConnectionStrings>
+  </ItemGroup>
+</Project>

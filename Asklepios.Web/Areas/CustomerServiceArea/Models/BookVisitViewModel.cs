@@ -165,7 +165,7 @@ namespace Asklepios.Web.Areas.CustomerServiceArea.Models
                     }
                     else
                     {
-                        return null;
+                        return new List<VisitCategory>();
                     }
                 }
                 else

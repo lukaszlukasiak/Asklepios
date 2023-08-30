@@ -1,0 +1,30 @@
+﻿.Star {
+    filter: invert(88%) sepia(70%) saturate(3525%) hue-rotate(360deg) brightness(107%) contrast(100%);   
+    width: 30px;
+    height: 30px;
+}
+.ItemImage{
+    background-color:aqua;
+}
+.ItemCellContent {
+}
+
+@media (min-width: 768px) {
+    .ItemImage {
+        min-width: 500px !important;
+        vertical-align:top;
+    }
+    .Star {
+    }
+}
+@media (min-width: 576px) {
+    .ItemCellContent {
+        min-width: 400px !important;
+    }
+
+    @media (max-width: 576px) {
+        .ItemCellContent {
+            min-width: 0px !important;
+        }
+    }
+}
