@@ -18,6 +18,7 @@ using System.Configuration;
 var builder = WebApplication.CreateBuilder(args);
 //DefaultConnection
 //AzureAsklepios
+//Webio
 string connString = builder.Configuration.GetConnectionString("Webio");
 
 // Add services to the container.
