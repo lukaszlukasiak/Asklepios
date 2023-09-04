@@ -31,6 +31,8 @@ namespace Asklepios.Web
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            //DefaultConnection
+            //Webio
             services.AddDbContext<AsklepiosDbContext>(options =>
             options.UseSqlServer(Configuration.GetConnectionString("Webio"), options => options.EnableRetryOnFailure()), ServiceLifetime.Scoped);
 

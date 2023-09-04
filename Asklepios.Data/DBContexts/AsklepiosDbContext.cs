@@ -20,24 +20,14 @@ namespace Asklepios.Data.DBContexts
 {
     public class AsklepiosDbContext : IdentityDbContext<User, IdentityRole<long>, long>, IAdministrationModuleRepository, ICustomerServiceModuleRepository, IPatientModuleRepository, IMedicalWorkerModuleRepository, IHomeModuleRepository
     {
-        //private const string connectionString = "Server=(localdb)\\mssqllocaldb;Database=AsklepiosLocal;Trusted_Connection=True;";
-
-        //public Patient CurrentPatient { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
         public AsklepiosDbContext(DbContextOptions<AsklepiosDbContext> options) : base(options)
         {
 
-            //  UserManager<User> userManager = new UserManager<User>();
-           // string lol = Environment.GetEnvironmentVariable("WEBSITE_SITE_NAME");
 
         }
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
             optionsBuilder.UseSqlServer();
-
-            //optionsBuilder.EnableSensitiveDataLogging();
-
-            // optionsBuilder.LogTo(Console.WriteLine);
-            //optionsBuilder.UseSqlServer(options=>options.ExecutionStrategy)
         }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
@@ -46,7 +36,7 @@ namespace Asklepios.Data.DBContexts
 
             base.OnModelCreating(modelBuilder);
 
-                modelBuilder.Entity<MedicalWorker>()
+            modelBuilder.Entity<MedicalWorker>()
             .HasDiscriminator<string>("Discriminator")
             .HasValue<Doctor>("1")
             .HasValue<Nurse>("2")
@@ -71,9 +61,8 @@ namespace Asklepios.Data.DBContexts
                     .HasMany<MedicalService>(c => c.MinorMedicalServices);
 
 
-            modelBuilder.Entity<MinorServiceToVisit>()
+                modelBuilder.Entity<MinorServiceToVisit>()
                     .HasKey(msv => new { msv.MedicalServiceId, msv.VisitId });
-                //.HasKey(c => c.Id);
 
                 modelBuilder.Entity<MinorServiceToVisit>()
                     .HasOne(msv => msv.Visit)
@@ -84,7 +73,6 @@ namespace Asklepios.Data.DBContexts
                     .HasOne(msv => msv.MedicalService)
                     .WithMany(v => v.MinorServicesToVisit)
                     .HasForeignKey(msv => msv.MedicalServiceId);
-                //modelBuilder.Entity<MedicalService>
 
                 modelBuilder.Entity<Location>()
                     .HasMany(a => a.Services)
