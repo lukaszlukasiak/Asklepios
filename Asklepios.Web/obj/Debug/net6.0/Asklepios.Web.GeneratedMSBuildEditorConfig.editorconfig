@@ -459,6 +459,10 @@ build_metadata.AdditionalFiles.CssScope =
 build_metadata.AdditionalFiles.TargetPath = QXJlYXNcTWVkaWNhbFdvcmtlckFyZWFcVmlld3NcTWVkaWNhbFdvcmtlclxWaXNpdERldGFpbHMuY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
 
+[C:/Users/lukas/source/repos/Asklepios8/Asklepios.Web/Areas/MedicalWorkerArea/Views/MedicalWorker/_ActiveVisit.cshtml]
+build_metadata.AdditionalFiles.TargetPath = QXJlYXNcTWVkaWNhbFdvcmtlckFyZWFcVmlld3NcTWVkaWNhbFdvcmtlclxfQWN0aXZlVmlzaXQuY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
 [C:/Users/lukas/source/repos/Asklepios8/Asklepios.Web/Areas/MedicalWorkerArea/Views/MedicalWorker/_FutureVisit.cshtml]
 build_metadata.AdditionalFiles.TargetPath = QXJlYXNcTWVkaWNhbFdvcmtlckFyZWFcVmlld3NcTWVkaWNhbFdvcmtlclxfRnV0dXJlVmlzaXQuY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 

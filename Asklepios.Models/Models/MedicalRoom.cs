@@ -13,7 +13,6 @@ namespace Asklepios.Core.Models
         [Key]
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         [Required]
-
         public long Id { get; set; }
         [Display(Name = "Placówka")]
         public long? LocationId { get; set; }

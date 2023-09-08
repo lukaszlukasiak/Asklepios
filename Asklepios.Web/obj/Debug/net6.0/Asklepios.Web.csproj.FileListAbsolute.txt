@@ -5,6 +5,7 @@ C:\Users\lukas\source\repos\Asklepios8\Asklepios.Web\bin\Debug\net6.0\Asklepios.
 C:\Users\lukas\source\repos\Asklepios8\Asklepios.Web\bin\Debug\net6.0\Asklepios.Web.deps.json
 C:\Users\lukas\source\repos\Asklepios8\Asklepios.Web\bin\Debug\net6.0\Asklepios.Web.runtimeconfig.json
 C:\Users\lukas\source\repos\Asklepios8\Asklepios.Web\bin\Debug\net6.0\Asklepios.Web.dll
+C:\Users\lukas\source\repos\Asklepios8\Asklepios.Web\bin\Debug\net6.0\ref\Asklepios.Web.dll
 C:\Users\lukas\source\repos\Asklepios8\Asklepios.Web\bin\Debug\net6.0\Asklepios.Web.pdb
 C:\Users\lukas\source\repos\Asklepios8\Asklepios.Web\bin\Debug\net6.0\refs\Microsoft.AspNetCore.Antiforgery.dll
 C:\Users\lukas\source\repos\Asklepios8\Asklepios.Web\bin\Debug\net6.0\refs\Microsoft.AspNetCore.Authentication.Abstractions.dll
@@ -577,4 +578,3 @@ C:\Users\lukas\source\repos\Asklepios8\Asklepios.Web\obj\Debug\net6.0\Asklepios.
 C:\Users\lukas\source\repos\Asklepios8\Asklepios.Web\obj\Debug\net6.0\ref\Asklepios.Web.dll
 C:\Users\lukas\source\repos\Asklepios8\Asklepios.Web\obj\Debug\net6.0\Asklepios.Web.pdb
 C:\Users\lukas\source\repos\Asklepios8\Asklepios.Web\obj\Debug\net6.0\Asklepios.Web.genruntimeconfig.cache
-C:\Users\lukas\source\repos\Asklepios8\Asklepios.Web\bin\Debug\net6.0\ref\Asklepios.Web.dll

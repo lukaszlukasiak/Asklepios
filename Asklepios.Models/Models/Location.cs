@@ -17,6 +17,7 @@ namespace Asklepios.Core.Models
         public long Id { get; set; }
         [Required(ErrorMessage ="Proszę wprowadzić nazwę placówki")]
         [Display(Name ="Nazwa placówki")]
+        [MaxLength(50)]
         public string Name { get; set; }
         [Required(ErrorMessage = "Proszę wprowadzić krótki opis placówki")]
         [Display(Name = "Króki opis placówki")]
@@ -102,10 +103,6 @@ namespace Asklepios.Core.Models
             set
             {
                 _medicalRooms = value;
-                //if (value!=null)
-                //{
-                //    SetRoomsBackReferences();
-                //}
             }
         }
         public void SetRoomsBackReferences()

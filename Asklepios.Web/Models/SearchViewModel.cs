@@ -13,6 +13,9 @@ namespace Asklepios.Web.Models
         public string SelectedMedicalWorkerId { get; set; }
         public string SelectedLocationId { get; set; }
 
+        public string SelectedMedicalWorkerName { get; set; }
+        public string SelectedMedicalServiceName { get; set; }
+
         public bool HasPredefinedMedicalWorker { get; set; }
         public bool HasPredefinedService { get; set; }
         public bool HasPredefinedCategory { get; set; }

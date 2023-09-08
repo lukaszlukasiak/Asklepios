@@ -37,7 +37,11 @@
     <select class="form-control  mb-1" asp-for="SelectedCategoryId" asp-items="categoriesList">
         @if (Model.HasPredefinedCategory)
         {
-            
+            @if (@categoriesList.Count() == 0)
+            {
+                <option value="">Wybierz kategorię</option>
+            }
+
         }
         else
         {
@@ -48,7 +52,10 @@
     <select class="form-control  mb-1" asp-for="SelectedServiceId" asp-items="servicesList">
         @if (Model.HasPredefinedService)
         {
-            
+            @if (@servicesList.Count() == 0)
+            {
+                <option value="">@Model.SelectedMedicalServiceName</option>
+            }
         }
         else
         {
@@ -60,7 +67,10 @@
     <select class="form-control mb-1" asp-for="SelectedMedicalWorkerId" asp-items="workersItems" >
         @if (Model.HasPredefinedMedicalWorker)
         {
-            
+            @if(@workersItems.Count()==0){
+                <option value="">@Model.SelectedMedicalWorkerName</option>
+            }
+
         }
         else
         {

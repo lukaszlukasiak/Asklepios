@@ -17,13 +17,9 @@ namespace Asklepios.Core.Models
         [Required(ErrorMessage = "Proszę wprowadzić opis/zakres badania")]
         [DataType(DataType.Text)]
         public string Description { get; set; }
-
         public long? MedicalServiceId { get; set; }
-
         [ForeignKey("MedicalServiceId")]
-
         public virtual MedicalService MedicalService { get; set; }
-        //private byte[] _document;
         [NotMapped]
         public byte[] Document 
         {
@@ -31,7 +27,6 @@ namespace Asklepios.Core.Models
             set;
         }
         public string DocumentPath { get; set; }
-        //public VisitSummary VisitSummary { get; set; }
         public long? MedicalWorkerId { get; set; }
         [ForeignKey("MedicalWorkerId")]
         public virtual MedicalWorker MedicalWorker { get; set; }
@@ -44,24 +39,10 @@ namespace Asklepios.Core.Models
         public virtual Patient Patient { get; set; }
 
         public long? VisitId { get; set; }
-        //public Visit _visit;
-        //[ForeignKey("VisitId")]
         public virtual Visit Visit
         {
             get;set;
-            //get
-            //{
-            //    return _visit;
-            //}
-            //set
-            //{
-            //    _visit = value;
-            //    MedicalWorker = value.MedicalWorker;
-            //    Patient = value.Patient;
-            //}
         }
-        //public long MedicalTestResultId { get; set; }
-        //[ForeignKey("MedicalTestResultId")]
         public MedicalTestResult()
         {
 
@@ -70,12 +51,5 @@ namespace Asklepios.Core.Models
         {
             return this.MemberwiseClone();
         }
-
-        //public MedicalTestResult(MedicalTestResult result, long id)
-        //{
-        //    this = result.MemberwiseClone();
-
-        //}
-
     }
 }

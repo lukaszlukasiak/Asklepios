@@ -12,10 +12,6 @@ namespace Asklepios.Core.Models
 {
     public class User: IdentityUser<long>
     {
-        //[Key]
-        //[DatabaseGenerated(DatabaseGeneratedOption.Identity)]
-        //[Required]
-        //public long Id { get; set; }
         [Required(ErrorMessage = "Proszę podać adres e-mail")]
         [DataType(DataType.EmailAddress)]
         [Display(Name = "Adres e-mail")]

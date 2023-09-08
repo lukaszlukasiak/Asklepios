@@ -10,7 +10,7 @@ namespace Asklepios.Core.Enums
     {
         AvailableNotBooked,
         Booked,
-        Started,
+        Active,
         Finished,
         NotHeldAbsentPatient,
         NotHeldOther,

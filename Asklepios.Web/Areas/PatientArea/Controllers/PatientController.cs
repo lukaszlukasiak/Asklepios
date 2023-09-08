@@ -287,8 +287,6 @@ namespace Asklepios.Web.Areas.PatientArea.Controllers
             {
                 _patient = _context.GetPatientByUserId(_loggedUser.Id);
 
-
-
                 BookVisitViewModel viewModel = new BookVisitViewModel(model);
 
                 IQueryable<Visit> visits = _context.GetAvailableVisitsQuery();
@@ -297,7 +295,9 @@ namespace Asklepios.Web.Areas.PatientArea.Controllers
                 {
                     if (long.TryParse(viewModel.SelectedMedicalWorkerId, out long   mwid))
                     {
+                        MedicalWorker worker=_context.GetMedicalWorkerById(mwid);
                         visits = visits.Where(c => c.MedicalWorkerId == mwid).AsQueryable();
+                        viewModel.SelectedMedicalWorkerName = worker.FullProffesionalName;
                     }                   
                 }
                 if (viewModel.HasPredefinedService)
@@ -305,6 +305,8 @@ namespace Asklepios.Web.Areas.PatientArea.Controllers
                     if (long.TryParse(viewModel.SelectedServiceId, out long msid))
                     {
                         visits = visits.Where(c => c.PrimaryServiceId == msid).AsQueryable();
+                        MedicalService medicalService = _context.GetMedicalServiceById(msid);
+                        viewModel.SelectedMedicalServiceName = medicalService.Name;
                     }
                 }
                 if (viewModel.HasPredefinedCategory)
@@ -321,12 +323,14 @@ namespace Asklepios.Web.Areas.PatientArea.Controllers
                         visits = visits.Where(c => c.LocationId == lid).AsQueryable();
                     }
                 }
+
+                
                 //if (!viewModel.HasAnythingPredefined)
                 //{
-                    viewModel.AllCategories = _context.GetVisitCategories().ToList();
-                    viewModel.AllLocations = _context.GetAllLocations().ToList();
-                    viewModel.AllMedicalServices = _context.GetMedicalServices().ToList();
-                    viewModel.AllMedicalWorkers = _context.GetMedicalWorkers().ToList();
+                viewModel.AllCategories = _context.GetVisitCategories().ToList();
+                viewModel.AllLocations = _context.GetAllLocations().ToList();
+                viewModel.AllMedicalServices = _context.GetMedicalServices().ToList();
+                viewModel.AllMedicalWorkers = _context.GetMedicalWorkers().ToList();
                 //}
                 viewModel.PreFilteredVisitsList = visits;
                 viewModel.UserName = _loggedUser.Person.FullName;

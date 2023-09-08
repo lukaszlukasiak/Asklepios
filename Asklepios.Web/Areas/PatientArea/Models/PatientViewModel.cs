@@ -155,15 +155,15 @@ namespace Asklepios.Web.Areas.PatientArea.Models
             {
                 return null;
             }
-            List<Visit> visits = Visits
-                //Where(c => c.VisitStatus == Core.Enums.VisitStatus.Finished)
+            IQueryable<Visit> visits = Visits
+                .Where(c => c.VisitStatus == Core.Enums.VisitStatus.Finished)
                 .OrderByDescending(c => c.DateTimeSince)
-                .ToList(); //Patient.HistoricalVisits.OrderByDescending(c => c.DateTimeSince).ToList();
-            if (visits.Count > 0)
+                .AsQueryable(); //Patient.HistoricalVisits.OrderByDescending(c => c.DateTimeSince).ToList();
+            if (visits.Count() > 0)
             {
-                if (numberOfVisits > visits.Count)
+                if (numberOfVisits > visits.Count())
                 {
-                    numberOfVisits = visits.Count;
+                    numberOfVisits = visits.Count();
                 }
                 return visits.Take(numberOfVisits).ToList();
                 //for (int i = 0; i < numberOfVisits; i++)
