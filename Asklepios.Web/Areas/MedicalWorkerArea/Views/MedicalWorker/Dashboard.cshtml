@@ -22,9 +22,9 @@ else
     if (Model.CurrentVisit != null)
     {
         <h3 style="text-align:center">
-            Obecna wizyta
+            Aktywna wizyta
         </h3>
-        <partial name="_TodaysVisit" model="Model.CurrentVisit" />
+        <partial name="_ActiveVisit" model="Model.CurrentVisit" />
     }
     List<Visit> rest = Model.RestOfTodaysVisits;
     if (rest.Count() >0)

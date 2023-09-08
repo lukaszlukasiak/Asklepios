@@ -53,7 +53,6 @@ namespace Asklepios.Core.Models
         public string MedicalHistory { get; set; }
         public long? MedicalTestResultId { get; set; }
         
-        //private MedicalTestResult _medicalTestResult;
         [ForeignKey("MedicalTestResultId")]
         public virtual MedicalTestResult MedicalTestResult 
         {
@@ -201,7 +200,7 @@ namespace Asklepios.Core.Models
                 {
                     return false;
                 }
-                if (VisitCategory.Type == VisitCategoryType.MedicalImaging && VisitStatus==VisitStatus.Started)
+                if (VisitCategory.Type == VisitCategoryType.MedicalImaging && VisitStatus==VisitStatus.Active)
                 {
                     if (this.MedicalTestResult == null)
                     {

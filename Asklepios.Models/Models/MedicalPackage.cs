@@ -23,6 +23,8 @@ namespace Asklepios.Core.Models
         //public Dictionary<MedicalService, decimal> ServicesDiscounts { get; set; }
         [Display(Name = "Wysokości rabatów (wyrażone w %)")]
         public List<MedicalServiceDiscount> ServiceDiscounts { get; set; }
+
+
         public bool IsValid
         {
             get

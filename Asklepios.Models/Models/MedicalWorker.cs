@@ -11,10 +11,6 @@ namespace Asklepios.Core.Models
 {
     public abstract class MedicalWorker //: Person
     {
-        //public MedicalWorker(string name, string surName, long id, string pesel, bool hasPolishCitizenship, string passportNumber, string passportCode, string email, Aglomeration aglomeration)
-        //    : base(name, surName, id, pesel, hasPolishCitizenship, passportNumber, passportCode, email, aglomeration)
-        //{
-        //}
         public MedicalWorker()
         {
 
@@ -29,14 +25,9 @@ namespace Asklepios.Core.Models
             ProfessionalNumber = professionalNumber;
         }
 
-        //public MedicalWorker(Person person,DateTime hiredSince, string professionlTitle, MedicalWorkerType medicalWorkerType,List<string> education ,string experience, string imaagePath)
-        //{
-
-        //}
         [Key]
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         [Required]
-
         public long Id { get; set; }
         public long? PersonId { get; set; }
         [ForeignKey("PersonId")]
@@ -49,9 +40,8 @@ namespace Asklepios.Core.Models
 
         public string ProfessionalNumber {get;set;}
         public DateTime HiredSince { get; set; }
-        //public DateTime HiredUntil { get; set; }
         
-        [Display(Name = "Czy zatrudniony obecnie")]
+        [Display(Name = "Czy jest zatrudniony obecnie")]
 
         public bool IsCurrentlyHired { get; set; }
         [Display(Name = "Tytuł zawodowy")]
@@ -63,55 +53,18 @@ namespace Asklepios.Core.Models
 
         //public abstract string FullProffesionalName { get; }
         public string FullProffesionalName => ProfessionalTitle + " " + Person.Name + " " + Person.Surname;
-        [NotMapped]
-        public  List<Visit> FutureVisits 
-        {
-            get
-            {
-                return AllVisits.Where(c => c.VisitStatus == VisitStatus.AvailableNotBooked || c.VisitStatus == VisitStatus.Booked).ToList();
-            }
-        }
-        [NotMapped]
-        public  List<Visit> PastVisits 
-        {
-            get
-            {
-                return AllVisits.Where(c => c.VisitStatus == VisitStatus.Finished || c.VisitStatus == VisitStatus.NotHeldOther || c.VisitStatus == VisitStatus.NotHeldAbsentPatient).ToList();
-            }
-        }
 
         public virtual List<Visit> AllVisits
         {
             get;
             set;
-            //get
-            //{
-            //    return FutureVisits.Union(PastVisits).ToList();
-            //}
         }
         public virtual List<VisitReview> VisitReviews { get; set; }
-        [NotMapped]
-        public float AverageRating
-        {
-            get
-            {
-                if (VisitReviews != null)
-                {
-                    if (VisitReviews.Count > 0)
-                    {
-                        
-                        return VisitReviews.Average(c => c.GeneralRate);
-                    }
-                }
-                return -1;
-            }
-        }
         [Required(ErrorMessage = "Wprowadź typ pracownika medycznego!")]
         
         [Display(Name = "Typ pracownika medycznego")]
 
         public MedicalWorkerType? MedicalWorkerType { get; set; }
-        //public List<string> Education { get; set; }
         [Required(ErrorMessage = "Wprowadź streszczenie odnośnie zdobytego wykształcenia, przebytych kursów itp.!")]
         [Display(Name = "Edukacja/wykształcenie")]
 
@@ -120,7 +73,6 @@ namespace Asklepios.Core.Models
         [Display(Name = "Doświadczenie")]
 
         public string Experience { get; set; }
-        //public string ImagePath { get; set; }
 
         [Required(ErrorMessage = "Specjalizacja/świadczone usługi")]
         [Display(Name = "Usługi")]
@@ -130,8 +82,39 @@ namespace Asklepios.Core.Models
         [Display(Name = "Usługi")]
 
         public virtual List<MedicalService> MedicalServices { get; set; }
-        //public virtual List<MedicalServiceToMedicalWorker> MedicalServicesToMedicalWorkers { get; set; }
+        [NotMapped]
+        public List<Visit> FutureVisits
+        {
+            get
+            {
+                return AllVisits.Where(c => c.VisitStatus == VisitStatus.AvailableNotBooked || c.VisitStatus == VisitStatus.Booked).ToList();
+            }
+        }
+        [NotMapped]
+        public List<Visit> PastVisits
+        {
+            get
+            {
+                return AllVisits.Where(c => c.VisitStatus == VisitStatus.Finished || c.VisitStatus == VisitStatus.NotHeldOther || c.VisitStatus == VisitStatus.NotHeldAbsentPatient).ToList();
+            }
+        }
 
+        [NotMapped]
+        public float AverageRating
+        {
+            get
+            {
+                if (VisitReviews != null)
+                {
+                    if (VisitReviews.Count > 0)
+                    {
+
+                        return VisitReviews.Average(c => c.GeneralRate);
+                    }
+                }
+                return -1;
+            }
+        }
 
         public void UpdateWith(MedicalWorker worker)
         {

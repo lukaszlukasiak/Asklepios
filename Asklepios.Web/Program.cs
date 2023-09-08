@@ -35,7 +35,6 @@ builder.Services.AddIdentity<User, IdentityRole<long>>(options =>
     options.SignIn.RequireConfirmedAccount = false;
     options.SignIn.RequireConfirmedPhoneNumber = false;
     options.SignIn.RequireConfirmedEmail = false;
-
 })  
     .AddRoles<IdentityRole<long>>()
     .AddEntityFrameworkStores<AsklepiosDbContext>();

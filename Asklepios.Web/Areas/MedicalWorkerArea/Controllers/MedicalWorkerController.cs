@@ -174,8 +174,15 @@ namespace Asklepios.Web.Areas.MedicalWorkerArea.Controllers
                 DashboardViewModel model = new DashboardViewModel(_medicalWorker)
                 {
                     UserName = _loggedUser.Person.FullName,
-                    TodayVisits = _context.GetVisitsByMedicalWorkerId(_medicalWorker.Id).Where(c => c.DateTimeSince.Date == DateTime.Now.Date).AsQueryable(),
+                    TodayVisits = _context.GetVisitsByMedicalWorkerId(_medicalWorker.Id).Where(c => c.DateTimeSince.Date == DateTime.Now.Date).AsQueryable()
                 };
+                long? id = GetCurrentVisitId();
+                if (id.HasValue)
+                {
+                    model.CurrentVisitId = id.Value;
+                }
+
+
                 return View(model);
             }
             else

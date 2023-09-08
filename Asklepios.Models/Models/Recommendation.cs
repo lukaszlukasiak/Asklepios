@@ -39,7 +39,5 @@ namespace Asklepios.Core.Models
             recommendation.Description = Description;
             return recommendation;
         }
-        //public VisitSummary VisitSummary { get; set; }
-
     }
 }

@@ -4,7 +4,7 @@
         <div class="p-2     mx-auto" style="width:400px; text-align:center">
             <div class="d-flex flex-fill flex-column" style="text-align:center">
 
-                @if (Model.VisitStatus==Asklepios.Core.Enums.VisitStatus.Booked || Model.VisitStatus == Asklepios.Core.Enums.VisitStatus.Finished || Model.VisitStatus==Asklepios.Core.Enums.VisitStatus.NotHeldAbsentPatient || Model.VisitStatus==Asklepios.Core.Enums.VisitStatus.NotHeldOther)
+                @if (!(Model.VisitStatus==Asklepios.Core.Enums.VisitStatus.AvailableNotBooked))
                 {
                     <h3 style="font-weight:900;">
                         <a asp-action="PatientDetails" asp-controller="MedicalWorker" asp-route-id="@Model.Patient.Id">

@@ -38,22 +38,10 @@ namespace Asklepios.Core.Models
 
         public string IdentificationCode { get; set; }
         public long? VisitId { get; set; }
-        //private Visit _visit;
-        //[ForeignKey("VisitId")]
+
         public Visit Visit
         {
             get;set;
-            //get
-            //{
-            //    return _visit;
-            //}
-            //set
-            //{
-            //    _visit = value;
-            //    IssuedBy = value.MedicalWorker;
-            //    IssuedTo = value.Patient;
-            //    IssueDate = value.DateTimeSince;
-            //}
         }
         public Prescription()
         {
@@ -81,6 +69,5 @@ namespace Asklepios.Core.Models
 
             return prescription;
         }
-        //public VisitSummary VisitSummary { get; set; }
     }
 }

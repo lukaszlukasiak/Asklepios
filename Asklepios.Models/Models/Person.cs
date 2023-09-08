@@ -128,9 +128,7 @@ namespace Asklepios.Core.Models
                             var fileBytes = ms.ToArray();
                             string s = Convert.ToBase64String(fileBytes);
 
-
                             return string.Format("data:image/jpg;base64,{0}", s);
-                            // act on the Base64 data
                         }
                     }
 
