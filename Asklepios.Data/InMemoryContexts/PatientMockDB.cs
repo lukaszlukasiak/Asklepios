@@ -731,8 +731,10 @@ namespace Asklepios.Data.InMemoryContexts
 
                     int serviceIndex = (j + 1) % (servicesCounter);
                     MedicalService service = primaryServices.ElementAt(serviceIndex);
+                    //zrobic tak zeby byly rozne kategorie
                     List<VisitCategory> categories = VisitCategories.Where(c => c.MedicalServices.Any(d => d.Id == service.Id)).ToList();
                     VisitCategory visitCategory = categories[(j + 1) % (categories.Count)];
+
                     Location location = Locations.ElementAt((j + 1) % (locationsNumber));
                     int roomsCounter = location.MedicalRooms.Count;
                     MedicalRoom room = location.MedicalRooms.ElementAt((j + 1) % (roomsCounter));

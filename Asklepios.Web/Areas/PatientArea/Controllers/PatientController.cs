@@ -190,6 +190,7 @@ namespace Asklepios.Web.Areas.PatientArea.Controllers
 
                     Visit visit = _context.GetFutureVisitById(lid);
                     _patient = _context.GetPatientByUserId(_loggedUser.Id);
+                    _patient.MedicalReferrals=_context.GetMedicalReferralsByPatientIdQuery(_patient.Id).ToList();
 
                     if (visit.PrimaryService.RequireRefferal)
                     {
