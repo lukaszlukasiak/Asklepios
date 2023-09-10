@@ -11,35 +11,10 @@
 
 }
 <div class="d-flex flex-column">
-    <partial name="_Message" model="Model" />
+    <partial name="_ViewMessage" model="Model.ViewMessage" />
 
     <h2 style="text-align:center; margin-bottom:20px">Edytuj dane gabinetu</h2>
-    @{
 
-        if (TempData.ContainsKey(AlertMessageType.SuccessMessage.GetDescription()))
-
-        {
-            <div class="messages" id="MessageSpan" style="margin-top: 10px; text-align: center ">
-                <p class="alert alert-success">
-                    @*@Model.SuccessMessage*@
-                    @TempData[AlertMessageType.SuccessMessage.GetDescription()].ToString()
-                </p>
-            </div>
-
-        }
-        //if (!string.IsNullOrWhiteSpace(Model.ErrorMessage))
-        if (TempData.ContainsKey(AlertMessageType.ErrorMessage.GetDescription()))
-        {
-            <div class="messages" id="MessageSpan" style="margin-top: 10px; text-align: center ">
-                <p class="alert alert-success">
-                    @*@Model.ErrorMessage*@
-                    @TempData[AlertMessageType.ErrorMessage.GetDescription()].ToString()
-
-                </p>
-            </div>
-
-        }
-    }
 
     <form class="form my-2" asp-action="RoomItemEdit" method="post" enctype="multipart/form-data">
         <div class="form-group d-flex flex-column">

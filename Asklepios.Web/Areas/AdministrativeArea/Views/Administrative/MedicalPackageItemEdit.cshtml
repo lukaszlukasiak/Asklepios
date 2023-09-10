@@ -16,26 +16,9 @@
     IEnumerable<int> decimals = Model.SelectedPackage.ServiceDiscounts.Select(c => (int)(c.Discount * 100)).ToList();
     Model.Vals = new List<int>(decimals);
 
-    if (TempData.ContainsKey("successMessage"))
-    {
-        <div class="messages" id="MessageSpan" style="margin-top: 10px; text-align: center ">
-            <p class="alert alert-success">
-                @TempData["successMessage"].ToString()
-            </p>
-        </div>
-    }
-    //if (!string.IsNullOrWhiteSpace(Model.ErrorMessage))
-    if (TempData.ContainsKey("errorMessage"))
-    {
-        <div class="messages" id="MessageSpan" style="margin-top: 10px; text-align: center ">
-            <p class="alert alert-danger">
-                @*@Model.ErrorMessage*@
-                @TempData["errorMessage"].ToString()
+        <partial name="_ViewMessage" model="Model.ViewMessage" />
 
-            </p>
-        </div>
 
-    }
 }
     <h2 style="text-align:center; margin-bottom:20px">Edytuj pakiet medyczny</h2>
 

@@ -6,38 +6,15 @@
 
 @{
     IEnumerable<SelectListItem>
-    removeMode = Html.GetEnumSelectListWithOneValue(Asklepios.Web.Areas.AdministrativeArea.Models.ViewMode.Remove).ToList();
+            removeMode = Html.GetEnumSelectListWithOneValue(Asklepios.Web.Areas.AdministrativeArea.Models.ViewMode.Remove).ToList();
     IEnumerable<SelectListItem>
         readMode = Html.GetEnumSelectListWithOneValue(Asklepios.Web.Areas.AdministrativeArea.Models.ViewMode.Read).ToList();
     IEnumerable<SelectListItem>
-editMode = Html.GetEnumSelectListWithOneValue(Asklepios.Web.Areas.AdministrativeArea.Models.ViewMode.Edit).ToList();
+        editMode = Html.GetEnumSelectListWithOneValue(Asklepios.Web.Areas.AdministrativeArea.Models.ViewMode.Edit).ToList();
 
-    if (TempData.ContainsKey("successMessage"))
-
-    {
-        <div class="messages" id="MessageSpan" style="margin-top: 10px; text-align: center ">
-            <p class="alert alert-success">
-                @*@Model.SuccessMessage*@
-                @TempData["successMessage"].ToString()
-            </p>
-        </div>
-
-    }
-    //if (!string.IsNullOrWhiteSpace(Model.ErrorMessage))
-    if (TempData.ContainsKey("errorMessage"))
-    {
-        <div class="messages" id="MessageSpan" style="margin-top: 10px; text-align: center ">
-            <p class="alert alert-success">
-                @*@Model.ErrorMessage*@
-                @TempData["errorMessage"].ToString()
-
-            </p>
-        </div>
-
-    }
-
+        <partial name="_ViewMessage" model="Model.ViewMessage" />
 }
-    <h2 style="text-align:center; margin-bottom:20px">Lista pakietów medycznych</h2>
+<h2 style="text-align:center; margin-bottom:20px">Lista pakietów medycznych</h2>
 
 
 @foreach (MedicalPackage pack in Model.MedicalPackages)

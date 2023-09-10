@@ -268,5 +268,14 @@ namespace Asklepios.Data.InMemoryContexts
             //throw new NotImplementedException();
         }
 
+        public IQueryable<Visit> GetFutureVisitsQuery()
+        {
+            throw new NotImplementedException();
+        }
+
+        public IQueryable<Visit> GetFutureVisitsQueryPatient()
+        {
+            throw new NotImplementedException();
+        }
     }
 }

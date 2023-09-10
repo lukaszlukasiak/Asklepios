@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.IO;
+using System.Linq;
 
 namespace Asklepios.Core.Models
 {
@@ -78,12 +79,12 @@ namespace Asklepios.Core.Models
         public List<long> MedicalServiceIds { get; set; }
         public List<MedicalService> Services { get; set; }
 
-        [Required(ErrorMessage = "Proszę szerokość geograficzną placówki!")]
-        [Display(Name = "Szerokość geograficzna")]
-        public string Latitude { get; set; }
-        [Required(ErrorMessage = "Proszę długość geograficzną placówki!")]
-        [Display( Name ="Długość geograficzna")]
-        public string Longtitude { get; set; }
+        //[Required(ErrorMessage = "Proszę szerokość geograficzną placówki!")]
+        //[Display(Name = "Szerokość geograficzna")]
+        //public string Latitude { get; set; }
+        //[Required(ErrorMessage = "Proszę długość geograficzną placówki!")]
+        //[Display( Name ="Długość geograficzna")]
+        //public string Longtitude { get; set; }
 
 
 
@@ -129,7 +130,10 @@ namespace Asklepios.Core.Models
                                 {
                                     if (Services?.Count>0 || MedicalServiceIds?.Count>0)
                                     {
-                                        return true;
+                                        if (ImageFile!=null || string.IsNullOrWhiteSpace( ImagePath)==false)
+                                        {
+                                            return true;
+                                        }
                                     }
                                 }
                             }
@@ -138,6 +142,93 @@ namespace Asklepios.Core.Models
                 }
                 return false;
             }           
+        }
+
+        public void UpdateWithAnotherLocation(Location selectedLocation)
+        {
+            if (this.PostalCode!=selectedLocation.PostalCode)
+            {
+                this.PostalCode = selectedLocation.PostalCode;
+            }
+            if (this.Aglomeration!=selectedLocation.Aglomeration)
+            {
+                this.Aglomeration = selectedLocation.Aglomeration;
+            }
+            if (this.City!=selectedLocation.City)
+            {
+                this.City = selectedLocation.City;
+            }
+            if (this.PhoneNumber!=selectedLocation.PhoneNumber)
+            {
+                this.PhoneNumber = selectedLocation.PhoneNumber;
+            }
+            if (this.Description!=selectedLocation.Description)
+            {
+                this.Description = selectedLocation.Description;
+            }
+            if (this.StreetAndNumber!=selectedLocation.StreetAndNumber)
+            {
+                this.StreetAndNumber = selectedLocation.StreetAndNumber;
+            }
+            if (this.ImagePath!=selectedLocation.ImagePath)
+            {
+                this.ImagePath = selectedLocation.ImagePath;
+            }
+            if (this.Name!=selectedLocation.Name)
+            {
+                this.Name = selectedLocation.Name;
+            }
+
+            foreach (var item in selectedLocation.Services)
+            {
+                if (this.Services.Any(c=>c.Id==item.Id))
+                {
+
+                }
+                else
+                {
+                    this.Services.Add(item);
+                }
+            }
+            for (int i = this.Services.Count-1; i >= 0; i--)
+            {
+                MedicalService service = this.Services[i];
+
+                if (selectedLocation.Services.Any(c => c.Id == service.Id))
+                {
+
+                }
+                else
+                {
+                    this.Services.Remove(service);
+                }
+            }
+
+            //foreach (var item in selectedLocation.Services)
+            //{
+            //    if (this.Services.Any(c => c.Id == item.Id))
+            //    {
+
+            //    }
+            //    else
+            //    {
+            //        this.Services.Add(item);
+            //    }
+            //}
+            //for (int i = this.Services.Count - 1; i >= 0; i--)
+            //{
+            //    MedicalService service = this.Services[i];
+
+            //    if (selectedLocation.Services.Any(c => c.Id == service.Id))
+            //    {
+
+            //    }
+            //    else
+            //    {
+            //        this.Services.Remove(service);
+            //    }
+            //}
+
         }
     }
 }

@@ -1,47 +1,26 @@
 ﻿@model Asklepios.Web.Areas.AdministrativeArea.Models.ScheduleItemsAddViewModel
 @{
-    SelectList workersItems = new SelectList(Model.MedicalWorkers.OrderBy(c=>c.FullProffesionalName), "Id", "FullProffesionalName");
-    SelectList locationItems = new SelectList(Model.Locations.OrderBy(c=>c.Name), "Id", "Name");
-    SelectList categoriesList = new SelectList(Model.VisitCategories.OrderBy(c=>c.CategoryName), "Id", "CategoryName");
+    SelectList workersItems = new SelectList(Model.MedicalWorkers.OrderBy(c => c.FullProffesionalName), "Id", "FullProffesionalName");
+    SelectList locationItems = new SelectList(Model.Locations.OrderBy(c => c.Name), "Id", "Name");
+    SelectList categoriesList = new SelectList(Model.VisitCategories.OrderBy(c => c.CategoryName), "Id", "CategoryName");
     SelectList roomsList = null;
     if (long.TryParse(Model.SelectedLocationId, out long lid))
     {
         if (lid > 0)
         {
-            roomsList = new SelectList(Model.MedicalRooms.OrderBy(c=>c.Name), "Id", "LongDescription");
+            roomsList = new SelectList(Model.MedicalRooms.OrderBy(c => c.Name), "Id", "LongDescription");
 
         }
     }
-    //SelectList servicesList = new SelectList(Model.GetMedicalServices, "Id", "Name");
-    //IEnumerable<MedicalService> services = Model.MedicalServices.Where(c => c.Id == long.Parse(Model.SelectedPrimaryServiceId)).ToList();
 
-    SelectList servicesList = new SelectList(Model.PrimaryMedicalServices.OrderBy(c=>c.Name), "Id", "Name");
+    SelectList servicesList = new SelectList(Model.PrimaryMedicalServices.OrderBy(c => c.Name), "Id", "Name");
     Model.Guard = null;
 }
 
 <div class="d-flex flex-column">
-        <partial name="_Message" model="Model" />
+    <partial name="_ViewMessage" model="Model.ViewMessage" />
 
-@*        @{
-        if (Model.HasMessage)
-        {
-            <div class="messages" style="margin-top:10px;text-align:center">
-                <p class="alert alert-success">
-                    @Model.Message
-                </p>
-            </div>
-        }
-        else if (!string.IsNullOrWhiteSpace(Model.ErrorMessage))
-        {
-            <div class="messages" style="margin-top: 10px; text-align: center ">
-                <p class="alert alert-danger">
-                    @Model.Message
-                </p>
-            </div>
-        }*@
-@*    }
-*@
-<h2 style="text-align:center; margin-bottom:20px">Dodaj serię wizyt</h2>
+    <h2 style="text-align:center; margin-bottom:20px">Dodaj serię wizyt</h2>
 
     <form class="form mt-2" asp-action="ScheduleItemsAdd" method="post">
         <div class="form-group d-flex flex-column">
@@ -104,14 +83,10 @@
                 </button>
             </div>
 
-            <button id="btnSubmit" type="submit" class="btn btn-primary w-100 mt-2"  hidden>Dodaj</button>
+            <button id="btnSubmit" type="submit" class="btn btn-primary w-100 mt-2" hidden>Dodaj</button>
         </div>
 
     </form>
-    @*<form class="form mt-2" asp-action="ScheduleItemsAddUpdateLists" method="post">
-        <button id="btnUpdateLists" type="submit" class="btn btn-primary w-100 mt-2" onmousedown="RemoveGuard()" onkeydown="RemoveGuard()">Dodaj</button>
-
-    </form>*@
     <form class="form " asp-action="ScheduleItemsAdd" method="get">
 
         <div class="form-group d-flex flex-column">
@@ -141,4 +116,3 @@
 
 </div>
 
-    @*asp-format="{0:dd/MM/yyyy hh:mm}" value="@Model.FirstVisitInitialDateTime.ToString("dd.MM.yyyy HH:mm")"*@

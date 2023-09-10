@@ -11,21 +11,11 @@
             <input asp-for="SelectedPassportCode" type="hidden" />
             <input asp-for="SelectedGender" type="hidden" />
             <input asp-for="HasPolishCitizenship" type="hidden" />
-            <input asp-for="Message" type="hidden" />
-            <input asp-for="AlertMessageType" type="hidden" />
-@*            <input asp-for="ErrorMessage" type="hidden"/>
-            <input asp-for="SuccessMessage" type="hidden"/>
-*@
             <button id="btnSubmit" type="submit" class="btn btn-primary w-100 mt-2"></button>
         </div>
     </form>
-    @*<input asp-for="SelectedLocationId"/>*@
 </div>
 
 <script>
         document.getElementById('btnSubmit').click();
 </script>
-
-@*@{ 
-    Model.SelectedLocationId = "10";
-}*@

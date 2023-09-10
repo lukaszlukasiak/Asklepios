@@ -9,10 +9,10 @@
 
 <form asp-action="BookVisit" method="post">
     @{
-        SelectList workersItems = new SelectList(Model.GetMedicalWorkers.OrderBy(c=>c.FullProffesionalName), "Id", "FullProffesionalName");
-        SelectList locationItems = new SelectList(Model.GetLocations.OrderBy(c=>c.Name), "Id", "Name");
-        SelectList categoriesList = new SelectList(Model.GetVisitCategories.OrderBy(c=>c.CategoryName), "Id", "CategoryName");
-        SelectList servicesList = new SelectList(Model.GetMedicalServices.OrderBy(c=>c.Name), "Id", "Name");
+        SelectList workersItems = new SelectList(Model.GetMedicalWorkers.OrderBy(c => c.FullProffesionalName), "Id", "FullProffesionalName");
+        SelectList locationItems = new SelectList(Model.GetLocations.OrderBy(c => c.Name), "Id", "Name");
+        SelectList categoriesList = new SelectList(Model.GetVisitCategories.OrderBy(c => c.CategoryName), "Id", "CategoryName");
+        SelectList servicesList = new SelectList(Model.GetMedicalServices.OrderBy(c => c.Name), "Id", "Name");
     }
     <select class="form-control  mb-1" asp-for="SelectedLocationId" asp-items="locationItems">
         <option value="0">Wybierz oddział</option>
@@ -28,8 +28,8 @@
     <select class="form-control mb-1" asp-for="SelectedMedicalWorkerId" asp-items="workersItems">
         <option value="0">Wybierz lekarza</option>
     </select>
-    <div class="d-flex flex-column mt-2 mb-2" >
-        <button type="submit" class="btn btn-primary btn-icon-split ">
+    <div class="d-flex flex-column mt-2 mb-2">
+        <button id="btnSubmit" type="submit" class="btn btn-primary btn-icon-split ">
             <span class="icon text-white-50 left" style="text-align:left;float:left">
                 <i class="fas fa-filter"></i>
             </span>
@@ -37,8 +37,30 @@
             <span class="text" style="float: left">Filtruj!</span>
         </button>
     </div>
+    <div class="d-flex">
+        <div class="form-group d-flex flex-column ">
+            <button onclick="MovetToPreviousPage()" class="btn btn-primary btn-icon-split d-flex ">
+                <span class="icon text-white-50 left" style="text-align:left;float:left">
+                    <i class="fas fa-arrow-left"></i>
+                </span>
+            </button>
+        </div>
+
+        <select class="form-control mx-2" asp-for="CurrentPageNum" asp-items="ViewBag.PagesList" onchange="document.getElementById('btnSubmit').click();" onselect="Refresh()">
+        </select>
+
+        <div class="form-group d-flex flex-column ">
+            <button onclick="MoveToNextPage()" class="btn btn-primary btn-icon-split d-flex">
+                <span class="icon text-white-50 left" style="text-align:left;float:left">
+                    <i class="fas fa-arrow-right"></i>
+                </span>
+            </button>
+        </div>
+
+    </div>
+
     @*<select asp-for="@Model.SearchOptions.SelectedDoctor" asp-items="@Model.GetMedicalWorkers.ToList()" class="form-control">
-            <option>Select Role</option>
+        <option>Select Role</option>
         </select>
         @Html.DropDownList("Title", Model.Select(m => new SelectListItem() { Text = m., Value = m.Title }).ToList(), "Select")*@
 </form>
@@ -48,12 +70,13 @@
             <i class="fas fa-book"></i>
         </span>
         <span class="text" style="float: left">Wyczyść filtr!</span>
-    </button>   
+    </button>
 </form>
 
 
+
 @{
-    List<Visit> visits = Model.FilteredVisits;
+    List<Visit> visits = Model.PageVisits;
     if (visits.Count > 0)
     {
         @for (int i = 0; i < visits.Count; i++)
@@ -65,11 +88,31 @@
     else
     {
         <h3 style="text-align:center">Brak dostępnych wizyt przy założonych kryteriach...</h3>
-        @*<a asp-area="PatientArea" asp-controller="Patient" asp-action="BookVisit" class="btn btn-primary btn-icon-split mt-3">
-                <span class="icon text-white-50">
-                    <i class="fas fa-book"></i>
-                </span>
-                <span class="text">Zarezerwuj wizytę</span>
-            </a>*@
     }
 }
+<script>
+    function Refresh() {
+        document.getElementById('btnSubmit').click();
+    }
+    function MoveToNextPage() {
+        var pageNum = document.getElementById('CurrentPageNum').selectedIndex;
+
+        var max = -1;
+        var ddl = document.getElementById('CurrentPageNum');
+        for (i = 0; i < ddl.options.length; i++) {
+            if (max < ddl.options[i].index) {
+                max = ddl.options[i].index;
+            }
+        }
+        if (pageNum < max) {
+            document.getElementById('CurrentPageNum').selectedIndex  = pageNum + 1;
+        }
+    }
+    function MovetToPreviousPage(){
+        var pageNum = document.getElementById('CurrentPageNum').selectedIndex;
+        if (pageNum - 1 > -1) {
+            document.getElementById('CurrentPageNum').selectedIndex  = pageNum - 1;
+        }
+    }
+
+</script>

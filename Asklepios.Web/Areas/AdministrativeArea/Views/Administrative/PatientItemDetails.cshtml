@@ -19,9 +19,6 @@
         <label asp-for="CurrentPatient.User.UserName" class="control-label"></label>
         <input asp-for="CurrentPatient.User.UserName" class="form-control mb-2" readonly />
 
-        @*<label asp-for="CurrentPatient.User.Password" class="control-label"></label>
-            <input asp-for="CurrentPatient.User.Password" class="form-control mb-2" readonly />*@
-
         <label asp-for="CurrentPatient.Person.Name" class="control-label"></label>
         <input asp-for="CurrentPatient.Person.Name" class="form-control mb-2" readonly />
 
@@ -65,26 +62,11 @@
 
         <label asp-for="CurrentPatient.MedicalPackageId" class="control-label"></label>
         <input asp-for="CurrentPatient.MedicalPackage.Name" class="form-control mb-2" readonly />
-        @*<select class="form-control  mb-2" asp-for="CurrentPatient.MedicalPackageId" asp-items="medicalPackagesList">
-                <option value="">Wybierz pakiet</option>
-            </select>*@
-        @*<span asp-validation-for="CurrentPatient.MedicalPackageId" class="text-danger"></span>*@
         <label asp-for="CurrentPatient.NFZUnitId" class="control-label"></label>
-        @*<select class="form-control  mb-2" asp-for="CurrentPatient.NFZUnitId" asp-items="nfzUnits">
-                <option value="">Wybierz oddział NFZ</option>
-            </select>*@
         <input asp-for="CurrentPatient.NFZUnit.Description" class="form-control mb-2" readonly />
-        @*<span asp-validation-for="CurrentPatient.NFZUnitId" class="text-danger"></span>*@
-
-        <!--<input hidden asp-for="CurrentPatient.Id" class="form-control mb-2">-->
-        @*<input hidden asp-for="ViewMode" />*@
-        <!--<select hidden asp-for="ViewMode" asp-items="Html.GetEnumSelectListWithOneValue(editViewMode)">
-        </select>-->
     </div>
 
     <form class="form my-2" asp-action="PatientItemEdit" asp-route-id="@Model.CurrentPatient.Id" method="get" >
-        @*<input hidden asp-for="CurrentPatient.Id" class="form-control m-0">*@
-
         <div class="form-group d-flex flex-column mt-5">
             <button id="btnSubmit" type="submit" class="btn btn-primary btn-icon-split d-flex mt-3">
                 <span class="icon text-white-50 left" style="text-align:left;float:left">
@@ -93,13 +75,9 @@
                 <span class="text" style="float: left">Edytuj</span>
             </button>
         </div>
-
-        @*<button id="btnSubmit" type="submit" class="btn btn-primary w-100 mt-2">Zaktualizuj dane</button>*@
-
     </form>
     <form asp-action="PatientItemRemove" method="post">
         <input hidden asp-for="CurrentPatient.Id" class="form-control m-0">
-        @*<select hidden asp-for="ViewMode" asp-items="Html.GetEnumSelectListWithOneValue(removeViewMode)"/>*@
         <div class="form-group d-flex flex-column">
 
             <button id="btnSubmit" type="submit" class="btn btn-primary btn-icon-split d-flex mt-3">

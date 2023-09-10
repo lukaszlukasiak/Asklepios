@@ -15,6 +15,7 @@ using Microsoft.Extensions.DependencyInjection;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Hosting;
 using Asklepios.Core.Extensions;
+using Microsoft.EntityFrameworkCore.ChangeTracking;
 
 namespace Asklepios.Data.DBContexts
 {
@@ -1320,7 +1321,16 @@ namespace Asklepios.Data.DBContexts
                 string newLocation = SaveFile(selectedLocation.ImageFile, StorageFolderType.Locations, webrootPath);
                 selectedLocation.ImagePath = newLocation;
             }
-            Locations.Update(selectedLocation);
+
+            var existingOrder = Locations.Local.SingleOrDefault(o => o.Id == selectedLocation.Id);
+            existingOrder.UpdateWithAnotherLocation(selectedLocation);
+            //if (existingOrder != null)
+            //{
+            //    Entry(existingOrder).State = EntityState.Detached;
+            //}
+            DisplayStates(ChangeTracker.Entries());
+
+            //Locations.Update(selectedLocation);
             SaveChanges();
 
             //string filePath = SaveFile(formFile, StorageFolderType.Locations, hostPath);
@@ -1330,6 +1340,13 @@ namespace Asklepios.Data.DBContexts
 
             //SaveChanges();
 
+        }
+        private static void DisplayStates(IEnumerable<EntityEntry> entries)
+        {
+            foreach (var entry in entries)
+            {
+                Console.WriteLine($"Entity: {entry.Entity.GetType().Name},State: { entry.State.ToString()}");
+            }
         }
 
         //public void UpdateLocationImage(IFormFile imageFile, Location location, string webRootPath)
@@ -1483,7 +1500,7 @@ namespace Asklepios.Data.DBContexts
 
         public bool HasMedicalWorkerVisits(long id)
         {
-            return MedicalWorkers.Any(x => x.Id == id);
+            return Visits.Any(x => x.MedicalWorkerId == id);
         }
 
         public bool HasPatientVisits(long id)
@@ -1499,6 +1516,26 @@ namespace Asklepios.Data.DBContexts
                 .Include(c => c.Patient).ThenInclude(d => d.Person)
                 .AsQueryable<Visit>();
         }
+
+        public IQueryable<Visit> GetFutureVisitsQueryPatient()
+        {
+            return Visits
+                .Where(k => k.DateTimeSince > DateTimeOffset.Now)
+                .Include(a => a.MedicalWorker).ThenInclude(b => b.Person)
+                .Include(c => c.Patient).ThenInclude(d => d.Person)
+                .Include(e=>e.MedicalRoom)
+                .AsQueryable<Visit>();
+        }
+
+        public IQueryable<Visit> GetVisitsQuery()
+        {
+            return Visits
+                .Include(a => a.MedicalWorker).ThenInclude(b => b.Person)
+                .Include(c => c.Patient).ThenInclude(d => d.Person)
+                .Include(e => e.Location)
+                .AsQueryable<Visit>();
+        }
+
 
         public IQueryable<Visit> GetAllVisitsByPatientIdQuery(long id)
         {

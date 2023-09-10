@@ -102,5 +102,6 @@ namespace Asklepios.Data.Interfaces
         void RemovePersonById(long personId);
         void RemoveUserById(long userId);
         Task<bool> AddIdenitytUserWithRole(User user, UserManager<User> userManager, RoleManager<IdentityRole<long>> roleManager);
+        IQueryable<Visit> GetVisitsQuery();
     }
 }

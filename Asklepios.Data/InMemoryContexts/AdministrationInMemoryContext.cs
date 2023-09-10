@@ -17,6 +17,7 @@ namespace Asklepios.Data.InMemoryContexts
         readonly IEnumerable<Visit> availableVisits;
         readonly IEnumerable<Location> locations;
         private readonly IEnumerable<MedicalWorker> medicalWorkers;
+
         public AdministrationInMemoryContext()
         {
             if (!PatientMockDB.IsCreated)
@@ -508,6 +509,11 @@ namespace Asklepios.Data.InMemoryContexts
         }
 
         public Task<bool> AddIdenitytUserWithRole(User user, UserManager<User> userManager, RoleManager<IdentityRole<long>> roleManager)
+        {
+            throw new NotImplementedException();
+        }
+
+        public IQueryable<Visit> GetVisitsQuery()
         {
             throw new NotImplementedException();
         }

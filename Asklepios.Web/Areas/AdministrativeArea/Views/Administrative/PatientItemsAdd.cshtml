@@ -7,34 +7,7 @@
 }
 <div class="d-flex flex-column">
     @{
-                <partial name="_Message" model="Model" />
-
-        //if (TempData.ContainsKey("successMessage"))
-        //{
-        //    <div class="messages" id="MessageSpan" style="margin-top: 10px; text-align: center ">
-        //        <p class="alert alert-success">
-        //            @Model.SuccessMessage
-        //        </p>
-        //    </div>
-        //    <a asp-controller="Administrative" asp-action="PatientItemsAdd" class="btn btn-outline-secondary btn-icon-split ">
-        //        <span class="text" style="float: left">Resetuj dane</span>
-        //    </a>
-
-        //}
-        //if (TempData.ContainsKey("errorMessage"))
-        //{
-        //    <div class="messages" id="MessageSpan" style="margin-top: 10px; text-align: center ">
-        //        <p class="alert alert-success">
-        //            @Model.ErrorMessage
-        //        </p>
-        //    </div>
-        //    <a asp-controller="Administrative" asp-action="PatientItemsAdd" class="btn btn-outline-secondary btn-icon-split ">
-        //        <span class="text" style="float: left">Resetuj dane</span>
-        //    </a>
-
-        //}
-
-
+                <partial name="_ViewMessage" model="Model.ViewMessage" />
     }
     <h2 style="text-align:center; margin-bottom:20px">Dodaj pacjenta</h2>
 

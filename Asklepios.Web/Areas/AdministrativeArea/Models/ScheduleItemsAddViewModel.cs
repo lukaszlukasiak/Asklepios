@@ -1,5 +1,6 @@
 ﻿using Asklepios.Core.Models;
 using Asklepios.Web.Enums;
+using Asklepios.Web.Models;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
@@ -84,8 +85,9 @@ namespace Asklepios.Web.Areas.AdministrativeArea.Models
             }
         }
         public string UserName { get; set; }
-        public string Message { get; set; }
-        public AlertMessageType AlertMessageType { get; set; }
+        //public string Message { get; set; }
+        //public AlertMessageType AlertMessageType { get; set; }
+        public ViewMessage ViewMessage { get; set; } = new ViewMessage();
 
         public bool IsValid()
         {
@@ -109,20 +111,20 @@ namespace Asklepios.Web.Areas.AdministrativeArea.Models
                                         }
                                         else
                                         {
-                                            Message = ERROR_MESSAGE_DURATION;
+                                            ViewMessage.Message = ERROR_MESSAGE_DURATION;
 
                                         }
                                     }
                                     else
                                     {
-                                        Message = ERROR_MESSAGE_NUMBER_OF_VISITS;
+                                        ViewMessage.Message = ERROR_MESSAGE_NUMBER_OF_VISITS;
                                     }
                                 }
                                 else
                                 {
-                                    Message = ERROR_MESSAGE_DATE;
+                                    ViewMessage.Message = ERROR_MESSAGE_DATE;
                                 }
-                                AlertMessageType = AlertMessageType.ErrorMessage;
+                                ViewMessage.MessageType = AlertMessageType.ErrorMessage;
                             }
                             else
                             {
@@ -146,29 +148,37 @@ namespace Asklepios.Web.Areas.AdministrativeArea.Models
                 {
                     if (roomdId > 0 && workerId > 0)
                     {
-                        IQueryable<Visit> filteredVisits = visits.Where(c => c.DateTimeSince.Date == VisitsDate.Date  && c.MedicalRoom.Id == roomdId).AsQueryable(); //.ToList();
-                   //     List<Visit> fvisits= visits.Where(c => c.DateTimeSince.Date == VisitsDate.Date && c.MedicalRoom.Id == roomdId).ToList(); //.ToList();
+                        IQueryable<Visit> filteredVisits = visits.Where(c => c.DateTimeSince.Date == VisitsDate.Date && c.MedicalRoom.Id == roomdId).AsQueryable(); //.ToList();
+                                                                                                                                                                    //     List<Visit> fvisits= visits.Where(c => c.DateTimeSince.Date == VisitsDate.Date && c.MedicalRoom.Id == roomdId).ToList(); //.ToList();
 
                         TimeSpan start = FirstVisitTime;
                         TimeSpan end = VisitsDate.TimeOfDay.Add(new TimeSpan(0, NumberOfVisitsToAdd * DurationOfVisit, 0)).Add(FirstVisitTime);
 
 
                         IQueryable<Visit> duplicates = filteredVisits.Where(c => (c.DateTimeSince.TimeOfDay >= start && c.DateTimeSince.TimeOfDay < end) || (c.DateTimeTill.TimeOfDay > start && c.DateTimeTill.TimeOfDay <= end)).AsQueryable();// .ToList();
-                      //  fvisits= filteredVisits.Where(c => (c.DateTimeSince.TimeOfDay > start && c.DateTimeSince.TimeOfDay < end) || (c.DateTimeTill.TimeOfDay > start && c.DateTimeTill.TimeOfDay < end)).ToList();
+                                                                                                                                                                                                                                                 //  fvisits= filteredVisits.Where(c => (c.DateTimeSince.TimeOfDay > start && c.DateTimeSince.TimeOfDay < end) || (c.DateTimeTill.TimeOfDay > start && c.DateTimeTill.TimeOfDay < end)).ToList();
                         if (duplicates != null && duplicates.Count() > 0)
                         {
-                            Message = ERROR_MESSAGE_ROOM;
-                            AlertMessageType = AlertMessageType.ErrorMessage;
+                            ViewMessage = new ViewMessage()
+                            {
+                                Message = ERROR_MESSAGE_ROOM,
+                                MessageType = AlertMessageType.ErrorMessage
+                            };
+
+
                             return true;
                         }
 
                         filteredVisits = visits.Where(c => c.DateTimeSince.Date == VisitsDate.Date && c.MedicalWorker.Id == workerId).AsQueryable();//.ToList();
-                      //  fvisits = visits.Where(c => c.DateTimeSince.Date == VisitsDate.Date && c.MedicalWorker.Id == workerId).ToList();
+                                                                                                                                                    //  fvisits = visits.Where(c => c.DateTimeSince.Date == VisitsDate.Date && c.MedicalWorker.Id == workerId).ToList();
                         duplicates = filteredVisits.Where(c => (c.DateTimeSince.TimeOfDay >= start && c.DateTimeSince.TimeOfDay < end) || (c.DateTimeTill.TimeOfDay > start && c.DateTimeTill.TimeOfDay <= end)).AsQueryable(); //.ToList();
                         if (duplicates != null && duplicates.Count() > 0)
                         {
-                            Message = ERROR_MESSAGE_WORKER;
-                            AlertMessageType = AlertMessageType.ErrorMessage;
+                            ViewMessage = new ViewMessage()
+                            {
+                                Message = ERROR_MESSAGE_WORKER,
+                                MessageType = AlertMessageType.ErrorMessage
+                            };
 
                             return true;
                         }

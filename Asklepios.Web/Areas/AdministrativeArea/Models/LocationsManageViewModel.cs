@@ -1,6 +1,7 @@
 ﻿using Asklepios.Core.Models;
 using Asklepios.Data.Interfaces;
 using Asklepios.Web.Enums;
+using Asklepios.Web.Models;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
@@ -14,8 +15,8 @@ namespace Asklepios.Web.Areas.AdministrativeArea.Models
         public long SelectedLocationId { get; set; }
         public Location SelectedLocation { get; set; }
         public List<Location> AllLocations { get; set; }
-        public string SuccessMessage { get; set; }
-        public string ErrorMessage { get; set; }
+        //public string SuccessMessage { get; set; }
+        //public string ErrorMessage { get; set; }
         public ViewMode ViewMode { get; set; }
         public bool IsValid { get; internal set; }
         //[Display(Name = "Lista nieprzypisanych do placówki usług. Zaznacz i zatwierdź, by dodać")]
@@ -29,8 +30,9 @@ namespace Asklepios.Web.Areas.AdministrativeArea.Models
         public List<MedicalService> PrimaryServices { get; set; }
         public List<MedicalRoom> UnasignedRooms { get; set; }
         public string UserName { get; set; }
-        public string Message { get; set; }
-        public AlertMessageType AlertMessageType { get; set; }
+        //public string Message { get; set; }
+        //public AlertMessageType AlertMessageType { get; set; }
+        public ViewMessage ViewMessage { get; set; } = new ViewMessage();
 
 
         //[Display(Name = "List pokoi możliwych do dodania do listy pokoi danej placówki")]

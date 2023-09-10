@@ -3,25 +3,8 @@
     SelectList locations = new SelectList(Model.SortedLocations, "Id", "Name");
 }
 @{
-    if (TempData.ContainsKey("successMessage"))
-    {
-        <div class="messages" id="MessageSpan" style="margin-top: 10px; text-align: center ">
-            <p class="alert alert-success">
-                @TempData["successMessage"].ToString()
-            </p>
-        </div>
+    <partial name="_ViewMessage" model="Model.ViewMessage" />
 
-    }
-    if (TempData.ContainsKey("errorMessage"))
-    {
-        <div class="messages" id="MessageSpan" style="margin-top: 10px; text-align: center ">
-            <p class="alert alert-success">
-                @TempData["errorMessage"].ToString()
-
-            </p>
-        </div>
-
-    }
 }
 
     <h2 style="text-align:center; margin-bottom:20px">Dodaj gabinet medyczny</h2>

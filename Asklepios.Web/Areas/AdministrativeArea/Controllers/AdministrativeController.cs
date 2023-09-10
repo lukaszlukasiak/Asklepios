@@ -28,83 +28,48 @@ namespace Asklepios.Web.Areas.AdministrativeArea.Controllers
     [Authorize(Roles = "AdministrativeWorker")]
     public class AdministrativeController : Controller
     {
-        //private readonly ILogger<AdministrativeWorkerController> _logger;
         IAdministrationModuleRepository _context;
         private UserManager<User> _userManager;
         private RoleManager<IdentityRole<long>> _roleManager;
-        //private PasswordHasher<User> _passwordHasher;
-        //public AdministrativeWorkerController(ILogger<AdministrativeWorkerController> logger)
-        //{
-        //    _logger = logger;
-        //}
         SignInManager<User> _signManager { get; set; }
         IWebHostEnvironment _hostEnvironment { get; set; }
 
         long UserId { get; set; }
-        //public const string ERROR_MESSAGE = "errorMessage";
-        //public const string SUCCESS_MESSAGE = "successMessage";
-        public const string MESSAGE = "MESSAGE";
+        //public const string MESSAGE = "MESSAGE";
         private User _loggedUser { get; set; }
 
 
-        public AdministrativeController(IAdministrationModuleRepository context, 
-                                                IWebHostEnvironment hostEnvironment, 
-                                                    SignInManager<User> signManager, 
-                                                        UserManager<User> userManager, 
+        public AdministrativeController(IAdministrationModuleRepository context,
+                                                IWebHostEnvironment hostEnvironment,
+                                                    SignInManager<User> signManager,
+                                                        UserManager<User> userManager,
                                                             RoleManager<IdentityRole<long>> roleManager
                                                                 )//PasswordHasher<User> passwordHasher
         {
             _hostEnvironment = hostEnvironment;
-            _signManager= signManager;
+            _signManager = signManager;
             _context = context;
             _userManager = userManager;
             _roleManager = roleManager;
-            //_passwordHasher = passwordHasher;
-            //UserId = HttpContext.User.GetUserId().Value;
-            //_loggedUser=_context.GetUserById(UserId);
         }
-        //private static Person _person { get; set; }
-        //private static Patient _selectedPatient { get; set; }
 
         public async Task<IActionResult> LogOutAsync()
         {
-            //_loggedUser = null;
-            //_person = null;
-            //_selectedPatient = null;
-
             await _signManager.SignOutAsync();
-            return RedirectToAction("Index","Home");
+            return RedirectToAction("Index", "Home");
 
         }
 
         public IActionResult Index()
         {
-            //_signManager.UserManager.
-            //if (int.TryParse(id, out int parsedId))
-            //{
-                //_loggedUser = _context.GetUserById(parsedId);
-                //_person = _context.GetPerson(_loggedUser.PersonId);
-                //return View();
-                return RedirectToAction("ScheduleItemsManage");
+            return RedirectToAction("ScheduleItemsManage");
 
-            //}
-            //else
-            //{
-            //    if (_loggedUser != null)
-            //    {
-            //        return RedirectToAction("ScheduleItemsManage");
-            //    }
-            //    else
-            //    {
-            //        return NotFound();
-            //    }
-            //}
         }
 
         [HttpGet]
         public IActionResult Contact()
         {
-            
+
             UserId = HttpContext.User.GetUserId().Value;
             _loggedUser = _context.GetUserById(UserId);
 
@@ -165,16 +130,20 @@ namespace Asklepios.Web.Areas.AdministrativeArea.Controllers
                     model = new ScheduleManageViewModel();
                 }
                 model.CurrentPageNum = 1;
-                //List<Visit> visits = _context.GetFutureVisitsChunk(model.CurrentPageNumId, 100);//_context.GetAvailableVisits();
-                //model.Schedule = visits;
                 model.FilterSchedule(_context.GetFutureVisitsQuery());
 
                 model.Locations = _context.GetAllLocations();
-                //model.MedicalRooms=_context
                 model.MedicalWorkers = _context.GetMedicalWorkers();
                 model.PrimaryMedicalServices = _context.GetMedicalServices().Where(c => c.IsPrimaryService == true).ToList();
                 model.VisitCategories = _context.GetVisitCategories();
                 model.UserName = _loggedUser.Person.FullName;
+                if (TempData.ContainsKey(ViewMessage.MESSAGE_KEY))
+                {
+                    ViewMessage message = JsonConvert.DeserializeObject<ViewMessage>((string)TempData[ViewMessage.MESSAGE_KEY]);
+                    model.ViewMessage = message;
+                    TempData.Remove(ViewMessage.MESSAGE_KEY);
+
+                }
 
                 CreatePageSelectList(model);
                 return View(model);
@@ -190,7 +159,6 @@ namespace Asklepios.Web.Areas.AdministrativeArea.Controllers
                 PageSelect page = new PageSelect();
                 page.Value = i.ToString();
                 page.Id = i;
-                //SelectListItem item = new SelectListItem(i.ToString(), i.ToString());
                 items.Add(page);
             }
             SelectList pagesList = new SelectList(items, "Id", "Value", model.CurrentPageNum);
@@ -260,6 +228,13 @@ namespace Asklepios.Web.Areas.AdministrativeArea.Controllers
                 {
                     items.Add(i);
                 }
+                if (TempData.ContainsKey(ViewMessage.MESSAGE_KEY))
+                {
+                    ViewMessage message = JsonConvert.DeserializeObject<ViewMessage>((string)TempData[ViewMessage.MESSAGE_KEY]);
+                    model.ViewMessage = message;
+                    TempData.Remove(ViewMessage.MESSAGE_KEY);
+
+                }
 
                 SelectList pagesList = new SelectList(items, model.CurrentPageNum - 1);
                 ViewData["PagesList"] = pagesList;
@@ -311,8 +286,11 @@ namespace Asklepios.Web.Areas.AdministrativeArea.Controllers
                             {
                                 _context.AddVisitsToSchedule(visits);
 
-                                model.Message = "Wizyty zostały dodane";
-                                model.AlertMessageType=AlertMessageType.SuccessMessage;
+                                model.ViewMessage = new ViewMessage()
+                                {
+                                    Message = "Wizyty zostały dodane!",
+                                    MessageType = AlertMessageType.SuccessMessage
+                                };
 
                                 model.VisitCategories = _context.GetVisitCategories();
                                 model.PrimaryMedicalServices = _context.GetMedicalServices().Where(c => c.IsPrimaryService == true).ToList();
@@ -332,14 +310,26 @@ namespace Asklepios.Web.Areas.AdministrativeArea.Controllers
                         }
                         else
                         {
-                            model.Message = "Dodawane wizyty duplikują się z już istniejącymi dla wybranego pracownika medycznego";
-                            model.AlertMessageType = AlertMessageType.ErrorMessage;
+                            model.ViewMessage = new ViewMessage()
+                            {
+                                Message = "Dodawane wizyty duplikują się z już istniejącymi dla wybranego pracownika medycznego",
+                                MessageType = AlertMessageType.ErrorMessage
+                            };
+
+                            //model.Message = "Dodawane wizyty duplikują się z już istniejącymi dla wybranego pracownika medycznego";
+                            //model.AlertMessageType = AlertMessageType.ErrorMessage;
                         }
                     }
                     else
                     {
-                        model.Message = "Nie wszystkie dane zostały poprawnie uzupełnione";
-                        model.AlertMessageType = AlertMessageType.ErrorMessage;
+                        model.ViewMessage = new ViewMessage()
+                        {
+                            Message = "Nie wszystkie dane zostały poprawnie uzupełnione!",
+                            MessageType = AlertMessageType.ErrorMessage
+                        };
+
+                        //model.Message = "Nie wszystkie dane zostały poprawnie uzupełnione";
+                        //model.AlertMessageType = AlertMessageType.ErrorMessage;
                     }
 
                 }
@@ -374,7 +364,7 @@ namespace Asklepios.Web.Areas.AdministrativeArea.Controllers
             {
 
                 DateTime start = model.VisitsDate.Add(new TimeSpan(0, model.DurationOfVisit * i, 0)); //new DateTimeOffset(model.VisitsDate.DateTime, new TimeSpan(0, model.DurationOfVisit * i, 0)); //new DateTimeOffset(model.VisitsDate.DateTime, model.FirstVisitTime.Add(new TimeSpan(0, model.DurationOfVisit * i, 0)));
-                DateTime end = model.VisitsDate.Add(new TimeSpan(0, model.DurationOfVisit * (i+1), 0));//new DateTimeOffset(model.VisitsDate.DateTime, new TimeSpan(0, model.DurationOfVisit * (i+1), 0));  //new DateTimeOffset(model.VisitsDate.DateTime, model.FirstVisitTime.Add(new TimeSpan(0, model.DurationOfVisit * (i + 1), 0)));
+                DateTime end = model.VisitsDate.Add(new TimeSpan(0, model.DurationOfVisit * (i + 1), 0));//new DateTimeOffset(model.VisitsDate.DateTime, new TimeSpan(0, model.DurationOfVisit * (i+1), 0));  //new DateTimeOffset(model.VisitsDate.DateTime, model.FirstVisitTime.Add(new TimeSpan(0, model.DurationOfVisit * (i + 1), 0)));
 
                 Visit visit = new Visit(location, medicalRoom, medicalWorker, visitCategory, medicalService, start, end);
                 visitsToAdd.Add(visit);
@@ -419,7 +409,7 @@ namespace Asklepios.Web.Areas.AdministrativeArea.Controllers
                         List<MedicalService> services = visitCategory.MedicalServices;
                         List<MedicalWorker> workers = model.MedicalWorkers.Where(c => c.MedicalServices.Intersect(visitCategory.MedicalServices).Count() > 0).ToList();
                         model.MedicalWorkers = workers;
-                        model.PrimaryMedicalServices = services.Where(c=>c.IsPrimaryService).ToList();
+                        model.PrimaryMedicalServices = services.Where(c => c.IsPrimaryService).ToList();
                     }
                 }
             }
@@ -463,8 +453,13 @@ namespace Asklepios.Web.Areas.AdministrativeArea.Controllers
                         (model2 as ISearchVisit).SetSearchOptions(model);
 
                         _context.RemoveVisitById(visit1.Id);
-                        model2.Message = "Wizyta została usunięta!";
-                        model2.AlertMessageType = AlertMessageType.InfoMessage;
+                        ViewMessage viewMessage = new ViewMessage()
+                        {
+                            Message = "Wizyta została usunięta!",
+                            MessageType = AlertMessageType.InfoMessage
+                        };
+                        TempData[ViewMessage.MESSAGE_KEY] = JsonConvert.SerializeObject(viewMessage);
+
                         ISearchVisit searchOptions = model;
                         model.UserName = _loggedUser.Person.FullName;
 
@@ -574,18 +569,23 @@ namespace Asklepios.Web.Areas.AdministrativeArea.Controllers
                                     //}
                                     _context.UpdateMedicalWorker(model.SelectedWorker, _hostEnvironment.WebRootPath);
                                     //TempData[SUCCESS_MESSAGE] = "Dane pracownika medycznego zostały zaktualizowane!";
-                                    model.Message = "Dane pracownika medycznego zostały zaktualizowane!";
-                                    model.AlertMessageType = AlertMessageType.InfoMessage;
+                                    model.ViewMessage = new ViewMessage()
+                                    {
+                                        Message = "Dane pracownika medycznego zostały zaktualizowane!",
+                                        MessageType = AlertMessageType.InfoMessage
+                                    };
 
                                 }
                             }
                         }
                         else
                         {
-                            //TempData[ERROR_MESSAGE] = "Dane pracownika medycznego nie zostały zaktualizowane. Uzupełnij wszystko poprawnie!";
-                            model.Message = "Dane pracownika medycznego nie zostały zaktualizowane. Uzupełnij wszystko poprawnie!";
-                            model.AlertMessageType = AlertMessageType.InfoMessage;
+                            model.ViewMessage = new ViewMessage()
+                            {
+                                Message = "Dane pracownika medycznego nie zostały zaktualizowane. Uzupełnij wszystko poprawnie!",
+                                MessageType = AlertMessageType.InfoMessage
 
+                            };
                         }
                     }
                     model.UserName = _loggedUser.Person.FullName;
@@ -625,27 +625,23 @@ namespace Asklepios.Web.Areas.AdministrativeArea.Controllers
                             };
                             //model.ErrorMessage = "Nie można usunąć pracownika, do którego są przypisane jakiekolwiek wizyty!";
                             model.UserName = _loggedUser.Person.FullName;
-                            TempData[MESSAGE] = JsonConvert.SerializeObject(message);
-
+                            TempData[ViewMessage.MESSAGE_KEY] = JsonConvert.SerializeObject(message);
                         }
                         else
                         {
-                            long personId = model.Person.Id;
-                            long userId = model.User.Id;
+                            long personId = medicalWorker.Person.Id;
+                            long userId = medicalWorker.UserId.Value;
                             _context.RemoveMedicalWorkerById(model.SelectedWorkerId);
                             _context.RemovePersonById(personId);
                             _context.RemoveUserById(userId);
-                            ViewMessage message= new ViewMessage()
+                            ViewMessage message = new ViewMessage()
                             {
                                 Message = "Pracownik medyczny został usunięty!",
                                 MessageType = AlertMessageType.InfoMessage
                             };
-                            TempData[MESSAGE] = JsonConvert.SerializeObject(message);
+                            TempData[ViewMessage.MESSAGE_KEY] = JsonConvert.SerializeObject(message);
 
-                            //TempData[MESSAGE] = viewMessage;//"Pracownik medyczny został usunięty!";
-                            //model.SuccessMessage = "Pracownik medyczny został usunięty!";
                             model.UserName = _loggedUser.Person.FullName;
-
                         }
 
                         return RedirectToAction("MedicalWorkerItemsManage");
@@ -710,69 +706,44 @@ namespace Asklepios.Web.Areas.AdministrativeArea.Controllers
 
                                 _context.AddMedicalWorkerObjects(model.MedicalWorker, _hostEnvironment.WebRootPath);
 
-                                model.Message = "Pracownik medyczny został dodany!";
-                                model.AlertMessageType = AlertMessageType.InfoMessage;
+                                model.ViewMessage = new ViewMessage()
+                                {
+                                    Message = "Pracownik medyczny został dodany!",
+                                    MessageType = AlertMessageType.InfoMessage
+                                };
+                                //model.Message = "Pracownik medyczny został dodany!";
+                                //model.AlertMessageType = AlertMessageType.InfoMessage;
                                 model.UserName = _loggedUser.Person.FullName;
 
                                 return View(model);
                             }
-
-                            //if (model.IsValid)
-                            //{
-                            //    //if (model.Person.ImageFile != null)
-                            //    //{
-                            //    //    _context.UpdatePersonImage(model.Person.ImageFile, model.Person, _hostEnvironment.WebRootPath);
-                            //    //}
-                            //    var passwordValidator = new PasswordValidator<User>();
-
-                            //    var result = await passwordValidator.ValidateAsync(_userManager, null, model.User.PasswordHash);
-                            //    User userSearch= await _userManager.FindByNameAsync(model.User.UserName);
-
-
-                            //    if (userSearch != null)
-                            //    {
-                            //        model.Message = "Już istnieje użytkownikiem z taką nazwą! Zmień ją!";
-                            //        model.AlertMessageType = AlertMessageType.WarningMessage;
-                            //        return View(model);
-                            //    }
-                            //    if (result.Succeeded==false)
-                            //    {
-                            //        model.Message = "Hasło nie spełnia wymogów. Popraw je!";
-                            //        model.AlertMessageType = AlertMessageType.WarningMessage;
-                            //        return View(model);
-
-                            //    }
-
-
-                            //    _context.AddMedicalWorkerObjects( model.MedicalWorker, _hostEnvironment.WebRootPath);
-                            //    model.Message= "Pracownik medyczny został dodany!";
-                            //    model.AlertMessageType = AlertMessageType.InfoMessage;
-                            //    //TempData[SUCCESS_MESSAGE]= "Pracownik medyczny został dodany!";
-                            //    //model.SuccessMessage = "Pracownik medyczny został dodany!";
-
-                            //    return View(model);
-
-                            //}
                             else
                             {
+                                string mess = null;
                                 if (string.IsNullOrWhiteSpace(model.User.PasswordHash))
                                 {
-                                    model.Message = "Uzupełnij hasło";
+                                    mess = "Uzupełnij hasło";
                                 }
                                 else if (!result.Succeeded)
                                 {
-                                    model.Message = "Hasło nie spełnia wszystkich wymagań! Popraw je!";
+                                    mess = "Hasło nie spełnia wszystkich wymagań! Popraw je!";
                                 }
                                 if (userInDb != null)
                                 {
-                                    model.Message = "Już istnieje użytkownik z podaną nazwą!";
+                                    mess = "Już istnieje użytkownik z podaną nazwą!";
                                 }
                                 model.UserName = _loggedUser.Person.FullName;
-                                model.AlertMessageType = AlertMessageType.WarningMessage;
-                                if (string.IsNullOrWhiteSpace( model.Message))
+                                //model.AlertMessageType = AlertMessageType.WarningMessage;
+                                if (string.IsNullOrWhiteSpace(mess))
                                 {
-                                    model.Message = "Pracownik medyczny nie został dodany. Wypełnij poprawnie wszystkie dane!";
+                                    mess = "Pracownik medyczny nie został dodany. Wypełnij poprawnie wszystkie dane!";
                                 }
+
+                                model.ViewMessage = new ViewMessage()
+                                {
+                                    Message = mess,
+                                    MessageType = AlertMessageType.WarningMessage
+                                };
                                 return View(model);
 
                                 //TempData[ERROR_MESSAGE] = "Pracownik medyczny nie został dodany. Wypełnij poprawnie wszystko!";
@@ -783,6 +754,18 @@ namespace Asklepios.Web.Areas.AdministrativeArea.Controllers
                     }
 
                 }
+
+                model.ViewMessage = new ViewMessage()
+                {
+                    Message = "Pracownik medyczny nie został dodany! Wypełnij poprawnie wszystkie pola!",
+                    MessageType = AlertMessageType.ErrorMessage
+                };
+                //return View(model);
+
+                //model.Message = "Pracownik medyczny nie został dodany! Wypełnij poprawnie wszystkie pola!";
+                //model.AlertMessageType = AlertMessageType.ErrorMessage;
+                model.UserName = _loggedUser.Person.FullName;
+
 
                 return View(model);
             }
@@ -833,7 +816,7 @@ namespace Asklepios.Web.Areas.AdministrativeArea.Controllers
                 User userInDb = null;
                 IdentityResult result = null;
 
-                if (!string.IsNullOrWhiteSpace( model.User.PasswordHash))
+                if (!string.IsNullOrWhiteSpace(model.User.PasswordHash))
                 {
                     var passwordValidator = new PasswordValidator<User>();
                     result = await passwordValidator.ValidateAsync(_userManager, null, model.User.PasswordHash);
@@ -842,7 +825,7 @@ namespace Asklepios.Web.Areas.AdministrativeArea.Controllers
                 }
 
 
-                if (model.IsValid && userInDb==null && result.Succeeded)
+                if (model.IsValid && userInDb == null && result.Succeeded)
                 {
                     model.MedicalPackages = _context.GetMedicalPackages();
                     model.NFZUnits = _context.GetNFZUnits();
@@ -850,9 +833,9 @@ namespace Asklepios.Web.Areas.AdministrativeArea.Controllers
                     _context.AddPerson(model.Person, _hostEnvironment.WebRootPath);
 
                     model.User.Person = null;
-                    model.User.PersonId=model.Person.Id;
+                    model.User.PersonId = model.Person.Id;
 
-                    bool isSuccessfull= await _context.AddIdenitytUserWithRole(model.User, _userManager, _roleManager);
+                    bool isSuccessfull = await _context.AddIdenitytUserWithRole(model.User, _userManager, _roleManager);
                     //IdentityResult identityResult= await _userManager.CreateAsync(model.User, model.User.PasswordHash);
                     //var role = await _roleManager.FindByNameAsync(IdentityRoleTypes.Patient.GetDescription());
                     model.Patient.UserId = model.Patient.User.Id;
@@ -861,37 +844,50 @@ namespace Asklepios.Web.Areas.AdministrativeArea.Controllers
                     model.User = null;
                     model.Patient.User = null;
 
-                    _context.AddPatientObjects(  model.Patient, _hostEnvironment.WebRootPath);
+                    _context.AddPatientObjects(model.Patient, _hostEnvironment.WebRootPath);
 
-                    model.Message = "Pacjent został dodany!";
-                    model.AlertMessageType = AlertMessageType.InfoMessage;
+                    model.ViewMessage = new ViewMessage()
+                    {
+                        Message = "Pacjent został dodany!",
+                        MessageType = AlertMessageType.InfoMessage
+                    };
+                    //}
+                    //model.Message = "Pacjent został dodany!";
+                    //    model.AlertMessageType = AlertMessageType.InfoMessage;
                     model.UserName = _loggedUser.Person.FullName;
 
                     return View(model);
                 }
                 else
                 {
-                    if (string.IsNullOrWhiteSpace( model.User.PasswordHash))
+                    string mess = null;
+                    if (string.IsNullOrWhiteSpace(model.User.PasswordHash))
                     {
-                        model.Message= "Uzupełnij hasło";
+                        mess = "Uzupełnij hasło";
                     }
                     else if (!result.Succeeded)
                     {
-                        model.Message = "Hasło nie spełnia wszystkich wymagań! Popraw je!";
+                        mess = "Hasło nie spełnia wszystkich wymagań! Popraw je!";
                     }
-                    if (userInDb!=null)
+                    if (userInDb != null)
                     {
-                        model.Message = "Już istnieje użytkownik z podaną nazwą!";
+                        mess = "Już istnieje użytkownik z podaną nazwą!";
                     }
                     model.MedicalPackages = _context.GetMedicalPackages();
                     model.NFZUnits = _context.GetNFZUnits();
                     //model.ErrorMessage = "Nie udało się dodać pacjenta!";
                     model.UserName = _loggedUser.Person.FullName;
-                    if (string.IsNullOrWhiteSpace(model.Message))
+                    if (string.IsNullOrWhiteSpace(mess))
                     {
-                        model.Message = "Pacent nie został dodany. Wypełnij poprawnie wszystkie dane!";
+                        mess = "Pacjent nie został dodany. Wypełnij poprawnie wszystkie dane!";
                     }
-                    model.AlertMessageType = AlertMessageType.WarningMessage;
+                    model.ViewMessage = new ViewMessage()
+                    {
+                        MessageType = AlertMessageType.WarningMessage,
+                        Message = mess
+
+                    };
+                    //model.AlertMessageType = AlertMessageType.WarningMessage;
                     return View(model);
                 }
                 //PatientAddViewModel model = new PatientAddViewModel();
@@ -1020,14 +1016,13 @@ namespace Asklepios.Web.Areas.AdministrativeArea.Controllers
                 }
                 else
                 {
-                    model.AlertMessageType = AlertMessageType.ErrorMessage;
-                    model.Message = "Nie udało się zaktualizować danych pacjenta! Hasło nie spełnia wymogów!";
+                    model.ViewMessage = new ViewMessage()
+                    {
+                        MessageType = AlertMessageType.ErrorMessage,
+                        Message = "Nie udało się zaktualizować danych pacjenta! Hasło nie spełnia wymogów!"
+                    };
                     return false;
                 }
-                //User user = userManager.Users.FirstOrDefault(x => x.Id == patient.UserId);
-                
-                //Task<IdentityResult> result= await userManager.ChangePasswordAsync(user, model.CurrentPatient.User.PasswordHash);
-                //patient.User.PasswordHash = model.CurrentPatient.User.PasswordHash;
             }
             if (string.IsNullOrWhiteSpace(model.CurrentPatient.User.Email))
             {
@@ -1038,18 +1033,6 @@ namespace Asklepios.Web.Areas.AdministrativeArea.Controllers
             }
             model.CurrentPatient.User = patient.User;
 
-            //if (model.CurrentPatient.Person.ImageFile != null)
-            //{
-            //    _context.UpdatePersonImage(model.CurrentPatient.Person.ImageFile, model.CurrentPatient.Person, _hostEnvironment.WebRootPath);
-
-            //    //string imagePath = SaveImage(model.CurrentPatient.Person.ImageFile, ImageFolderType.Persons, _hostEnvironment.WebRootPath);
-            //    //model.CurrentPatient.Person.ImageFilePath = imagePath;
-            //}
-            //else
-            //{
-            //    model.CurrentPatient.Person.ImageFilePath = patient.Person.ImageFilePath;
-            //}
-            //model.CurrentPatient.User.Person = model.CurrentPatient.Person;
 
             if (model.IsValid)
             {
@@ -1059,13 +1042,19 @@ namespace Asklepios.Web.Areas.AdministrativeArea.Controllers
                 model.CurrentPatient.Person.ImageFilePath = patient.Person.ImageFilePath;
                 _context.UpdatePatient(model.CurrentPatient, _hostEnvironment.WebRootPath);
 
-                model.Message = "Dane pacjenta zostały zaktualizowane!";
-                model.AlertMessageType = AlertMessageType.SuccessMessage;
+                model.ViewMessage = new ViewMessage()
+                {
+                    Message = "Dane pacjenta zostały zaktualizowane!",
+                    MessageType = AlertMessageType.SuccessMessage
+                };
             }
             else
             {
-                model.Message = "Nie udało się zaktualizować danych pacjenta!";
-                model.AlertMessageType = AlertMessageType.ErrorMessage;
+                model.ViewMessage = new ViewMessage()
+                {
+                    Message = "Nie udało się zaktualizować danych pacjenta!",
+                    MessageType = AlertMessageType.ErrorMessage
+                };
             }
             //model.CurrentPatient = patient;
             model.NFZUnits = _context.GetNFZUnits();
@@ -1088,8 +1077,6 @@ namespace Asklepios.Web.Areas.AdministrativeArea.Controllers
                     model.CurrentPatientId = patient.Id;
                     model.UserName = _loggedUser.Person.FullName;
 
-                    //model.MedicalPackages = _context.GetMedicalPackages();
-                    //model.NFZUnits = _context.GetNFZUnits();
                     return View(model);
                 }
                 else
@@ -1117,21 +1104,42 @@ namespace Asklepios.Web.Areas.AdministrativeArea.Controllers
                     {
                         if (_context.HasPatientVisits(patient.Id))
                         {
-                            model.Message = "Pacjent posiada przypisane wizyty!";
-                            model.AlertMessageType = AlertMessageType.ErrorMessage;
+                            model.ViewMessage = new ViewMessage()
+                            {
+                                Message = "Nie można usunąć wskazanego pacjenta! Pacjent posiada przypisane wizyty!",
+                                MessageType = AlertMessageType.ErrorMessage
+                            };
+                            TempData[ViewMessage.MESSAGE_KEY] = JsonConvert.SerializeObject(model.ViewMessage);
+
                         }
                         else
                         {
                             _context.RemovePatientById(model.CurrentPatientId);
-                            model.Message = "Pacjent został pomyślnie usunięty!";
-                            model.AlertMessageType = AlertMessageType.SuccessMessage;
+                            _context.RemovePersonById(patient.PersonId.Value);
+                            _context.RemoveUserById(patient.UserId.Value);
+
+                            model.ViewMessage = new ViewMessage()
+                            {
+                                Message = "Pacjent został pomyślnie usunięty!",
+                                MessageType = AlertMessageType.SuccessMessage
+                            };
+                            TempData[ViewMessage.MESSAGE_KEY] = JsonConvert.SerializeObject(model.ViewMessage);
+
                         }
                         model.UserName = _loggedUser.Person.FullName;
 
                         return View(model);
                     }
-                    model.Message = "Podczas próby usunięcia pacjenta nastąpił nieoczekiwany błąd!";
-                    model.AlertMessageType = AlertMessageType.ErrorMessage;
+
+                    model.ViewMessage = new ViewMessage()
+                    {
+                        Message = "Podczas próby usunięcia pacjenta nastąpił nieoczekiwany błąd!",
+                        MessageType = AlertMessageType.ErrorMessage
+                    };
+                    TempData[ViewMessage.MESSAGE_KEY] = JsonConvert.SerializeObject(model.ViewMessage);
+
+                    //model.Message = "Podczas próby usunięcia pacjenta nastąpił nieoczekiwany błąd!";
+                    //model.AlertMessageType = AlertMessageType.ErrorMessage;
 
                 }
                 //return RedirectToAction("VisitDetails", "Patient", new { area = "PatientArea", id = visit.Id });
@@ -1157,6 +1165,13 @@ namespace Asklepios.Web.Areas.AdministrativeArea.Controllers
                 model.MedicalPackages = _context.GetMedicalPackages();
                 model.AllPatients = _context.GetAllPatients();
                 model.UserName = _loggedUser.Person.FullName;
+                if (TempData.ContainsKey(ViewMessage.MESSAGE_KEY))
+                {
+                    ViewMessage message = JsonConvert.DeserializeObject<ViewMessage>((string)TempData[ViewMessage.MESSAGE_KEY]);
+                    model.ViewMessage = message;
+                    TempData.Remove(ViewMessage.MESSAGE_KEY);
+
+                }
 
                 return View(model);
             }
@@ -1178,6 +1193,13 @@ namespace Asklepios.Web.Areas.AdministrativeArea.Controllers
                 model.MedicalPackages = _context.GetMedicalPackages();
                 model.AllPatients = _context.GetAllPatients();
                 model.UserName = _loggedUser.Person.FullName;
+                if (TempData.ContainsKey(ViewMessage.MESSAGE_KEY))
+                {
+                    ViewMessage message = JsonConvert.DeserializeObject<ViewMessage>((string)TempData[ViewMessage.MESSAGE_KEY]);
+                    model.ViewMessage = message;
+                    TempData.Remove(ViewMessage.MESSAGE_KEY);
+
+                }
 
                 return View(model);
             }
@@ -1195,11 +1217,12 @@ namespace Asklepios.Web.Areas.AdministrativeArea.Controllers
 
             if (_loggedUser != null)
             {
-                if (TempData.ContainsKey(MESSAGE))
+                if (TempData.ContainsKey(ViewMessage.MESSAGE_KEY))
                 {
-                    ViewMessage message = JsonConvert.DeserializeObject<ViewMessage>((string)TempData[MESSAGE]); 
-                    model.Message=message.Message;
-                    model.AlertMessageType = message.MessageType;
+                    ViewMessage message = JsonConvert.DeserializeObject<ViewMessage>((string)TempData[ViewMessage.MESSAGE_KEY]);
+                    model.ViewMessage = message;
+                    TempData.Remove(ViewMessage.MESSAGE_KEY);
+
                 }
                 model.AllMedicalWorkers = _context.GetMedicalWorkers();
                 model.PrimaryServices = _context.GetMedicalServices().Where(c => c.IsPrimaryService == true).ToList();
@@ -1220,10 +1243,17 @@ namespace Asklepios.Web.Areas.AdministrativeArea.Controllers
 
             if (_loggedUser != null)
             {
+
                 MedicalWorkersManageViewModel model = new MedicalWorkersManageViewModel();
                 model.AllMedicalWorkers = _context.GetMedicalWorkers();
                 model.PrimaryServices = _context.GetMedicalServices().Where(c => c.IsPrimaryService == true).ToList();
                 model.UserName = _loggedUser.Person.FullName;
+                if (TempData.ContainsKey(ViewMessage.MESSAGE_KEY))
+                {
+                    ViewMessage message = JsonConvert.DeserializeObject<ViewMessage>((string)TempData[ViewMessage.MESSAGE_KEY]);
+                    model.ViewMessage = message;
+                    TempData.Remove(ViewMessage.MESSAGE_KEY);
+                }
 
                 return View(model);
             }
@@ -1304,7 +1334,6 @@ namespace Asklepios.Web.Areas.AdministrativeArea.Controllers
             if (_loggedUser != null)
             {
                 model.PrimaryServices = _context.GetMedicalServices().Where(c => c.IsPrimaryService == true).ToList();
-
                 //model.GetServices(_context,model.SelectedLocation);
                 if (model.ViewMode == ViewMode.Read)
                 {
@@ -1322,36 +1351,37 @@ namespace Asklepios.Web.Areas.AdministrativeArea.Controllers
                 }
                 else if (model.ViewMode == ViewMode.Edit)
                 {
-                    // model.SelectedLocation.MedicalRooms = loc.MedicalRooms;
-                    // model.SelectedLocation.Id = loc.Id;
-                    //model.UnasignedRooms = _context.GetUnasignedRooms();
+                    model.SelectedLocation.Id = model.SelectedLocationId;
+
                     model.UpdateSelectionOfRooms();
                     model.UpdateSelectionOfServices();
                     Location loc = _context.GetLocationById(model.SelectedLocationId);
                     model.SelectedLocation.ImagePath = loc.ImagePath;
                     if (model.SelectedLocation.IsValid)
                     {
-                        //if (model.SelectedLocation.ImageFile != null)
-                        //{
-                        //    _context.UpdateLocationImage(model.SelectedLocation.ImageFile, model.SelectedLocation, _hostEnvironment.WebRootPath);
-                        //    //_context.UpdatePersonImage()
-                        //}
-                        //else
-                        //{
-                        //    model.SelectedLocation.ImageFile = loc.ImageFile;
-                        //    model.SelectedLocation.ImagePath = loc.ImagePath;
-                        //}
-                        //_context.AddLocation(model.SelectedLocation);
                         _context.UpdateLocation(model.SelectedLocation, _hostEnvironment.WebRootPath);
-                        // model.UnasignedRooms = _context.GetUnasignedRooms();
-                        //model.SuccessMessage = "Dane placówki zostały zaktualizowane";
-                        TempData["successMessage"] = "Dane placówki zostały zaktualizowane";
-                        return RedirectToAction("Temp", new { id = model.SelectedLocationId });
+                        ViewMessage viewMessage = new ViewMessage()
+                        {
+                            Message = "Dane placówki zostały zaktualizowane!",
+                            MessageType = AlertMessageType.SuccessMessage
+                        };
+                        TempData[ViewMessage.MESSAGE_KEY] = JsonConvert.SerializeObject(viewMessage);
+
+
+                        //TempData["successMessage"] = "Dane placówki zostały zaktualizowane";
+                        //return RedirectToAction("Temp", new { id = model.SelectedLocationId });
+                        return RedirectToAction("LocationItemsManage");
 
                     }
                     else
                     {
                         model.UserName = _loggedUser.Person.FullName;
+                        ViewMessage viewMessage = new ViewMessage()
+                        {
+                            Message = "Nie wszystkie dane zostały poprawnie uzupełnione!",
+                            MessageType = AlertMessageType.WarningMessage
+                        };
+                        TempData[ViewMessage.MESSAGE_KEY] = JsonConvert.SerializeObject(viewMessage);
 
                         return View(model);
                     }
@@ -1376,9 +1406,32 @@ namespace Asklepios.Web.Areas.AdministrativeArea.Controllers
                 {
 
                     Location location = _context.GetLocationById(model.SelectedLocationId);
-                    model.SuccessMessage = "Placówka została pomyślnie usunięta!";
-                    TempData["successMessage"] = "Placówka została pomyślnie usunięta!";
-                    _context.RemoveLocationById(model.SelectedLocationId);
+
+
+                    //TempData["successMessage"] = "Placówka została pomyślnie usunięta!";
+                    IQueryable<Visit> visitsQuery=_context.GetVisitsQuery();
+                    if (visitsQuery.Any(c=>c.LocationId==location.Id))
+                    {
+                        ViewMessage viewMessage = new ViewMessage()
+                        {
+                            Message = "Do placówki są przypisane wizyty w zwiazku czym nie można jej usunąć!",
+                            MessageType = AlertMessageType.WarningMessage
+                        };
+                        TempData[ViewMessage.MESSAGE_KEY] = JsonConvert.SerializeObject(viewMessage);
+
+                    }
+                    else
+                    {
+                        _context.RemoveLocationById(model.SelectedLocationId);
+                        ViewMessage viewMessage = new ViewMessage()
+                        {
+                            Message = "Placówka została pomyślnie usunięta!",
+                            MessageType = AlertMessageType.InfoMessage
+                        };
+                        TempData[ViewMessage.MESSAGE_KEY] = JsonConvert.SerializeObject(viewMessage);
+
+                    }
+
                     model.UserName = _loggedUser.Person.FullName;
                     return View(model);
                 }
@@ -1404,25 +1457,37 @@ namespace Asklepios.Web.Areas.AdministrativeArea.Controllers
                 {
                     model.GetServices(_context, model.SelectedLocation);
 
+                    model.ViewMessage = new ViewMessage()
+                    {
+                        Message = "Placówka została dodana",
+                        MessageType = AlertMessageType.InfoMessage
+                    };
+                    TempData[ViewMessage.MESSAGE_KEY] = JsonConvert.SerializeObject(model.ViewMessage);
 
-                    //if (model.SelectedLocation.ImageFile != null)
-                    //{
-                    //    _context.UpdateLocationImage(model.SelectedLocation.ImageFile, model.SelectedLocation, _hostEnvironment.WebRootPath);
-                    //}
-                    TempData["successMessage"] = "Placówka została dodana";
+                    //TempData["successMessage"] = "Placówka została dodana";
                     _context.AddLocation(model.SelectedLocation, model.SelectedLocation.ImageFile, _hostEnvironment.WebRootPath);
-                    return RedirectToAction("LocationItemAdd");
+                    //return RedirectToAction("LocationItemsManage");
+                    //return View(model);
                 }
                 else
                 {
+                    string mess = null;
                     if (model.SelectedLocation.ImageFile == null)
                     {
-                        TempData["errorMessage"] = "Wybierz zdjęcie placówki!";
+                        mess= "Wybierz zdjęcie placówki!";
+                        //TempData["errorMessage"] = "Wybierz zdjęcie placówki!";
                     }
                     else
                     {
-                        TempData["errorMessage"] = "Placówka nie została dodana. Uzupełnij wszystkie pola!";
+                        mess= "Placówka nie została dodana. Uzupełnij wszystkie pola!";
+                        //TempData["errorMessage"] = "Placówka nie została dodana. Uzupełnij wszystkie pola!";
                     }
+                    model.ViewMessage = new ViewMessage()
+                    {
+                        Message = mess,
+                        MessageType = AlertMessageType.InfoMessage
+                    };
+                    TempData[ViewMessage.MESSAGE_KEY] = JsonConvert.SerializeObject(model.ViewMessage);
 
                 }
                 // model.UnasignedRooms = _context.GetUnasignedRooms();
@@ -1446,9 +1511,14 @@ namespace Asklepios.Web.Areas.AdministrativeArea.Controllers
             {
                 LocationsManageViewModel model = new LocationsManageViewModel();
                 model.SelectedLocation = new Location();
-                //model.UnasignedRooms = _context.GetUnasignedRooms();
                 model.PrimaryServices = _context.GetMedicalServices().Where(c => c.IsPrimaryService == true).ToList();
                 model.UserName = _loggedUser.Person.FullName;
+                if (TempData.ContainsKey(ViewMessage.MESSAGE_KEY))
+                {
+                    ViewMessage message = JsonConvert.DeserializeObject<ViewMessage>((string)TempData[ViewMessage.MESSAGE_KEY]);
+                    model.ViewMessage = message;
+                    TempData.Remove(ViewMessage.MESSAGE_KEY);
+                }
 
                 return View(model);
             }
@@ -1464,9 +1534,17 @@ namespace Asklepios.Web.Areas.AdministrativeArea.Controllers
 
             if (_loggedUser != null)
             {
+
                 LocationsManageViewModel model = new LocationsManageViewModel();
                 model.AllLocations = _context.GetAllLocations();
                 model.UserName = _loggedUser.Person.FullName;
+                if (TempData.ContainsKey(ViewMessage.MESSAGE_KEY))
+                {
+                    ViewMessage message = JsonConvert.DeserializeObject<ViewMessage>((string)TempData[ViewMessage.MESSAGE_KEY]);
+                    model.ViewMessage = message;
+                    TempData.Remove(ViewMessage.MESSAGE_KEY);
+
+                }
 
                 return View(model);
             }
@@ -1488,34 +1566,53 @@ namespace Asklepios.Web.Areas.AdministrativeArea.Controllers
                     MedicalRoom room = _context.GetRoomById(model.SelectedRoomId);
                     if (room != null)
                     {
-                        _context.RemoveMedicalRoomById(model.SelectedRoomId);
-                        TempData[MESSAGE] = new ViewMessage()
+                        IQueryable<Visit> visits = _context.GetVisitsQuery();
+
+                        if (visits.Any(c=>c.MedicalRoomId==room.Id))
                         {
-                            Message = "Gabinet został pomyślnie usunięty!",
-                            MessageType = AlertMessageType.InfoMessage
-                        };
+                            model.ViewMessage = new ViewMessage()
+                            {
+                                Message = "Nie można usunąć gabinetu, ponieważ są z nim powiązane wizyty!",
+                                MessageType = AlertMessageType.ErrorMessage
+                            };
+
+                            TempData[ViewMessage.MESSAGE_KEY] = JsonConvert.SerializeObject(model.ViewMessage);
+
+
+                        }
+                        else
+                        {
+                            _context.RemoveMedicalRoomById(model.SelectedRoomId);
+                            model.ViewMessage = new ViewMessage()
+                            {
+                                Message = "Gabinet został pomyślnie usunięty!",
+                                MessageType = AlertMessageType.InfoMessage
+                            };
+                            TempData[ViewMessage.MESSAGE_KEY] = JsonConvert.SerializeObject(model.ViewMessage);
+
+                        }
                     }
                     else
                     {
-                        TempData[MESSAGE] = new ViewMessage()
+                        model.ViewMessage = new ViewMessage()
                         {
                             Message = "Gabinet nie został usunięty! Wystąpiły błędy!",
                             MessageType = AlertMessageType.InfoMessage
                         };
+                        TempData[ViewMessage.MESSAGE_KEY] = JsonConvert.SerializeObject(model.ViewMessage);
 
-                        //TempData[ERROR_MESSAGE] = "Gabinet nie został usunięty! Wystąpiły błędy";
                     }
                     return RedirectToAction("RoomItemsManage");
                 }
                 else
                 {
-                    TempData[MESSAGE] = new ViewMessage()
+                    model.ViewMessage = new ViewMessage()
                     {
                         Message = "Gabinet nie został usunięty! Wystąpiły błędy!",
                         MessageType = AlertMessageType.InfoMessage
                     };
+                    TempData[ViewMessage.MESSAGE_KEY] = JsonConvert.SerializeObject(model.ViewMessage);
 
-                    //TempData[ERROR_MESSAGE] = "Gabinet nie został usunięty! Wystąpiły błędy";
                     return RedirectToAction("RoomItemsManage");
                 }
             }
@@ -1532,6 +1629,14 @@ namespace Asklepios.Web.Areas.AdministrativeArea.Controllers
 
             if (_loggedUser != null)
             {
+                if (TempData.ContainsKey(ViewMessage.MESSAGE_KEY))
+                {
+                    ViewMessage message = JsonConvert.DeserializeObject<ViewMessage>((string)TempData[ViewMessage.MESSAGE_KEY]);
+                    model.ViewMessage = message;
+                    TempData.Remove(ViewMessage.MESSAGE_KEY);
+
+                }
+
                 switch (model.ViewMode)
                 {
                     case ViewMode.Read:
@@ -1568,7 +1673,7 @@ namespace Asklepios.Web.Areas.AdministrativeArea.Controllers
                         if (model.NewRoom.IsValid)
                         {
                             _context.AddMedicalRoom(model.NewRoom);
-                            TempData[MESSAGE] = new ViewMessage()
+                            TempData[ViewMessage.MESSAGE_KEY] = new ViewMessage()
                             {
                                 Message = "Pokój został pomyślnie dodany!",
                                 MessageType = AlertMessageType.InfoMessage
@@ -1605,28 +1710,21 @@ namespace Asklepios.Web.Areas.AdministrativeArea.Controllers
                 if (model.NewRoom.IsValid)
                 {
                     _context.AddMedicalRoom(model.NewRoom);
-                    TempData[MESSAGE] = new ViewMessage()
+                    model.ViewMessage = new ViewMessage()
                     {
                         Message = "Gabinet medyczny został pomyślnie dodany!",
                         MessageType = AlertMessageType.InfoMessage
                     };
-
-                    //TempData[SUCCESS_MESSAGE] = "Gabinet medyczny został pomyślnie dodany!";
                 }
                 else
                 {
-                    TempData[MESSAGE] = new ViewMessage()
+                    model.ViewMessage = new ViewMessage()
                     {
                         Message = "Gabinet medyczny nie został dodany! Wpełnij wszystkie pola!",
                         MessageType = AlertMessageType.WarningMessage
                     };
 
-                    //TempData[ERROR_MESSAGE] = "Gabinet medyczny nie został dodany! Wpełnij wszystkie pola!";
                 }
-                //else
-                //{
-                //    return View(model);
-                //}
                 model.Locations = _context.GetAllLocations();
                 model.UserName = _loggedUser.Person.FullName;
 
@@ -1716,16 +1814,32 @@ namespace Asklepios.Web.Areas.AdministrativeArea.Controllers
                         }
                         _context.UpdateRoom(model.SelectedRoom);
                         model.Locations = _context.GetAllLocations();
-                        TempData[MESSAGE] = new ViewMessage()
+                        //TempData[MESSAGE] = new ViewMessage()
+                        //{
+                        model.ViewMessage = new ViewMessage()
                         {
                             Message = "Dane gabinetu zostały pomyślnie zaktualizowane!",
                             MessageType = AlertMessageType.InfoMessage
                         };
+                        //};
 
                         //TempData[SUCCESS_MESSAGE] = "Dane gabinetu zostały pomyślnie zaktualizowane!";
                         model.UserName = _loggedUser.Person.FullName;
 
                         return View(model);
+                    }
+                    else
+                    {
+                        model.ViewMessage = new ViewMessage()
+                        {
+                            Message = "Dane gabinetu nie zostały zaktualizowane! Wprowadź poprawne dane!",
+                            MessageType = AlertMessageType.InfoMessage
+                        };
+
+                        //model.Message = "Dane gabinetu nie zostały zaktualizowane! Wprowadź poprawne dane!";
+                        //model.AlertMessageType = AlertMessageType.ErrorMessage;
+                        return View(model);
+
                     }
                 }
                 return NotFound();
@@ -1747,6 +1861,13 @@ namespace Asklepios.Web.Areas.AdministrativeArea.Controllers
                 model.AllRooms = _context.GetAllRooms();
                 model.Locations = _context.GetAllLocations();
                 model.UserName = _loggedUser.Person.FullName;
+                if (TempData.ContainsKey(ViewMessage.MESSAGE_KEY))
+                {
+                    ViewMessage message = JsonConvert.DeserializeObject<ViewMessage>((string)TempData[ViewMessage.MESSAGE_KEY]);
+                    model.ViewMessage = message;
+                    TempData.Remove(ViewMessage.MESSAGE_KEY);
+
+                }
 
                 return View(model);
             }
@@ -1786,24 +1907,25 @@ namespace Asklepios.Web.Areas.AdministrativeArea.Controllers
                 if (model.SelectedPackage.IsValid)
                 {
                     _context.AddMedicalPackage(model.SelectedPackage);
-                    TempData[MESSAGE] = new ViewMessage()
+                    ViewMessage viewMessage = new ViewMessage()
                     {
                         Message = "Pakiet został pomyślnie dodany!",
                         MessageType = AlertMessageType.InfoMessage
                     };
+                    TempData[ViewMessage.MESSAGE_KEY] = JsonConvert.SerializeObject(viewMessage);
 
                     //TempData[SUCCESS_MESSAGE] = "Pakiet został pomyślnie dodany!";
                     return RedirectToAction("MedicalPackageItemsManage");
                 }
                 else
                 {
-                    TempData[MESSAGE] = new ViewMessage()
+                    ViewMessage viewMessage = new ViewMessage()
                     {
                         Message = "Pakiet nie został dodany! Popraw dane!",
                         MessageType = AlertMessageType.WarningMessage
                     };
+                    TempData[ViewMessage.MESSAGE_KEY] = JsonConvert.SerializeObject(viewMessage);
 
-//                    TempData[ERROR_MESSAGE] = "Pakiet nie został dodany! Popraw dane!";
                 }
                 model.UserName = _loggedUser.Person.FullName;
 
@@ -1856,7 +1978,8 @@ namespace Asklepios.Web.Areas.AdministrativeArea.Controllers
                     if (model.SelectedPackage.IsValid)
                     {
                         _context.UpdateMedicalPackage(model.SelectedPackage);
-                        TempData[MESSAGE] = new ViewMessage()
+
+                        model.ViewMessage = new ViewMessage()
                         {
                             Message = "Pakiet został pomyślnie zaktualizowany!",
                             MessageType = AlertMessageType.InfoMessage
@@ -1866,7 +1989,7 @@ namespace Asklepios.Web.Areas.AdministrativeArea.Controllers
                     }
                     else
                     {
-                        TempData[MESSAGE] = new ViewMessage()
+                        model.ViewMessage = new ViewMessage()
                         {
                             Message = "Wprowadzone dane są błędne/niepełne. Pakiet nie został dodany!",
                             MessageType = AlertMessageType.WarningMessage
@@ -1901,21 +2024,22 @@ namespace Asklepios.Web.Areas.AdministrativeArea.Controllers
                     try
                     {
                         _context.RemoveMedicalPackageById(model.SelectedPackage.Id);
-                        TempData[MESSAGE] = new ViewMessage()
+                        ViewMessage  viewMessage = new ViewMessage()
                         {
                             Message = "Pakiet medyczny został pomyślnie usunięty!",
                             MessageType = AlertMessageType.InfoMessage
                         };
-
+                        TempData[ViewMessage.MESSAGE_KEY] = JsonConvert.SerializeObject(viewMessage);
                         //TempData[SUCCESS_MESSAGE] = "Pakiet medyczny został pomyślnie usunięty!";
                     }
-                    catch (Microsoft.EntityFrameworkCore.DbUpdateException )
+                    catch (Microsoft.EntityFrameworkCore.DbUpdateException)
                     {
-                        TempData[MESSAGE] = new ViewMessage()
+                        ViewMessage viewMessage = new ViewMessage()
                         {
                             Message = "Nie można usunąć pakietu, który jest przypisany do jakiegokolwiek pacjenta!",
                             MessageType = AlertMessageType.WarningMessage
                         };
+                        TempData[ViewMessage.MESSAGE_KEY] = JsonConvert.SerializeObject(viewMessage);
 
                         //TempData[ERROR_MESSAGE] = "Nie można usunąć pakietu, który jest przypisany do jakiegokolwiek pacjenta!";
                     }
@@ -1941,14 +2065,17 @@ namespace Asklepios.Web.Areas.AdministrativeArea.Controllers
 
             if (_loggedUser != null)
             {
-                //if (model.ViewMode==ViewMode.)
-                //{
-
-                //}
-                //PackageItemsManageViewModel model = new PackageItemsManageViewModel();
                 model.MedicalPackages = _context.GetMedicalPackages();
                 model.MedicalServices = _context.GetMedicalServices();
                 model.UserName = _loggedUser.Person.FullName;
+
+                if (TempData.ContainsKey(ViewMessage.MESSAGE_KEY))
+                {
+                    ViewMessage message = JsonConvert.DeserializeObject<ViewMessage>((string)TempData[ViewMessage.MESSAGE_KEY]);
+                    model.ViewMessage = message;
+                    TempData.Remove(ViewMessage.MESSAGE_KEY);
+
+                }
 
                 return View(model);
             }
@@ -1970,6 +2097,13 @@ namespace Asklepios.Web.Areas.AdministrativeArea.Controllers
                 model.MedicalServices = _context.GetMedicalServices();
                 model.UserName = _loggedUser.Person.FullName;
 
+                if (TempData.ContainsKey(ViewMessage.MESSAGE_KEY))
+                {
+                    ViewMessage message = JsonConvert.DeserializeObject<ViewMessage>((string)TempData[ViewMessage.MESSAGE_KEY]);
+                    model.ViewMessage = message;
+                    TempData.Remove(ViewMessage.MESSAGE_KEY);
+                }
+
                 return View(model);
             }
             else
@@ -1977,30 +2111,7 @@ namespace Asklepios.Web.Areas.AdministrativeArea.Controllers
                 return NotFound();
             }
         }
-        //public IActionResult MedicalServiceItemsAdd()
-        //{
-        //    if (_loggedUser != null)
-        //    {
 
-        //        return View();
-        //    }
-        //    else
-        //    {
-        //        return NotFound();
-        //    }
-        //}
-        //public IActionResult MedicalServiceItemsManage()
-        //{
-        //    if (_loggedUser != null)
-        //    {
-
-        //        return View();
-        //    }
-        //    else
-        //    {
-        //        return NotFound();
-        //    }
-        //}
 
 
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
@@ -2008,72 +2119,6 @@ namespace Asklepios.Web.Areas.AdministrativeArea.Controllers
         {
             return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
         }
-        //public IActionResult NonMedicalWorkerItemsAdd()
-        //{
-        //    if (_loggedUser != null)
-        //    {
-        //        return View();
-        //    }
-        //    else
-        //    {
-        //        return NotFound();
-        //    }
-        //}
-        //[HttpPost]
-        //public IActionResult NonMedicalWorkerItemsAdd(MedicalWorkersManageViewModel model )
-        //{
-        //    if (_loggedUser != null)
-        //    {
-        //        if (model.ViewMode==ViewMode.Read)
-        //        {
-
-        //        }
-        //        else if(model.ViewMode==ViewMode.Edit)
-        //        {
-
-        //        }
-        //        return View();
-        //    }
-        //    else
-        //    {
-        //        return NotFound();
-        //    }
-        //}
-        //[HttpPost]
-        //public IActionResult NonMedicalWorkerItemsRemove(MedicalWorkersManageViewModel model)
-        //{
-        //    if (_loggedUser != null)
-        //    {
-        //        if (model.ViewMode == ViewMode.Remove)
-        //        {
-        //            MedicalWorker worker = _context.GetMedicalWorkerById(model.SelectedWorkerId);
-        //            if (worker!=null)
-        //            {
-        //                _context.RemoveMedicalWorkerById(model.SelectedWorkerId);
-        //            }
-        //            else
-        //            {
-        //                return NotFound();
-        //            }
-        //        }
-        //        return View();
-        //    }
-        //    else
-        //    {
-        //        return NotFound();
-        //    }
-        //}
-
-        //public IActionResult NonMedicalWorkerItemsManage()
-        //{
-        //    if (_loggedUser != null)
-        //    {
-        //        return View();
-        //    }
-        //    else
-        //    {
-        //        return NotFound();
-        //    }
-        //}
+  
     }
 }

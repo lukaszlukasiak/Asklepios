@@ -89,24 +89,9 @@ namespace Asklepios.Web.Areas.MedicalWorkerArea.Controllers
             }
             return null;
         }
-        //private Visit GetTempVisit()
-        //{
-        //    if (TempData.ContainsKey(TEMP_VISIT))
-        //    {
-        //        var visit=TempData[TEMP_VISIT];
-        //        return visit as Visit;
-        //    }
-        //    else
-        //    {
-        //        return null;
-        //    }
-        //}
 
         public async Task<IActionResult> LogOutAsync()
         {
-            //_loggedUser = null;
-            //_person = null;
-            //_medicalWorker = null;
             await _signManager.SignOutAsync();
             return RedirectToAction("Index", "Home", new { area = "HomeArea" });
         }
@@ -204,8 +189,6 @@ namespace Asklepios.Web.Areas.MedicalWorkerArea.Controllers
 
                 if (_currentVisitId > 0)
                 {
-                    //if (TempData.ContainsKey(TEMP_VISIT))
-                    //{
                     VisitSummary = TempData.Get<VisitSummaryModel>(TEMP_VISIT_SUMMARY);//TempData[TEMP_VISIT] as Visit;
                     //}
                     if (VisitSummary == null)
@@ -213,9 +196,6 @@ namespace Asklepios.Web.Areas.MedicalWorkerArea.Controllers
                         //VisitSummary = visit;
                         VisitSummary = new VisitSummaryModel();
                     }
-
-                    //if (visit.VisitStatus != Core.Enums.VisitStatus.AvailableNotBooked)
-                    //{
 
                     Visit visit = _context.GetBookedVisitById(_currentVisitId.Value);
 
@@ -439,24 +419,10 @@ namespace Asklepios.Web.Areas.MedicalWorkerArea.Controllers
             _loggedUser = _context.GetUserById(HttpContext.User.GetUserId().Value);
             if (_loggedUser != null)
             {
-                //if (TempData.ContainsKey(TEMP_VISIT_SUMMARY))
-                //{
-                //    VisitSummary = TempData[TEMP_VISIT_SUMMARY] as Visit;
-                //}
                 VisitSummary = TempData.Get<VisitSummaryModel>(TEMP_VISIT_SUMMARY);
 
                 if (VisitSummary != null)
                 {
-                    //if (VisitSummary.PrescriptionToAdd == null)
-                    //{
-                    //    VisitSummary.PrescriptionToAdd = new Prescription
-                    //    {
-                    //        IssuedById = model.MedicalWorkerId,
-                    //        IssuedToId = model.PatientId,
-                    //        IssueDate = DateTime.Now,
-                    //        ExpirationDate = DateTime.Now.AddDays(model.PrescriptionDaysToExpire)
-                    //    };
-                    //}
                     VisitSummary.Medicines.Add(model.VisitSummary.MedicineToAdd);
                     //TempData[TEMP_VISIT] = TempVisit;
                     TempData.Put<VisitSummaryModel>(TEMP_VISIT_SUMMARY, VisitSummary);
@@ -475,10 +441,6 @@ namespace Asklepios.Web.Areas.MedicalWorkerArea.Controllers
 
             if (_loggedUser != null)
             {
-                //if (TempData.ContainsKey(TEMP_VISIT_SUMMARY))
-                //{
-                //    VisitSummary = TempData[TEMP_VISIT_SUMMARY] as Visit;
-                //}
                 VisitSummary = TempData.Get<VisitSummaryModel>(TEMP_VISIT_SUMMARY);
 
                 if (VisitSummary != null)
@@ -487,22 +449,6 @@ namespace Asklepios.Web.Areas.MedicalWorkerArea.Controllers
                     if (model.MedicalTestFile != null)
                     {
 
-                        //MedicalTestResult medicalTestResult = new MedicalTestResult
-                        //{
-                        //    VisitId = VisitSummary.Id,
-                        //    ExamDate = VisitSummary.DateTimeSince,
-                        //    MedicalWorkerId = VisitSummary.MedicalWorkerId,
-                        //    PatientId = VisitSummary.PatientId,
-                        //    MedicalService = medicalService,
-                        //    UploadDate=DateTime.Now,
-                        //    //PdfDocument=model.MedicalTestFile.,
-
-                        //};
-                        //MemoryStream stream = new MemoryStream();
-
-                        //model.MedicalTestFile.CopyTo(stream);
-
-                        //model.VisitSummary.TestResult.Document = stream.ToArray();
                         model.VisitSummary.TestResult.FilePath = _context.SaveFile(model.MedicalTestFile, StorageFolderType.TestResult, _hostEnvironment.WebRootPath);
                         model.VisitSummary.TestResult.MedicalServiceId = medicalService.Id;
                         model.VisitSummary.TestResult.MedicalServiceName = medicalService.Name;
@@ -542,24 +488,11 @@ namespace Asklepios.Web.Areas.MedicalWorkerArea.Controllers
 
             if (_loggedUser != null)
             {
-                //if (TempData.ContainsKey(TEMP_VISIT_SUMMARY))
-                //{
-                //    VisitSummary = TempData[TEMP_VISIT_SUMMARY] as Visit;
-                //}
                 VisitSummary = TempData.Get<VisitSummaryModel>(TEMP_VISIT_SUMMARY);
 
                 if (VisitSummary != null)
                 {
-                    //PrescriptionMock prescription = new PrescriptionMock
-                    //{
-                    //    AccessCode = model.PrescriptionToAdd.AccessCode,
-                    //    ExpirationDate = DateTimeOffset.Now.AddDays(model.PrescriptionDaysToExpire),// model.PrescriptionToAdd.ExpirationDate;
-                    //    IdentificationCode = model.PrescriptionToAdd.IdentificationCode,
-                    //    IssueDate = DateTime.Now,
-                    //    Visit = VisitSummary,
-                    //    IssuedBy = VisitSummary.MedicalWorker,
-                    //    IssuedTo = VisitSummary.Patient
-                    //};
+
                     if (VisitSummary.Medicines == null)
                     {
                         VisitSummary.Medicines = new List<MedicineMock>();
@@ -926,11 +859,6 @@ namespace Asklepios.Web.Areas.MedicalWorkerArea.Controllers
 
             if (_loggedUser != null)
             {
-                //List<Visit> todayVisits = _medicalWorker.FutureVisits?.Where(c => c.DateTimeSince.Date == DateTimeOffset.Now.Date).ToList();
-                //Visit visit = todayVisits.Where(c => c.Id == model.VisitId).FirstOrDefault();
-                //Visit visit = _context.GetBookedVisitById(model.VisitId);
-                //if (TempData.ContainsKey(TEMP_VISIT))
-                //{
                 VisitSummary = TempData.Get<VisitSummaryModel>(TEMP_VISIT_SUMMARY); //TempData[TEMP_VISIT_SUMMARY] as Visit;
                                                                                     //}
 
@@ -1084,27 +1012,7 @@ namespace Asklepios.Web.Areas.MedicalWorkerArea.Controllers
         {
             _loggedUser = _context.GetUserById(HttpContext.User.GetUserId().Value);
 
-            //if (_loggedUser != null)
-            //{
-            //    if (!ModelState.IsValid)
-            //    {
-            //        return RedirectToAction("CurrentVisit");
-            //    }
-            //if (model.IsMedicalReferralAddingOK)
-            //{
-            //List<Visit> todayVisits = _medicalWorker.FutureVisits?.Where(c => c.DateTimeSince.Date == DateTimeOffset.Now.Date).ToList();
-            //Visit visit = todayVisits.Where(c => c.Id == model.VisitId).FirstOrDefault();
-            //Visit visit = _context.GetBookedVisitById(model.VisitId);
-
-            //if (TempData.ContainsKey(TEMP_VISIT))
-            //{
-            //TempVisit = TempData[TEMP_VISIT] as Visit;
             VisitSummary = TempData.Get<VisitSummaryModel>(TEMP_VISIT_SUMMARY);//TempData[TEMP_VISIT] as Visit;
-
-            //}
-
-            //if (VisitSummary != null)
-            //{
             if (model.VisitSummary.ReferralMockToAdd.IsModelvalid)
             {
 
@@ -1168,19 +1076,11 @@ namespace Asklepios.Web.Areas.MedicalWorkerArea.Controllers
             {
                 if (model.ReferralToRemoveIndex >= 0)
                 {
-                    //List<Visit> todayVisits = _medicalWorker.FutureVisits?.Where(c => c.DateTimeSince.Date == DateTimeOffset.Now.Date).ToList();
-                    //Visit visit = todayVisits.Where(c => c.Id == model.VisitId).FirstOrDefault();
-                    // Visit visit = _context.GetBookedVisitById(model.VisitId);
-                    //if (TempData.ContainsKey(TEMP_VISIT))
-                    //{
                     VisitSummary = TempData.Get<VisitSummaryModel>(TEMP_VISIT_SUMMARY);//TempData[TEMP_VISIT] as Visit;
                                                                                        //}
 
                     if (VisitSummary != null)
                     {
-                        //_context.RemoveMedicalReferralById(model.MedicalReferralIdToRemove);
-
-                        //int index = TempVisit.ExaminationReferrals   .FindIndex(c => c.Id == model.MedicalReferralIdToRemove);
                         VisitSummary.ReferralMocks.RemoveAt((int)(model.ReferralIndexToRemove));
                         TempData.Put<ViewMessage>(ViewMessage.MESSAGE_KEY, new ViewMessage() { Message = "Skierowanie zostało usunięte!", MessageType = Enums.AlertMessageType.WarningMessage });
 
@@ -1205,10 +1105,6 @@ namespace Asklepios.Web.Areas.MedicalWorkerArea.Controllers
             if (_loggedUser != null)
             {
 
-                //List<Visit> todayVisits = _medicalWorker.FutureVisits?.Where(c => c.DateTimeSince.Date == DateTimeOffset.Now.Date).ToList();
-                //Visit visit = _context.GetVisitById(model.VisitId);//  todayVisits.Where(c => c.Id == model.VisitId).FirstOrDefault();
-                //if (TempData.ContainsKey(TEMP_VISIT))
-                //{
                 VisitSummary = TempData.Get<VisitSummaryModel>(TEMP_VISIT_SUMMARY);//TempData[TEMP_VISIT] as Visit;
                                                                                    //}
 
@@ -1273,29 +1169,7 @@ namespace Asklepios.Web.Areas.MedicalWorkerArea.Controllers
                 {
                     _context.RemoveFile(VisitSummary.TestResult.FilePath, _hostEnvironment.WebRootPath);
                 }
-                //if (TempData.ContainsKey(TEMP_VISIT_SUMMARY))
-                //{
-                //    VisitSummary = TempData.Get<VisitSummaryModel>(TEMP_VISIT_SUMMARY);//TempData[TEMP_VISIT] as Visit;
-                //}
-
-                //Visit visit = _context.GetVisitById(visitId);//  todayVisits.Where(c => c.Id == model.VisitId).FirstOrDefault();
-                //if (visit != null)
-                //{
-                //    visit.ExaminatinoReferralsIds = null;
-                //    visit.ExaminationReferrals = null;
-                //    visit.MedicalHistory = null;
-                //    visit.MedicalTestResult = null;
-                //    visit.MedicalTestResultId = null;
-                //    visit.MinorMedicalServices = null;
-                //    visit.MinorMedicalServicesIds = null;
-                //    visit.MinorServicesToVisits = null;
-                //    visit.Prescription=null;
-                //    visit.PrescriptionId = null;
-                //    visit.RecommendationIds = null;
-                //    visit.Recommendations = null;
-                //    CurrentVisitViewModel model = new CurrentVisitViewModel(visit);
-                //    return RedirectToAction("CurrentVisit");
-
+  
                 TempData.Put<ViewMessage>(ViewMessage.MESSAGE_KEY, new ViewMessage() { Message = "Dane zostały wyczyszczone!", MessageType = Enums.AlertMessageType.InfoMessage });
                 TempData.Put<VisitSummaryModel>(TEMP_VISIT_SUMMARY, new VisitSummaryModel());
                 return RedirectToAction("CurrentVisit");
@@ -1310,13 +1184,7 @@ namespace Asklepios.Web.Areas.MedicalWorkerArea.Controllers
 
             if (_loggedUser != null)
             {
-                //List<Visit> todayVisits = _medicalWorker.FutureVisits?.Where(c => c.DateTimeSince.Date == DateTimeOffset.Now.Date).ToList();
-                //Visit visit = todayVisits.Where(c => c.Id == model.VisitId).FirstOrDefault();
-                //Visit visit = _context.GetBookedVisitById(model.VisitId);
-                //if (TempData.ContainsKey(TEMP_VISIT))
-                //{
-                VisitSummary = TempData.Get<VisitSummaryModel>(TEMP_VISIT_SUMMARY);//TempData[TEMP_VISIT] as Visit;
-                                                                                   //}
+                VisitSummary = TempData.Get<VisitSummaryModel>(TEMP_VISIT_SUMMARY);
 
 
                 if (VisitSummary != null)

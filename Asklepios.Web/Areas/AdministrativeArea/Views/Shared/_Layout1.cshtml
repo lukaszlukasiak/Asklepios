@@ -463,6 +463,8 @@
             var withoutLast = window.location.href.substr(0, lastIndex);
             var preLastIndex = withoutLast.lastIndexOf("/");
             var preLast = window.location.href.substr(preLastIndex + 1, lastIndex - preLastIndex - 1);
+            preLast=preLast.replace('?','');
+            last=last.replace('?','');
 
             $(".nav-item").each(function () {
 
