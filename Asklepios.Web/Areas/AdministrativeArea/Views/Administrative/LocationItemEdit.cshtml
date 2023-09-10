@@ -35,22 +35,8 @@ editMode = Html.GetEnumSelectListWithOneValue(Asklepios.Web.Areas.Administrative
 }
 
 @{
-    if (TempData.ContainsKey("successMessage"))
-    {
-        <div class="messages" id="MessageSpan" style="margin-top: 10px; text-align: center ">
-            <p class="alert alert-success">
-                @TempData["successMessage"].ToString()
-            </p>
-        </div>
-    }
-    if (TempData.ContainsKey("errorMessage"))
-    {
-        <div class="messages" id="MessageSpan" style="margin-top: 10px; text-align: center ">
-            <p class="alert alert-danger">
-                @TempData["errorMessage"].ToString()
-            </p>
-        </div>
-    }
+     <partial name="_ViewMessage" model="Model.ViewMessage" />
+
 }
     <h2 style="text-align:center; margin-bottom:20px">Edytuj dane placówki</h2>
 

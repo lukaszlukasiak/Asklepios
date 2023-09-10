@@ -1,49 +1,16 @@
 ﻿@model Asklepios.Web.Areas.AdministrativeArea.Models.MedicalWorkersManageViewModel
 @{
-    SelectList services = new SelectList(Model.PrimaryServices.OrderBy(c=>c.Name), "Id", "Name");
+    SelectList services = new SelectList(Model.PrimaryServices.OrderBy(c => c.Name), "Id", "Name");
 
 }
 
 <div class="d-flex flex-column">
 
 
-    @{
-        //if (!string.IsNullOrWhiteSpace(Model.SuccessMessage))
-        //{
-        //    <div class="messages" style="margin-top:10px;text-align:center">
-        //        <p class="alert alert-success">
-        //            @Model.SuccessMessage
-        //        </p>
-        //    </div>
-        //}
-        //else if (!string.IsNullOrWhiteSpace(Model.ErrorMessage))
-        //{
-        //    <div class="messages" style="margin-top: 10px; text-align: center ">
-        //        <p class="alert alert-danger">
-        //            @Model.ErrorMessage
-        //        </p>
-        //    </div>
 
-        //}
-        if (TempData.ContainsKey("successMessage"))
-        {
-            <div class="messages" id="MessageSpan" style="margin-top: 10px; text-align: center ">
-                <p class="alert alert-success">
-                    @TempData["successMessage"].ToString()
-                </p>
-            </div>
-        }
-        if (TempData.ContainsKey("errorMessage"))
-        {
-            <div class="messages" id="MessageSpan" style="margin-top: 10px; text-align: center ">
-                <p class="alert alert-danger">
-                    @TempData["errorMessage"].ToString()
-                </p>
-            </div>
-        }
+    <partial name="_ViewMessage" model="Model.ViewMessage" />
 
-    }
-        <h2 style="text-align:center; margin-bottom:20px">Lista pracowników medycznych</h2>
+    <h2 style="text-align:center; margin-bottom:20px">Lista pracowników medycznych</h2>
 
     <form class="form my-2" asp-action="MedicalWorkerItemsManage" method="post">
         <div class="form-group d-flex flex-column">

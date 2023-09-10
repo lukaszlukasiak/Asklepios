@@ -7,29 +7,8 @@
 }
 
 <div class="d-flex flex-column">
-        <partial name="_Message" model="Model" />
+        <partial name="_ViewMessage" model="Model.ViewMessage" />
 
-@*    @{
-        if (!string.IsNullOrWhiteSpace(Model.SuccessMessage))
-        {
-            <div class="messages" style="margin-top:10px;text-align:center">
-                <p class="alert alert-success">
-                    @Model.SuccessMessage
-                </p>
-            </div>
-        }
-        else if (!string.IsNullOrWhiteSpace(Model.ErrorMessage))
-        {
-            <div class="messages" style="margin-top: 10px; text-align: center ">
-                <p class="alert alert-danger">
-                    @Model.ErrorMessage
-                </p>
-            </div>
-
-        }
-    }
-
-*@    
 <h2 style="text-align:center; margin-bottom:20px">Lista pacjentów</h2>
 
 <form class="form my-2" asp-action="PatientItemsManage" method="post">

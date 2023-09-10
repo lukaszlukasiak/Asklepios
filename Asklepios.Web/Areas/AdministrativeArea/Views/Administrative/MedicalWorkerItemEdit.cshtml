@@ -19,7 +19,7 @@
         IEnumerable<SelectListItem>
         editMode = Html.GetEnumSelectListWithOneValue(Asklepios.Web.Areas.AdministrativeArea.Models.ViewMode.Edit).ToList();
 
-            <partial name="_Message" model="Model" />
+            <partial name="_ViewMessage" model="Model.ViewMessage" />
 
         //if (!string.IsNullOrWhiteSpace(Model.Message))
         //{

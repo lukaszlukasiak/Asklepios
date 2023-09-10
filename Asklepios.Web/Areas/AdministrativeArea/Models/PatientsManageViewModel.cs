@@ -2,6 +2,7 @@
 using Asklepios.Core.Models;
 using Asklepios.Web.Areas.AdministrativeArea.Interfaces;
 using Asklepios.Web.Enums;
+using Asklepios.Web.Models;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
@@ -115,8 +116,9 @@ namespace Asklepios.Web.Areas.AdministrativeArea.Models
         //public string SuccessMessage { get; set; }
         //public string ErrorMessage { get; set; }
         public string UserName { get; set; }
-        public string Message { get; set; }
-        public AlertMessageType AlertMessageType { get; set; }
+        //public string Message { get; set; }
+        //public AlertMessageType AlertMessageType { get; set; }
+        public ViewMessage ViewMessage { get; set; } = new ViewMessage();
 
         private List<Patient> GetFilteredPatientsList()
         {
@@ -129,7 +131,7 @@ namespace Asklepios.Web.Areas.AdministrativeArea.Models
             {
                 if (!string.IsNullOrWhiteSpace(SelectedName))
                 {
-                    filteredPatients = filteredPatients.Where(c => c.Person.Name.Contains(SelectedName,StringComparison.OrdinalIgnoreCase)).AsQueryable();
+                    filteredPatients = filteredPatients.Where(c => c.Person!=null).Where(c=>c.Person.Name.Contains(SelectedName)).AsQueryable();
                     if (filteredPatients == null)
                     {
                         return null;
@@ -138,7 +140,7 @@ namespace Asklepios.Web.Areas.AdministrativeArea.Models
             }
             if (!string.IsNullOrWhiteSpace(SelectedSurname))
             {
-                filteredPatients = filteredPatients.Where(c => c.Person.Surname.Contains(SelectedSurname, StringComparison.OrdinalIgnoreCase)).AsQueryable();
+                filteredPatients = filteredPatients.Where(c => c.Person.Surname.Contains(SelectedSurname)).AsQueryable();
                 if (filteredPatients == null)
                 {
                     return null;
@@ -146,7 +148,7 @@ namespace Asklepios.Web.Areas.AdministrativeArea.Models
             }
             if (!string.IsNullOrWhiteSpace(SelectedPESEL))
             {
-                filteredPatients = filteredPatients.Where(c => c.Person.PESEL.Contains(SelectedPESEL)).AsQueryable();
+                filteredPatients = filteredPatients.Where(c => c.Person.PESEL.IndexOf(SelectedPESEL)>=0).AsQueryable();
                 if (filteredPatients == null)
                 {
                     return null;
@@ -154,7 +156,7 @@ namespace Asklepios.Web.Areas.AdministrativeArea.Models
             }
             if (!string.IsNullOrWhiteSpace(SelectedPassportNumber))
             {
-                filteredPatients = filteredPatients.Where(c => c.Person.Surname.Contains(SelectedPassportNumber, StringComparison.OrdinalIgnoreCase)).AsQueryable();
+                filteredPatients = filteredPatients.Where(c => c.Person.Surname.IndexOf(SelectedPassportNumber)>=0).AsQueryable();
                 if (filteredPatients == null)
                 {
                     return null;

@@ -8,32 +8,18 @@
 <h2 style="text-align:center; margin-bottom:20px">Lista placówek</h2>
 @{
 
-    if (TempData.ContainsKey("successMessage"))
+    //@if (TempData.ContainsKey(ViewMessage.MESSAGE_KEY))
+    //{
+    //    <partial name="_ViewMessage" model="TempData[ViewMessage.MESSAGE_KEY]" />
+    //}
+    //else
+    //{
+        <partial name="_ViewMessage" model="Model.ViewMessage" />
+    //}
 
-    {
-        <div class="messages" id="MessageSpan" style="margin-top: 10px; text-align: center ">
-            <p class="alert alert-success">
-                @*@Model.SuccessMessage*@
-                @TempData["successMessage"].ToString()
-            </p>
-        </div>
-
-    }
-    //if (!string.IsNullOrWhiteSpace(Model.ErrorMessage))
-    if (TempData.ContainsKey("errorMessage"))
-    {
-        <div class="messages" id="MessageSpan" style="margin-top: 10px; text-align: center ">
-            <p class="alert alert-success">
-                @*@Model.ErrorMessage*@
-                @TempData["errorMessage"].ToString()
-
-            </p>
-        </div>
-
-    }
 
 }
-@foreach (var loc in Model.AllLocations.OrderBy(c=>c.Name))
+@foreach (var loc in Model.AllLocations.OrderBy(c => c.Name))
 {
     Model.SelectedLocation = loc;
     <partial name="_LocationItem" model="Model" />

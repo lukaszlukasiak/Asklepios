@@ -70,6 +70,8 @@ namespace Asklepios.Data.Interfaces
         MedicalTestResult GetMedicalTestResultById(long idL);
         byte[] GetDocument(string documentPath, string webRootPath);
         void UpdateNotification(Notification notification);
+        IQueryable<Visit> GetFutureVisitsQuery();
+        IQueryable<Visit> GetFutureVisitsQueryPatient();
 
         //void ResignFromVisit(Visit plannedVisit, Patient patient);
 

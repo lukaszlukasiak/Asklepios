@@ -2,19 +2,17 @@
 @{
     SelectList medicalPackagesList = new SelectList(Model.MedicalPackages.OrderBy(c=>c.Name), "Id", "Name");
     SelectList nfzUnits = new SelectList(Model.NFZUnits.OrderBy(c=>c.Description), "Id", "Description");
-    Model.CurrentPatient.Person.HasPolishCitizenship = true;
 
     Asklepios.Web.Areas.AdministrativeArea.Models.ViewMode editViewMode = Asklepios.Web.Areas.AdministrativeArea.Models.ViewMode.Edit;
     Asklepios.Web.Areas.AdministrativeArea.Models.ViewMode removeViewMode = Asklepios.Web.Areas.AdministrativeArea.Models.ViewMode.Remove;
 }
 <div class="d-flex flex-column">
 
-    <partial name="_Message" model="Model" />
+    <partial name="_ViewMessage" model="Model.ViewMessage" />
     <h2 style="text-align:center; margin-bottom:20px">Edytuj dane pacjenta</h2>
 
     <form class="form my-2" asp-action="PatientItemEdit" method="post" enctype="multipart/form-data">
         <div class="form-group d-flex flex-column">
-            @*<span id="MessageSpan" asp-validation-for="User.UserName" class="text-danger"></span>*@
 
             <label asp-for="CurrentPatient.User.Email" class="control-label"></label>
             <input asp-for="CurrentPatient.User.Email" class="form-control mb-2">
@@ -61,7 +59,7 @@
 
             <div class="d-flex flex-row">
                 <label asp-for="CurrentPatient.Person.HasPolishCitizenship"></label>
-                <input type="checkbox" asp-for="CurrentPatient.Person.HasPolishCitizenship" class="custom-control ml-2 " style="height:20px;width:20px" checked />
+                <input type="checkbox" asp-for="CurrentPatient.Person.HasPolishCitizenship" class="custom-control ml-2 " style="height:20px;width:20px" />
                 <span asp-validation-for="CurrentPatient.Person.HasPolishCitizenship" class="text-danger"></span>
             </div>
 

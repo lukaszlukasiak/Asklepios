@@ -54,16 +54,6 @@ namespace Asklepios.Web.Areas.MedicalWorkerArea.Models
         public int ServiceToRemoveIndex { get; set; }
 
         public VisitSummaryModel VisitSummary {get;set;}
-        //public List<Recommendation> Recommendations { get; set; }
-        //public Recommendation RecommendationToAdd { get; set; }
-        //public Recommendation RecommendationToRemove { get; set; }
-        //public Prescription PrescriptionToAdd { get; set; }
-        //public IssuedMedicine IssuedMedicineToAdd { get; set; }
-        //public IssuedMedicine IssuedMedicineToRemove { get; set; }
-        //public List<MedicalService> MinorMedicalServices { get; set; }
-
-        //public hist
-        //public List<IssuedMedicine>  
         [Required(ErrorMessage = "Proszę wybrać typ badań")]
         [Range(1, long.MaxValue, ErrorMessage ="Proszę wybrać usługę")]
         [Display(Name = "Typ badań")]

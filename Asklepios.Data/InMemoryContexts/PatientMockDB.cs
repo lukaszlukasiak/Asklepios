@@ -1558,8 +1558,8 @@ namespace Asklepios.Data.InMemoryContexts
                         PhoneNumber="22 780 421 433",
                         PostalCode="01-111",
                         MedicalRooms=UpdateWithIdsAndReturnMedicalRooms(MedicalRooms.GetRange(0,12),id),//roomsCollections.ElementAt(0)
-                        Latitude=52.219230.ToString(),
-                        Longtitude=20.970020.ToString()
+                        //Latitude=52.219230.ToString(),
+                        //Longtitude=20.970020.ToString()
                     },
                 new Location()
                     {
@@ -1578,8 +1578,8 @@ namespace Asklepios.Data.InMemoryContexts
                         PhoneNumber="22 787 477 323",
                         PostalCode="01-211",
                         MedicalRooms=UpdateWithIdsAndReturnMedicalRooms(MedicalRooms.GetRange(12,13),id),//roomsCollections.ElementAt(1)
-                        Latitude=52.210960.ToString(),
-                        Longtitude=20.976140.ToString()
+                        //Latitude=52.210960.ToString(),
+                        //Longtitude=20.976140.ToString()
                         },
                 new Location()
                     {
@@ -1597,8 +1597,8 @@ namespace Asklepios.Data.InMemoryContexts
                         PhoneNumber="22 777 600 313",
                         PostalCode="03-055",
                         MedicalRooms=UpdateWithIdsAndReturnMedicalRooms(MedicalRooms.GetRange(25,15),id),//.ForEach(c=>c.LocationId=id),//roomsCollections.ElementAt(2)
-                        Latitude=52.132490.ToString(),
-                        Longtitude=21.065310.ToString()
+                        //Latitude=52.132490.ToString(),
+                        //Longtitude=21.065310.ToString()
                     },
                 new Location()
                     {
@@ -1618,8 +1618,8 @@ namespace Asklepios.Data.InMemoryContexts
                         PhoneNumber="22 777 444 333",
                         PostalCode="02-222",
                         MedicalRooms=UpdateWithIdsAndReturnMedicalRooms(MedicalRooms.GetRange(40,12),id),//roomsCollections.ElementAt(3)
-                        Latitude=52.296230.ToString(),
-                        Longtitude=21.051420.ToString()
+                        //Latitude=52.296230.ToString(),
+                        //Longtitude=21.051420.ToString()
                         },
                     new Location()
                     {
@@ -1639,8 +1639,8 @@ namespace Asklepios.Data.InMemoryContexts
                         PhoneNumber="20 300 400 111",
                         PostalCode="80-078",
                         MedicalRooms=UpdateWithIdsAndReturnMedicalRooms(MedicalRooms.GetRange(52,12),id),//roomsCollections.ElementAt(4)
-                        Latitude=50.050052.ToString(),
-                        Longtitude=19.940330.ToString()
+                        //Latitude=50.050052.ToString(),
+                        //Longtitude=19.940330.ToString()
                         },
                     new Location()
                     {
@@ -1660,8 +1660,8 @@ namespace Asklepios.Data.InMemoryContexts
                         PhoneNumber="30 500 500 241",
                         PostalCode="45-100",
                         MedicalRooms=UpdateWithIdsAndReturnMedicalRooms(MedicalRooms.GetRange(64,16),id),//roomsCollections.ElementAt(5)
-                        Latitude=54.349064.ToString(),
-                        Longtitude=18.654018.ToString()
+                        //Latitude=54.349064.ToString(),
+                        //Longtitude=18.654018.ToString()
                     },
                     new Location()
                     {
@@ -1680,8 +1680,8 @@ namespace Asklepios.Data.InMemoryContexts
                         PhoneNumber="30 500 500 241",
                         PostalCode="60-102",
                         MedicalRooms=UpdateWithIdsAndReturnMedicalRooms(MedicalRooms.GetRange(80,10),id),//roomsCollections.ElementAt(1)
-                        Latitude=52.403926.ToString(),
-                        Longtitude=16.925172.ToString()
+                        //Latitude=52.403926.ToString(),
+                        //Longtitude=16.925172.ToString()
                     },
                     new Location()
                     {
@@ -1700,8 +1700,8 @@ namespace Asklepios.Data.InMemoryContexts
                         PhoneNumber="71 500 500 241",
                         PostalCode="50-031",
                         MedicalRooms=UpdateWithIdsAndReturnMedicalRooms(MedicalRooms.GetRange(90,14),id),//roomsCollections.ElementAt(3)
-                        Latitude=51.111614.ToString(),
-                        Longtitude=17.033046.ToString()
+                        //Latitude=51.111614.ToString(),
+                        //Longtitude=17.033046.ToString()
                     },
                     new Location()
                     {
@@ -1719,8 +1719,8 @@ namespace Asklepios.Data.InMemoryContexts
                         PhoneNumber="32 500 500 241",
                         PostalCode="40-750",
                         MedicalRooms=UpdateWithIdsAndReturnMedicalRooms(MedicalRooms.GetRange(104,21),id),//roomsCollections.ElementAt(2)
-                        Latitude=50.259811.ToString(),
-                        Longtitude=19.024153.ToString()
+                        //Latitude=50.259811.ToString(),
+                        //Longtitude=19.024153.ToString()
                     },
             };
 

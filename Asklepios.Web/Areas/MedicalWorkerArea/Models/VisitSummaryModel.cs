@@ -41,11 +41,6 @@ namespace Asklepios.Web.Areas.MedicalWorkerArea.Models
                 prescription.IssuedToId = visit.PatientId;
                 prescription.IssueDate = DateTime.Now;
                 visit.Prescription = prescription;
-                //if (Medicines!=null && Medicines.Count>0)
-                //{
-                //    List<IssuedMedicine> medicines = Medicines.Select(c => new IssuedMedicine() { MedicineName = c.MedicineName, PackageSize = c.PackageSize, PaymentDiscount = c.PaymentDiscount });
-                //    prescription.IssuedMedicines = medicines;
-                //}
             }
             if (MinorMedicalServices!=null && MinorMedicalServices.Count>0)
             {

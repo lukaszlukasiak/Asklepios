@@ -250,7 +250,6 @@ namespace Asklepios.Core.Models
                     {
                         ValidationError = "Polski obywatel musi mieć podany PESEL";
                         return false;
-                        //throw new TypeInitializationException("Polski obywatel musi mieć podany PESEL!", null);
                     }
                     else
                     {
@@ -266,15 +265,12 @@ namespace Asklepios.Core.Models
                     {
                         ValidationError = "Osoby bez polskiego obywatelstwa muszą mieć podany numer paszportu oraz kod!";
                         return false;
-                        //throw new TypeInitializationException("Osoby bez polskiego obywatelstwa muszą mieć podany numer paszportu oraz kod!", null);
                     }
                 }
                 if (!string.IsNullOrWhiteSpace(Name))
                 {
                     if (!string.IsNullOrWhiteSpace(Surname))
                     {
-                        //if (!string.IsNullOrWhiteSpace(EmailAddress))
-                        //{
                         if (BirthDate.HasValue)
                         {
                             if (DefaultAglomeration.HasValue)
@@ -288,7 +284,6 @@ namespace Asklepios.Core.Models
                                     }
                                 }
                             }
-                            //}
                         }
                     }
                 }

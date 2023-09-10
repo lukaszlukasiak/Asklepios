@@ -1,5 +1,6 @@
 ﻿using Asklepios.Core.Models;
 using Asklepios.Web.Enums;
+using Asklepios.Web.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -42,8 +43,9 @@ namespace Asklepios.Web.Areas.AdministrativeArea.Models
         //public string ErrorMessage { get; set; }
         public ViewMode ViewMode { get; set; }
         public string UserName { get; set; }
-        public string Message { get; set; }
-        public AlertMessageType AlertMessageType { get; set; }
+        //public string Message { get; set; }
+        //public AlertMessageType AlertMessageType { get; set; }
+        public ViewMessage ViewMessage { get; set; } = new ViewMessage();
 
         private List<MedicalWorker> GetFilteredWorkersList()
         {
@@ -56,7 +58,7 @@ namespace Asklepios.Web.Areas.AdministrativeArea.Models
             {
                 if (!string.IsNullOrWhiteSpace(SearchOptions.SelectedName))
                 {
-                    filteredWorkers = filteredWorkers.Where(c => c.Person.Name.Contains(SearchOptions.SelectedName, StringComparison.OrdinalIgnoreCase)).ToList();
+                    filteredWorkers = filteredWorkers.Where(c => c.Person.Name.Contains(SearchOptions.SelectedName)).ToList();
                     if (filteredWorkers == null)
                     {
                         return null;
@@ -65,7 +67,7 @@ namespace Asklepios.Web.Areas.AdministrativeArea.Models
             }
             if (!string.IsNullOrWhiteSpace(SearchOptions.SelectedSurname))
             {
-                filteredWorkers = filteredWorkers.Where(c => c.Person.Surname.Contains(SearchOptions.SelectedSurname,StringComparison.OrdinalIgnoreCase)).ToList();
+                filteredWorkers = filteredWorkers.Where(c => c.Person.Surname.Contains(SearchOptions.SelectedSurname)).ToList();
                 if (filteredWorkers == null)
                 {
                     return null;
@@ -82,7 +84,7 @@ namespace Asklepios.Web.Areas.AdministrativeArea.Models
             }
             if (!string.IsNullOrWhiteSpace(SearchOptions.SelectedPassportNumber))
             {
-                filteredWorkers = filteredWorkers.Where(c => c.Person.Surname.Contains(SearchOptions.SelectedPassportNumber, StringComparison.OrdinalIgnoreCase)).ToList();
+                filteredWorkers = filteredWorkers.Where(c => c.Person.Surname.Contains(SearchOptions.SelectedPassportNumber)).ToList();
                 if (filteredWorkers == null)
                 {
                     return null;

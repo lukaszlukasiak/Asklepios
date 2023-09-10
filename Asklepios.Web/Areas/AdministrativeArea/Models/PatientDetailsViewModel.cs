@@ -11,6 +11,7 @@ using Asklepios.Web.Extensions;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.AspNetCore.Mvc.ViewFeatures;
 using Asklepios.Web.Enums;
+using Asklepios.Web.Models;
 
 namespace Asklepios.Web.Areas.AdministrativeArea.Models
 {
@@ -114,8 +115,9 @@ namespace Asklepios.Web.Areas.AdministrativeArea.Models
         }
 
         public string UserName { get; set; }
-        public string Message { get; set; }
-        public AlertMessageType AlertMessageType { get; set; }
+        //public string Message { get; set; }
+        //public AlertMessageType AlertMessageType { get; set; }
+        public ViewMessage ViewMessage { get; set; } = new ViewMessage();
 
         public void UpdateWithSearch(IPatientSearch search)
         {
