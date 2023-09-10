@@ -12,6 +12,11 @@
     <input asp-for="HasPredefinedService"   value="@Model.HasPredefinedService" hidden/>
     <input asp-for="HasPredefinedCategory"   value="@Model.HasPredefinedCategory" hidden/>
     <input asp-for="HasPredefinedLocation"   value="@Model.HasPredefinedLocation" hidden/>
+        <input asp-for="SelectedCategoryId"  value="@Model.SelectedCategoryId" hidden/>
+    <input asp-for="SelectedLocationId"   value="@Model.SelectedLocationId" hidden/>
+    <input asp-for="SelectedMedicalWorkerId"   value="@Model.SelectedMedicalWorkerId" hidden/>
+    <input asp-for="SelectedServiceId"   value="@Model.SelectedServiceId" hidden/>
+        <input asp-for="SelectedVisitId"   value="@Model.SelectedVisitId" hidden/>
 
     @{
         SelectList workersItems = null;
