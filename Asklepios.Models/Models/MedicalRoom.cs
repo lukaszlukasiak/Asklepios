@@ -48,6 +48,7 @@ namespace Asklepios.Core.Models
         [Required(ErrorMessage = "Wprowadź typ pokoju!")]
         [Display(Name = "Typ pokoju")]
         public MedicalRoomType? MedicalRoomType {get;set;}
+        public bool IsActive { get; set; }
         public bool IsValid 
         {
             get

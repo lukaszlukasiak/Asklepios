@@ -517,5 +517,25 @@ namespace Asklepios.Data.InMemoryContexts
         {
             throw new NotImplementedException();
         }
+
+        public void AddNotification(long id1, NotificationType visitCancelled, long id2, DateTimeOffset now, long id3)
+        {
+            throw new NotImplementedException();
+        }
+
+        public void UpdateVisit(Visit visit1)
+        {
+            throw new NotImplementedException();
+        }
+
+        public void UpdateVisitById(long id)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Visit GetVisitById(long v)
+        {
+            throw new NotImplementedException();
+        }
     }
 }

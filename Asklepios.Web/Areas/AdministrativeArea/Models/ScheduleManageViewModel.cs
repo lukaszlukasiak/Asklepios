@@ -25,6 +25,7 @@ namespace Asklepios.Web.Areas.AdministrativeArea.Models
         public List<Location> Locations { get; set; }
         public List<VisitCategory> VisitCategories { get; set; }
         public MedicalWorker SelectedMedicalWorker { get; set; }
+        public List<long> VisitsToRemove { get; set; }
 
         public IQueryable<Visit> FilteredVisits { get; private set; }
         public List<Visit> PageVisits { get; private set; }

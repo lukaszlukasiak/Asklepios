@@ -62,12 +62,6 @@
         </div>
         <div class="p-2 pt-3 m-auto flex-grow-1" style="width:400px;">
             <div class="d-flex flex-column align-content-end justify-content-evenly m-auto">
-                @*<a asp-area="AdministrativeArea" asp-controller="CustomerService" asp-action="BookSpecifiedVisit" asp-route-id="@Model.Id" class="btn btn-primary btn-icon-split ">
-                        <span class="icon text-white-50 left" style="text-align:left;float:left">
-                            <i class="fas fa-address-book"></i>
-                        </span>
-                        <span class="text" style="float: left">Edytuj</span>
-                    </a>*@
                 <form class="form my-2" asp-action="RemoveSpecifiedVisit" method="post">
                     <div class="form-group d-flex flex-column">
                         <input asp-for="SelectedLocationId" type="hidden">
@@ -78,9 +72,6 @@
                         <input asp-for="VisitsDateFrom" type="hidden">
                         <input asp-for="VisitsDateTo" type="hidden">
                         <input asp-for="Visit.Id" type="hidden">
-@*                        <input asp-for="" type="hidden">
-*@
-                        @*<input asp-for="ViewMode" value="ViewMode.Remove" type="hidden"/>*@
                         <div class="form-group d-flex flex-column">
                             <button id="btnSubmit" type="submit" class="btn btn-primary btn-icon-split d-flex mt-3">
                                 <span class="icon text-white-50 left" style="text-align:left;float:left">
@@ -89,17 +80,8 @@
                                 <span class="text" style="float: left">Usuń</span>
                             </button>
                         </div>
-                        
-                        @*<button id="btnSubmit" type="submit" class="btn btn-primary w-100 mt-2">Usuń</button>*@
                     </div>
                 </form>
-
-                @*<a asp-area="AdministrativeArea" asp-controller="Administrative" asp-action="RemoveSpecifiedVisit" asp-route-id="@Model.Id" class="btn btn-primary btn-icon-split mt-2">
-                        <span class="icon text-white-50 left" style="text-align:left;float:left">
-                            <i class="fas fa-address-book"></i>
-                        </span>
-                        <span class="text" style="float: left">Usuń</span>
-                    </a>*@
             </div>
         </div>
     </div>

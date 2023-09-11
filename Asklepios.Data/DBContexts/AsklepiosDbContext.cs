@@ -33,7 +33,7 @@ namespace Asklepios.Data.DBContexts
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-            bool seedDatabase = true;
+            bool seedDatabase = false;
 
             base.OnModelCreating(modelBuilder);
 
@@ -1308,6 +1308,27 @@ namespace Asklepios.Data.DBContexts
 
             SaveChanges();
         }
+        public void DeactivateVisit(long id)
+        {
+            Visit visit = Visits.Find(id);
+            //visit.PatientId = null;
+            //visit.Patient = null;
+            visit.VisitStatus = VisitStatus.Cancelled;
+
+            if (visit.UsedExaminationReferralId != null)
+            {
+                MedicalReferral medicalReferral = MedicalReferrals.FirstOrDefault(c => c.Id == visit.UsedExaminationReferralId.Value);
+                if (medicalReferral != null)
+                {
+                    medicalReferral.HasBeenUsed = false;
+                    medicalReferral.VisitWhenUsedId = null;
+                    MedicalReferrals.Update(medicalReferral);
+                }
+            }
+            Visits.Update(visit);
+
+            SaveChanges();
+        }
 
         public void UpdateLocation(Location selectedLocation, string webrootPath)
         {
@@ -1488,11 +1509,6 @@ namespace Asklepios.Data.DBContexts
         {
             Update(visitToUpdate);
 
-            // Visit visit = Visits.Find(visitToUpdate.Id);
-            //if (visit != null)
-            //{
-            //    visit=visitToUpdate;
-            //}
             SaveChanges();
         }
 
@@ -1511,6 +1527,7 @@ namespace Asklepios.Data.DBContexts
         public IQueryable<Visit> GetFutureVisitsQuery()
         {
             return Visits
+                .Where(a=>a.VisitStatus==VisitStatus.Booked || a.VisitStatus==VisitStatus.AvailableNotBooked)
                 .Where(k => k.DateTimeSince > DateTimeOffset.Now)
                 .Include(a => a.MedicalWorker).ThenInclude(b => b.Person)
                 .Include(c => c.Patient).ThenInclude(d => d.Person)
@@ -1520,6 +1537,7 @@ namespace Asklepios.Data.DBContexts
         public IQueryable<Visit> GetFutureVisitsQueryPatient()
         {
             return Visits
+                .Where(a => a.VisitStatus == VisitStatus.Booked || a.VisitStatus == VisitStatus.AvailableNotBooked)
                 .Where(k => k.DateTimeSince > DateTimeOffset.Now)
                 .Include(a => a.MedicalWorker).ThenInclude(b => b.Person)
                 .Include(c => c.Patient).ThenInclude(d => d.Person)
@@ -1766,5 +1784,14 @@ namespace Asklepios.Data.DBContexts
             return medicalReferrals;
         }
 
+        public void UpdateVisitById(long id)
+        {
+            throw new NotImplementedException();
+        }
+
+        //public void UpdateVisitById(long id)
+        //{
+        //    throw new NotImplementedException();
+        //}
     }
 }

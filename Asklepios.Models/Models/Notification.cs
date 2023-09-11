@@ -35,6 +35,9 @@ namespace Asklepios.Core.Models
                         return "Nowe wyniki badań!";
                     case NotificationType.MedicalReferral:
                         return "Nowe skierowanie!";
+                    case NotificationType.VisitCancelled:
+                        return "Nowa odwołana wizyta!";
+
                     default:
                         break;
                 }
@@ -53,6 +56,8 @@ namespace Asklepios.Core.Models
                         return "Wyniki badań";
                     case NotificationType.MedicalReferral:
                         return "Skierowanie";
+                    case NotificationType.VisitCancelled:
+                        return "Odwołana wizyta!";
                     default:
                         break;
                 }

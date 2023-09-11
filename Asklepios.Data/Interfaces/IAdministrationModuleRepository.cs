@@ -1,7 +1,9 @@
-﻿using Asklepios.Core.Models;
+﻿using Asklepios.Core.Enums;
+using Asklepios.Core.Models;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -103,5 +105,9 @@ namespace Asklepios.Data.Interfaces
         void RemoveUserById(long userId);
         Task<bool> AddIdenitytUserWithRole(User user, UserManager<User> userManager, RoleManager<IdentityRole<long>> roleManager);
         IQueryable<Visit> GetVisitsQuery();
+        void AddNotification(long id1, NotificationType visitCancelled, long id2, DateTimeOffset now, long id3);
+        void UpdateVisitById(long id);
+        void UpdateVisit(Visit visit1);
+        Visit GetVisitById(long v);
     }
 }
