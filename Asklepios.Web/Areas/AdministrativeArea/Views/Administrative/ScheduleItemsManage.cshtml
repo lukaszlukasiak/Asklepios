@@ -1,26 +1,26 @@
 ﻿@using Asklepios.Web.Enums
 @model Asklepios.Web.Areas.AdministrativeArea.Models.ScheduleManageViewModel
 @{
-    SelectList workersItems = new SelectList(Model.MedicalWorkers.OrderBy(c=>c.FullProffesionalName), "Id", "FullProffesionalName");
-    SelectList locationItems = new SelectList(Model.Locations.OrderBy(c=>c.Name), "Id", "Name");
-    SelectList categoriesList = new SelectList(Model.VisitCategories.OrderBy(c=>c.CategoryName), "Id", "CategoryName");
+    SelectList workersItems = new SelectList(Model.MedicalWorkers.OrderBy(c => c.FullProffesionalName), "Id", "FullProffesionalName");
+    SelectList locationItems = new SelectList(Model.Locations.OrderBy(c => c.Name), "Id", "Name");
+    SelectList categoriesList = new SelectList(Model.VisitCategories.OrderBy(c => c.CategoryName), "Id", "CategoryName");
     SelectList roomsList = null;
 
     if (long.TryParse(Model.SelectedLocationId, out long lid))
     {
         if (lid > 0)
         {
-            roomsList = new SelectList(Model.MedicalRooms.OrderBy(c=>c.FloorNumber).ThenBy(d=>d.Name), "Id", "LongDescription");
+            roomsList = new SelectList(Model.MedicalRooms.OrderBy(c => c.FloorNumber).ThenBy(d => d.Name), "Id", "LongDescription");
         }
     }
-    
-    SelectList servicesList = new SelectList(Model.PrimaryMedicalServices.OrderBy(f=>f.Name), "Id", "Name");
+
+    SelectList servicesList = new SelectList(Model.PrimaryMedicalServices.OrderBy(f => f.Name), "Id", "Name");
 
 }
 
 <div class="d-flex flex-column">
 
-        <partial name="_ViewMessage" model="Model.ViewMessage" />
+    <partial name="_ViewMessage" model="Model.ViewMessage" />
 
     <h2 style="text-align:center; margin-bottom:20px">Lista wizyt</h2>
 
@@ -67,7 +67,6 @@
             @if (Model.SelectedMedicalWorker != null)
             {
                 <partial name="_MedicalWorker" model="Model.SelectedMedicalWorker" />
-
             }
 
             <label asp-for="VisitsDateFrom" class="control-label"></label>
@@ -111,12 +110,52 @@
         </div>
     </form>
     @{
+        if (Model.FilteredVisits.Count() > 0)
+        {
+            <h3 class="mx-auto">Znaleziono @Model.FilteredVisits.Count() wizyt</h3>
+            if (Model.FilteredVisits.Count() <= 50 )
+            {
+                List<long> ids = Model.FilteredVisits.Select(c => c.Id).ToList();
+                Model.VisitsToRemove = new List<long>();
+                Model.VisitsToRemove.AddRange(ids);
+
+                <form class="form my-2" asp-action="RemoveSelectedVisits" method="post">
+                    <div class="form-group d-flex flex-column">
+
+                        @for (int i = 0; i < Model.VisitsToRemove.Count(); i++)
+                        {
+                            @Html.HiddenFor(m =>  @Model.VisitsToRemove[i],@Model.VisitsToRemove[i])
+                            ;
+                        }
+
+                        <input asp-for="SelectedLocationId" type="hidden">
+                        <input asp-for="SelectedMedicalRoomId" type="hidden">
+                        <input asp-for="SelectedMedicalWorkerId" type="hidden">
+                        <input asp-for="SelectedPrimaryServiceId" type="hidden">
+                        <input asp-for="SelectedVisitCategoryId" type="hidden">
+                        <input asp-for="VisitsDateFrom" type="hidden">
+                        <input asp-for="VisitsDateTo" type="hidden">
+                        <div class="form-group d-flex flex-column">
+                            <button id="btnSubmit" type="submit" class="btn btn-primary btn-icon-split d-flex mt-3">
+                                <span class="icon text-white-50 left" style="text-align:left;float:left">
+                                    <i class="fas fa-search-minus"></i>
+                                </span>
+                                <span class="text" style="float: left">Usuń wszystkie znalezione wizyty!</span>
+                            </button>
+                            <span>*Wizyty, które nie są zarezerwowane zostaną trwale usunięte. Wizyty, które zostały zarezerwowane zostaną odwołane i zdezaktywowane, a pacjenci dostaną powiadomienie o odwołaniu. </span>
+                        </div>
+
+                    </div>
+                </form>
+
+            }
+        }
         List<Visit> visits = Model.PageVisits;
 
-        if (visits.Count== 0)
+        if (visits.Count == 0)
         {
             <h3 style="text-align:center">Brak dostępnych wizyt przy założonych kryteriach...</h3>
-        }     
+        }
 
         for (int i = 0; i < visits.Count; i++)
         {

@@ -444,7 +444,7 @@ namespace Asklepios.Web.Areas.PatientArea.Controllers
                 VisitViewModel model = new VisitViewModel();
                 //List<MedicalWorker> medicalWorkers = _context.GetMedicalWorkers().ToList();
                 model.UserName = _loggedUser.Person.FullName;
-                model.Notifications = _context.GetNotificationsByPatientId(_patient.Id);
+                model.Notifications = _context.GetNotificationsByPatientId(_patient.Id).OrderByDescending(c=>c.DateTimeAdded).ToList();
                 foreach (Notification item in model.Notifications)
                 {
                     item.Visit = _context.GetHistoricalVisitById(item.VisitId);

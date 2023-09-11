@@ -54,6 +54,7 @@ namespace Asklepios.Core.Models
         public string? EmployerName { get; set; }
         [Display(Name = "NIP pracodawcy")]
         public string? EmployerNIP { get; set; }
+        public bool IsActive { get; set; }
 
         [NotMapped]
         public  List<MedicalTestResult> TestsResults { get; set; }

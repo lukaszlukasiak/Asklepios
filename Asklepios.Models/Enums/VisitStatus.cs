@@ -14,6 +14,6 @@ namespace Asklepios.Core.Enums
         Finished,
         NotHeldAbsentPatient,
         NotHeldOther,
-
+        Cancelled
     }
 }

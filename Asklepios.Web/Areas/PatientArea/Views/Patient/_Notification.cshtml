@@ -12,13 +12,21 @@
                 {
                     <h3>@Model.Description</h3>
                 }
-                <h3>Dodał(a):</h3>
-                <h3 style="font-weight:900;">
+                @if (Model.NotificationType==Asklepios.Core.Enums.NotificationType.VisitCancelled)
+                {
 
-                    <a asp-action="MedicalWorkerDetails" asp-controller="Patient" asp-route-id="@Model.Visit.MedicalWorker.Id">
-                        @Model.Visit.MedicalWorker.FullProffesionalName
-                    </a>
-                </h3>
+                }
+                else
+                {
+                    <h3>Dodał(a):</h3>
+                    <h3 style="font-weight:900;">
+
+                        <a asp-action="MedicalWorkerDetails" asp-controller="Patient" asp-route-id="@Model.Visit.MedicalWorker.Id">
+                            @Model.Visit.MedicalWorker.FullProffesionalName
+                        </a>
+                    </h3>
+
+                }
             </div>
         </div>
         <div class="p-2 flex-grow-1 pt-3 m-auto flex-grow-1" style="width:400px;text-align:center">
@@ -50,7 +58,7 @@
                 </a>
 
             </div>
-            @if (Model.IsRead==false)
+            @if (Model.IsRead == false)
             {
                 <div class="d-flex flex-column align-content-end justify-content-evenly mx-auto mt-2">
                     <a asp-area="PatientArea" asp-controller="Patient" asp-action="SetNotificationAsReadList" asp-route-id="@Model.Id" class="btn btn-primary btn-icon-split ">
@@ -63,17 +71,5 @@
 
             }
         </div>
-        @*<div class="p-2 pt-3 m-auto flex-grow-1" style="width:400px;">
-            <div class="d-flex flex-column align-content-end justify-content-evenly m-auto">
-                <a asp-area="PatientArea" asp-controller="Patient" asp-action="BookSpecifiedVisit" asp-route-id="@Model.Id" class="btn btn-primary btn-icon-split ">
-                    <span class="icon text-white-50 left" style="text-align:left;float:left">
-                        <i class="fas fa-book-medical"></i>
-                    </span>
-                    <span class="text" style="float: left">Oznacz jako przeczytane</span>
-                </a>
-
-            </div>
-        </div>*@
-
     </div>
 </div>

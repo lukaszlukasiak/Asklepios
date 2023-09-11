@@ -22,6 +22,10 @@
 
 </head>
 
+@*@{
+    Model.Notifications = Model.Notifications.OrderByDescending(c => c.DateTimeAdded).ToList();
+}
+*@
 <body id="page-top" style="min-width:375px;">
 
     <!-- Page Wrapper -->
@@ -235,7 +239,7 @@
                                             </div>
                                         </div>
                                         <div>
-                                            <div class="small text-gray-500">10.09.2021, 8:35</div>
+                                            <div class="small text-gray-500">@item.DateTimeAdded.DateTime.ToShortDateString()</div>
                                             Brak powiadomień!
                                         </div>
                                     </a>
@@ -252,7 +256,7 @@
                                                 </div>
                                             </div>
                                             <div>
-                                                <div class="small text-gray-500">22.09.2021, 15:37</div>
+                                                <div class="small text-gray-500">@item.DateTimeAdded.DateTime.ToShortDateString()</div>
                                                 @if (item.IsRead)
                                                 {
                                                     <span class="font-weight-normal">@item.Description!</span>
@@ -269,41 +273,6 @@
                                     <a class="dropdown-item text-center small text-gray-500" asp-action="NotificationsList" asp-controller="Patient" asp-area="PatientArea">Pokaż wszystkie powiadomienia!</a>
                                 }
 
-
-
-                                @*<a class="dropdown-item d-flex align-items-center" href="#">
-                                        <div class="mr-3">
-                                            <div class="icon-circle bg-primary">
-                                                <i class="fas fa-file-alt text-white"></i>
-                                            </div>
-                                        </div>
-                                        <div>
-                                            <div class="small text-gray-500">22.09.2021, 15:37</div>
-                                            <span class="font-weight-bold">Nowe skierowanie!</span>
-                                        </div>
-                                    </a>
-                                    <a class="dropdown-item d-flex align-items-center" href="#">
-                                        <div class="mr-3">
-                                            <div class="icon-circle bg-success">
-                                                <i class="fas fa-donate text-white"></i>
-                                            </div>
-                                        </div>
-                                        <div>
-                                            <div class="small text-gray-500">17.09.2021, 11:11</div>
-                                            Wyniki badania zostały opublikowane!
-                                        </div>
-                                    </a>
-                                    <a class="dropdown-item d-flex align-items-center" href="#">
-                                        <div class="mr-3">
-                                            <div class="icon-circle bg-warning">
-                                                <i class="fas fa-exclamation-triangle text-white"></i>
-                                            </div>
-                                        </div>
-                                        <div>
-                                            <div class="small text-gray-500">10.09.2021, 8:35</div>
-                                            Nowa recepta!
-                                        </div>
-                                    </a>*@
                             </div>
                         </li>
 

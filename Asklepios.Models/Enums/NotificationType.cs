@@ -10,6 +10,7 @@ namespace Asklepios.Core.Enums
     {
         Prescription,
         TestResult,
-        MedicalReferral
+        MedicalReferral,
+        VisitCancelled
     }
 }

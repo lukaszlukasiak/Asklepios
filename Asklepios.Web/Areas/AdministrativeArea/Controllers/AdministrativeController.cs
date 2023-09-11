@@ -452,7 +452,12 @@ namespace Asklepios.Web.Areas.AdministrativeArea.Controllers
                         ScheduleManageViewModel model2 = new ScheduleManageViewModel();
                         (model2 as ISearchVisit).SetSearchOptions(model);
 
-                        _context.RemoveVisitById(visit1.Id);
+                        if (visit1.VisitStatus==VisitStatus.Booked)
+                        {
+                            _context.AddNotification(visit1.Id, NotificationType.VisitCancelled, visit1.Patient.Id, DateTimeOffset.Now, visit1.Id);
+                        }
+                        visit1.VisitStatus = VisitStatus.Cancelled;
+                        _context.UpdateVisit(visit1);
                         ViewMessage viewMessage = new ViewMessage()
                         {
                             Message = "Wizyta została usunięta!",
@@ -460,7 +465,7 @@ namespace Asklepios.Web.Areas.AdministrativeArea.Controllers
                         };
                         TempData[ViewMessage.MESSAGE_KEY] = JsonConvert.SerializeObject(viewMessage);
 
-                        ISearchVisit searchOptions = model;
+                        //ISearchVisit searchOptions = model;
                         model.UserName = _loggedUser.Person.FullName;
 
                         return View(model2);
@@ -474,6 +479,59 @@ namespace Asklepios.Web.Areas.AdministrativeArea.Controllers
                 {
                     return NotFound();
                 }
+            }
+            else
+            {
+                return NotFound();
+            }
+        }
+
+        
+        [HttpPost]
+        public IActionResult RemoveSelectedVisits(ScheduleManageViewModel model)
+        {
+            UserId = HttpContext.User.GetUserId().Value;
+            _loggedUser = _context.GetUserById(UserId);
+
+            if (_loggedUser != null)
+            {
+                ScheduleManageViewModel model2 = new ScheduleManageViewModel();
+                (model2 as ISearchVisit).SetSearchOptions(model);
+
+                if (model.VisitsToRemove!=null)
+                {
+
+
+                    for (int i = 0; i < model.VisitsToRemove.Count(); i++)
+                    {
+                        Visit visit = _context.GetVisitById(model.VisitsToRemove[i]);
+
+
+                        if (visit.VisitStatus == VisitStatus.Booked)
+                        {
+                            _context.AddNotification(visit.Id, NotificationType.VisitCancelled, visit.Patient.Id, DateTimeOffset.Now, visit.Id);
+                            visit.VisitStatus = VisitStatus.Cancelled;
+                            _context.UpdateVisit(visit);
+                        }
+                        else
+                        {
+                            _context.RemoveVisitById(visit.Id);
+                        }
+                    }
+                    ViewMessage viewMessage = new ViewMessage()
+                    {
+                        Message = "Wizyty zostały usunięte/zdezaktywowane!",
+                        MessageType = AlertMessageType.InfoMessage
+                    };
+                    TempData[ViewMessage.MESSAGE_KEY] = JsonConvert.SerializeObject(viewMessage);
+
+                    ISearchVisit searchOptions = model;
+                    model.UserName = _loggedUser.Person.FullName;
+                    return View(model2);
+
+                }
+                return View(model2);
+
             }
             else
             {
