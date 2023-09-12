@@ -60,6 +60,7 @@
 
   <ItemGroup>
     <Folder Include="Migrations\" />
+    <Folder Include="migrations_old\" />
   </ItemGroup>
 
 </Project>

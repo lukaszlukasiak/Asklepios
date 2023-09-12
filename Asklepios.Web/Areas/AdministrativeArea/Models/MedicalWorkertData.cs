@@ -13,7 +13,7 @@ namespace Asklepios.Web.Areas.AdministrativeArea.Models
     {
         public long Id { get; set; }
         [Display(Name = "Czy zatrudniony obecnie")]
-        public bool IsCurrentlyHired { get; set; }
+        public bool IsActive { get; set; }
         [Required(ErrorMessage = "Wprowadź typ pracownika medycznego!")]
         [Display(Name = "Typ pracownika medycznego")]
 
@@ -96,7 +96,7 @@ namespace Asklepios.Web.Areas.AdministrativeArea.Models
             }
             this.Education = medicalWorker.Education;
             this.Experience = medicalWorker.Experience;
-            this.IsCurrentlyHired = medicalWorker.IsCurrentlyHired;
+            this.IsActive = medicalWorker.IsActive;
 
             this.MedicalServiceIds = medicalWorker.MedicalServices.Select(c => c.Id).ToArray();
             this.ProfessionalNumber = medicalWorker.ProfessionalNumber;
