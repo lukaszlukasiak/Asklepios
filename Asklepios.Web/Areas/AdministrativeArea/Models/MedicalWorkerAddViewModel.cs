@@ -110,7 +110,7 @@ namespace Asklepios.Web.Areas.AdministrativeArea.Models
                     }
                 }
             }
-            MedicalWorker.IsCurrentlyHired = MedicalWorkertData.IsCurrentlyHired;
+            MedicalWorker.IsActive = MedicalWorkertData.IsActive;
 
             return true;
         }

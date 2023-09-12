@@ -43,7 +43,7 @@ namespace Asklepios.Core.Models
         
         [Display(Name = "Czy jest zatrudniony obecnie")]
 
-        public bool IsCurrentlyHired { get; set; }
+        public bool IsActive { get; set; }
         [Display(Name = "Tytuł zawodowy")]
 
         public abstract string ProfessionalTitle { get; }
@@ -126,9 +126,9 @@ namespace Asklepios.Core.Models
             {
                 this.Experience = worker.Experience;
             }
-            //if (worker.IsCurrentlyHired.HasValue)
+            //if (worker.IsActive.HasValue)
             //{
-                this.IsCurrentlyHired = worker.IsCurrentlyHired;
+                this.IsActive = worker.IsActive;
             //}
             if (worker.MedicalServiceIds!=null)
             {

@@ -52,7 +52,7 @@ namespace Asklepios.Core.Models
         
         public string MedicalHistory { get; set; }
         public long? MedicalTestResultId { get; set; }
-        
+        public bool IsActive { get; set; } = true;
         [ForeignKey("MedicalTestResultId")]
         public virtual MedicalTestResult MedicalTestResult 
         {

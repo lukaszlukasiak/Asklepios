@@ -2164,7 +2164,7 @@ namespace Asklepios.Data.InMemoryContexts
                     Experience="W latach 2005-2020 praca w szpitalu Bródnowskim",
                     //ImagePath="/img/MW/m/1.jpg",
                     HiredSince=new DateTime(2015,1,1),
-                    IsCurrentlyHired=true,
+                    IsActive=true,
                    // VisitReviews=visitRatings1,
                     MedicalServices=new List<MedicalService>()
                     {
@@ -2182,7 +2182,7 @@ namespace Asklepios.Data.InMemoryContexts
                     Experience="W latach 2005-2020 praca w szpitalu praskim",
                     //ImagePath="/img/MW/m/2.jpg",
                     HiredSince=new DateTime(2017,1,1),
-                    IsCurrentlyHired=true,
+                    IsActive=true,
                     //VisitReviews=visitRatings2,
                     MedicalServices=new List<MedicalService>()
                     {
@@ -2204,7 +2204,7 @@ namespace Asklepios.Data.InMemoryContexts
                     Experience="W latach 2005-2020 praca w szpitalu MSWiA",
                     //ImagePath="/img/MW/m/3.jpg",
                     HiredSince=new DateTime(2015,1,1),
-                    IsCurrentlyHired=true,
+                    IsActive=true,
                     //VisitReviews=visitRatings3,
                     MedicalServices=new List<MedicalService>()
                     {
@@ -2225,7 +2225,7 @@ namespace Asklepios.Data.InMemoryContexts
                     Experience="W latach 2005-2020 praca w szpitalu UMK",
                     //ImagePath="/img/MW/m/4.jpg",
                     HiredSince=new DateTime(2020,4,1),
-                    IsCurrentlyHired=true,
+                    IsActive=true,
                     //VisitReviews=visitRatings1,
                     MedicalServices=new List<MedicalService>()
                     {
@@ -2246,7 +2246,7 @@ namespace Asklepios.Data.InMemoryContexts
                     Experience="W latach 2005-2020 praca w szpitalu Bródnowskim",
                     //ImagePath="/img/MW/m/5.jpg",
                     HiredSince=new DateTime(2015,1,1),
-                    IsCurrentlyHired=true,
+                    IsActive=true,
                     //VisitReviews=visitRatings1,
                     MedicalServices=new List<MedicalService>()
                     {
@@ -2264,7 +2264,7 @@ namespace Asklepios.Data.InMemoryContexts
                     Experience="W latach 2005-2020 praca w szpitalu Bródnowskim",
                     //ImagePath="/img/MW/m/6.jpg",
                     HiredSince=new DateTime(2015,1,1),
-                    IsCurrentlyHired=true,
+                    IsActive=true,
                     //VisitReviews=visitRatings2,
                     MedicalServices=new List<MedicalService>()
                     {
@@ -2283,7 +2283,7 @@ namespace Asklepios.Data.InMemoryContexts
                     Experience="W latach 2005-2020 praca w szpitalu wrocławskim",
                     //ImagePath="/img/MW/m/7.jpg",
                     HiredSince=new DateTime(2015,1,1),
-                    IsCurrentlyHired=true,
+                    IsActive=true,
                     //VisitReviews=visitRatings3,
                     MedicalServices=new List<MedicalService>()
                     {
@@ -2301,7 +2301,7 @@ namespace Asklepios.Data.InMemoryContexts
                     Experience="W latach 2005-2020 praca w szpitalu podlaskim",
                     //ImagePath="/img/MW/m/8.jpg",
                     HiredSince=new DateTime(2015,1,1),
-                    IsCurrentlyHired=true,
+                    IsActive=true,
                    // VisitReviews=visitRatings2,
                     MedicalServices=new List<MedicalService>()
                     {
@@ -2323,7 +2323,7 @@ namespace Asklepios.Data.InMemoryContexts
                     Experience="W latach 2005-2020 praca w szpitalu Bródnowskim",
                     //ImagePath="/img/MW/m/9.jpg",
                     HiredSince=new DateTime(2012,1,1),
-                    IsCurrentlyHired=true,
+                    IsActive=true,
                    // VisitReviews=visitRatings1,
                     MedicalServices=new List<MedicalService>()
                     {
@@ -2343,7 +2343,7 @@ namespace Asklepios.Data.InMemoryContexts
                     Experience="W latach 2005-2020 praca w szpitalu suwalskim",
                     //ImagePath="/img/MW/m/10.jpg",
                     HiredSince=new DateTime(2018,1,1),
-                    IsCurrentlyHired=true,
+                    IsActive=true,
                     //VisitReviews=visitRatings1,
                     MedicalServices=new List<MedicalService>()
                     {
@@ -2360,7 +2360,7 @@ namespace Asklepios.Data.InMemoryContexts
                     Experience="W latach 2008-2019 praca w szpitalu podkarpackim",
                     //ImagePath="/img/MW/m/11.jpg",
                     HiredSince=new DateTime(2017,5,5),
-                    IsCurrentlyHired=true,
+                    IsActive=true,
                    // VisitReviews=visitRatings1,
                     MedicalServices=new List<MedicalService>()
                     {
@@ -2382,7 +2382,7 @@ namespace Asklepios.Data.InMemoryContexts
                     Experience="W latach 2005-2020 praca w szpitalu Bródnowskim",
                     //ImagePath="/img/MW/m/12.jpg",
                     HiredSince=new DateTime(2017,1,1),
-                    IsCurrentlyHired=true,
+                    IsActive=true,
                   //  VisitReviews=visitRatings1,
                     MedicalServices=new List<MedicalService>()
                     {
@@ -2400,7 +2400,7 @@ namespace Asklepios.Data.InMemoryContexts
                     Experience="W latach 2005-2020 praca w szpitalu wojskowym",
                     //ImagePath="/img/MW/m/13.jpg",
                     HiredSince=new DateTime(2012,12,12),
-                    IsCurrentlyHired=true,
+                    IsActive=true,
                   //  VisitReviews=visitRatings1,
                     MedicalServices=new List<MedicalService>()
                     {
@@ -2419,7 +2419,7 @@ namespace Asklepios.Data.InMemoryContexts
                     Experience="W latach 2010-2019 praca w szpitalu matki i dziecka",
                     //ImagePath="/img/MW/m/14.jpg",
                     HiredSince=new DateTime(2019,4,4),
-                    IsCurrentlyHired=true,
+                    IsActive=true,
                  //   VisitReviews=visitRatings1,
                     MedicalServices=new List<MedicalService>()
                     {
@@ -2437,7 +2437,7 @@ namespace Asklepios.Data.InMemoryContexts
                     Experience="W latach 2011-2021 praca w szpitalu zakaźnym",
                     //ImagePath="/img/MW/m/15.jpg",
                     HiredSince=new DateTime(2015,1,1),
-                    IsCurrentlyHired=true,
+                    IsActive=true,
                //     VisitReviews=visitRatings1,
                     MedicalServices=new List<MedicalService>()
                     {
@@ -2454,7 +2454,7 @@ namespace Asklepios.Data.InMemoryContexts
                     Experience="W latach 2007-2021 praca w szpitalu kujawskim",
                     //ImagePath="/img/MW/m/16.jpg",
                     HiredSince=new DateTime(2015,1,1),
-                    IsCurrentlyHired=true,
+                    IsActive=true,
            //         VisitReviews=visitRatings1,
                     MedicalServices=new List<MedicalService>()
                     {
@@ -2472,7 +2472,7 @@ namespace Asklepios.Data.InMemoryContexts
                     Experience="W latach 2005-2020 praca w szpitalu łódzkim",
                     //ImagePath="/img/MW/m/17.jpg",
                     HiredSince=new DateTime(2013,3,3),
-                    IsCurrentlyHired=true,
+                    IsActive=true,
           //          VisitReviews=visitRatings3,
                     MedicalServices=new List<MedicalService>()
                     {
@@ -2490,7 +2490,7 @@ namespace Asklepios.Data.InMemoryContexts
                     Experience="W latach 2005-2020 praca w szpitalu Bródnowskim",
                     //ImagePath="/img/MW/m/2.jpg",
                     HiredSince=new DateTime(2015,1,1),
-                    IsCurrentlyHired=true,
+                    IsActive=true,
                    // VisitReviews=visitRatings2,
                     MedicalServices=new List<MedicalService>()
                     {
@@ -2509,7 +2509,7 @@ namespace Asklepios.Data.InMemoryContexts
                     Experience="W latach 2009-2020 praca w POZ Węgrów.",
                     //ImagePath="/img/MW/m/19.jpg",
                     HiredSince=new DateTime(2018,7,6),
-                    IsCurrentlyHired=true,
+                    IsActive=true,
                 //    VisitReviews=visitRatings1,
                     MedicalServices=new List<MedicalService>()
                     {
@@ -2528,7 +2528,7 @@ namespace Asklepios.Data.InMemoryContexts
                     Experience="W latach 2005-2020 praca w szpitalu miejskim w Krośnie",
                     //ImagePath="/img/MW/m/20.jpg",
                     HiredSince=new DateTime(2020,2,1),
-                    IsCurrentlyHired=true,
+                    IsActive=true,
                  //   VisitReviews=visitRatings1,
                     MedicalServices=new List<MedicalService>()
                     {
@@ -2545,7 +2545,7 @@ namespace Asklepios.Data.InMemoryContexts
                     Experience="W latach 2005-2020 praca w szpitalu tarnowskim",
                     //ImagePath="/img/MW/m/21.jpg",
                     HiredSince=new DateTime(2017,1,1),
-                    IsCurrentlyHired=true,
+                    IsActive=true,
             //       VisitReviews=visitRatings1,
                     MedicalServices=new List<MedicalService>()
                     {
@@ -2563,7 +2563,7 @@ namespace Asklepios.Data.InMemoryContexts
                     Experience="W latach 2005-2020 praca w szpitalu miejskim w Zakopanem",
                     //ImagePath="/img/MW/m/22.jpg",
                     HiredSince=new DateTime(2015,1,1),
-                    IsCurrentlyHired=true,
+                    IsActive=true,
                 //    VisitReviews=visitRatings2,
                     MedicalServices=new List<MedicalService>()
                     {
@@ -2580,7 +2580,7 @@ namespace Asklepios.Data.InMemoryContexts
                     Experience="W latach 2005-2020 praca w szpitalu Bródnowskim",
                     //ImagePath="/img/MW/m/23.jpg",
                     HiredSince=new DateTime(2015,1,1),
-                    IsCurrentlyHired=true,
+                    IsActive=true,
                  //   VisitReviews=visitRatings1,
                     MedicalServices=new List<MedicalService>()
                     {
@@ -2596,7 +2596,7 @@ namespace Asklepios.Data.InMemoryContexts
                     Experience="W latach 2008-2014 praca w szpitalu kardiologicznym",
                     //ImagePath="/img/MW/m/2.jpg",
                     HiredSince=new DateTime(2015,1,1),
-                    IsCurrentlyHired=true,
+                    IsActive=true,
                  //   VisitReviews=visitRatings1,
                     MedicalServices=new List<MedicalService>()
                     {
@@ -2613,7 +2613,7 @@ namespace Asklepios.Data.InMemoryContexts
                     Experience="W latach 2005-2020 praca w szpitalu w Dębicy",
                     //ImagePath="/img/MW/m/25.jpg",
                     //HiredSince=new DateTime(2015,1,1),
-                    IsCurrentlyHired=true,
+                    IsActive=true,
                 //    VisitReviews=visitRatings1,
                     MedicalServices=new List<MedicalService>()
                     {
@@ -2631,7 +2631,7 @@ namespace Asklepios.Data.InMemoryContexts
                     Experience="W latach 2005-2020 praca w szpitalu powiatowym w Zamościu",
                     //ImagePath="/img/MW/m/26.jpg",
                     //HiredSince=new DateTime(2019,1,1),
-                    IsCurrentlyHired=true,
+                    IsActive=true,
                 //    VisitReviews=visitRatings1,
                     MedicalServices=new List<MedicalService>()
                     {
@@ -2651,7 +2651,7 @@ namespace Asklepios.Data.InMemoryContexts
                     Experience="W latach 2005-2020 praca w szpitalu zakaźnym na Woli",
                     //ImagePath="/img/MW/m/27.jpg",
                     //HiredSince=new DateTime(2011,10,11),
-                    IsCurrentlyHired=true,
+                    IsActive=true,
                  //   VisitReviews=visitRatings1,
                     MedicalServices=new List<MedicalService>()
                     {
@@ -2671,7 +2671,7 @@ namespace Asklepios.Data.InMemoryContexts
                     Experience="W latach 2006-2019 praca w szpitalu świętokrzyskim",
                     //ImagePath="/img/MW/m/28.jpg",
                     //HiredSince=new DateTime(2020,8,8),
-                    IsCurrentlyHired=true,
+                    IsActive=true,
                     //VisitReviews=visitRatings1,
                     MedicalServices=new List<MedicalService>()
                     {
@@ -2691,7 +2691,7 @@ namespace Asklepios.Data.InMemoryContexts
                     Experience="W latach 2005-2020 praca w szpitalu akademickim w Białymstoku",
                     //ImagePath="/img/MW/m/29.jpg",
                     //HiredSince=new DateTime(2018,1,1),
-                    IsCurrentlyHired=true,
+                    IsActive=true,
                     //VisitReviews=visitRatings1,
                     MedicalServices=new List<MedicalService>()
                     {
@@ -2710,7 +2710,7 @@ namespace Asklepios.Data.InMemoryContexts
                     Experience="W latach 2005-2020 praca w szpitalu miejskim w Słupsku",
                     //ImagePath="/img/MW/m/30.jpg",
                     //HiredSince=new DateTime(2016,4,4),
-                    IsCurrentlyHired=true,
+                    IsActive=true,
                     //VisitReviews=visitRatings1,
                     MedicalServices=new List<MedicalService>()
                     {
@@ -2732,7 +2732,7 @@ namespace Asklepios.Data.InMemoryContexts
                     Experience="W latach 2005-2012 praca w szpitalu klinicznym w Gnieźnie. Wcześniej pracował w Zielonej górze.",
                     //ImagePath="/img/MW/m/31.jpg",
                     //HiredSince=new DateTime(2011,1,1),
-                    IsCurrentlyHired=true,
+                    IsActive=true,
                     //VisitReviews=visitRatings1,
                     MedicalServices=new List<MedicalService>()
                     {
@@ -2752,7 +2752,7 @@ namespace Asklepios.Data.InMemoryContexts
                     Experience="W latach 2005-2020 praca w szpitalu akademickim w Krakowie",
                     //ImagePath="/img/MW/m/32.jpg",
                     //HiredSince=new DateTime(2019,8,1),
-                    IsCurrentlyHired=true,
+                    IsActive=true,
                     //VisitReviews=visitRatings1,
                     MedicalServices=new List<MedicalService>()
                     {
@@ -2773,7 +2773,7 @@ namespace Asklepios.Data.InMemoryContexts
                     Experience="W latach 2009-2019 praca w szpitalu w Węgrowie",
                     //ImagePath="/img/MW/k/1.jpg",
                     HiredSince=new DateTime(2015,5,5),
-                    IsCurrentlyHired=true,
+                    IsActive=true,
                     //VisitReviews=visitRatings1,
                     MedicalServices=new List<MedicalService>()
                     {
@@ -2793,7 +2793,7 @@ namespace Asklepios.Data.InMemoryContexts
                     Experience="W latach 2015-2021 praca w szpitalu uniwersyteckim w Poznaniu",
                     //ImagePath="/img/MW/k/2.jpg",
                     HiredSince=new DateTime(2015,10,1),
-                    IsCurrentlyHired=true,
+                    IsActive=true,
                     //VisitReviews=visitRatings1,
                     MedicalServices=new List<MedicalService>()
                     {
@@ -2814,7 +2814,7 @@ namespace Asklepios.Data.InMemoryContexts
                     Experience="W latach 2011-2021 praca w szpitalu miejskim w Łowiczu",
                     //ImagePath="/img/MW/k/3.jpg",
                     HiredSince=new DateTime(2015,1,1),
-                    IsCurrentlyHired=true,
+                    IsActive=true,
                     //VisitReviews=visitRatings1,
                     MedicalServices=new List<MedicalService>()
                     {
@@ -2836,7 +2836,7 @@ namespace Asklepios.Data.InMemoryContexts
                     Experience="W latach 2008-2020 praca w szpitalu zakaźnym w Krakowie",
                     //ImagePath="/img/mw/k/4.jpg",
                     HiredSince=new DateTime(2018,8,11),
-                    IsCurrentlyHired=true,
+                    IsActive=true,
                     //VisitReviews=visitRatings1,
                     MedicalServices=new List<MedicalService>()
                     {
@@ -2858,7 +2858,7 @@ namespace Asklepios.Data.InMemoryContexts
                     Experience="W latach 2007-2020 praca w szpitalu Bródnowskim",
                     //ImagePath="/img/mw/k/5.jpg",
                     HiredSince=new DateTime(2017,7,7),
-                    IsCurrentlyHired=true,
+                    IsActive=true,
                     //VisitReviews=visitRatings1,
                     MedicalServices=new List<MedicalService>()
                     {
@@ -2880,7 +2880,7 @@ namespace Asklepios.Data.InMemoryContexts
                     Experience="W latach 2005-2020 praca w szpitalu Bródnowskim",
                     //ImagePath="/img/mw/k/6.jpg",
                     HiredSince=new DateTime(2017,4,4),
-                    IsCurrentlyHired=true,
+                    IsActive=true,
                     //VisitReviews=visitRatings1,
                     MedicalServices=new List<MedicalService>()
                     {
@@ -2904,7 +2904,7 @@ namespace Asklepios.Data.InMemoryContexts
                     Experience="W latach 2012-2020 praca w szpitalu południowym w Warszawie",
                     //ImagePath="/img/mw/k/7.jpg",
                     HiredSince=new DateTime(2015,1,11),
-                    IsCurrentlyHired=true,
+                    IsActive=true,
                     //VisitReviews=visitRatings1,
                     MedicalServices=new List<MedicalService>()
                     {
@@ -2925,7 +2925,7 @@ namespace Asklepios.Data.InMemoryContexts
                     Experience="W latach 2005-2020 praca w szpitalu chorób serca w Gdańsku",
                     //ImagePath="/img/mw/k/8.jpg",
                     HiredSince=new DateTime(2018,8,8),
-                    IsCurrentlyHired=true,
+                    IsActive=true,
                     //VisitReviews=visitRatings1,
                     MedicalServices=new List<MedicalService>()
                     {
@@ -2946,7 +2946,7 @@ namespace Asklepios.Data.InMemoryContexts
                     Experience="W latach 2007-2018 praca w szpitalu praskim w Warszawie",
                     //ImagePath="/img/mw/k/9.jpg",
                     HiredSince=new DateTime(2021,11,1),
-                    IsCurrentlyHired=true,
+                    IsActive=true,
                     //VisitReviews=visitRatings1,
                     MedicalServices=new List<MedicalService>()
                     {
@@ -2966,7 +2966,7 @@ namespace Asklepios.Data.InMemoryContexts
                     Experience="W latach 2009-2019 praca w szpitalu praskim w Warszawie",
                     //ImagePath="/img/mw/k/10.jpg",
                     HiredSince=new DateTime(2012,11,11),
-                    IsCurrentlyHired=true,
+                    IsActive=true,
                     //VisitReviews=visitRatings1,
                     MedicalServices=new List<MedicalService>()
                     {
@@ -2988,7 +2988,7 @@ namespace Asklepios.Data.InMemoryContexts
                     Experience="W latach 2005-2020 praca w szpitalu Bródnowskim",
                     //ImagePath="/img/mw/k/11.jpg",
                     HiredSince=new DateTime(2017,7,9),
-                    IsCurrentlyHired=true,
+                    IsActive=true,
                     //VisitReviews=visitRatings1,
                     MedicalServices=new List<MedicalService>()
                     {
@@ -3004,7 +3004,7 @@ namespace Asklepios.Data.InMemoryContexts
                     Education =UM_2,// new List<string>() {UM_1,UM_2}, Experience="W latach 2012-2019 praca w szpitalu MSWIA w Warszawie",
                     //ImagePath="/img/mw/k/12.jpg",
                     HiredSince=new DateTime(2019,4,8),
-                    IsCurrentlyHired=true,
+                    IsActive=true,
                     //VisitReviews=visitRatings1,
                     MedicalServices=new List<MedicalService>()
                     {
@@ -3024,7 +3024,7 @@ namespace Asklepios.Data.InMemoryContexts
                     Experience="W latach 2005-2020 praca w szpitalu centralnym w Krakowie",
                     //ImagePath="/img/mw/k/13.jpg",
                     HiredSince=new DateTime(2016,6,6),
-                    IsCurrentlyHired=true,
+                    IsActive=true,
                     //VisitReviews=visitRatings1,
                     MedicalServices=new List<MedicalService>()
                     {
@@ -3045,7 +3045,7 @@ namespace Asklepios.Data.InMemoryContexts
                     Experience="W latach 2019-2021 praca w szpitalu u Koziołka Matołka w Poznaniu",
                     //ImagePath="/img/mw/k/14.jpg",
                     HiredSince=new DateTime(2015,7,1),
-                    IsCurrentlyHired=true,
+                    IsActive=true,
                     //VisitReviews=visitRatings1,
                     MedicalServices=new List<MedicalService>()
                     {
@@ -3063,7 +3063,7 @@ namespace Asklepios.Data.InMemoryContexts
                     Experience="W latach 2005-2020 praca w szpitalu klinicznym we Wrocławiu",
                     //ImagePath="/img/mw/k/15.jpg",
                     HiredSince=new DateTime(2017,2,11),
-                    IsCurrentlyHired=true,
+                    IsActive=true,
                     //VisitReviews=visitRatings1,
                     MedicalServices=new List<MedicalService>()
                     {
@@ -3080,7 +3080,7 @@ namespace Asklepios.Data.InMemoryContexts
                     Experience="W latach 2018-2021 praca w szpitalu klinicznym we Wrocławiu",
                     //ImagePath="/img/mw/k/16.jpg",
                     HiredSince=new DateTime(2021,2,1),
-                    IsCurrentlyHired=true,
+                    IsActive=true,
                     //VisitReviews=visitRatings1,
                     MedicalServices=new List<MedicalService>()
                     {
@@ -3097,7 +3097,7 @@ namespace Asklepios.Data.InMemoryContexts
                     Experience="W latach 2019-2020 praca w szpitalu Bródnowskim",
                     //ImagePath="/img/mw/k/17.jpg",
                     HiredSince=new DateTime(2021,1,9),
-                    IsCurrentlyHired=true,
+                    IsActive=true,
                     //VisitReviews=visitRatings1,
                     MedicalServices=new List<MedicalService>()
                     {
@@ -3115,7 +3115,7 @@ namespace Asklepios.Data.InMemoryContexts
                     Experience="W latach 2005-2020 praca w szpitalu Bródnowskim",
                     //ImagePath="/img/mw/k/18.jpg",
                     HiredSince=new DateTime(2015,1,1),
-                    IsCurrentlyHired=true,
+                    IsActive=true,
                     //VisitReviews=visitRatings1,
                     MedicalServices=new List<MedicalService>()
                     {
@@ -3132,7 +3132,7 @@ namespace Asklepios.Data.InMemoryContexts
                     Experience="W latach 2005-2020 praca w szpitalu Bródnowskim",
                     //ImagePath="/img/mw/k/19.jpg",
                     HiredSince=new DateTime(2019,4,4),
-                    IsCurrentlyHired=true,
+                    IsActive=true,
                     //VisitReviews=visitRatings1,
                     MedicalServices=new List<MedicalService>()
                     {
@@ -3151,7 +3151,7 @@ namespace Asklepios.Data.InMemoryContexts
                     Experience="Staż odbyła w szpitalu Bródnowskim w Warszawie. Od 2016 roku pracuje w szpitalu Praskim w Warszawie.",
                     //ImagePath="/img/mw/k/20.jpg",
                     HiredSince=new DateTime(2018,9,11),
-                    IsCurrentlyHired=true,
+                    IsActive=true,
                     //VisitReviews=visitRatings1,
                     MedicalServices=new List<MedicalService>()
                     {
@@ -3168,7 +3168,7 @@ namespace Asklepios.Data.InMemoryContexts
                     Experience="Staż odbyty w szpitalu akademickim w Białymstoku. Od 2018 roku praca w szpitalu powiatowym w Węgrowie",
                     //ImagePath="/img/mw/k/21.jpg",
                     HiredSince=new DateTime(2018,8,8),
-                    IsCurrentlyHired=true,
+                    IsActive=true,
                     //VisitReviews=visitRatings1,
                     MedicalServices=new List<MedicalService>()
                     {
@@ -3185,7 +3185,7 @@ namespace Asklepios.Data.InMemoryContexts
                     Experience="W latach 2005-2020 praca w szpitalu Bródnowskim",
                     //ImagePath="/img/mw/k/22.jpg",
                     HiredSince=new DateTime(2018,4,6),
-                    IsCurrentlyHired=true,
+                    IsActive=true,
                     //VisitReviews=visitRatings1,
                     MedicalServices=new List<MedicalService>()
                     {
@@ -3204,7 +3204,7 @@ namespace Asklepios.Data.InMemoryContexts
                     Experience="W latach 2005-2020 praca w szpitalu Bródnowskim",
                     //ImagePath="/img/mw/k/23.jpg",
                     HiredSince=new DateTime(2015,1,1),
-                    IsCurrentlyHired=true,
+                    IsActive=true,
                     //VisitReviews=visitRatings1,
                     MedicalServices=new List<MedicalService>()
                     {
@@ -3221,7 +3221,7 @@ namespace Asklepios.Data.InMemoryContexts
                     Experience="W latach 2005-2020 praca w szpitalu Bródnowskim",
                     //ImagePath="/img/mw/k/24.jpg",
                     HiredSince=new DateTime(2019,1,1),
-                    IsCurrentlyHired=true,
+                    IsActive=true,
                     //VisitReviews=visitRatings1,
                     MedicalServices=new List<MedicalService>()
                     {
@@ -3238,7 +3238,7 @@ namespace Asklepios.Data.InMemoryContexts
                     Experience="W latach 2014-2021 praca w szpitalu zielonogórskim",
                     //ImagePath="/img/mw/k/25.jpg",
                     HiredSince=new DateTime(2013,3,3),
-                    IsCurrentlyHired=true,
+                    IsActive=true,
                     //VisitReviews=visitRatings1,
                     MedicalServices=new List<MedicalService>()
                     {
@@ -3255,7 +3255,7 @@ namespace Asklepios.Data.InMemoryContexts
                     Experience="W latach 2005-2020 praca w szpitalu wojewódzkim w Olsztynie",
                     //ImagePath="/img/mw/k/26.jpg",
                     HiredSince=new DateTime(2018,4,3),
-                    IsCurrentlyHired=true,
+                    IsActive=true,
                     //VisitReviews=visitRatings1,
                     MedicalServices=new List<MedicalService>()
                     {
@@ -3272,7 +3272,7 @@ namespace Asklepios.Data.InMemoryContexts
                     Experience="Od 2010 roku pracuje jako ordynator w szpitalu Matki i Dziecka w Warszawie",
                     //ImagePath="/img/mw/k/27.jpg",
                     HiredSince=new DateTime(2018,6,7),
-                    IsCurrentlyHired=true,
+                    IsActive=true,
                     //VisitReviews=visitRatings1,
                         MedicalServices=new List<MedicalService>()
                     {
@@ -3292,7 +3292,7 @@ namespace Asklepios.Data.InMemoryContexts
                     Experience="W latach 2016-2020 praca w szpitalu miejskim w Grudziądzu",
                     //ImagePath="/img/mw/k/28.jpg",
                     HiredSince=new DateTime(2019,8,11),
-                    IsCurrentlyHired=true,
+                    IsActive=true,
                     //VisitReviews=visitRatings1,
                         MedicalServices=new List<MedicalService>()
                     {
@@ -3309,7 +3309,7 @@ namespace Asklepios.Data.InMemoryContexts
                     Experience="W latach 2009-2020 praca w szpitalu miejskim w Suwałkach",
                     //ImagePath="/img/mw/k/29.jpg",
                     HiredSince=new DateTime(2015,1,1),
-                    IsCurrentlyHired=true,
+                    IsActive=true,
                     //VisitReviews=visitRatings1,
                     MedicalServices=new List<MedicalService>()
                     {
@@ -3326,7 +3326,7 @@ namespace Asklepios.Data.InMemoryContexts
                     Experience="W latach 2009-2020 praca w szpitalu wojewódzkim w Toruniu",
                     //ImagePath="/img/mw/k/30.jpg",
                     HiredSince=new DateTime(2019,5,4),
-                    IsCurrentlyHired=true,
+                    IsActive=true,
                     //VisitReviews=visitRatings1,
                     MedicalServices=new List<MedicalService>()
                     {
@@ -3342,7 +3342,7 @@ namespace Asklepios.Data.InMemoryContexts
                     Experience="Od 2016 pracuje w szpitalu Bródnowskim",
                     //ImagePath="/img/mw/k/31.jpg",
                     HiredSince=new DateTime(2015,5,1),
-                    IsCurrentlyHired=true,
+                    IsActive=true,
                     //VisitReviews=visitRatings1,
                     MedicalServices=new List<MedicalService>()
                     {
@@ -3357,7 +3357,7 @@ namespace Asklepios.Data.InMemoryContexts
                     Experience="W latach 2009-2021 praca w szpitalu w Przemyślu",
                     //ImagePath="/img/mw/k/32.jpg",
                     HiredSince=new DateTime(2019,9,8),
-                    IsCurrentlyHired=true,
+                    IsActive=true,
                     //VisitReviews=visitRatings1,
                     MedicalServices=new List<MedicalService>()
                     {
@@ -3373,7 +3373,7 @@ namespace Asklepios.Data.InMemoryContexts
                     Experience="W latach 2008-2020 praca w szpitalu w Lublinie",
                     //ImagePath="/img/mw/k/33.jpg",
                     HiredSince=new DateTime(2019,4,7),
-                    IsCurrentlyHired=true,
+                    IsActive=true,
                     //VisitReviews=visitRatings1,
                     MedicalServices=new List<MedicalService>()
                     {
@@ -3389,7 +3389,7 @@ namespace Asklepios.Data.InMemoryContexts
                     Experience="W latach 2005-2020 praca w szpitalu Bródnowskim",
                     //ImagePath="/img/mw/k/34.jpg",
                     HiredSince=new DateTime(2015,9,1),
-                    IsCurrentlyHired=true,
+                    IsActive=true,
                     //VisitReviews=visitRatings1,
                     MedicalServices=new List<MedicalService>()
                     {
@@ -3405,7 +3405,7 @@ namespace Asklepios.Data.InMemoryContexts
                     Experience="W latach 2005-2020 praca w szpitalu Bródnowskim",
                     //ImagePath="/img/mw/k/35.jpg",
                     HiredSince=new DateTime(2019,4,3),
-                    IsCurrentlyHired=true,
+                    IsActive=true,
                     //VisitReviews=visitRatings1,
                     MedicalServices=new List<MedicalService>()
                     {
@@ -3422,7 +3422,7 @@ namespace Asklepios.Data.InMemoryContexts
                     Experience="W latach 2005-2020 praca w szpitalu Bródnowskim",
                     //ImagePath="/img/mw/k/36.jpg",
                     HiredSince=new DateTime(2018,8,1),
-                    IsCurrentlyHired=true,
+                    IsActive=true,
                     //VisitReviews=visitRatings1,
                     MedicalServices=new List<MedicalService>()
                     {
@@ -3439,7 +3439,7 @@ namespace Asklepios.Data.InMemoryContexts
                     Experience="W latach 2016-2020 praca w szpitalu lwowskim na Ukrainie",
                     //ImagePath="/img/mw/k/37.jpg",
                     HiredSince=new DateTime(2020,8,1),
-                    IsCurrentlyHired=true,
+                    IsActive=true,
                     //VisitReviews=visitRatings1,
                     MedicalServices=new List<MedicalService>()
                     {
@@ -3455,7 +3455,7 @@ namespace Asklepios.Data.InMemoryContexts
                     Experience="W latach 2005-2020 praca w szpitalu Bródnowskim",
                     ////ImagePath="/img/MW/k/38.jpg",
                     HiredSince=new DateTime(2015,2,4),
-                    IsCurrentlyHired=true,
+                    IsActive=true,
                     //VisitReviews=visitRatings1,
                     MedicalServices=new List<MedicalService>()
                     {
@@ -3471,7 +3471,7 @@ namespace Asklepios.Data.InMemoryContexts
                     Experience="W latach 2016-2021 praca w szpitalu centralnym w Łodzi",
                     ////ImagePath="/img/MW/k/38.jpg",
                     HiredSince=new DateTime(2018,8,1),
-                    IsCurrentlyHired=true,
+                    IsActive=true,
                     //VisitReviews=visitRatings3,
                     MedicalServices=new List<MedicalService>()
                     {
@@ -3488,7 +3488,7 @@ namespace Asklepios.Data.InMemoryContexts
                     Experience="W latach 2013-2022 praca w Głównym Szpitalu Śląskim",
                     ////ImagePath="/img/MW/k/38.jpg",
                     HiredSince=new DateTime(2014,8,8),
-                    IsCurrentlyHired=true,
+                    IsActive=true,
                     //VisitReviews=visitRatings1,
                     MedicalServices=new List<MedicalService>()
                     {
@@ -3504,7 +3504,7 @@ namespace Asklepios.Data.InMemoryContexts
                     Experience="W latach 2015-2020 praca w szpitalu Wolskim",
                     ////ImagePath="/img/MW/k/38.jpg",
                     HiredSince=new DateTime(2015,1,1),
-                    IsCurrentlyHired=true,
+                    IsActive=true,
                     //VisitReviews=visitRatings2,
                     MedicalServices=new List<MedicalService>()
                     {

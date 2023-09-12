@@ -1,6 +1,4 @@
-﻿//using PdfSharp.Pdf;
-
-using PdfSharpCore.Pdf;
+﻿using PdfSharpCore.Pdf;
 using System;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
@@ -16,6 +14,7 @@ namespace Asklepios.Core.Models
         [Display(Name = "Opis badania")]
         [Required(ErrorMessage = "Proszę wprowadzić opis/zakres badania")]
         [DataType(DataType.Text)]
+        [MaxLength(255)]
         public string Description { get; set; }
         public long? MedicalServiceId { get; set; }
         [ForeignKey("MedicalServiceId")]
@@ -26,6 +25,7 @@ namespace Asklepios.Core.Models
             get;
             set;
         }
+        [MaxLength(500)]
         public string DocumentPath { get; set; }
         public long? MedicalWorkerId { get; set; }
         [ForeignKey("MedicalWorkerId")]
