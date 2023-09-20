@@ -34,7 +34,7 @@ namespace Asklepios.Web
             //DefaultConnection
             //Webio
             services.AddDbContext<AsklepiosDbContext>(options =>
-            options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection"), options => options.EnableRetryOnFailure()), ServiceLifetime.Scoped);
+            options.UseSqlServer(Configuration.GetConnectionString("Webio"), options => options.EnableRetryOnFailure()), ServiceLifetime.Scoped);
 
             
             services.AddIdentity<User,IdentityRole>(options => options.SignIn.RequireConfirmedAccount = false)
