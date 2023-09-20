@@ -15,6 +15,7 @@ using System.Threading.Tasks;
 using System;
 using Asklepios.Core.Enums;
 using Asklepios.Core.Extensions;
+using Newtonsoft.Json;
 
 namespace Asklepios.Web.Areas.CustomerServiceArea.Controllers
 {
@@ -277,6 +278,18 @@ namespace Asklepios.Web.Areas.CustomerServiceArea.Controllers
                 {
                     Visit visit = _context.GetFutureVisitById(lid);
 
+                    if (visit.VisitStatus != Core.Enums.VisitStatus.AvailableNotBooked)
+                    {
+                        ViewMessage viewMessage = new ViewMessage()
+                        {
+                            Message = "Ta wizyta nie jest już dostępna!",
+                            MessageType = Enums.AlertMessageType.ErrorMessage
+                        };
+                        TempData[ViewMessage.MESSAGE_KEY] = JsonConvert.SerializeObject(viewMessage);
+                        return RedirectToAction("BookVisit");
+                    }
+
+
                     if (visit.PrimaryService.RequireRefferal)
                     {
                         IQueryable<MedicalReferral> medicalReferrals = _context.GetMedicalReferralsByPatientIdQuery(patient.Id);
@@ -286,6 +299,19 @@ namespace Asklepios.Web.Areas.CustomerServiceArea.Controllers
                             MedicalReferral referral = medicalReferrals.Where(c => c.PrimaryMedicalServiceId == visit.PrimaryServiceId && !c.HasBeenUsed).FirstOrDefault();
                             if (referral != null)
                             {
+
+                                bool hasVivistAtThSameTime = HasVivistAtThSameTime(visit, patient.Id);
+                                if (hasVivistAtThSameTime)
+                                {
+                                    ViewMessage viewMessage = new ViewMessage()
+                                    {
+                                        Message = "Już posiadasz zarezerwowaną wizytę w tym terminie!",
+                                        MessageType = Enums.AlertMessageType.ErrorMessage
+                                    };
+                                    TempData[ViewMessage.MESSAGE_KEY] = JsonConvert.SerializeObject(viewMessage);
+                                    return RedirectToAction("BookVisit");
+                                }
+
                                 referral.HasBeenUsed = true;
                                 referral.VisitWhenUsedId = visit.Id;
                                 visit.UsedExaminationReferralId = referral.Id;
@@ -307,6 +333,18 @@ namespace Asklepios.Web.Areas.CustomerServiceArea.Controllers
                     }
                     else
                     {
+                        bool hasVivistAtThSameTime = HasVivistAtThSameTime(visit, patient.Id);
+                        if (hasVivistAtThSameTime)
+                        {
+                            ViewMessage viewMessage = new ViewMessage()
+                            {
+                                Message = "Już posiadasz zarezerwowaną wizytę w tym terminie!",
+                                MessageType = Enums.AlertMessageType.ErrorMessage
+                            };
+                            TempData[ViewMessage.MESSAGE_KEY] = JsonConvert.SerializeObject(viewMessage);
+                            return RedirectToAction("BookVisit");
+                        }
+
                         _context.BookVisit(patient.Id, visit.Id);
                         return RedirectToAction("PlannedVisits");
                     }
@@ -319,6 +357,24 @@ namespace Asklepios.Web.Areas.CustomerServiceArea.Controllers
             }
             return NotFound();
 
+        }
+        private bool HasVivistAtThSameTime(Visit visit, long patientId)
+        {
+
+            List<Visit> sameDayVisits = _context.GetBookedVisitsByPatientIdQuery(patientId).Where(c => c.DateTimeSince.Date == visit.DateTimeSince.Date).ToList();
+
+            foreach (var item in sameDayVisits)
+            {
+                if (item.DateTimeSince <= visit.DateTimeSince && item.DateTimeTill >= visit.DateTimeSince)
+                {
+                    return true;
+                }
+                if (item.DateTimeSince <= visit.DateTimeTill && item.DateTimeTill >= visit.DateTimeTill)
+                {
+                    return true;
+                }
+            }
+            return false;
         }
         [HttpPost]
         public IActionResult BookVisitConditions(SearchViewModel model)
@@ -406,6 +462,14 @@ namespace Asklepios.Web.Areas.CustomerServiceArea.Controllers
                     return RedirectToAction("Dashboard");
                 }
                 BookVisitViewModel model = new BookVisitViewModel(patient) { AllVisitsList = _context.GetAvailableVisitsQuery() }; //(_context.GetAvailableVisits().ToList(),new VisitSearchOptions());
+
+                if (TempData.ContainsKey(ViewMessage.MESSAGE_KEY))
+                {
+                    ViewMessage message = JsonConvert.DeserializeObject<ViewMessage>((string)TempData[ViewMessage.MESSAGE_KEY]);
+                    model.ViewMessage = message;
+                    TempData.Remove(ViewMessage.MESSAGE_KEY);
+                }
+
                 model.UserName = _loggedUser.Person.FullName;
                 model.AllCategories = _context.GetVisitCategories().OrderBy(c => c.CategoryName).ToList();
                 model.AllLocations = _context.GetAllLocations().OrderBy(c => c.Name).ToList();

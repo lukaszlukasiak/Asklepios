@@ -472,7 +472,6 @@ namespace Asklepios.Data.DBContexts
 
             visit.PatientId = patientId;
             visit.VisitStatus = VisitStatus.Booked;
-            //visit.PrimaryService = null;
             Visits.Update(visit);
 
             ServiceClasses.EFDebugging.ListChanges(this);
@@ -603,8 +602,6 @@ namespace Asklepios.Data.DBContexts
             IQueryable<Visit> visits = Visits
                 .Where(c => c.VisitStatus == VisitStatus.AvailableNotBooked)
                 .Where(d => d.DateTimeSince > DateTime.Now)
-                //.Include(d => d.MinorMedicalServices)
-                //.Include(e => e.MinorServicesToVisits)
                 .Include(p => p.PrimaryService)
                 .Include(e => e.MedicalRoom)
                 .Include(g => g.Location)
@@ -1551,6 +1548,8 @@ namespace Asklepios.Data.DBContexts
                 .Include(a => a.MedicalWorker).ThenInclude(b => b.Person)
                 .Include(c => c.Patient).ThenInclude(d => d.Person)
                 .Include(e => e.Location)
+                .AsSplitQuery()
+                .AsNoTracking()
                 .AsQueryable<Visit>();
         }
 
@@ -1570,6 +1569,7 @@ namespace Asklepios.Data.DBContexts
                 .AsNoTracking()
                 .AsQueryable();
         }
+
         //public List<MedicalReferral> GetMedicalReferralsByPatientIdQuery(long id)
         //{
         //    List<MedicalReferral> medicalReferrals = MedicalReferrals.Where(c => c.IssuedToId == id).ToList();
@@ -1702,7 +1702,7 @@ namespace Asklepios.Data.DBContexts
             IdentityRoleTypes? roleType = GetRole(user);
             if (roleType == null)
             {
-                throw new ArgumentNullException("Cannot define user role");
+               // throw new ArgumentNullException("Cannot define user role");
                 return false;
             }
 

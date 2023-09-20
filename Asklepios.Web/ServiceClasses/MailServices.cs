@@ -6,6 +6,7 @@ using Asklepios.Web.Areas.HomeArea.Models;
 using Asklepios.Web.Models;
 using MailKit.Net.Smtp;
 using MailKit.Security;
+using Microsoft.Extensions.Configuration;
 using MimeKit;
 
 
@@ -13,10 +14,17 @@ namespace Asklepios.Web.ServiceClasses
 {
     public static class MailServices
     {
-        const string MAIL_ADDRESS = "grupa.asklepios@wp.pl";
-        const string MAIL_PASS = "147852qW";
-        const string MAIL_SMTP = "smtp.wp.pl";
-        const int MAIL_PORT = 465;
+        //  const string MAIL_ADDRESS = "grupa.asklepios@wp.pl";
+        //// const string MAIL_PASS = "147852qW";
+        //  const string MAIL_SMTP = "smtp.wp.pl";
+        //  const int MAIL_PORT = 465;
+
+        //string MAIL_ADDRESS;//= "grupa.asklepios@wp.pl";
+        //string MAIL_PASS;//= "147852qW";
+        //string MAIL_SMTP;//= "smtp.wp.pl";
+        //int MAIL_PORT//= 465;
+
+
         public static bool CreateAndSendMail(ContactMessageViewModel model)
         {
             try
@@ -33,6 +41,12 @@ namespace Asklepios.Web.ServiceClasses
         }
         public static MimeMessage CreateMail(ContactMessageViewModel model)
         {
+
+            var MyConfig = new ConfigurationBuilder().AddJsonFile("appsettings.json").Build();
+            var MAIL_ADDRESS = MyConfig.GetValue<string>("Email:MAIL_ADDRESS");
+            var MAIL_PASS = MyConfig.GetValue<string>("Email:MAIL_PASS");
+
+
             var email = new MimeMessage();
             email.From.Add(MailboxAddress.Parse(MAIL_ADDRESS));
             email.To.Add(MailboxAddress.Parse(MAIL_ADDRESS));
@@ -51,10 +65,13 @@ namespace Asklepios.Web.ServiceClasses
         public static void SendEMail(MimeMessage message)
         {
             using var smtp = new SmtpClient();
-            //name Dell Price
             smtp.CheckCertificateRevocation = false;
-          //  smtp.Connect("smtp.ethereal.email", 587, SecureSocketOptions.StartTls);
-           // smtp.Authenticate("dell.price11@ethereal.email", "YsuyBaAUduRuxr9YVh");
+
+            var MyConfig = new ConfigurationBuilder().AddJsonFile("appsettings.json").Build();
+            string MAIL_SMTP = MyConfig.GetValue<string>("Email:MAIL_SMTP");
+            int MAIL_PORT = MyConfig.GetValue<int>("Email:MAIL_PORT");
+            string MAIL_ADDRESS = MyConfig.GetValue<string>("Email:MAIL_ADDRESS");
+            string MAIL_PASS = MyConfig.GetValue<string>("Email:MAIL_PASS");
 
 
             smtp.Connect(MAIL_SMTP,MAIL_PORT , SecureSocketOptions.SslOnConnect);
@@ -112,6 +129,13 @@ namespace Asklepios.Web.ServiceClasses
 
         private static MimeMessage CreateMail(ContactViewModel model)
         {
+
+            var MyConfig = new ConfigurationBuilder().AddJsonFile("appsettings.json").Build();
+            string MAIL_SMTP = MyConfig.GetValue<string>("Email:MAIL_SMTP");
+            int MAIL_PORT = MyConfig.GetValue<int>("Email:MAIL_PORT");
+            string MAIL_ADDRESS = MyConfig.GetValue<string>("Email:MAIL_ADDRESS");
+            string MAIL_PASS = MyConfig.GetValue<string>("Email:MAIL_PASS");
+
             var email = new MimeMessage();
             email.From.Add(MailboxAddress.Parse(MAIL_ADDRESS));
             email.To.Add(MailboxAddress.Parse(MAIL_ADDRESS));
@@ -129,6 +153,13 @@ namespace Asklepios.Web.ServiceClasses
 
         private static MimeMessage CreateMail(Areas.CustomerServiceArea.Models.ContactMessageViewModel model)
         {
+
+            var MyConfig = new ConfigurationBuilder().AddJsonFile("appsettings.json").Build();
+            string MAIL_SMTP = MyConfig.GetValue<string>("Email:MAIL_SMTP");
+            int MAIL_PORT = MyConfig.GetValue<int>("Email:MAIL_PORT");
+            string MAIL_ADDRESS = MyConfig.GetValue<string>("Email:MAIL_ADDRESS");
+            string MAIL_PASS = MyConfig.GetValue<string>("Email:MAIL_PASS");
+
             var email = new MimeMessage();
             email.From.Add(MailboxAddress.Parse(MAIL_ADDRESS));
             email.To.Add(MailboxAddress.Parse(MAIL_ADDRESS));

@@ -17,6 +17,7 @@ namespace Asklepios.Web.Areas.PatientArea.Models
         public List<Location> AllLocations { get; set; }
         public List<MedicalWorker> AllMedicalWorkers { get; set; }
         private List<Visit> _filteredVisits;
+        public ViewMessage ViewMessage { get; set; }
         public IQueryable<Visit> FilteredVisits { get; set; }
         //{
         //    get
@@ -291,24 +292,12 @@ namespace Asklepios.Web.Areas.PatientArea.Models
                     }                    
                 }
             }
+
             FilteredVisits = filteredVisits.OrderBy(c => c.DateTimeSince).AsQueryable();
+            //PageVisits = filteredVisits.OrderBy(c => c.DateTimeSince).ToList();
 
-            List<Visit> pageVisits = Pagination.GetPageItems(CurrentPageNum, PageSize, filteredVisits).ToList();
-
+            List<Visit> pageVisits = Pagination.GetPageItems(CurrentPageNum, PageSize, FilteredVisits).ToList();
             PageVisits = pageVisits;
-
-
-            //if (filteredVisits.Count()<ItemsPerPage)
-            //{
-            //    return filteredVisits                    
-            //        .ToList();
-            //}
-            //else
-            //{
-            //    return filteredVisits
-            //        .Skip((CurrentPageNum-1)*ItemsPerPage)
-            //        .Take(ItemsPerPage).ToList();
-            //}           
         }
     }
 }

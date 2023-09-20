@@ -1647,7 +1647,6 @@ namespace Asklepios.Web.Areas.AdministrativeArea.Controllers
                                 MessageType = AlertMessageType.InfoMessage
                             };
                             TempData[ViewMessage.MESSAGE_KEY] = JsonConvert.SerializeObject(model.ViewMessage);
-
                         }
                     }
                     else

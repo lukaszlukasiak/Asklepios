@@ -9,6 +9,7 @@ using System.IO;
 using Asklepios.Core.Enums;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.EntityFrameworkCore;
 
 namespace Asklepios.Data.InMemoryContexts
 {
@@ -43,6 +44,8 @@ namespace Asklepios.Data.InMemoryContexts
         private List<NFZUnit> nfzUnits { get; set; }
         private List<MedicalService> primaryMedicalServices { get; set; }
         private List<VisitCategory> visitCategories { get; set; }
+        public object Visits { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
+        DbSet<Visit> IAdministrationModuleRepository.Visits { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
 
         public void AddLocation(Location location, IFormFile file, string path)
         {

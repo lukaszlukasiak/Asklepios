@@ -327,6 +327,10 @@ build_metadata.AdditionalFiles.CssScope =
 build_metadata.AdditionalFiles.TargetPath = QXJlYXNcQ3VzdG9tZXJTZXJ2aWNlQXJlYVxWaWV3c1xDdXN0b21lclNlcnZpY2VcX1VzZXIuY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
 
+[C:/Users/lukas/source/repos/Asklepios8/Asklepios.Web/Areas/CustomerServiceArea/Views/CustomerService/_ViewMessage.cshtml]
+build_metadata.AdditionalFiles.TargetPath = QXJlYXNcQ3VzdG9tZXJTZXJ2aWNlQXJlYVxWaWV3c1xDdXN0b21lclNlcnZpY2VcX1ZpZXdNZXNzYWdlLmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
 [C:/Users/lukas/source/repos/Asklepios8/Asklepios.Web/Areas/CustomerServiceArea/Views/Shared/Error.cshtml]
 build_metadata.AdditionalFiles.TargetPath = QXJlYXNcQ3VzdG9tZXJTZXJ2aWNlQXJlYVxWaWV3c1xTaGFyZWRcRXJyb3IuY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
@@ -665,6 +669,10 @@ build_metadata.AdditionalFiles.CssScope =
 
 [C:/Users/lukas/source/repos/Asklepios8/Asklepios.Web/Areas/PatientArea/Views/Patient/_TestResult.cshtml]
 build_metadata.AdditionalFiles.TargetPath = QXJlYXNcUGF0aWVudEFyZWFcVmlld3NcUGF0aWVudFxfVGVzdFJlc3VsdC5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/lukas/source/repos/Asklepios8/Asklepios.Web/Areas/PatientArea/Views/Patient/_ViewMessage.cshtml]
+build_metadata.AdditionalFiles.TargetPath = QXJlYXNcUGF0aWVudEFyZWFcVmlld3NcUGF0aWVudFxfVmlld01lc3NhZ2UuY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
 
 [C:/Users/lukas/source/repos/Asklepios8/Asklepios.Web/Areas/PatientArea/Views/Shared/Error.cshtml]

@@ -1,11 +1,5 @@
 ﻿@model Asklepios.Web.Areas.MedicalWorkerArea.Models.PatientViewModel
 @{
-    //SelectList medicalPackagesList = new SelectList(Model.MedicalPackages, "Id", "Name");
-    //SelectList nfzUnits = new SelectList(Model.NFZUnits, "Id", "Description");
-    //Model.Person.HasPolishCitizenship = true;
-
-    //Asklepios.Web.Areas.AdministrativeArea.Models.ViewMode editViewMode = Asklepios.Web.Areas.AdministrativeArea.Models.ViewMode.Edit;
-    //Asklepios.Web.Areas.AdministrativeArea.Models.ViewMode removeViewMode = Asklepios.Web.Areas.AdministrativeArea.Models.ViewMode.Remove;
 }
 <div class="d-flex flex-column">
     <div class="d-flex flex-column align-content-around  m-2">
@@ -18,13 +12,6 @@
     </div>
 
     <div class="form-group d-flex  flex-wrap">
-        @*<span id="MessageSpan" asp-validation-for="User.UserName" class="text-danger"></span>*@
-
-        @*<label asp-for="User.EmailAddress" class="control-label"></label>
-            <input asp-for="User.EmailAddress" class="form-control mb-2" readonly />*@
-
-        @*<label asp-for="User.Password" class="control-label"></label>
-            <input asp-for="User.Password" class="form-control mb-2" readonly />*@
         <div class="d-flex flex-fill align-content-xl-around form-control border-info alert-info m-2" style="width:400px">
             <label asp-for="Patient.Person.Name" class="control-label"></label>
             <span class="flex-grow-1 text-right">@Model.Patient.Person.Name</span>
@@ -111,9 +98,9 @@
             }
     else
                 {
-            <h2 class="text-center">
-                Brak skierowań...
-            </h2>
+            //<h2 class="text-center">
+            //    Brak skierowań...
+            //</h2>
 
                 }
         foreach (var item in Model.Patient.MedicalReferrals)
@@ -127,7 +114,7 @@
 @{
     if (Model.Patient.Prescriptions != null)
     {
-        @if (Model.Patient.MedicalReferrals.Count>0)
+        @if (Model.Patient.Prescriptions.Count>0)
         {
             <h2 class="text-center">
                 Recepty
@@ -135,9 +122,9 @@
             }
     else
                 {
-            <h2 class="text-center">
-                Brak recept...
-            </h2>
+            //<h2 class="text-center">
+            //    Brak recept...
+            //</h2>
 
                 }
         foreach (var item in Model.Patient.Prescriptions)
@@ -152,7 +139,7 @@
 @{
     if (Model.Patient.HistoricalVisits != null)
     {
-        @if (Model.Patient.MedicalReferrals.Count>0)
+        @if (Model.Patient.HistoricalVisits.Count>0)
         {
             <h2 class="text-center">
                 Wizyty

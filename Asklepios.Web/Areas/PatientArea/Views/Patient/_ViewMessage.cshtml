@@ -1,0 +1,47 @@
+﻿@using Newtonsoft.Json
+@model ViewMessage
+
+@if (Model != null)
+{
+
+    @if (!string.IsNullOrWhiteSpace(Model.Message))
+    {
+        @switch (Model.MessageType)
+        {
+            case Asklepios.Web.Enums.AlertMessageType.ErrorMessage:
+
+                <div class="messages" id="MessageSpan" style="margin-top: 10px; text-align: center;">
+                    <p class="alert alert-danger">
+                        @Model.Message
+                    </p>
+                </div>
+
+                break;
+            case Asklepios.Web.Enums.AlertMessageType.InfoMessage:
+                <div class="messages" id="MessageSpan" style="margin-top: 10px; text-align: center;">
+                    <p class="alert alert-info">
+                        @Model.Message
+                    </p>
+                </div>
+                break;
+            case Asklepios.Web.Enums.AlertMessageType.SuccessMessage:
+                <div class="messages" id="MessageSpan" style="margin-top: 10px; text-align: center;">
+                    <p class="alert alert-success">
+                        @Model.Message
+                    </p>
+                </div>
+                break;
+            case Asklepios.Web.Enums.AlertMessageType.WarningMessage:
+                <div class="messages" id="MessageSpan" style="margin-top: 10px; text-align: center;">
+                    <p class="alert alert-warning">
+                        @Model.Message
+                    </p>
+                </div>
+
+                break;
+            default:
+                break;
+
+        }
+    }
+}

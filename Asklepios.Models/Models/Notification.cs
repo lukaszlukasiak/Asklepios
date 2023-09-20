@@ -68,48 +68,13 @@ namespace Asklepios.Core.Models
         [ForeignKey("VisitId")]
         public virtual Visit Visit
         {
-            //get
-            //{
-            //    switch (NotificationType)
-            //    {
-            //        case NotificationType.Prescription:
-            //            Prescription prescription = EventObject as Prescription;
-            //            return prescription.Visit;
-            //        case NotificationType.TestResult:
-            //            MedicalTestResult testResult = EventObject as MedicalTestResult;
-            //            return testResult.Visit;
-            //        case NotificationType.MedicalReferral:
-            //            MedicalReferral referral  = EventObject as MedicalReferral;
-            //            return referral.VisitWhenIssued;
-            //        default:
-            //            break;
-            //    }
-            //    return null;
-            //}
+
             get;set;
         }
         public long EventObjectId 
         {
             get;set;
-            //get
-            //{
-            //    if (EventObject is MedicalReferral medicalReferral)
-            //    {
-            //        return medicalReferral.Id;
-            //    }
-            //    else if         (EventObject is Prescription prescription)
-            //    {
-            //        return prescription.Id;
-            //    }
-            //    else if (EventObject is MedicalTestResult testResult)
-            //    {
-            //        return testResult.Id;
-            //    }
-            //    else
-            //    {
-            //        return -1;
-            //    }
-            //}
+
         }
     }
 }

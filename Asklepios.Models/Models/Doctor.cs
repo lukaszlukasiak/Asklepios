@@ -10,21 +10,13 @@ namespace Asklepios.Core.Models
         public override bool CanIssuePrescription => true;
 
 
-        //public Doctor(Person person, string doctorNumber) :base(person)
-        //{
-        //    ProfessionalNumber = doctorNumber;
-        //    MedicalWorkerType = Enums.MedicalWorkerType.Doctor;
-        //    PersonId = person.Id;   
-        //}
         public Doctor()
         {
 
         }
         public Doctor(long personId, string professionalNumber) : base(personId, professionalNumber)
         {
-            //ProfessionalNumber = professionalNumber;
             MedicalWorkerType = Enums.MedicalWorkerType.Doctor;
-            //PersonId = personId;
         }
     }
 }
