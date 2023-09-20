@@ -1,6 +1,8 @@
 ﻿@model Asklepios.Web.Areas.CustomerServiceArea.Models.ContactMessageViewModel
 
 <div class="d-flex flex-column .align-items-stretch p-5">
+
+
     <h2>Formularz kontaktowy - uwagi odnośnie portalu</h2>
 
     <form class="form" asp-action="Contact" method="post">
@@ -9,13 +11,13 @@
             @*<select id="inputState" class="form-control">
                 <option selected>Choose...</option>
                 <option>...</option>
-            </select>*@
+                </select>*@
             @Html.DropDownListFor(a => a.Subject, new[]
-{
-        new SelectListItem() {Text = "Zgłoszenie błędu w module pracownika obsługi klienta"},
-        new SelectListItem() {Text = "Propozycja usprawnień w module pracownika obsługi klienta" },
-        new SelectListItem() {Text = "Inne..." },
-        }, "Wybierz temat...", new { @class = "form-control" })
+            {
+            new SelectListItem() {Text = "Zgłoszenie błędu w module pracownika obsługi klienta"},
+            new SelectListItem() {Text = "Propozycja usprawnień w module pracownika obsługi klienta" },
+            new SelectListItem() {Text = "Inne..." },
+            }, "Wybierz temat...", new { @class = "form-control" })
             <span asp-validation-for="Subject" type="text" class="text-danger"></span>
         </div>
 
