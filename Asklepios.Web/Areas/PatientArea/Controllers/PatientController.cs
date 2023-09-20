@@ -32,25 +32,6 @@ namespace Asklepios.Web.Areas.PatientArea.Controllers
         private User _loggedUser;
         private Patient _patient;
 
-        //User loggedUser
-        //{
-        //    get
-        //    {
-        //        if (_loggedUser==null)
-        //        {
-        //            _loggedUser = _context.GetUserById(UserId);
-        //        }
-        //        else
-        //        {
-        //            return _loggedUser;
-        //        }
-        //    }
-        //    set
-        //    {
-        //        loggedUser = value;
-        //    }
-        //}
-
         public PatientController(IPatientModuleRepository context, IWebHostEnvironment hostEnvironment, SignInManager<User> signManager)
         {
             _context = context;
@@ -187,8 +168,20 @@ namespace Asklepios.Web.Areas.PatientArea.Controllers
 
                 if (long.TryParse(id, out long lid))
                 {
-
                     Visit visit = _context.GetFutureVisitById(lid);
+
+                    
+                    if (visit.VisitStatus!=Core.Enums.VisitStatus.AvailableNotBooked)
+                    {
+                        ViewMessage viewMessage = new ViewMessage()
+                        {
+                            Message = "Ta wizyta nie jest już dostępna!",
+                            MessageType = Enums.AlertMessageType.ErrorMessage
+                        };
+                        TempData[ViewMessage.MESSAGE_KEY] = JsonConvert.SerializeObject(viewMessage);
+                        return RedirectToAction("BookVisit");
+                    }
+
                     _patient = _context.GetPatientByUserId(_loggedUser.Id);
                     _patient.MedicalReferrals=_context.GetMedicalReferralsByPatientIdQuery(_patient.Id).ToList();
 
@@ -201,9 +194,21 @@ namespace Asklepios.Web.Areas.PatientArea.Controllers
                                 MedicalReferral referral = _patient.MedicalReferrals.Where(c => c.PrimaryMedicalService == visit.PrimaryService && c.IsActive).FirstOrDefault();
                                 if (referral != null)
                                 {
+                                    bool hasVivistAtThSameTime = HasVivistAtThSameTime(visit);
+                                    if (hasVivistAtThSameTime)
+                                    {
+                                        ViewMessage viewMessage = new ViewMessage()
+                                        {
+                                            Message = "Już posiadasz zarezerwowaną wizytę w tym terminie!",
+                                            MessageType = Enums.AlertMessageType.ErrorMessage
+                                        };
+                                        TempData[ViewMessage.MESSAGE_KEY] = JsonConvert.SerializeObject(viewMessage);
+                                        return RedirectToAction("BookVisit");
+                                    }
+
                                     referral.HasBeenUsed = true;
                                     referral.VisitWhenUsed = visit;
-                                    //_selectedPatient.BookVisit(visit);
+
 
                                     _context.UpdateReferral(referral);
                                     _context.BookVisit(_patient.Id, visit.Id);
@@ -226,6 +231,17 @@ namespace Asklepios.Web.Areas.PatientArea.Controllers
                     }
                     else
                     {
+                        bool hasVivistAtThSameTime =HasVivistAtThSameTime(visit);
+                        if (hasVivistAtThSameTime)
+                        {
+                            ViewMessage viewMessage = new ViewMessage()
+                            {
+                                Message = "Już posiadasz zarezerwowaną wizytę w tym terminie!",
+                                MessageType = Enums.AlertMessageType.ErrorMessage
+                            };
+                            TempData[ViewMessage.MESSAGE_KEY] = JsonConvert.SerializeObject(viewMessage);
+                            return RedirectToAction("BookVisit");
+                        }
                         _context.BookVisit(_patient.Id, visit.Id);
                         return RedirectToAction("PlannedVisits");
                     }
@@ -237,10 +253,29 @@ namespace Asklepios.Web.Areas.PatientArea.Controllers
             }
             else
             {
+                
                 return NotFound();
             }
 
         }
+
+        private bool HasVivistAtThSameTime(Visit visit)
+        {
+            List<Visit> sameDayVisits = _context.GetAllVisitsByPatientIdQuery(_patient.Id).Where(c => c.DateTimeSince.Date == visit.DateTimeSince.Date).ToList();
+            foreach (var item in sameDayVisits)
+            {
+                if (item.DateTimeSince <= visit.DateTimeSince && item.DateTimeTill >= visit.DateTimeSince)
+                {
+                    return true;
+                }
+                if (item.DateTimeSince <= visit.DateTimeTill && item.DateTimeTill >= visit.DateTimeTill)
+                {
+                    return true;
+                }
+            }
+            return false;
+        }
+
         [HttpPost]
         public IActionResult BookVisitConditions(SearchViewModel model)
         {
@@ -357,7 +392,15 @@ namespace Asklepios.Web.Areas.PatientArea.Controllers
                 BookVisitViewModel model = new BookVisitViewModel()
                 {
                     PreFilteredVisitsList = _context.GetAvailableVisitsQuery()
-                }; //(_context.GetAvailableVisits().ToList(),new VisitSearchOptions());
+                }; 
+
+                if (TempData.ContainsKey(ViewMessage.MESSAGE_KEY))
+                {
+                    ViewMessage message = JsonConvert.DeserializeObject<ViewMessage>((string)TempData[ViewMessage.MESSAGE_KEY]);
+                    model.ViewMessage = message;
+                    TempData.Remove(ViewMessage.MESSAGE_KEY);
+                }
+
                 model.UserName = _loggedUser.Person.FullName;
                 model.Notifications = _context.GetNotificationsByPatientId(_patient.Id);
                 model.FilterVisits(_context.GetFutureVisitsQueryPatient());
@@ -1028,7 +1071,6 @@ namespace Asklepios.Web.Areas.PatientArea.Controllers
             {
                 return NotFound();
             }
-            //string path = Path.Combine(this.Environment.WebRootPath, "Files/") + fileName;
         }
     }
 }

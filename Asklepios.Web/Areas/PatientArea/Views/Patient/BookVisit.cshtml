@@ -7,6 +7,8 @@
     Zarezerwuj wizytę
 </h1>
 
+    <partial name="_ViewMessage" model="Model.ViewMessage" />
+
 <form asp-action="BookVisit" method="post">
     @{
         SelectList workersItems = new SelectList(Model.GetMedicalWorkers.OrderBy(c => c.FullProffesionalName), "Id", "FullProffesionalName");
@@ -22,7 +24,7 @@
         <option value="0">Wybierz kategorię wizyty</option>
     </select>
     <select class="form-control  mb-1" asp-for="SelectedServiceId" asp-items="servicesList">
-        <option value="0">Wybierz typ wizyty</option>
+        <option value="0">Wybierz usługę</option>
     </select>
 
     <select class="form-control mb-1" asp-for="SelectedMedicalWorkerId" asp-items="workersItems">
@@ -59,10 +61,6 @@
 
     </div>
 
-    @*<select asp-for="@Model.SearchOptions.SelectedDoctor" asp-items="@Model.GetMedicalWorkers.ToList()" class="form-control">
-        <option>Select Role</option>
-        </select>
-        @Html.DropDownList("Title", Model.Select(m => new SelectListItem() { Text = m., Value = m.Title }).ToList(), "Select")*@
 </form>
 <form class="form d-flex flex-column mb-2" asp-action="BookVisit" method="post">
     <button type="submit" class="btn btn-secondary btn-icon-split d-flex">

@@ -44,6 +44,8 @@ namespace Asklepios.Web.Areas.CustomerServiceArea.Models
 
         public bool NoReferral { get; set; }
 
+        public ViewMessage ViewMessage { get; set; }
+
         public BookVisitViewModel(Patient patient)
         {
             SelectedPatient = patient;

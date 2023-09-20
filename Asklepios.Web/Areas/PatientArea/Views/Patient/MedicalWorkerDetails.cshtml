@@ -32,10 +32,7 @@
                 @for (int i = 0; i < Model.MedicalWorker.MedicalServices.Count; i++)
                 {
                     MedicalService service = Model.MedicalWorker.MedicalServices[i];
-                    //if (i % 2 == 1)
-                    //{
                         <br>
-                    @*}*@
                     @service.Name
                 }
 
@@ -77,17 +74,13 @@
             <div class="d-flex mt-2">
                 <partial name="_MedicalReview" model="@review" />
             </div>
-                    
                 }
                 else
                 {
-        <div class="d-flex mt-4">
+        <div class="d-flex mt-2">
             <partial name="_MedicalReview" model="@review" />
         </div>
-                    
                 }
-
-
             }
         </div>
     </div>

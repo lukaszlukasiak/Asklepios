@@ -3,6 +3,7 @@ using Asklepios.Core.Models;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -12,6 +13,8 @@ namespace Asklepios.Data.Interfaces
 {
     public interface IAdministrationModuleRepository
     {
+        DbSet<Visit> Visits { get; set; }
+
         void AddLocation(Location location, IFormFile file, string webRootPath);
 
         void AddMedicalPackage(MedicalPackage newPackage);
