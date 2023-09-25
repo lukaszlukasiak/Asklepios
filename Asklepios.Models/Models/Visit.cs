@@ -371,12 +371,14 @@ namespace Asklepios.Core.Models
             DateTimeTill = end;
             MinorMedicalServices = new List<MedicalService>();
             Recommendations = new List<Recommendation>();
+            IsActive    = true;
         }
         public Visit()
         {
             //MinorMedicalServices = new List<MedicalService>();
             Recommendations = new List<Recommendation>();
             ExaminationReferrals = new List<MedicalReferral>();
+            IsActive = true;
         }
     }
 

@@ -8,15 +8,6 @@
 </h1>
 
 <form asp-action="BookVisitConditions" method="post">
-    <input asp-for="HasPredefinedMedicalWorker"  value="@Model.HasPredefinedMedicalWorker" hidden/>
-    <input asp-for="HasPredefinedService"   value="@Model.HasPredefinedService" hidden/>
-    <input asp-for="HasPredefinedCategory"   value="@Model.HasPredefinedCategory" hidden/>
-    <input asp-for="HasPredefinedLocation"   value="@Model.HasPredefinedLocation" hidden/>
-        <input asp-for="SelectedCategoryId"  value="@Model.SelectedCategoryId" hidden/>
-    <input asp-for="SelectedLocationId"   value="@Model.SelectedLocationId" hidden/>
-    <input asp-for="SelectedMedicalWorkerId"   value="@Model.SelectedMedicalWorkerId" hidden/>
-    <input asp-for="SelectedServiceId"   value="@Model.SelectedServiceId" hidden/>
-        <input asp-for="SelectedVisitId"   value="@Model.SelectedVisitId" hidden/>
 
     @{
         SelectList workersItems = null;
@@ -31,7 +22,7 @@
     <select class="form-control  mb-1" asp-for="SelectedLocationId" asp-items="locationItems">
         @if (Model.HasPredefinedLocation)
         {
-            
+
         }
         else
         {
@@ -64,15 +55,16 @@
         }
         else
         {
-            <option value="0">Wybierz typ wizyty</option>
+            <option value="0">Wybierz usługę</option>
         }
 
     </select>
 
-    <select class="form-control mb-1" asp-for="SelectedMedicalWorkerId" asp-items="workersItems" >
+    <select class="form-control mb-1" asp-for="SelectedMedicalWorkerId" asp-items="workersItems">
         @if (Model.HasPredefinedMedicalWorker)
         {
-            @if(@workersItems.Count()==0){
+            @if (@workersItems.Count() == 0)
+            {
                 <option value="">@Model.SelectedMedicalWorkerName</option>
             }
 
@@ -84,14 +76,14 @@
 
     </select>
     <div class="d-flex flex-column my-2">
-        <button id ="btnSubmit"  type="submit" class="btn btn-secondary btn-icon-split ">
+        <button id="btnSubmit" type="submit" class="btn btn-primary btn-icon-split ">
             <span class="icon text-white-50 left" style="text-align:left;float:left">
                 <i class="fas fa-filter"></i>
             </span>
             <span class="text" style="float: left">Filtruj!</span>
         </button>
     </div>
-        <div class="d-flex">
+    <div class="d-flex">
         <div class="form-group d-flex flex-column ">
             <button onclick="MovetToPreviousPage()" class="btn btn-primary btn-icon-split d-flex ">
                 <span class="icon text-white-50 left" style="text-align:left;float:left">
@@ -100,7 +92,7 @@
             </button>
         </div>
 
-        <select class="form-control mx-2" asp-for="CurrentPageNum" asp-items="ViewBag.PagesList" onchange="document.getElementById('btnSubmit').click();" onselect="Refresh()">
+        <select class="form-control mx-2" asp-for="CurrentPageNum" asp-items="@Model.PagesList" onchange="document.getElementById('btnSubmit').click();" onselect="Refresh()">
         </select>
 
         <div class="form-group d-flex flex-column ">
@@ -112,6 +104,15 @@
         </div>
 
     </div>
+        <input asp-for="HasPredefinedMedicalWorker" value="@Model.HasPredefinedMedicalWorker" hidden />
+    <input asp-for="HasPredefinedService" value="@Model.HasPredefinedService" hidden />
+    <input asp-for="HasPredefinedCategory" value="@Model.HasPredefinedCategory" hidden />
+    <input asp-for="HasPredefinedLocation" value="@Model.HasPredefinedLocation" hidden />
+    <input asp-for="SelectedCategoryId" value="@Model.SelectedCategoryId" hidden />
+    <input asp-for="SelectedLocationId" value="@Model.SelectedLocationId" hidden />
+    <input asp-for="SelectedMedicalWorkerId" value="@Model.SelectedMedicalWorkerId" hidden />
+    <input asp-for="SelectedServiceId" value="@Model.SelectedServiceId" hidden />
+    <input asp-for="SelectedVisitId" value="@Model.SelectedVisitId" hidden />
 
 </form>
 

@@ -277,5 +277,10 @@ namespace Asklepios.Data.InMemoryContexts
         {
             throw new NotImplementedException();
         }
+
+        public IQueryable<MedicalWorker> GetMedicalWorkersQuery()
+        {
+            throw new NotImplementedException();
+        }
     }
 }

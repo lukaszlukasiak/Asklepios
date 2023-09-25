@@ -1,6 +1,7 @@
 ﻿using Asklepios.Core.Models;
 using Asklepios.Web.Models;
 using Asklepios.Web.ServiceClasses;
+using Microsoft.AspNetCore.Mvc.Rendering;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -223,6 +224,22 @@ namespace Asklepios.Web.Areas.PatientArea.Models
 
         public string UserName { get; set; }
         public List<Notification> Notifications { get; set; }
+        public SelectList PagesList 
+        {
+            get
+            {
+                List<PageSelect> items = new List<PageSelect>();
+                for (int i = 1; i <= NumberOfPages; i++)
+                {
+                    PageSelect page = new PageSelect();
+                    page.Value = i.ToString();
+                    page.Id = i;
+                    items.Add(page);
+                }
+                SelectList pagesList = new SelectList(items, "Id", "Value", CurrentPageNum);
+                return pagesList;
+            }
+        }
 
         public void FilterVisits(IQueryable<Visit> allVisitsQuery)
         {
@@ -294,7 +311,6 @@ namespace Asklepios.Web.Areas.PatientArea.Models
             }
 
             FilteredVisits = filteredVisits.OrderBy(c => c.DateTimeSince).AsQueryable();
-            //PageVisits = filteredVisits.OrderBy(c => c.DateTimeSince).ToList();
 
             List<Visit> pageVisits = Pagination.GetPageItems(CurrentPageNum, PageSize, FilteredVisits).ToList();
             PageVisits = pageVisits;

@@ -6,7 +6,6 @@
             <div class="d-flex flex-fill flex-column justify-content-center" style="text-align:center">
                 <h3 style="font-weight:900;">
                     <a asp-action="MedicalWorkerDetails" asp-controller="Patient" asp-route-id="@Model.MedicalWorker.Id">
-
                         @Model.MedicalWorker.FullProffesionalName
                     </a>
                 </h3>
@@ -14,7 +13,6 @@
                     <img alt="@Model.MedicalWorker.FullProffesionalName" src="@Model.MedicalWorker.Person.ImageSource" class="mx-auto d-block" style="display: block; max-height:50% ; max-width:50%;
         border-radius: 6px; ">
                 </div>
-
             </div>
         </div>
         <div class="p-2 flex-grow-1 pt-3 m-auto flex-grow-1" style="width:400px;text-align:center">
@@ -25,33 +23,15 @@
             <h5>
                 @Model.Location.Name
             </h5>
-
             <h5>
                 @Model.VisitCategory.CategoryName - @Model.PrimaryService.Name
-
             </h5>
             @if (Model.IsNotCompletedMedicalTest)
             {
                 <h5>
                     "W realizacji..."
                 </h5>
-
             }
-
-            @*<h4>Zakres specjalizacji:</h4>
-                <h5>
-                    @for (int i = 0; i < Model.MedicalServices.Count; i++)
-                    {
-                        MedicalService service = Model.MedicalServices[i];
-                        if (i % 2 == 1)
-                        {
-                            <br>
-                        }
-                        @service.Name
-                    }
-
-                </h5>*@
-
         </div>
         @if (Model.DateTimeSince > DateTimeOffset.Now)
         {

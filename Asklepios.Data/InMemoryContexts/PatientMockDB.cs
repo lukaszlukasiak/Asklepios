@@ -710,38 +710,27 @@ namespace Asklepios.Data.InMemoryContexts
 
                 int minutsOffset = -1;
 
-                //int servicesCounter = medicalWorker.MedicalServices.Where(c => c.IsPrimaryService).Count();
-                //int serviceIndex = (servicesCounter-1) % (i+1);
-                //MedicalService service = medicalWorker.MedicalServices.Where(c => c.IsPrimaryService).ToList().ElementAt(serviceIndex);
-                //List<VisitCategory> categories = VisitCategories.Where(c => c.PrimaryMedicalServices.Any(d => d.Id == service.Id)).ToList();
-                //VisitCategory visitCategory = categories[categories.Count % (i + 1)];
-
-                //VisitCategory visitCategory = VisitCategories.Where(c => c.PrimaryMedicalServices.Any(d => d.Id == service.Id)).FirstOrDefault();
-
-                //List<VisitCategory> categories = VisitCategories.Where(c => c.PrimaryMedicalServices.Any(d => d.Id == medicalService.Id)).ToList();
-
                 for (int j = 0; j < MedicalWorkers.Count; j++)
                 {
                     MedicalWorker medicalWorker = MedicalWorkers.ElementAt(j);
 
                     List<MedicalService> primaryServices = medicalWorker.MedicalServices.Where(c => c.IsPrimaryService).ToList();
                     int servicesCounter = primaryServices.Count();
+                    int serviceIndex = (i + 1) % (servicesCounter);
+                    MedicalService service = primaryServices.ElementAt(serviceIndex);
+
+                    //zrobic tak zeby byly rozne kategorie
+                    List<VisitCategory> categories = VisitCategories.Where(c => c.MedicalServices.Any(d => d.Id == service.Id)).ToList();
+                    VisitCategory visitCategory = categories[(j + 1) % (categories.Count)];
+                    Location location = Locations.ElementAt((j + 1) % (locationsNumber));
+                    int roomsCounter = location.MedicalRooms.Count;
+                    MedicalRoom room = location.MedicalRooms.ElementAt((j + 1) % (roomsCounter));
+
                     minutsOffset = -1;
+
 
                     for (int m = 0; m < 12; m++)
                     {
-
-
-                        int serviceIndex = (m + 1) % (servicesCounter);
-                        MedicalService service = primaryServices.ElementAt(serviceIndex);
-                        //zrobic tak zeby byly rozne kategorie
-                        List<VisitCategory> categories = VisitCategories.Where(c => c.MedicalServices.Any(d => d.Id == service.Id)).ToList();
-                        VisitCategory visitCategory = categories[(j + 1) % (categories.Count)];
-
-                        Location location = Locations.ElementAt((j + 1) % (locationsNumber));
-                        int roomsCounter = location.MedicalRooms.Count;
-                        MedicalRoom room = location.MedicalRooms.ElementAt((j + 1) % (roomsCounter));
-
                         minutsOffset++;
                         Visit visit = new Visit()
                         {

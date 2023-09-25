@@ -7,17 +7,7 @@ namespace Asklepios.Core.Models
 {
     public class Nurse : MedicalWorker
     {
-        //public Nurse(string name, string surName, long id, string pesel, bool hasPolishCitizenship, string passportNumber, string passportCode, string pwzNumber, string email, Aglomeration aglomeration) : base(name, surName, id, pesel, hasPolishCitizenship, passportNumber, passportCode, email, aglomeration)
-        //{
-        //    PWZNumber = pwzNumber;
-        //}
-        //public Nurse(Person person , string profNumber) :base(person)
-        //{
-        //    ProfessionalNumber = profNumber;
-        //    MedicalWorkerType = Enums.MedicalWorkerType.Nurse;
-        //    PersonId = person.Id;
-        //}
-        public Nurse()
+        public Nurse():base ()
         {
 
         }

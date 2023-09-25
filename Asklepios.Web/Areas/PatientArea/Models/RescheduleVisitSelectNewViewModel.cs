@@ -18,7 +18,6 @@ namespace Asklepios.Web.Areas.PatientArea.Models
         {
 
         }
-
     }
 }
 

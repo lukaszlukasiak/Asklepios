@@ -334,7 +334,7 @@ namespace Asklepios.Web.Areas.PatientArea.Controllers
                 viewModel.UserName = _loggedUser.Person.FullName;
                 viewModel.Notifications = _context.GetNotificationsByPatientId(_patient.Id);
                 viewModel.FilterVisits(_context.GetFutureVisitsQueryPatient());
-                CreatePageSelectList(viewModel);
+                //CreatePageSelectList(viewModel);
 
                 return View(viewModel);
             }
@@ -342,19 +342,6 @@ namespace Asklepios.Web.Areas.PatientArea.Controllers
             {
                 return NotFound();
             }
-        }
-        private void CreatePageSelectList(BookVisitViewModel model)
-        {
-            List<PageSelect> items = new List<PageSelect>();
-            for (int i = 1; i <= model.NumberOfPages; i++)
-            {
-                PageSelect page = new PageSelect();
-                page.Value = i.ToString();
-                page.Id = i;
-                items.Add(page);
-            }
-            SelectList pagesList = new SelectList(items, "Id", "Value", model.CurrentPageNum);
-            ViewData["PagesList"] = pagesList;
         }
 
         [HttpPost]
@@ -370,7 +357,7 @@ namespace Asklepios.Web.Areas.PatientArea.Controllers
                 model.UserName = _loggedUser.Person.FullName;
                 model.Notifications = _context.GetNotificationsByPatientId(_patient.Id);
                 model.FilterVisits(_context.GetFutureVisitsQueryPatient());
-                CreatePageSelectList(model);
+                //CreatePageSelectList(model);
 
                 return View(model);
             }
@@ -403,8 +390,8 @@ namespace Asklepios.Web.Areas.PatientArea.Controllers
 
                 model.UserName = _loggedUser.Person.FullName;
                 model.Notifications = _context.GetNotificationsByPatientId(_patient.Id);
-                model.FilterVisits(_context.GetFutureVisitsQueryPatient());
-                CreatePageSelectList(model);
+                model.FilterVisits(_context.GetAvailableVisitsQuery());
+                //CreatePageSelectList(model);
 
                 return View(model);
             }
@@ -570,7 +557,8 @@ namespace Asklepios.Web.Areas.PatientArea.Controllers
 
                 MedicalWorkersListViewModel model = new MedicalWorkersListViewModel();
                 //List<MedicalWorker> medicalWorkers = _context.GetMedicalWorkers().ToList();
-                model.MedicalWorkers = _context.GetMedicalWorkers().ToList();
+                model.MedicalWorkers = _context.GetMedicalWorkersQuery();
+                model.FilterWorkerItems();
                 model.UserName = _loggedUser.Person.FullName;
                 model.Notifications = _context.GetNotificationsByPatientId(_patient.Id);
                 return View(model);
@@ -581,6 +569,28 @@ namespace Asklepios.Web.Areas.PatientArea.Controllers
             }
 
         }
+        [HttpPost]
+        public IActionResult MedicalWorkersList(MedicalWorkersListViewModel model)
+        {
+            _loggedUser = _context.GetUserById(HttpContext.User.GetUserId().Value);
+
+            if (_loggedUser != null)
+            {
+                _patient = _context.GetPatientByUserId(_loggedUser.Id);
+
+                model.MedicalWorkers = _context.GetMedicalWorkersQuery();
+                model.FilterWorkerItems();
+                model.UserName = _loggedUser.Person.FullName;
+                model.Notifications = _context.GetNotificationsByPatientId(_patient.Id);
+                return View(model);
+            }
+            else
+            {
+                return NotFound();
+            }
+
+        }
+
         public IActionResult MedicalWorkerDetails(string id)
         {
             _loggedUser = _context.GetUserById(HttpContext.User.GetUserId().Value);
@@ -1014,9 +1024,6 @@ namespace Asklepios.Web.Areas.PatientArea.Controllers
                 if (long.TryParse(id, out long lid))
                 {
                     _patient = _context.GetPatientByUserId(_loggedUser.Id);
-
-
-                    //Patient patient = _context.GetPatientById(lid);
                     PatientViewModel model = new PatientViewModel(_patient);
                     model.UserName = _loggedUser.Person.FullName;
                     model.Notifications = _context.GetNotificationsByPatientId(_patient.Id);
@@ -1024,8 +1031,6 @@ namespace Asklepios.Web.Areas.PatientArea.Controllers
                     {
                         item.Visit = _context.GetHistoricalVisitById(item.VisitId);
                     }
-
-                    //_selectedPatient.
 
                     return View(model);
                 }
@@ -1048,7 +1053,6 @@ namespace Asklepios.Web.Areas.PatientArea.Controllers
             {
                 _patient = _context.GetPatientByUserId(_loggedUser.Id);
 
-                //Build the File Path.
                 if (long.TryParse(id, out long idL))
                 {
                     MedicalTestResult medicalTestResult = _context.GetMedicalTestResultById(idL);

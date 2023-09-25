@@ -70,5 +70,9 @@ namespace Asklepios.Core.Models
                 return false;
             }
         }
+        public MedicalRoom()
+        {
+            IsActive = true;
+        }
     }
 }

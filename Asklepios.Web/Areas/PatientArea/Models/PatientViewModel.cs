@@ -21,8 +21,6 @@ namespace Asklepios.Web.Areas.PatientArea.Models
         public IQueryable<Prescription> Prescriptions { get; set; }
         public IQueryable<MedicalTestResult>MedicalTestResults { get; set; }
 
-
-        //dla odbytych - klasa nowa czy lista obiektów?
         public List<Visit> GetCommingVisits(int numberOfVisits=3)
         {
             List<Visit> visits = Visits
@@ -36,10 +34,6 @@ namespace Asklepios.Web.Areas.PatientArea.Models
                     numberOfVisits = visits.Count;
                 }
 
-                //for (int i = 0; i < numberOfVisits; i++)
-                //{
-                //    commingVisits.Add(visits.ElementAt(i));
-                //}
                 List<Visit> list= visits.Take(numberOfVisits).ToList();
                 return list;
             }

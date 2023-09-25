@@ -128,11 +128,13 @@ namespace Asklepios.Core.Models
             Person = person;
             PersonId = person.Id;
             User = new User();
+            IsActive = true;   
         }
         public Patient()
         {
             Person = new Person();
             User = new User();
+            IsActive = true;
         }
         
     }

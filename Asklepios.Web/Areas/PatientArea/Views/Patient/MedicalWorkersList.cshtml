@@ -1,16 +1,71 @@
 ﻿@model Asklepios.Web.Areas.PatientArea.Models.MedicalWorkersListViewModel
     @{
-        ViewData["Title"] = "View";
-    }
+    ViewData["Title"] = "View";
+}
+@{
+    SelectList aglomerations = new SelectList(Model.Aglomerations?.OrderBy(c => c.GetDescription()));
+    SelectList categories = new SelectList(Model.MedicalWorkerTypes?.OrderBy(c => c.Value), "Key", "Value");
+    SelectList primaryServices = new SelectList(Model.MedicalServices?.OrderBy(c => c.Name), "Id", "Name");
+}
 
-    <h1 style="text-align:center">Lista pracowników medycznych</h1>
+<h1 style="text-align:center">Lista pracowników medycznych</h1>
+<form asp-action="MedicalWorkersList" method="post">
 
-    @for (int i = 0; i < Model.MedicalWorkers.Count; i++)
+    <select class="form-control  mb-2" asp-for="SelectedAglomeration" asp-items="aglomerations">
+        <option value="-1">Wybierz aglomerację</option>
+    </select>
+
+    <select class="form-control  mb-2" asp-for="SelectedWorkerType" asp-items="categories">
+        <option value="0">Wybierz typ pracownika</option>
+    </select>
+    <select class="form-control  mb-2" asp-for="SelectedServiceId" asp-items="primaryServices">
+        <option value="0">Wybierz usługę</option>
+    </select>
+    <label asp-for="SelectedName" class="control-label"></label>
+    <input asp-for="SelectedName" class="form-control mb-2">
+    <span asp-validation-for="SelectedName" class="text-danger"></span>
+
+
+    <label asp-for="SelectedSurname" class="control-label"></label>
+    <input asp-for="SelectedSurname" class="form-control mb-2">
+    <span asp-validation-for="SelectedSurname" class="text-danger"></span>
+    <div class="d-flex flex-column mt-3 mb-0">
+        <button id="btnSubmit" type="submit" class="btn btn-primary btn-icon-split ">
+            <span class="icon text-white-50 left" style="text-align:left;float:left">
+                <i class="fas fa-filter"></i>
+            </span>
+
+            <span class="text" style="float: left">Filtruj!</span>
+        </button>
+    </div>
+</form>
+<form asp-action="MedicalWorkersList">
+    <div class="d-flex flex-column mt-2 mb-2">
+        <button id="btnSubmit" type="submit" class="btn btn-secondary btn-icon-split ">
+            <span class="icon text-white-50 left" style="text-align:left;float:left">
+                <i class="fas fa-filter"></i>
+            </span>
+
+            <span class="text" style="float: left">Wyczyść filtr!</span>
+        </button>
+    </div>
+
+</form>
+
+@if (Model.FilteredMedicalWorkers!=null)
+{
+    @for (int i = 0; i < Model.FilteredMedicalWorkers?.Count; i++)
     {
-        MedicalWorker med = Model.MedicalWorkers[i];
+        MedicalWorker med = Model.FilteredMedicalWorkers[i];
         Asklepios.Web.Areas.PatientArea.Models.MedicalWorkerViewModel model = new Asklepios.Web.Areas.PatientArea.Models.MedicalWorkerViewModel();
         model.MedicalWorker = med;
-    model.HasPredefinedMedicalWorker = true;
-    <partial name="_MedicalWorker" model="model" />
+        model.HasPredefinedMedicalWorker = true;
+        <partial name="_MedicalWorker" model="model" />
 
     }
+}
+else
+{
+            <h3 style="text-align:center">Brak pracowników medycznych spełniających warunki...</h3>
+}
+
