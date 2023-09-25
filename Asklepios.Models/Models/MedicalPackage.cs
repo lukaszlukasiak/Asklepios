@@ -55,5 +55,10 @@ namespace Asklepios.Core.Models
                 return false;
             }
         }
+
+        public MedicalPackage()
+        {
+            IsActive = true;
+        }
     }
 }

@@ -1,5 +1,6 @@
 C:\Users\lukas\source\repos\Asklepios8\Asklepios.Models\bin\Debug\net6.0\Asklepios.Core.deps.json
 C:\Users\lukas\source\repos\Asklepios8\Asklepios.Models\bin\Debug\net6.0\Asklepios.Core.dll
+C:\Users\lukas\source\repos\Asklepios8\Asklepios.Models\bin\Debug\net6.0\ref\Asklepios.Core.dll
 C:\Users\lukas\source\repos\Asklepios8\Asklepios.Models\bin\Debug\net6.0\Asklepios.Core.pdb
 C:\Users\lukas\source\repos\Asklepios8\Asklepios.Models\bin\Debug\net6.0\refs\Microsoft.AspNetCore.Antiforgery.dll
 C:\Users\lukas\source\repos\Asklepios8\Asklepios.Models\bin\Debug\net6.0\refs\Microsoft.AspNetCore.Authentication.Abstractions.dll
@@ -289,6 +290,7 @@ C:\Users\lukas\source\repos\Asklepios8\Asklepios.Models\bin\Debug\net6.0\refs\Sy
 C:\Users\lukas\source\repos\Asklepios8\Asklepios.Models\bin\Debug\net6.0\refs\System.Xml.XPath.dll
 C:\Users\lukas\source\repos\Asklepios8\Asklepios.Models\bin\Debug\net6.0\refs\System.Xml.XPath.XDocument.dll
 C:\Users\lukas\source\repos\Asklepios8\Asklepios.Models\bin\Debug\net6.0\refs\WindowsBase.dll
+C:\Users\lukas\source\repos\Asklepios8\Asklepios.Models\obj\Debug\net6.0\Asklepios.Core.csproj.AssemblyReference.cache
 C:\Users\lukas\source\repos\Asklepios8\Asklepios.Models\obj\Debug\net6.0\Asklepios.Core.GeneratedMSBuildEditorConfig.editorconfig
 C:\Users\lukas\source\repos\Asklepios8\Asklepios.Models\obj\Debug\net6.0\Asklepios.Core.AssemblyInfoInputs.cache
 C:\Users\lukas\source\repos\Asklepios8\Asklepios.Models\obj\Debug\net6.0\Asklepios.Core.AssemblyInfo.cs
@@ -296,5 +298,3 @@ C:\Users\lukas\source\repos\Asklepios8\Asklepios.Models\obj\Debug\net6.0\Asklepi
 C:\Users\lukas\source\repos\Asklepios8\Asklepios.Models\obj\Debug\net6.0\Asklepios.Core.dll
 C:\Users\lukas\source\repos\Asklepios8\Asklepios.Models\obj\Debug\net6.0\ref\Asklepios.Core.dll
 C:\Users\lukas\source\repos\Asklepios8\Asklepios.Models\obj\Debug\net6.0\Asklepios.Core.pdb
-C:\Users\lukas\source\repos\Asklepios8\Asklepios.Models\obj\Debug\net6.0\Asklepios.Core.csproj.AssemblyReference.cache
-C:\Users\lukas\source\repos\Asklepios8\Asklepios.Models\obj\Debug\net6.0\refint\Asklepios.Core.dll

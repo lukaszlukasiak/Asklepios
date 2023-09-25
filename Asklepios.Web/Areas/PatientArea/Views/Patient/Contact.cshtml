@@ -2,13 +2,6 @@
 
 <div class="d-flex flex-column .align-items-stretch p-5">
 
-                                <h3>Dane kontaktowe</h3>
-                    <div class="info-detail">
-                        <ul><li><i class="fa fa-calendar"></i><span>Poniedziałek - Piątek:</span> 8:00 -16:00 </li></ul>
-                        <ul><li><i class="fa fa-map-marker"></i><span>Adres:</span> Aleje Jerozolimskie 120, Warszawa, 01-111</li></ul>
-                        <ul><li><i class="fa fa-phone"></i><span>Telefon:</span> 25-40-40-12-35</li></ul>
-                        <ul><li><i class="fa fa-envelope"></i><span>Email:</span> kontakt@asklepios.com</li></ul>
-                    </div>
 
     <h2>Formularz kontaktowy - uwagi odnośnie portalu</h2>
 
@@ -18,15 +11,15 @@
             @*<select id="inputState" class="form-control">
                 <option selected>Choose...</option>
                 <option>...</option>
-            </select>*@
+                </select>*@
             @Html.DropDownListFor(a => a.Subject, new[]
-{
-        new SelectListItem() {Text = "Zgłoszenie błędu na portalu pacjenta"},
-        new SelectListItem() {Text = "Propozycja usprawnień portalu pacjenta" },
-        new SelectListItem() {Text = "Opinia na temat usług" },
-        new SelectListItem() {Text = "Zapytanie dotyczące usług medycznych" },
-        new SelectListItem() {Text = "Inne..." },
-        }, "Wybierz temat...", new { @class = "form-control" })
+            {
+            new SelectListItem() {Text = "Zgłoszenie błędu na portalu pacjenta"},
+            new SelectListItem() {Text = "Propozycja usprawnień portalu pacjenta" },
+            new SelectListItem() {Text = "Opinia na temat usług" },
+            new SelectListItem() {Text = "Zapytanie dotyczące usług medycznych" },
+            new SelectListItem() {Text = "Inne..." },
+            }, "Wybierz temat...", new { @class = "form-control" })
             <span asp-validation-for="Subject" type="text" class="text-danger"></span>
         </div>
 
@@ -73,4 +66,13 @@
             @*<div>@Model.AlertMessage</div>*@
         }
     </form>
+    <div class="mt-5">
+        <h3>Dane kontaktowe</h3>
+        <div class="info-detail">
+            <ul><li><i class="fa fa-calendar" style="width:20px"></i><span>Poniedziałek - Piątek:</span> 8:00 -16:00 </li></ul>
+            <ul><li><i class="fa fa-map-marker" style="width:20px"></i><span>Adres:</span> Aleje Jerozolimskie 120, Warszawa, 01-111</li></ul>
+            <ul><li><i class="fa fa-phone" style="width:20px"></i><span>Telefon:</span> 25-40-40-12-35</li></ul>
+            <ul><li><i class="fa fa-envelope" style="width:20px"></i><span>Email:</span> kontakt@asklepios.com</li></ul>
+        </div>
+    </div>
 </div>

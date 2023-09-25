@@ -33,7 +33,7 @@ namespace Asklepios.Data.DBContexts
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-            bool seedDatabase = false;
+            bool seedDatabase = true;
 
             base.OnModelCreating(modelBuilder);
 
@@ -45,81 +45,80 @@ namespace Asklepios.Data.DBContexts
             .HasValue<DentalHygienist>("4")
             .HasValue<Physiotherapist>("5");
 
-                modelBuilder.Entity<MedicalService>()
-                    .Property(o => o.StandardPrice)
-                    .HasColumnType("decimal(8,2)");
+            modelBuilder.Entity<MedicalService>()
+                .Property(o => o.StandardPrice)
+                .HasColumnType("decimal(8,2)");
 
-                modelBuilder.Entity<MedicalService>()
-                    .HasMany<MedicalService>(c => c.SubServices)
-                    .WithOne(e => e.PrimaryService)
-                    .OnDelete(DeleteBehavior.Restrict)
-                    .IsRequired(false);
+            modelBuilder.Entity<MedicalService>()
+                .HasMany<MedicalService>(c => c.SubServices)
+                .WithOne(e => e.PrimaryService)
+                .OnDelete(DeleteBehavior.Restrict)
+                .IsRequired(false);
 
-                modelBuilder.Entity<Visit>()
-                    .HasOne<MedicalService>(c => c.PrimaryService);
+            modelBuilder.Entity<Visit>()
+                .HasOne<MedicalService>(c => c.PrimaryService);
 
-                modelBuilder.Entity<Visit>()
-                    .HasMany<MedicalService>(c => c.MinorMedicalServices);
+            modelBuilder.Entity<Visit>()
+                .HasMany<MedicalService>(c => c.MinorMedicalServices);
+
+            modelBuilder.Entity<MinorServiceToVisit>()
+                .HasKey(msv => new { msv.MedicalServiceId, msv.VisitId });
+
+            modelBuilder.Entity<MinorServiceToVisit>()
+                .HasOne(msv => msv.Visit)
+                .WithMany(v => v.MinorServicesToVisits)
+                .HasForeignKey(msv => msv.VisitId);
+
+            modelBuilder.Entity<MinorServiceToVisit>()
+                .HasOne(msv => msv.MedicalService)
+                .WithMany(v => v.MinorServicesToVisit)
+                .HasForeignKey(msv => msv.MedicalServiceId);
+
+            modelBuilder.Entity<Location>()
+                .HasMany(a => a.Services)
+                .WithMany(b => b.Locations);
+
+            modelBuilder.Entity<VisitCategory>()
+                .HasMany<MedicalService>(c => c.MedicalServices)
+                .WithOne(e => e.VisitCategory)
+                .HasForeignKey(d => d.VisitCategoryId)
+                .OnDelete(DeleteBehavior.Restrict)
+                .IsRequired(true);
+
+            modelBuilder.Entity<MedicalPackage>()
+                .HasMany<MedicalServiceDiscount>(c => c.ServiceDiscounts)
+                .WithOne(e => e.MedicalPackage)
+                .HasForeignKey(d => d.MedicalPackageId);
+
+            modelBuilder.Entity<MedicalServiceDiscount>()
+                .Property(o => o.Discount)
+                .HasColumnType("decimal(3,2)");
+
+            modelBuilder.Entity<User>()
+                .HasOne<Patient>(d => d.Patient)
+                .WithOne(c => c.User)
+                .HasPrincipalKey<User>(e => e.Id)
+                .HasForeignKey<Patient>(f => f.UserId);
 
 
-                modelBuilder.Entity<MinorServiceToVisit>()
-                    .HasKey(msv => new { msv.MedicalServiceId, msv.VisitId });
+            modelBuilder.Entity<User>()
+                .HasOne<MedicalWorker>(d => d.MedicalWorker)
+                .WithOne(c => c.User)
+                .HasPrincipalKey<User>(e => e.Id)
+                .HasForeignKey<MedicalWorker>(f => f.UserId);
 
-                modelBuilder.Entity<MinorServiceToVisit>()
-                    .HasOne(msv => msv.Visit)
-                    .WithMany(v => v.MinorServicesToVisits)
-                    .HasForeignKey(msv => msv.VisitId);
+            modelBuilder.Entity<MedicalReferral>()
+                .HasOne(r => r.VisitWhenIssued)
+                .WithMany(d => d.ExaminationReferrals);
 
-                modelBuilder.Entity<MinorServiceToVisit>()
-                    .HasOne(msv => msv.MedicalService)
-                    .WithMany(v => v.MinorServicesToVisit)
-                    .HasForeignKey(msv => msv.MedicalServiceId);
+            modelBuilder.Entity<MedicalReferral>()
+                .HasOne<Visit>(r => r.VisitWhenUsed)
 
-                modelBuilder.Entity<Location>()
-                    .HasMany(a => a.Services)
-                    .WithMany(b => b.Locations);
+                .WithOne(d => d.UsedExaminationReferral)
+                .OnDelete(DeleteBehavior.Restrict);
 
-                modelBuilder.Entity<VisitCategory>()
-                    .HasMany<MedicalService>(c => c.MedicalServices)
-                    .WithOne(e => e.VisitCategory)
-                    .HasForeignKey(d => d.VisitCategoryId)
-                    .OnDelete(DeleteBehavior.Restrict)
-                    .IsRequired(true);
-
-                modelBuilder.Entity<MedicalPackage>()
-                    .HasMany<MedicalServiceDiscount>(c => c.ServiceDiscounts)
-                    .WithOne(e => e.MedicalPackage)
-                    .HasForeignKey(d => d.MedicalPackageId);
-
-                modelBuilder.Entity<MedicalServiceDiscount>()
-                    .Property(o => o.Discount)
-                    .HasColumnType("decimal(3,2)");
-
-                modelBuilder.Entity<User>()
-                    .HasOne<Patient>(d => d.Patient)
-                    .WithOne(c => c.User)
-                    .HasPrincipalKey<User>(e => e.Id)
-                    .HasForeignKey<Patient>(f => f.UserId);
-
-
-                modelBuilder.Entity<User>()
-                    .HasOne<MedicalWorker>(d => d.MedicalWorker)
-                    .WithOne(c => c.User)
-                    .HasPrincipalKey<User>(e => e.Id)
-                    .HasForeignKey<MedicalWorker>(f => f.UserId);
-
-                modelBuilder.Entity<MedicalReferral>()
-                    .HasOne(r => r.VisitWhenIssued)
-                    .WithMany(d => d.ExaminationReferrals);
-
-                modelBuilder.Entity<MedicalReferral>()
-                    .HasOne<Visit>(r => r.VisitWhenUsed)
-                    
-                    .WithOne(d => d.UsedExaminationReferral)
-                    .OnDelete(DeleteBehavior.Restrict);
-
-                modelBuilder.Entity<MedicalReferral>()
-                    .HasOne<Patient>(c => c.IssuedTo);
+            modelBuilder.Entity<MedicalReferral>()
+                .HasOne<Patient>(c => c.IssuedTo);
 
             //.HasForeignKey(e => e.UsedExaminationReferralId);
 
@@ -127,36 +126,34 @@ namespace Asklepios.Data.DBContexts
                     .HasOne<Location>(c => c.Location)
                     .WithMany();
 
-                modelBuilder.Entity<Location>()
-                    .HasMany<MedicalRoom>(c => c.MedicalRooms)
-                    .WithOne(d => d.Location)
-                    .HasForeignKey(e => e.LocationId)
-                    .OnDelete(DeleteBehavior.Restrict);
+            modelBuilder.Entity<Location>()
+                .HasMany<MedicalRoom>(c => c.MedicalRooms)
+                .WithOne(d => d.Location)
+                .HasForeignKey(e => e.LocationId)
+                .OnDelete(DeleteBehavior.Restrict);
 
-                modelBuilder.Entity<MedicalPackage>()
-                    .HasMany<Patient>()
-                    .WithOne(c => c.MedicalPackage)
-                    .HasForeignKey(d => d.MedicalPackageId)
-                    .OnDelete(DeleteBehavior.Restrict);
+            modelBuilder.Entity<MedicalPackage>()
+                .HasMany<Patient>()
+                .WithOne(c => c.MedicalPackage)
+                .HasForeignKey(d => d.MedicalPackageId)
+                .OnDelete(DeleteBehavior.Restrict);
 
-                modelBuilder.Entity<Prescription>()
-                    .HasMany<IssuedMedicine>(c => c.IssuedMedicines)
-                    .WithOne(d => d.Prescription)
-                    .HasForeignKey(e => e.PrescriptionId)
-                    .OnDelete(DeleteBehavior.Restrict)
-                    .IsRequired(true);
-
-                modelBuilder.Entity<MedicalTestResult>()
-                    .HasOne<Visit>(c => c.Visit)
-                    .WithOne(d => d.MedicalTestResult)
+            modelBuilder.Entity<Prescription>()
+                .HasMany<IssuedMedicine>(c => c.IssuedMedicines)
+                .WithOne(d => d.Prescription)
+                .HasForeignKey(e => e.PrescriptionId)
                 .OnDelete(DeleteBehavior.Restrict)
-                .IsRequired(false);
+                .IsRequired(true);
+
+            modelBuilder.Entity<MedicalTestResult>()
+                .HasOne<Visit>(c => c.Visit)
+                .WithOne(d => d.MedicalTestResult)
+            .OnDelete(DeleteBehavior.Restrict)
+            .IsRequired(false);
 
 
             if (seedDatabase)
             {
-
-
                 PatientMockDB.SetData();
 
                 var location2MedicalServiceData = new List<object>();
@@ -430,8 +427,35 @@ namespace Asklepios.Data.DBContexts
                 string filePath = SaveFile(person.ImageFile, StorageFolderType.Persons, hostPath);
                 person.ImageFilePath = filePath;
             }
+            else
+            {
+                string filePath = GetDefaultIconPath(person.Gender, StorageFolderType.Persons, hostPath);
+                person.ImageFilePath = filePath;
+            }
             People.Add(person);
             SaveChanges();
+        }
+
+        private string GetDefaultIconPath(Gender? gender, StorageFolderType persons, string hostPath)
+        {
+            string path = null;
+            if (gender.HasValue)
+            {
+                if (gender.Value==Gender.Male)
+                {
+                    path = Path.Combine(@"\img", "Persons","male.svg");
+
+                }
+                else
+                {
+                    path = Path.Combine(@"\img", "Persons", "female.svg");
+                }
+            }
+            else
+            {
+                path = Path.Combine(@"\img", "Persons", "male.svg");
+            }
+            return path;
         }
 
         public void AddPatientObjects(Patient patient, string hostPath)
@@ -537,12 +561,6 @@ namespace Asklepios.Data.DBContexts
                 fullFileName = Path.Combine(basePath, path, myUniqueFileName);
 
             } while (System.IO.File.Exists(fullFileName));
-            //if (System.IO.File.Exists(fullFileName))
-            //{
-            //    string myUniqueFileName = string.Format(@"{0}{1}", Guid.NewGuid(), extension);
-            //    string fullFileName = Path.Combine(path, myUniqueFileName);
-
-            //}
             string relativePath = Path.Combine("/", path, myUniqueFileName);
             using (var fileStream = new FileStream(fullFileName, FileMode.Create))
             {
@@ -631,7 +649,7 @@ namespace Asklepios.Data.DBContexts
         public List<Visit> GetBookedVisitsByPatientId(long id)
         {
             List<Visit> bookedVisits = Visits
-                .Where(c => c.PatientId == id && c.VisitStatus == VisitStatus.Booked && c.DateTimeSince>DateTime.Now)
+                .Where(c => c.PatientId == id && c.VisitStatus == VisitStatus.Booked && c.DateTimeSince > DateTime.Now)
                 .Include(d => d.MedicalWorker).ThenInclude(f => f.Person)
                 .Include(e => e.Patient).ThenInclude(f => f.Person)
                 .Include(g => g.Location)
@@ -781,7 +799,7 @@ namespace Asklepios.Data.DBContexts
             IQueryable<Visit> visits = Visits
                 .Where(c => c.PatientId == id)
                 .Where(d => d.VisitStatus == VisitStatus.Finished)
-                
+
                 //.Include(k => k.ExaminationReferrals)
                 .Include(b => b.Location)
                 .Include(g => g.MedicalWorker)
@@ -968,7 +986,19 @@ namespace Asklepios.Data.DBContexts
 
         public List<MedicalWorker> GetMedicalWorkers()
         {
-            return MedicalWorkers.Include(c => c.Person).Include(d => d.MedicalServices).Include(e => e.VisitReviews).ToList();
+            return MedicalWorkers
+                    .Include(c => c.Person)
+                    .Include(d => d.MedicalServices)
+                    .Include(e => e.VisitReviews)
+                    .ToList();
+        }
+        public IQueryable<MedicalWorker> GetMedicalWorkersQuery()
+        {
+            return MedicalWorkers
+                .Include(c => c.Person)
+                .Include(d => d.MedicalServices)
+                .Include(e => e.VisitReviews)
+                .AsQueryable();
         }
 
         //IEnumerable<MedicalWorker> ICustomerServiceModuleRepository.GetMedicalWorkers()
@@ -1291,10 +1321,10 @@ namespace Asklepios.Data.DBContexts
             visit.PatientId = null;
             visit.Patient = null;
             visit.VisitStatus = VisitStatus.AvailableNotBooked;
-            if (visit.UsedExaminationReferralId!=null)
+            if (visit.UsedExaminationReferralId != null)
             {
                 MedicalReferral medicalReferral = MedicalReferrals.FirstOrDefault(c => c.Id == visit.UsedExaminationReferralId.Value);
-                if (medicalReferral!=null)
+                if (medicalReferral != null)
                 {
                     medicalReferral.HasBeenUsed = false;
                     medicalReferral.VisitWhenUsedId = null;
@@ -1524,7 +1554,7 @@ namespace Asklepios.Data.DBContexts
         public IQueryable<Visit> GetFutureVisitsQuery()
         {
             return Visits
-                .Where(a=>a.VisitStatus==VisitStatus.Booked || a.VisitStatus==VisitStatus.AvailableNotBooked)
+                .Where(a => a.VisitStatus == VisitStatus.Booked || a.VisitStatus == VisitStatus.AvailableNotBooked)
                 .Where(k => k.DateTimeSince > DateTimeOffset.Now)
                 .Include(a => a.MedicalWorker).ThenInclude(b => b.Person)
                 .Include(c => c.Patient).ThenInclude(d => d.Person)
@@ -1538,7 +1568,7 @@ namespace Asklepios.Data.DBContexts
                 .Where(k => k.DateTimeSince > DateTimeOffset.Now)
                 .Include(a => a.MedicalWorker).ThenInclude(b => b.Person)
                 .Include(c => c.Patient).ThenInclude(d => d.Person)
-                .Include(e=>e.MedicalRoom)
+                .Include(e => e.MedicalRoom)
                 .AsQueryable<Visit>();
         }
 
@@ -1702,7 +1732,7 @@ namespace Asklepios.Data.DBContexts
             IdentityRoleTypes? roleType = GetRole(user);
             if (roleType == null)
             {
-               // throw new ArgumentNullException("Cannot define user role");
+                // throw new ArgumentNullException("Cannot define user role");
                 return false;
             }
 
@@ -1750,11 +1780,11 @@ namespace Asklepios.Data.DBContexts
         {
             List<MedicalReferral> medicalReferrals = MedicalReferrals
                 .Where(c => c.IssuedToId == id)
-                .Include(v=>v.VisitWhenIssued)
-                    .ThenInclude(mw=>mw.MedicalWorker)
-                        .ThenInclude(p=>p.Person)
-                .Include(ms=>ms.PrimaryMedicalService)
-                .Include(mms=>mms.MinorMedicalService)
+                .Include(v => v.VisitWhenIssued)
+                    .ThenInclude(mw => mw.MedicalWorker)
+                        .ThenInclude(p => p.Person)
+                .Include(ms => ms.PrimaryMedicalService)
+                .Include(mms => mms.MinorMedicalService)
                 .ToList();
             return medicalReferrals;
         }
@@ -1763,9 +1793,9 @@ namespace Asklepios.Data.DBContexts
         {
             List<MedicalTestResult> medicalTestResults = MedicalTestResults
                 .Where(c => c.PatientId == id)
-                .Include(d=>d.MedicalWorker)
-                    .ThenInclude(e=>e.Person)
-                .Include(m=>m.MedicalService)
+                .Include(d => d.MedicalWorker)
+                    .ThenInclude(e => e.Person)
+                .Include(m => m.MedicalService)
                 .ToList();
             return medicalTestResults;
         }
@@ -1775,11 +1805,11 @@ namespace Asklepios.Data.DBContexts
         {
             List<Visit> medicalReferrals = Visits
                 .Where(c => c.PatientId == id)
-                .Include(l=>l.Location)
-                .Include(mw=>mw.MedicalWorker)
-                    .ThenInclude(p=>p.Person)
-                .Include(vc=>vc.VisitCategory)
-                .Include(pm=>pm.PrimaryService)
+                .Include(l => l.Location)
+                .Include(mw => mw.MedicalWorker)
+                    .ThenInclude(p => p.Person)
+                .Include(vc => vc.VisitCategory)
+                .Include(pm => pm.PrimaryService)
                 .ToList();
             return medicalReferrals;
         }
@@ -1788,6 +1818,7 @@ namespace Asklepios.Data.DBContexts
         {
             throw new NotImplementedException();
         }
+
 
         //public void UpdateVisitById(long id)
         //{

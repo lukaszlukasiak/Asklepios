@@ -12,9 +12,7 @@ namespace Asklepios.Web.Areas.AdministrativeArea.Models
     {
         public MedicalWorker SelectedWorker { get; set; }
         public MedicalWorkerSearchOptions SearchOptions { get; set; } = new MedicalWorkerSearchOptions();
-        //public MedicalWorker Worker { get; set; }
         public long SelectedWorkerId { get; set; }
-        //public MedicalWorkertData MedicalWorkertData { get; set; }
         public MedicalWorkertData MedicalWorkertData { get; set; }
         public User User { get; set; }
         public Person Person { get; set; }
@@ -35,16 +33,11 @@ namespace Asklepios.Web.Areas.AdministrativeArea.Models
             }
         }
 
-
         public List<MedicalService> PrimaryServices { get; set; }
         public int ItemsPerPage { get; private set; } = 100;
         public int CurrentPageNum { get; private set; } = 1;
-        //public string SuccessMessage { get; set; }
-        //public string ErrorMessage { get; set; }
         public ViewMode ViewMode { get; set; }
         public string UserName { get; set; }
-        //public string Message { get; set; }
-        //public AlertMessageType AlertMessageType { get; set; }
         public ViewMessage ViewMessage { get; set; } = new ViewMessage();
 
         private List<MedicalWorker> GetFilteredWorkersList()

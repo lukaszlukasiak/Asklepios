@@ -1,11 +1,3 @@
-C:\Users\lukas\source\repos\Asklepios8\Asklepios.Web\obj\Debug\net6.0\Asklepios.Web.csproj.AssemblyReference.cache
-C:\Users\lukas\source\repos\Asklepios8\Asklepios.Web\obj\Debug\net6.0\Asklepios.Web.GeneratedMSBuildEditorConfig.editorconfig
-C:\Users\lukas\source\repos\Asklepios8\Asklepios.Web\obj\Debug\net6.0\Asklepios.Web.AssemblyInfoInputs.cache
-C:\Users\lukas\source\repos\Asklepios8\Asklepios.Web\obj\Debug\net6.0\Asklepios.Web.AssemblyInfo.cs
-C:\Users\lukas\source\repos\Asklepios8\Asklepios.Web\obj\Debug\net6.0\Asklepios.Web.csproj.CoreCompileInputs.cache
-C:\Users\lukas\source\repos\Asklepios8\Asklepios.Web\obj\Debug\net6.0\Asklepios.Web.MvcApplicationPartsAssemblyInfo.cache
-C:\Users\lukas\source\repos\Asklepios8\Asklepios.Web\obj\Debug\net6.0\Asklepios.Web.RazorAssemblyInfo.cache
-C:\Users\lukas\source\repos\Asklepios8\Asklepios.Web\obj\Debug\net6.0\Asklepios.Web.RazorAssemblyInfo.cs
 C:\Users\lukas\source\repos\Asklepios8\Asklepios.Web\bin\Debug\net6.0\appsettings.Development.json
 C:\Users\lukas\source\repos\Asklepios8\Asklepios.Web\bin\Debug\net6.0\appsettings.json
 C:\Users\lukas\source\repos\Asklepios8\Asklepios.Web\bin\Debug\net6.0\Asklepios.Web.staticwebassets.runtime.json
@@ -13,6 +5,7 @@ C:\Users\lukas\source\repos\Asklepios8\Asklepios.Web\bin\Debug\net6.0\Asklepios.
 C:\Users\lukas\source\repos\Asklepios8\Asklepios.Web\bin\Debug\net6.0\Asklepios.Web.deps.json
 C:\Users\lukas\source\repos\Asklepios8\Asklepios.Web\bin\Debug\net6.0\Asklepios.Web.runtimeconfig.json
 C:\Users\lukas\source\repos\Asklepios8\Asklepios.Web\bin\Debug\net6.0\Asklepios.Web.dll
+C:\Users\lukas\source\repos\Asklepios8\Asklepios.Web\bin\Debug\net6.0\ref\Asklepios.Web.dll
 C:\Users\lukas\source\repos\Asklepios8\Asklepios.Web\bin\Debug\net6.0\Asklepios.Web.pdb
 C:\Users\lukas\source\repos\Asklepios8\Asklepios.Web\bin\Debug\net6.0\refs\Microsoft.AspNetCore.Antiforgery.dll
 C:\Users\lukas\source\repos\Asklepios8\Asklepios.Web\bin\Debug\net6.0\refs\Microsoft.AspNetCore.Authentication.Abstractions.dll
@@ -568,7 +561,15 @@ C:\Users\lukas\source\repos\Asklepios8\Asklepios.Web\bin\Debug\net6.0\Asklepios.
 C:\Users\lukas\source\repos\Asklepios8\Asklepios.Web\bin\Debug\net6.0\Asklepios.Data.dll
 C:\Users\lukas\source\repos\Asklepios8\Asklepios.Web\bin\Debug\net6.0\Asklepios.Data.pdb
 C:\Users\lukas\source\repos\Asklepios8\Asklepios.Web\bin\Debug\net6.0\Asklepios.Core.pdb
+C:\Users\lukas\source\repos\Asklepios8\Asklepios.Web\obj\Debug\net6.0\Asklepios.Web.csproj.AssemblyReference.cache
+C:\Users\lukas\source\repos\Asklepios8\Asklepios.Web\obj\Debug\net6.0\Asklepios.Web.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\lukas\source\repos\Asklepios8\Asklepios.Web\obj\Debug\net6.0\Asklepios.Web.AssemblyInfoInputs.cache
+C:\Users\lukas\source\repos\Asklepios8\Asklepios.Web\obj\Debug\net6.0\Asklepios.Web.AssemblyInfo.cs
+C:\Users\lukas\source\repos\Asklepios8\Asklepios.Web\obj\Debug\net6.0\Asklepios.Web.csproj.CoreCompileInputs.cache
 C:\Users\lukas\source\repos\Asklepios8\Asklepios.Web\obj\Debug\net6.0\Asklepios.Web.MvcApplicationPartsAssemblyInfo.cs
+C:\Users\lukas\source\repos\Asklepios8\Asklepios.Web\obj\Debug\net6.0\Asklepios.Web.MvcApplicationPartsAssemblyInfo.cache
+C:\Users\lukas\source\repos\Asklepios8\Asklepios.Web\obj\Debug\net6.0\Asklepios.Web.RazorAssemblyInfo.cache
+C:\Users\lukas\source\repos\Asklepios8\Asklepios.Web\obj\Debug\net6.0\Asklepios.Web.RazorAssemblyInfo.cs
 C:\Users\lukas\source\repos\Asklepios8\Asklepios.Web\obj\Debug\net6.0\staticwebassets.build.json
 C:\Users\lukas\source\repos\Asklepios8\Asklepios.Web\obj\Debug\net6.0\staticwebassets.development.json
 C:\Users\lukas\source\repos\Asklepios8\Asklepios.Web\obj\Debug\net6.0\scopedcss\bundle\Asklepios.Web.styles.css
@@ -577,9 +578,3 @@ C:\Users\lukas\source\repos\Asklepios8\Asklepios.Web\obj\Debug\net6.0\Asklepios.
 C:\Users\lukas\source\repos\Asklepios8\Asklepios.Web\obj\Debug\net6.0\ref\Asklepios.Web.dll
 C:\Users\lukas\source\repos\Asklepios8\Asklepios.Web\obj\Debug\net6.0\Asklepios.Web.pdb
 C:\Users\lukas\source\repos\Asklepios8\Asklepios.Web\obj\Debug\net6.0\Asklepios.Web.genruntimeconfig.cache
-C:\Users\lukas\source\repos\Asklepios8\Asklepios.Web\obj\Debug\net6.0\staticwebassets\msbuild.Asklepios.Web.Microsoft.AspNetCore.StaticWebAssets.props
-C:\Users\lukas\source\repos\Asklepios8\Asklepios.Web\obj\Debug\net6.0\staticwebassets\msbuild.build.Asklepios.Web.props
-C:\Users\lukas\source\repos\Asklepios8\Asklepios.Web\obj\Debug\net6.0\staticwebassets\msbuild.buildMultiTargeting.Asklepios.Web.props
-C:\Users\lukas\source\repos\Asklepios8\Asklepios.Web\obj\Debug\net6.0\staticwebassets\msbuild.buildTransitive.Asklepios.Web.props
-C:\Users\lukas\source\repos\Asklepios8\Asklepios.Web\obj\Debug\net6.0\staticwebassets.pack.json
-C:\Users\lukas\source\repos\Asklepios8\Asklepios.Web\obj\Debug\net6.0\refint\Asklepios.Web.dll

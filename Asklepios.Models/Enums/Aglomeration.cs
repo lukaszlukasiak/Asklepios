@@ -7,33 +7,33 @@ namespace Asklepios.Core.Enums
     {
         [Display(Name = "Warszawska")]
         [Description("Aglomeracja warszawska")]
-        Warsaw,
+        Warsaw=1,
         [Display(Name = "Poznańska")]
         [Description("Aglomeracja poznańska")]
-        Poznan,
+        Poznan=2,
         [Display(Name = "Trójmiejska")]
         [Description("Aglomeracja trójmiejska")]
-        Tricity,
+        Tricity=3,
         [Display(Name = "Krakowska")]
         [Description("Aglomeracja krakowska")]
-        Cracow,
+        Cracow=4,
         [Display(Name = "Wrocławska")]
         [Description("Aglomeracja wrocławska")]
-        Wroclaw,
+        Wroclaw=5,
         [Display(Name = "Białostocka")]
         [Description("Aglomeracja białostocka")]
-        Bialystok,
+        Bialystok=6,
         [Display(Name = "Rzeszowska")]
         [Description("Aglomeracja rzeszowska")]
-        Rzeszów,
+        Rzeszów=7,
         [Display(Name = "Kielecka")]
         [Description("Aglomeracja kielecka")]
-        Kielce,
+        Kielce=8,
         [Display(Name = "Śląska")]
         [Description("Aglomeracja śląska")]
-        Silesia,
+        Silesia=9,
         [Display(Name = "Kujawska")]
         [Description("Aglomeracja kujawska")]
-        Kuyavia,
+        Kuyavia=10,
     }
 }

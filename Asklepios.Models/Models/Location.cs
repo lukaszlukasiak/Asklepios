@@ -80,17 +80,6 @@ namespace Asklepios.Core.Models
         public List<MedicalService> Services { get; set; }
         public bool IsActive { get; set; }
 
-        //[Required(ErrorMessage = "Proszę szerokość geograficzną placówki!")]
-        //[Display(Name = "Szerokość geograficzna")]
-        //public string Latitude { get; set; }
-        //[Required(ErrorMessage = "Proszę długość geograficzną placówki!")]
-        //[Display( Name ="Długość geograficzna")]
-        //public string Longtitude { get; set; }
-
-
-
-
-
         [Display(Name = "Lista pokoi")]
         [Required(ErrorMessage = "Wybierz pokoje")]
         [NotMapped]
@@ -143,6 +132,11 @@ namespace Asklepios.Core.Models
                 }
                 return false;
             }           
+        }
+
+        public Location()
+        {
+            IsActive = true;
         }
 
         public void UpdateWithAnotherLocation(Location selectedLocation)
@@ -204,32 +198,6 @@ namespace Asklepios.Core.Models
                     this.Services.Remove(service);
                 }
             }
-
-            //foreach (var item in selectedLocation.Services)
-            //{
-            //    if (this.Services.Any(c => c.Id == item.Id))
-            //    {
-
-            //    }
-            //    else
-            //    {
-            //        this.Services.Add(item);
-            //    }
-            //}
-            //for (int i = this.Services.Count - 1; i >= 0; i--)
-            //{
-            //    MedicalService service = this.Services[i];
-
-            //    if (selectedLocation.Services.Any(c => c.Id == service.Id))
-            //    {
-
-            //    }
-            //    else
-            //    {
-            //        this.Services.Remove(service);
-            //    }
-            //}
-
         }
     }
 }

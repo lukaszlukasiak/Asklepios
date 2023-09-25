@@ -48,7 +48,7 @@
             </button>
         </div>
 
-        <select class="form-control mx-2" asp-for="CurrentPageNum" asp-items="ViewBag.PagesList" onchange="document.getElementById('btnSubmit').click();" onselect="Refresh()">
+        <select class="form-control mx-2" asp-for="CurrentPageNum" asp-items="@Model.PagesList" onchange="document.getElementById('btnSubmit').click();" onselect="Refresh()">
         </select>
 
         <div class="form-group d-flex flex-column ">

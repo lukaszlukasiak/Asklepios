@@ -142,10 +142,6 @@ namespace Asklepios.Web.Areas.AdministrativeArea.Models
         {
 
             IQueryable<Visit> filteredVisits = allVisits;//     Schedule;
-            //if (Schedule == null)
-            //{
-            //    return null;
-            //}
             if (allVisits == null)
             {
                 return null;

@@ -24,9 +24,8 @@
 
     <select class="form-control  mb-1" asp-for="SelectedVisitCategoryId" asp-items="categoriesList">
 @*        <option value="0">Wybierz kategorię wizyty</option>
+
 *@    </select>
-    @*<label for="SelectedPassportNumber">Wybierz typ wizyty</label>*@
-    @*@Html.TextBoxFor(m => m.SelectedPrimaryServiceId, new { @class = "form-control mb-2", @readonly = "readonly" })*@
     <select class="form-control mb-1" asp-for="SelectedPrimaryServiceId" asp-items="servicesList">
     </select>
 

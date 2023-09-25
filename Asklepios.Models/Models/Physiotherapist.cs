@@ -7,33 +7,21 @@ namespace Asklepios.Core.Models
 {
     public class Physiotherapist : MedicalWorker
     {
-        //public Physiotherapist(string name, string surName, long id, string pesel, bool hasPolishCitizenship, string passportNumber, string passportCode, string npwzNumber, string email, Aglomeration aglomeration) : base(name, surName, id, pesel, hasPolishCitizenship, passportNumber, passportCode, email, aglomeration)
-        //{
-        //    NPWZNumber = npwzNumber;
-        //}
-        //public Physiotherapist(Person person, string profNumber):base(person)
-        //{
-        //    ProfessionalNumber = profNumber;
-        //    MedicalWorkerType = Enums.MedicalWorkerType.Physiotherapist;
-        //    PersonId = person.Id;
-        //}
         public override bool CanAddMedicalTestResults => false;
         public override bool CanIssueExamReferral => false;
         public override bool CanIssuePrescription => true;
 
-        public Physiotherapist()
+        public Physiotherapist():base()
         {
 
         }
         public Physiotherapist(long personId, string professionalNumber) : base(personId, professionalNumber)
         {
-            //ProfessionalNumber = professionalNumber;
             MedicalWorkerType = Enums.MedicalWorkerType.Physiotherapist;
-            //PersonId = personId;
+
         }
 
         public override string ProfessionalTitle => "Fizjoterapeuta";
-        //public string   NPWZNumber { get;}
     }
 
 }

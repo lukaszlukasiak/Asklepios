@@ -390,7 +390,10 @@ namespace Asklepios.Web.Areas.CustomerServiceArea.Controllers
                     return RedirectToAction("Dashboard");
                 }
 
-                BookVisitViewModel model2 = new BookVisitViewModel() { AllVisitsList = _context.GetAvailableVisitsQuery() }; //(_context.GetAvailableVisits().ToList(),new VisitSearchOptions());
+                BookVisitViewModel model2 = new BookVisitViewModel() 
+                { 
+                    PreFilteredVisitsList = _context.GetAvailableVisitsQuery() 
+                };
                 if (!string.IsNullOrWhiteSpace(model.SelectedCategoryId))
                 {
                     model2.SelectedCategoryId = model.SelectedCategoryId.ToString();
@@ -408,10 +411,10 @@ namespace Asklepios.Web.Areas.CustomerServiceArea.Controllers
                     model2.SelectedServiceId = model.SelectedServiceId.ToString();
                 }
 
-                model2.AllCategories = _context.GetVisitCategories().OrderBy(c => c.CategoryName).ToList();
-                model2.AllLocations = _context.GetAllLocations().OrderBy(c => c.Name).ToList();
-                model2.AllMedicalServices = _context.GetMedicalServices().OrderBy(c => c.Name).ToList();
-                model2.AllMedicalWorkers = _context.GetMedicalWorkers().OrderBy(c => c.FullProffesionalName).ToList();
+                //model2.AllCategories = _context.GetVisitCategories().OrderBy(c => c.CategoryName).ToList();
+                //model2.AllLocations = _context.GetAllLocations().OrderBy(c => c.Name).ToList();
+                //model2.AllMedicalServices = _context.GetMedicalServices().OrderBy(c => c.Name).ToList();
+                //model2.AllMedicalWorkers = _context.GetMedicalWorkers().OrderBy(c => c.FullProffesionalName).ToList();
                 model2.UserName = _loggedUser.Person.FullName;
 
                 model2.SelectedPatient = patient;
@@ -436,13 +439,14 @@ namespace Asklepios.Web.Areas.CustomerServiceArea.Controllers
                 {
                     return RedirectToAction("Dashboard");
                 }
-                model.AllVisitsList = _context.GetAvailableVisitsQuery();
+                model.PreFilteredVisitsList = _context.GetAvailableVisitsQuery();
                 model.SelectedPatient = patient;
                 model.UserName = _loggedUser.Person.FullName;
-                model.AllCategories = _context.GetVisitCategories().OrderBy(c => c.CategoryName).ToList();
-                model.AllLocations = _context.GetAllLocations().OrderBy(c => c.Name).ToList();
-                model.AllMedicalServices = _context.GetMedicalServices().Where(c => c.IsPrimaryService).OrderBy(c => c.Name).ToList();
-                model.AllMedicalWorkers = _context.GetMedicalWorkers().OrderBy(c => c.FullProffesionalName).ToList();
+                //model.AllCategories = _context.GetVisitCategories().OrderBy(c => c.CategoryName).ToList();
+                //model.AllLocations = _context.GetAllLocations().OrderBy(c => c.Name).ToList();
+                //model.AllMedicalServices = _context.GetMedicalServices().Where(c => c.IsPrimaryService).OrderBy(c => c.Name).ToList();
+                //model.AllMedicalWorkers = _context.GetMedicalWorkers().OrderBy(c => c.FullProffesionalName).ToList();
+                model.FilterVisits(_context.GetAvailableVisitsQuery());
 
                 return View(model);
             }
@@ -461,20 +465,20 @@ namespace Asklepios.Web.Areas.CustomerServiceArea.Controllers
                 {
                     return RedirectToAction("Dashboard");
                 }
-                BookVisitViewModel model = new BookVisitViewModel(patient) { AllVisitsList = _context.GetAvailableVisitsQuery() }; //(_context.GetAvailableVisits().ToList(),new VisitSearchOptions());
-
+                BookVisitViewModel model = new BookVisitViewModel(patient) 
+                { 
+                    PreFilteredVisitsList = _context.GetAvailableVisitsQuery() 
+                };
+                
                 if (TempData.ContainsKey(ViewMessage.MESSAGE_KEY))
                 {
                     ViewMessage message = JsonConvert.DeserializeObject<ViewMessage>((string)TempData[ViewMessage.MESSAGE_KEY]);
                     model.ViewMessage = message;
                     TempData.Remove(ViewMessage.MESSAGE_KEY);
                 }
+                model.FilterVisits(_context.GetAvailableVisitsQuery());
 
                 model.UserName = _loggedUser.Person.FullName;
-                model.AllCategories = _context.GetVisitCategories().OrderBy(c => c.CategoryName).ToList();
-                model.AllLocations = _context.GetAllLocations().OrderBy(c => c.Name).ToList();
-                model.AllMedicalServices = _context.GetMedicalServices().Where(c => c.IsPrimaryService).OrderBy(c => c.Name).ToList();
-                model.AllMedicalWorkers = _context.GetMedicalWorkers().OrderBy(c => c.FullProffesionalName).ToList();
 
                 return View(model);
             }

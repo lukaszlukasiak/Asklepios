@@ -10,7 +10,7 @@ namespace Asklepios.Core.Models
         public override bool CanIssuePrescription => true;
 
 
-        public Doctor()
+        public Doctor(): base()
         {
 
         }

@@ -72,6 +72,7 @@ namespace Asklepios.Data.Interfaces
         void UpdateNotification(Notification notification);
         IQueryable<Visit> GetFutureVisitsQuery();
         IQueryable<Visit> GetFutureVisitsQueryPatient();
+        IQueryable<MedicalWorker> GetMedicalWorkersQuery();
 
         //void ResignFromVisit(Visit plannedVisit, Patient patient);
 

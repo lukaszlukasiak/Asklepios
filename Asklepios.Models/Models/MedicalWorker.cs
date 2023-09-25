@@ -13,16 +13,18 @@ namespace Asklepios.Core.Models
     {
         public MedicalWorker()
         {
-
+            IsActive = true;
         }
         public MedicalWorker(Person person)
         {
             Person = person;
+            IsActive = true;
         }
         public MedicalWorker(long personId, string professionalNumber)
         {
             PersonId = personId;
             ProfessionalNumber = professionalNumber;
+            IsActive = true;
         }
 
         [Key]
