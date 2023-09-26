@@ -25,7 +25,7 @@
         {
             if (swid > 0)
             {
-                workersItems = new SelectList(Model.AllMedicalWorkers.Where(c => c.Id == swid), "Id", "FullProffesionalName");
+                workersItems = new SelectList(Model.GetMedicalWorkers.Where(c => c.Id == swid), "Id", "FullProffesionalName");
             }
             else
             {
@@ -41,7 +41,7 @@
         {
             if (slid > 0)
             {
-                locationItems = new SelectList(Model.AllLocations.Where(c => c.Id == slid), "Id", "Name");
+                locationItems = new SelectList(Model.GetLocations.Where(c => c.Id == slid), "Id", "Name");
             }
         }
         else
@@ -51,7 +51,7 @@
         SelectList categoriesList = null;
         if (long.TryParse(Model.SelectedCategoryId, out long scid))
         {
-            categoriesList = new SelectList(Model.AllCategories.Where(c => c.Id == scid), "Id", "CategoryName");
+            categoriesList = new SelectList(Model.GetVisitCategories.Where(c => c.Id == scid), "Id", "CategoryName");
         }
         else
         {
@@ -60,7 +60,7 @@
         SelectList servicesList = null;
         if (long.TryParse(Model.SelectedServiceId, out long ssid))
         {
-            servicesList = new SelectList(Model.AllMedicalServices.Where(c => c.Id == ssid), "Id", "Name");
+            servicesList = new SelectList(Model.GetMedicalServices.Where(c => c.Id == ssid), "Id", "Name");
         }
         else
         {
@@ -111,7 +111,7 @@
 
 @{
     List<Visit> visits = Model.PageVisits;
-    if (visits.Count > 0)
+    if (visits?.Count > 0)
     {
         @for (int i = 0; i < visits.Count; i++)
         {

@@ -695,6 +695,8 @@ namespace Asklepios.Data.InMemoryContexts
             DateTimeOffset start = new DateTimeOffset(dateTimeOffset.Year, dateTimeOffset.Month, dateTimeOffset.Day, 8, 0, 0, new TimeSpan(0, 0, 0)).AddDays(0);
             long startId = 1;
             int locationsNumber = Locations.Count;
+            Random rnd = new Random();
+
             //7 to za dużo i jest stackoverflow
             for (int i = 0; i <= 5; i++)
             {
@@ -725,9 +727,9 @@ namespace Asklepios.Data.InMemoryContexts
                     Location location = Locations.ElementAt((j + 1) % (locationsNumber));
                     int roomsCounter = location.MedicalRooms.Count;
                     MedicalRoom room = location.MedicalRooms.ElementAt((j + 1) % (roomsCounter));
+                    //int number = rnd.Next(-1,30);
 
-                    minutsOffset = -1;
-
+                    minutsOffset = rnd.Next(-1, 30);
 
                     for (int m = 0; m < 12; m++)
                     {

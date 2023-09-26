@@ -416,6 +416,7 @@ namespace Asklepios.Web.Areas.CustomerServiceArea.Controllers
                 //model2.AllMedicalServices = _context.GetMedicalServices().OrderBy(c => c.Name).ToList();
                 //model2.AllMedicalWorkers = _context.GetMedicalWorkers().OrderBy(c => c.FullProffesionalName).ToList();
                 model2.UserName = _loggedUser.Person.FullName;
+                model2.FilterVisits(_context.GetAvailableVisitsQuery());
 
                 model2.SelectedPatient = patient;
                 return View(model2);
@@ -446,6 +447,7 @@ namespace Asklepios.Web.Areas.CustomerServiceArea.Controllers
                 //model.AllLocations = _context.GetAllLocations().OrderBy(c => c.Name).ToList();
                 //model.AllMedicalServices = _context.GetMedicalServices().Where(c => c.IsPrimaryService).OrderBy(c => c.Name).ToList();
                 //model.AllMedicalWorkers = _context.GetMedicalWorkers().OrderBy(c => c.FullProffesionalName).ToList();
+
                 model.FilterVisits(_context.GetAvailableVisitsQuery());
 
                 return View(model);
