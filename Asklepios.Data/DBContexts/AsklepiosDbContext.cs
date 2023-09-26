@@ -33,7 +33,7 @@ namespace Asklepios.Data.DBContexts
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-            bool seedDatabase = true;
+            bool seedDatabase = false;
 
             base.OnModelCreating(modelBuilder);
 
