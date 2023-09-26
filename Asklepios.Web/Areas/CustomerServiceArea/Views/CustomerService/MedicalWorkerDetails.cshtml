@@ -13,7 +13,7 @@
                     @Model.MedicalWorker.FullProffesionalName
                 </h3>
                 <br />
-                <h5>Region - @Model.MedicalWorker.Person.DefaultAglomeration.Value</h5>
+                <h5>Aglomeracja - @Model.MedicalWorker.Person.DefaultAglomeration.Value.GetDescription()</h5>
                 <h5>Edukacja:</h5>
                 @*@for (int i = 0; i < Model.MedicalWorker.Education.Count; i++)
                     {*@

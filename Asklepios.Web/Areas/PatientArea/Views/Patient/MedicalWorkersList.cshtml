@@ -11,7 +11,7 @@
 <h1 style="text-align:center">Lista pracowników medycznych</h1>
 <form asp-action="MedicalWorkersList" method="post">
 
-    <select class="form-control  mb-2" asp-for="SelectedAglomeration" asp-items="aglomerations">
+    <select class="form-control  mb-2" asp-for="SelectedAglomeration" asp-items="Html.GetEnumSelectList<Asklepios.Core.Enums.Aglomeration>()">
         <option value="-1">Wybierz aglomerację</option>
     </select>
 
