@@ -37,7 +37,7 @@ namespace Asklepios.Web
             options.UseSqlServer(Configuration.GetConnectionString("Webio"), options => options.EnableRetryOnFailure()), ServiceLifetime.Scoped);
 
             
-            services.AddIdentity<User,IdentityRole>(options => options.SignIn.RequireConfirmedAccount = false)
+            services.AddIdentity<User,IdentityRole<long>>(options => options.SignIn.RequireConfirmedAccount = false)
                     .AddRoles<IdentityRole<long>>()
                     .AddSignInManager()
                     .AddEntityFrameworkStores<AsklepiosDbContext>();

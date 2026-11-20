@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Asklepios.Web.Areas.HomeArea.Models;
 using Asklepios.Web.Models;
+using MailKit;
 using MailKit.Net.Smtp;
 using MailKit.Security;
 using Microsoft.Extensions.Configuration;

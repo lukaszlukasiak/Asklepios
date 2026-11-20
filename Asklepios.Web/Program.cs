@@ -115,13 +115,12 @@ app.UseAuthentication();
 app.UseAuthorization();
 app.MapRazorPages();
 
-app.UseEndpoints(endpoints =>
-{
-    endpoints.MapControllerRoute("areas", "{area:exists}/{controller:exists}/{action=Index}/{id?}");
-    endpoints.MapControllerRoute(
-        name: "default",
-        pattern: "{area=HomeArea}/{controller=Home}/{action=Index}/{id?}");
-});
+app.MapControllerRoute("areas", "{area:exists}/{controller:exists}/{action=Index}/{id?}");
+app.MapControllerRoute(
+    name: "default",
+    pattern: "{area=HomeArea}/{controller=Home}/{action=Index}/{id?}");
 
 
 app.Run();
+
+public partial class Program { }
