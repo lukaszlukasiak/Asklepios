@@ -6,7 +6,9 @@ Data: 21 listopada 2026 r. Zakres: artefakty, lokalna konfiguracja, profile publ
 
 Pliki pasujące do `.gitignore` należy usunąć wyłącznie z indeksu Git. Kopie na dysku, w tym działający `Asklepios.Web/appsettings.json` i dokumenty z `wwwroot/Results`, mają zostać zachowane. Publicznym odpowiednikiem konfiguracji jest `Asklepios.Web/appsettings.example.json`; instrukcja utworzenia lokalnej konfiguracji znajduje się w głównym README.
 
-Z kodu usunięto komentarze z nieużywanymi danymi dostępowymi. `.dockerignore` wyklucza lokalne dane również z kontekstu budowania obrazów. `.gitleaks.toml` rozszerza standardowe reguły Gitleaks o hasła SMTP i połączenia SQL używane przez projekt.
+Z kodu usunięto komentarze z nieużywanymi danymi dostępowymi. W danych startowych migracji i dawnym snapshocie zakodowane hashe haseł zastąpiono pustymi wartościami. Nie zmieniono schematu ani istniejącej bazy. Konta tworzone z tych danych podczas inicjalizacji nowej bazy wymagają ustawienia nowych haseł; nie można korzystać z dawnych poświadczeń demonstracyjnych.
+
+`.dockerignore` wyklucza lokalne dane również z kontekstu budowania obrazów. `.gitleaks.toml` rozszerza standardowe reguły Gitleaks o hasła SMTP i połączenia SQL używane przez projekt. Workflow `Secret scanning` skanuje całą pobraną historię. Do czasu zastąpienia starych zdalnych gałęzi oczyszczonymi wersjami może celowo zgłaszać poświadczenia z dawnych commitów.
 
 ## Historia i kopia zapasowa
 
@@ -23,9 +25,14 @@ py -3.14 scripts/security/prepare-public-history.py inventory
 # Po wycofaniu plików z indeksu sprawdź, że zostały nienaruszone na dysku.
 py -3.14 scripts/security/prepare-public-history.py verify-local-files
 
+# Rozszerz reguły o historyczne hasła SMTP i wyłącz hashe haseł danych startowych.
+py -3.14 scripts/security/prepare-public-history.py redact-credentials
+
 # Po zapisaniu zmian w commicie przygotuj osobną, oczyszczoną historię.
 py -3.14 scripts/security/prepare-public-history.py mirror --filter-repo artifacts/tools/git-filter-repo.py
 ```
+
+Kolejne podejście po rozszerzeniu reguł można przygotować pod inną nazwą, np. `--mirror-name clean-v2.git`; skrypt nie nadpisuje istniejących kopii.
 
 Przed publikacją kopia wymaga weryfikacji wszystkich historycznych ścieżek, skanowania sekretów we wszystkich zachowanych gałęziach i sprawdzenia integralności przez `git fsck`. Logi i raporty prywatne przechowuje się pod `artifacts/repo-cleanup`; do publicznego podsumowania trafiają wyłącznie liczby i nazwy reguł, bez wartości sekretów.
 
