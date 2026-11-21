@@ -15,15 +15,6 @@ namespace Asklepios.Web.ServiceClasses
 {
     public static class MailServices
     {
-        //  const string MAIL_ADDRESS = "grupa.asklepios@wp.pl";
-        //// const string MAIL_PASS = "";
-        //  const string MAIL_SMTP = "smtp.wp.pl";
-        //  const int MAIL_PORT = 465;
-
-        //string MAIL_ADDRESS;//= "grupa.asklepios@wp.pl";
-        //string MAIL_PASS;//= "";
-        //string MAIL_SMTP;//= "smtp.wp.pl";
-        //int MAIL_PORT//= 465;
 
 
         public static bool CreateAndSendMail(ContactMessageViewModel model)

@@ -143,6 +143,7 @@ id_ed25519.*
 *.sqlite3-wal
 *.bak
 *.bacpac
+*.bundle
 *.dump
 /SQLQuery*.sql
 
@@ -171,3 +172,8 @@ coverage*.xml
 Thumbs.db
 Desktop.ini
 $RECYCLE.BIN/
+
+# Local Python helpers used for repository maintenance
+__pycache__/
+*.py[cod]
+.venv/
