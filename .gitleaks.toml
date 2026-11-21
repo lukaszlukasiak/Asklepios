@@ -1,0 +1,16 @@
+title = "Asklepios secret scanning"
+
+[extend]
+useDefault = true
+
+[[rules]]
+id = "asklepios-smtp-password"
+description = "Hardcoded SMTP password in configuration or source"
+regex = '''(?i)\b(?:MAIL_PASS|SMTP_PASSWORD)["']?\s*[:=]\s*["']([^"'\r\n]{4,})["']'''
+secretGroup = 1
+
+[[rules]]
+id = "asklepios-sql-password"
+description = "Password in a SQL Server connection string"
+regex = '''(?i)(?:Server|Data Source)\s*=[^\r\n]*?\b(?:Password|Pwd)\s*=\s*([^;"'\r\n]{4,})'''
+secretGroup = 1

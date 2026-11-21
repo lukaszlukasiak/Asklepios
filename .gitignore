@@ -1,0 +1,179 @@
+# Build results
+[Dd]ebug/
+[Dd]ebugPublic/
+[Rr]elease/
+[Rr]eleases/
+x64/
+x86/
+[Ww][Ii][Nn]32/
+[Aa][Rr][Mm]/
+[Aa][Rr][Mm]64/
+bld/
+[Bb]in/
+[Oo]bj/
+[Ll]og/
+[Ll]ogs/
+
+# Visual Studio cache/options
+.vs/
+.vscode/
+.idea/
+*.sln.iml
+
+# NuGet Packages
+*.nupkg
+*.snupkg
+**/packages/*
+
+# User-specific files
+*.rsuser
+*.suo
+*.user
+*.userosscache
+*.sln.docstates
+
+# Build results specific files
+project.fragment.lock.json
+artifacts/
+publish/
+app.publish/
+*.dll
+*.exe
+*.msi
+*.msix
+
+# Keep dependency lock files (packages.lock.json, project.lock.json) in source control.
+
+# ASP.NET Scaffolding
+ScaffoldingReadMe.txt
+
+# Files built by Visual Studio
+*_i.c
+*_p.c
+*_h.h
+*.ilk
+*.meta
+*.obj
+*.iobj
+*.pch
+*.pdb
+*.ipdb
+*.pgc
+*.pgd
+*.rsp
+*.sbr
+*.tlb
+*.tli
+*.tlh
+*.tmp
+*.tmp_proj
+*_wpftmp.csproj
+*.log
+*.vspscc
+*.vssscc
+.builds
+*.pidb
+*.svclog
+*.scc
+
+# Claude Code
+.claude/
+
+# Local agent state and cloud credentials (keep shared instructions such as AGENTS.md)
+.codex/
+.agents/
+.aws/
+.azure/
+
+# Local configuration may contain database passwords, SMTP credentials or tokens.
+# Commit sanitized *.example.json / *.template.json files instead.
+appsettings.json
+appsettings.*.json
+!appsettings.example.json
+!appsettings.*.example.json
+!appsettings.template.json
+!appsettings.*.template.json
+secrets.json
+secrets.*.json
+.env
+.env.*
+!.env.example
+!.env.*.example
+!.env.template
+!.env.*.template
+nuget.config.local
+NuGet.Config.local
+serviceDependencies.local.json
+launchSettingsOLD.json
+
+# Machine-specific deployment profiles and exported publishing credentials
+*.pubxml
+*.pubxml.user
+*.publishsettings
+*.PublishSettings
+!*.pubxml.example
+!*.pubxml.template
+
+# Private keys, signing keys and certificate bundles
+*.pfx
+*.p12
+*.pem
+*.key
+*.snk
+id_rsa
+id_rsa.*
+id_ed25519
+id_ed25519.*
+
+# Local databases, database backups and exports (keep SQL migrations/scripts)
+*.mdf
+*.ndf
+*.ldf
+*.db
+*.db-journal
+*.db-shm
+*.db-wal
+*.sqlite
+*.sqlite-journal
+*.sqlite-shm
+*.sqlite-wal
+*.sqlite3
+*.sqlite3-journal
+*.sqlite3-shm
+*.sqlite3-wal
+*.bak
+*.bacpac
+*.bundle
+*.dump
+/SQLQuery*.sql
+
+# Runtime uploads and medical documents; do not ignore the application's static assets.
+/Asklepios.Web/wwwroot/Results/
+/Asklepios.Web/wwwroot/uploads/
+/Asklepios.Web/App_Data/
+
+# Test output, coverage, profiling and crash dumps
+[Tt]est[Rr]esults/
+coverage/
+*.coverage
+*.coveragexml
+coverage*.xml
+*.trx
+*.dmp
+*.dumpheap
+*.nettrace
+*.diagsession
+
+# Temporary editor files and operating-system metadata
+*.swp
+*.swo
+*~
+.DS_Store
+Thumbs.db
+Desktop.ini
+$RECYCLE.BIN/
+
+# Local Python helpers used for repository maintenance
+__pycache__/
+*.py[cod]
+.venv/
